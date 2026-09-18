@@ -1,0 +1,52 @@
+name: 自动构建并部署至 GitHub Pages (Deploy to Pages)
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+# 设置权限允许部署到 GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 只允许一个并发部署
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build-and-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 配置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 安装项目依赖
+        run: npm ci || npm install
+
+      - name: 编译 Uni-app H5 生产纯静态站点
+        run: npm run build:h5
+
+      - name: 配置 GitHub Pages 环境
+        uses: actions/configure-pages@v4
+
+      - name: 上传构建产物至 Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'dist/build/h5'
+
+      - name: 部署至 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

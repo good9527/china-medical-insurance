@@ -1,0 +1,46 @@
+name: 测算异常或前端缺陷提报 (Bug Report)
+description: 提交计算引擎逻辑异常、界面展示或跨端兼容性问题
+title: "[Bug] 简要描述问题现象"
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您报告问题！请详细描述复现步骤与预期结果。
+  - type: dropdown
+    id: category
+    attributes:
+      label: 问题类别
+      options:
+        - 测算结果与预期不符 (Calculation Engine)
+        - 城市联动/界面交互问题 (UI & Interaction)
+        - 12393 拨号或服务热线问题 (Service Hotline)
+        - 跨端兼容性 (H5 / 微信小程序 / 浏览器)
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤与测算参数
+      description: 请给出具体的统筹区、身份（职工/居民）、就医类型、医疗机构级别及输入的费用明细。
+      placeholder: |
+        1. 选择统筹区：成都市
+        2. 参保类型：在职职工
+        3. 测算场景：三级医疗机构住院，总费用 20000 元，自费 2000 元
+        4. 点击开始测算
+    validations:
+      required: true
+  - type: textarea
+    id: expected_vs_actual
+    attributes:
+      label: 预期结果 vs 实际计算结果
+      placeholder: |
+        实际输出：报销金额为 XXXX 元
+        预期结果：根据政策应扣除起付线 XXX 元后报销 XXXX 元
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 运行环境
+      placeholder: Chrome 120 / 微信内置浏览器 / iOS Safari / 小程序

@@ -1,0 +1,1197 @@
+<template>
+  <view class="page-wrapper" @click="closeAllDropdowns">
+    <!-- 全站统一全局导航 (Tab栏像素级恒定居中，永不跳动) -->
+    <AppHeader currentTab="policy" />
+
+    <view class="content-box">
+      <!-- 页面简明标题与操作栏 (清新实用，增加专属公文徽标与层次) -->
+      <view class="page-intro-bar">
+        <view class="intro-left">
+          <view class="title-with-badge">
+            <view class="page-feature-icon">
+              <svg class="feature-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+            </view>
+            <view class="page-title-stack">
+              <view class="title-row">
+                <text class="page-main-title">{{ currentCity.cityName }} 医保报销待遇</text>
+                <view class="city-indicator-chip">
+                  <text class="city-indicator-txt">现行有效 · 核验于 {{ cityLastUpdatedText }}</text>
+                </view>
+              </view>
+              <text class="page-sub-title">普通门诊与住院起付线、各级医疗机构统筹报销比例及年度最高限额</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 地区切换自定义下拉框 -->
+        <view class="toolbar-pickers-row">
+          <!-- 省份下拉 -->
+          <view class="picker-anchor">
+            <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'province' }" @click.stop="toggleDropdown('province')">
+              <text class="select-val">{{ currentProvince.name }}</text>
+              <text class="select-arrow" :class="{ rotated: openDropdown === 'province' }">▾</text>
+            </view>
+            <view class="cyber-dropdown-menu" v-if="openDropdown === 'province'" @click.stop>
+              <view 
+                class="dropdown-item" 
+                v-for="(p, idx) in provinceList" 
+                :key="p.code"
+                :class="{ selected: selectedProvinceIndex === idx }"
+                @click.stop="selectProvince(idx)"
+              >
+                <text class="item-name">{{ p.name }}</text>
+                <text class="item-check" v-if="selectedProvinceIndex === idx">✓</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 城市下拉 -->
+          <view class="picker-anchor">
+            <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'city' }" @click.stop="toggleDropdown('city')">
+              <text class="select-val">{{ currentCityOption.cityName }}</text>
+              <text class="select-arrow" :class="{ rotated: openDropdown === 'city' }">▾</text>
+            </view>
+            <view class="cyber-dropdown-menu" v-if="openDropdown === 'city'" @click.stop>
+              <view 
+                class="dropdown-item" 
+                v-for="(c, idx) in cityOptions" 
+                :key="c.cityCode"
+                :class="{ selected: selectedCityIndex === idx }"
+                @click.stop="selectCity(idx)"
+              >
+                <text class="item-name">{{ c.cityName }}</text>
+                <text class="item-check" v-if="selectedCityIndex === idx">✓</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
+      <!-- 身份类型切换 (城镇职工医保 vs 城乡居民医保) -->
+      <view class="tab-group-2 mb-20">
+        <view 
+          class="tab-card" 
+          :class="{ active: currentType === 'employee' }"
+          @click="currentType = 'employee'"
+        >
+          <text class="tab-card-title">城镇职工基本医疗保险</text>
+          <text class="tab-card-desc">在职企事业单位职工 / 灵活就业参保人 / 退休职工</text>
+        </view>
+        <view 
+          class="tab-card" 
+          :class="{ active: currentType === 'resident' }"
+          @click="currentType = 'resident'"
+        >
+          <text class="tab-card-title">城乡居民基本医疗保险</text>
+          <text class="tab-card-desc">一老一小儿童老年人 / 在校学生 / 城乡普通居民</text>
+        </view>
+      </view>
+
+      <!-- 门诊与住院待遇卡片 -->
+      <view class="benefits-grid">
+        <!-- 门诊待遇卡片 -->
+        <view class="card">
+          <view class="card-head">
+            <view class="head-left">
+              <text class="card-head-title">普通门诊就医待遇</text>
+            </view>
+            <view class="badge-pill" :class="currentType === 'employee' ? 'badge-cyan' : 'badge-emerald'">
+              <text class="badge-txt">{{ currentType === 'employee' ? '职工门诊共济机制' : '基层门诊统筹机制' }}</text>
+            </view>
+          </view>
+
+          <!-- 门诊核心两要素指标 -->
+          <view class="metric-grid">
+            <view class="metric-cell">
+              <text class="m-label">{{ outpatientDeductibleDisplay.label }}</text>
+              <text class="m-val" :class="currentType === 'employee' ? 'text-cyan' : 'text-emerald'">{{ outpatientDeductibleDisplay.val }}</text>
+              <text class="m-hint">{{ outpatientDeductibleDisplay.hint }}</text>
+            </view>
+            <view class="metric-cell">
+              <text class="m-label">年度统筹基金最高支付限额 (封顶)</text>
+              <text class="m-val text-white">{{ outpatientCapDisplay.val }}</text>
+              <text class="m-hint">{{ outpatientCapDisplay.hint }}</text>
+            </view>
+          </view>
+
+          <!-- 门诊各级医疗机构报销比例对照表 -->
+          <view class="section-sub-title">
+            <text class="sub-dot">▪</text>
+            <text class="sub-txt">各级医疗机构门诊起付与报销比例</text>
+          </view>
+          <view class="table-container">
+            <view class="t-row t-head">
+              <text class="t-cell f-2">医疗机构等级</text>
+              <text class="t-cell f-1 text-center">门诊起付</text>
+              <text class="t-cell f-1 text-center">在职比例</text>
+              <text class="t-cell f-1 text-center" v-if="currentType === 'employee'">退休比例</text>
+              <text class="t-cell f-2" v-else>就医说明</text>
+            </view>
+            <view class="t-row" v-for="(tier, key) in currentPkg.outpatient.tierBenefits" :key="key">
+              <view class="t-cell f-2 tier-cell">
+                <text class="tier-tag" :class="getTierTagClass(key)">{{ getTierTag(key) }}</text>
+                <text class="font-med text-white tier-title">{{ tier.tierName }}</text>
+              </view>
+              <text class="t-cell f-1 text-center font-bold" :class="tier.deductible === 0 ? 'text-emerald' : 'text-slate-light'">
+                {{ tier.deductible === 0 ? '0 元 (免)' : '¥' + tier.deductible }}
+              </text>
+              <text class="t-cell f-1 text-center font-bold text-cyan">{{ Math.round(tier.reimbursementRatio * 100) }}%</text>
+              <text class="t-cell f-1 text-center font-bold text-amber" v-if="currentType === 'employee'">
+                {{ Math.round((tier.reimbursementRatio + (tier.retireeRatioBonus || 0)) * 100) }}%
+              </text>
+              <text class="t-cell f-2 text-dim" v-else>
+                {{ tier.reimbursementRatio > 0 ? (key === 'community' || key === 'tier1' ? '重点基层门诊保障' : '定点医院门诊报销') : '普通门诊统筹未覆盖' }}
+              </text>
+            </view>
+          </view>
+
+          <!-- 门诊经办备忘 -->
+          <view class="memo-notice mt-16">
+            <text class="notice-tag">门诊经办提醒</text>
+            <text class="notice-txt">{{ outpatientMemoText }}</text>
+          </view>
+        </view>
+
+        <!-- 住院待遇卡片 -->
+        <view class="card">
+          <view class="card-head">
+            <view class="head-left">
+              <text class="card-head-title">住院医疗统筹待遇</text>
+            </view>
+            <view class="badge-pill badge-indigo">
+              <text class="badge-txt">{{ inpatientCapBadgeText }}</text>
+            </view>
+          </view>
+
+          <!-- 住院各级医院起付线与报销比例对照表 -->
+          <view class="section-sub-title">
+            <text class="sub-dot">▪</text>
+            <text class="sub-txt">各等级医疗机构起付线与支付比例</text>
+          </view>
+          <view class="table-container">
+            <view class="t-row t-head">
+              <text class="t-cell f-2">医院等级</text>
+              <text class="t-cell f-1 text-center">起付门槛</text>
+              <text class="t-cell f-1 text-center">{{ currentType === 'employee' ? '在职比例' : '居民比例' }}</text>
+              <text class="t-cell f-1 text-center" v-if="currentType === 'employee'">退休比例</text>
+            </view>
+            <view class="t-row" v-for="(tier, key) in currentPkg.inpatient.tierBenefits" :key="key">
+              <view class="t-cell f-2 tier-cell">
+                <text class="tier-tag" :class="getTierTagClass(key)">{{ getTierTag(key) }}</text>
+                <text class="font-med text-white tier-title">{{ tier.tierName }}</text>
+              </view>
+              <text class="t-cell f-1 text-center font-bold text-white">¥{{ tier.deductible }}</text>
+              <text class="t-cell f-1 text-center font-bold text-cyan">{{ Math.round(tier.reimbursementRatio * 100) }}%</text>
+              <text class="t-cell f-1 text-center font-bold text-amber" v-if="currentType === 'employee'">
+                {{ Math.round((tier.reimbursementRatio + (tier.retireeRatioBonus || 0)) * 100) }}%
+              </text>
+            </view>
+          </view>
+
+          <!-- 多次住院递减规则 -->
+          <view class="memo-notice mt-16" v-if="currentPkg.inpatient.repeatedDeductibleRule">
+            <text class="notice-tag">多次住院起付线优待规则</text>
+            <text class="notice-txt">{{ currentPkg.inpatient.repeatedDeductibleRule }}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- 官方参考政策文件与权威溯源档案矩阵 -->
+      <view class="card mt-24">
+        <view class="card-head">
+          <view class="head-left">
+            <text class="card-head-title">依据的现行官方红头文件与法定溯源档案</text>
+          </view>
+          <view class="badge-pill badge-cyan">
+            <text class="badge-txt">共 {{ currentCity.sourceDocs.length }} 份规范性文件纳管</text>
+          </view>
+        </view>
+
+        <!-- 溯源公文档案卡片网格 -->
+        <view class="doc-grid">
+          <view class="doc-card" v-for="doc in currentCity.sourceDocs" :key="doc.docId">
+            <view class="doc-card-top">
+              <view class="doc-seal-pill">
+                <svg class="seal-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 21h18"></path>
+                  <path d="M5 21V7l7-4 7 4v14"></path>
+                  <path d="M9 10a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v11H9z"></path>
+                </svg>
+                <text class="doc-type-label">现行法定规范性文件</text>
+              </view>
+              <text class="doc-status-tag">官方现行有效</text>
+            </view>
+
+            <text class="doc-title">{{ doc.title }}</text>
+            <text class="doc-number">{{ doc.docNumber }}</text>
+
+            <view class="doc-meta-row">
+              <text class="meta-label">发文单位：</text>
+              <text class="meta-val">{{ doc.issuingDept.join('、') }}</text>
+            </view>
+
+            <view class="doc-meta-row" v-if="doc.publishDate">
+              <text class="meta-label">有效时期：</text>
+              <text class="meta-val">{{ doc.publishDate }} 发布（{{ doc.effectiveDate }} 施行）</text>
+            </view>
+
+            <view class="doc-quote-box">
+              <text class="quote-header">核心法定条款摘录：</text>
+              <text class="quote-content">“{{ doc.summaryQuote }}”</text>
+            </view>
+
+            <view class="doc-actions-row">
+              <view class="doc-btn btn-view" @click="openDocUrl(doc.officialUrl)">
+                <text class="doc-btn-txt">查看官方公文出处 ↗</text>
+              </view>
+              <view class="doc-btn btn-copy" @click="copyDocUrl(doc.officialUrl)">
+                <text class="doc-btn-txt">复制官网链接</text>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import AppHeader from '../../components/AppHeader.vue';
+import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
+
+// 下拉菜单控制
+const openDropdown = ref<string | null>(null);
+
+
+function navToTab(url: string) {
+  uni.switchTab({ url });
+}
+
+function closeAllDropdowns() { openDropdown.value = null; }
+
+function toggleDropdown(type: string) {
+  openDropdown.value = openDropdown.value === type ? null : type;
+}
+
+function selectProvince(idx: number) {
+  selectedProvinceIndex.value = idx;
+  selectedCityIndex.value = 0;
+  openDropdown.value = null;
+}
+
+function selectCity(idx: number) {
+  selectedCityIndex.value = idx;
+  openDropdown.value = null;
+}
+
+// 省市二级联动
+const selectedProvinceIndex = ref(0);
+const currentProvince = computed(() => provinceList[selectedProvinceIndex.value]);
+
+const cityOptions = computed(() => getCitiesByProvinceCode(currentProvince.value.code));
+const selectedCityIndex = ref(0);
+const currentCityOption = computed(() => {
+  const list = cityOptions.value;
+  if (!list || list.length === 0) {
+    return { cityCode: '610100', cityName: '西安市', provinceCode: '610000', hasData: true };
+  }
+  return list[selectedCityIndex.value] || list[0];
+});
+
+// 获取当前城市政策实体
+const currentCity = computed(() => {
+  const code = currentCityOption.value.hasData ? currentCityOption.value.cityCode : '610100';
+  return getCityData(code)!;
+});
+
+// 规范核验日期推导（告别 undefined）
+const cityLastUpdatedText = computed(() => {
+  if (currentCity.value?.lastUpdated) return currentCity.value.lastUpdated;
+  const docs = currentCity.value?.sourceDocs || [];
+  for (const d of docs) {
+    if (d.publishDate && d.publishDate.length >= 7) return d.publishDate;
+  }
+  return '2026-03-01';
+});
+
+const currentType = ref<'employee' | 'resident'>('employee');
+const currentPkg = computed(() => currentCity.value[currentType.value]);
+
+// 门诊起付线文案（精确区分【按年度累计起付】与【按就医诊次起付】及退休优待）
+const outpatientDeductibleDisplay = computed(() => {
+  const pkg = currentPkg.value.outpatient;
+  const isPerVisit = pkg.deductibleType === 'per_visit';
+
+  if (currentType.value === 'employee') {
+    if (isPerVisit) {
+      const commDed = pkg.tierBenefits.community?.deductible ?? 0;
+      const t2Ded = pkg.tierBenefits.tier2?.deductible ?? pkg.annualDeductible;
+      return {
+        label: '门诊起付标准 (按诊次起付)',
+        val: commDed === 0 ? `基层 0 元 / 医院每次 ¥${t2Ded}` : `每次 ¥${pkg.annualDeductible}`,
+        hint: '按每就医诊次执行起付线，基层通常免起付或低起付，每次达标后即时按比例报销'
+      };
+    }
+
+    if (pkg.annualDeductible === 0) {
+      return { 
+        label: '年度门诊起付线',
+        val: '0 元 (免起付门槛)', 
+        hint: '职工门诊免设起付门槛，门诊就诊直接按对应医院比例报销' 
+      };
+    }
+
+    if (pkg.annualDeductibleRetiree !== undefined && pkg.annualDeductibleRetiree !== pkg.annualDeductible) {
+      return {
+        label: '年度门诊起付线',
+        val: `在职 ¥${pkg.annualDeductible} / 退休 ¥${pkg.annualDeductibleRetiree}`,
+        hint: `自然年度内累计自付超起付门槛（退休优待起付线 ¥${pkg.annualDeductibleRetiree}）后按比例实时报销`
+      };
+    }
+
+    return {
+      label: '年度门诊起付线',
+      val: `¥${pkg.annualDeductible}`,
+      hint: '自然年度内门诊政策范围内费用累计自付满此起付线后按比例实时报销'
+    };
+  } else {
+    // 居民医保
+    if (pkg.annualDeductible === 0) {
+      return { 
+        label: '年度门诊起付线',
+        val: '0 元 (基层免起付)', 
+        hint: '在定点基层乡镇卫生院或社区卫生服务中心凭医保凭证即时结算' 
+      };
+    }
+    return {
+      label: isPerVisit ? '门诊起付标准 (按诊次)' : '年度门诊起付线',
+      val: `¥${pkg.annualDeductible}`,
+      hint: isPerVisit ? '每次就诊扣除起付线后按规定比例结算' : '自然年度内门诊政策范围内费用累计满此起付标准后按比例报销'
+    };
+  }
+});
+
+// 门诊封顶线文案（告别 9999999 等假数据，规范展示上不封顶与退休上浮额度）
+const outpatientCapDisplay = computed(() => {
+  const pkg = currentPkg.value.outpatient;
+  if (pkg.annualCap >= 9999999) {
+    return {
+      val: '不设封顶 (上不封顶)',
+      hint: currentType.value === 'employee' ? '普通门诊统筹不设年度最高封顶线，医保政策范围内费用按比例报销' : '门诊统筹不设封顶线'
+    };
+  }
+  if (currentType.value === 'employee') {
+    const retireeCap = pkg.annualCapRetiree || pkg.annualCap;
+    const hint = retireeCap !== pkg.annualCap 
+      ? `在职最高 ¥${pkg.annualCap}，退休人员上调优待限额 ¥${retireeCap}`
+      : '自然年度内普通门诊统筹基金最高支付限额';
+    return { val: `¥${pkg.annualCap}`, hint };
+  }
+  return { val: `¥${pkg.annualCap}`, hint: '自然年度内普通门诊统筹基金最高支付限额' };
+});
+
+// 住院封顶徽章文案（展示基本统筹与大病互助综合保障水平）
+const inpatientCapBadgeText = computed(() => {
+  const inPkg = currentPkg.value.inpatient;
+  if (inPkg.comprehensiveCap && inPkg.comprehensiveCap > inPkg.annualCap) {
+    return `基本封顶 ¥${inPkg.annualCap / 10000}万 · 大病综合保障 ¥${inPkg.comprehensiveCap / 10000}万`;
+  }
+  return `基本医保年封顶 ¥${inPkg.annualCap / 10000}万`;
+});
+
+// 门诊经办提醒文案
+const outpatientMemoText = computed(() => {
+  const pkg = currentPkg.value.outpatient;
+  if (currentType.value === 'employee') {
+    let text = '';
+    if (pkg.annualDeductible === 0) {
+      text += '职工门诊共济无起付线门槛，定点医疗机构挂号就医凭医保码直接扣减支付；';
+    } else {
+      const retTip = pkg.annualDeductibleRetiree ? `（退休优待 ¥${pkg.annualDeductibleRetiree}）` : '';
+      text += `职工门诊共济起付线 ¥${pkg.annualDeductible}${retTip}按自然年度累计；自付超过起付线后统筹基金自动扣减支付；`;
+    }
+    if (pkg.annualCap >= 9999999) {
+      text += '普通门诊统筹不设年度最高封顶线（上不封顶）。';
+    } else {
+      const retCapTip = (pkg.annualCapRetiree && pkg.annualCapRetiree !== pkg.annualCap) ? `，退休人员限额 ¥${pkg.annualCapRetiree}` : '';
+      text += `直至达到年度最高支付限额（在职限额 ¥${pkg.annualCap}${retCapTip}）。`;
+    }
+    return text;
+  } else {
+    if (pkg.annualDeductible === 0) {
+      return `居民门诊统筹重点保障基层就医，在定点乡镇卫生院或社区卫生服务中心免起付线即时结算（${currentCity.value.cityName}年度限额 ¥${pkg.annualCap}）。`;
+    } else {
+      return `城乡居民门诊统筹起付标准为 ¥${pkg.annualDeductible}，在定点医疗机构年度累计超起付线后按比例结算（${currentCity.value.cityName}年度限额 ¥${pkg.annualCap}）。`;
+    }
+  }
+});
+
+function getTierTag(key: string | number) {
+  switch (key) {
+    case 'community': return '基层';
+    case 'tier1': return '一级';
+    case 'tier2': return '二级';
+    case 'tier3': return '三级';
+    case 'tier3_top': return '三甲';
+    default: return '定点';
+  }
+}
+
+function getTierTagClass(key: string | number) {
+  switch (key) {
+    case 'community': return 'tag-emerald';
+    case 'tier1': return 'tag-blue';
+    case 'tier2': return 'tag-cyan';
+    case 'tier3': return 'tag-indigo';
+    case 'tier3_top': return 'tag-amber';
+    default: return 'tag-cyan';
+  }
+}
+
+function openDocUrl(url: string) {
+  if (typeof window !== 'undefined' && window.open) {
+    window.open(url, '_blank');
+  } else {
+    copyDocUrl(url);
+  }
+}
+
+function copyDocUrl(url: string) {
+  uni.setClipboardData({
+    data: url,
+    success: () => {
+      uni.showToast({ title: '官方链接已复制', icon: 'none' });
+    }
+  });
+}
+
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener('click', () => {
+      openDropdown.value = null;
+    });
+  }
+});
+</script>
+
+<style scoped>
+/* 页面主容器 */
+.page-wrapper {
+  min-height: 100vh;
+  background: #f8fafc;
+  color: #1e293b;
+  box-sizing: border-box;
+}
+
+.content-box {
+  width: 100%;
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 16px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* 页面顶部简明标题与省市切换工具条 (清新实用，去除吹嘘) */
+.page-intro-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  padding: 0 4px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.intro-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-with-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-feature-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.08);
+}
+
+.feature-svg {
+  width: 20px;
+  height: 20px;
+  stroke: #2563eb;
+}
+
+.page-title-stack {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tier-cell {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 6px;
+}
+
+.tier-tag {
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.tag-emerald {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.tag-blue {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
+.tag-cyan {
+  background: #f0fdfa;
+  color: #0d9488;
+  border: 1px solid #99f6e4;
+}
+
+.tag-indigo {
+  background: #eef2ff;
+  color: #4f46e5;
+  border: 1px solid #c7d2fe;
+}
+
+.tag-amber {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fde68a;
+}
+
+.doc-seal-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 3px 10px;
+  border-radius: 9999rpx;
+}
+
+.seal-svg {
+  width: 14px;
+  height: 14px;
+  stroke: #2563eb;
+  flex-shrink: 0;
+}
+
+.page-main-title {
+  font-size: 24px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: -0.4px;
+}
+
+.city-indicator-chip {
+  background: rgba(37, 99, 235, 0.06);
+  border: 1px solid rgba(37, 99, 235, 0.2);
+  padding: 2px 10px;
+  border-radius: 9999rpx;
+}
+
+.city-indicator-txt {
+  font-size: 12px;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.page-sub-title {
+  font-size: 13px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* 地区选择器行 */
+.toolbar-pickers-row {
+  display: flex;
+  gap: 12rpx;
+}
+
+.picker-anchor {
+  position: relative;
+}
+
+.cyber-dropdown-trigger {
+  height: 72rpx;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  padding: 0 20rpx;
+  border-radius: 12rpx;
+  display: flex;
+  align-items: center;
+  gap: 10rpx;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.cyber-dropdown-trigger:hover,
+.cyber-dropdown-trigger.open {
+  border-color: #2563eb;
+  background: #eff6ff;
+}
+
+.select-val {
+  font-size: 24rpx;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.select-arrow {
+  font-size: 20rpx;
+  color: #64748b;
+  transition: transform 0.2s;
+}
+
+.select-arrow.rotated {
+  transform: rotate(180deg);
+  color: #2563eb;
+}
+
+.cyber-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8rpx);
+  right: 0;
+  min-width: 220rpx;
+  max-height: 420rpx;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12rpx;
+  box-shadow: 0 16rpx 40rpx rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14rpx 18rpx;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+}
+
+.dropdown-item:hover { background: #f8fafc; }
+.dropdown-item.selected { background: #eff6ff; }
+.dropdown-item .item-name { font-size: 24rpx; color: #334155; }
+.dropdown-item.selected .item-name { color: #2563eb; font-weight: 700; }
+.dropdown-item .item-check { font-size: 22rpx; color: #2563eb; font-weight: 700; }
+
+/* 身份类型选择 */
+.tab-group-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+}
+
+.mb-20 { margin-bottom: 24rpx; }
+.mt-24 { margin-top: 28rpx; }
+.mt-16 { margin-top: 20rpx; }
+
+.tab-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s;
+}
+
+.tab-card.active {
+  background: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 0 0 1px #2563eb, 0 4px 12px rgba(37, 99, 235, 0.1);
+}
+
+.tab-card-title {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #475569;
+  display: block;
+}
+
+.tab-card.active .tab-card-title {
+  color: #2563eb;
+}
+
+.tab-card-desc {
+  font-size: 20rpx;
+  color: #64748b;
+  display: block;
+  margin-top: 4rpx;
+}
+
+.tab-card.active .tab-card-desc {
+  color: #475569;
+}
+
+/* 待遇双栏 */
+.benefits-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24rpx;
+}
+
+@media (min-width: 900px) {
+  .benefits-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 16rpx;
+  padding: 28rpx 30rpx;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8rpx 32rpx rgba(0, 0, 0, 0.04);
+  box-sizing: border-box;
+  overflow: hidden;
+  word-break: break-word;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 16rpx;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 20rpx;
+}
+
+.card-head-title {
+  font-size: 28rpx;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.badge-pill {
+  padding: 4rpx 14rpx;
+  border-radius: 9999rpx;
+}
+
+.badge-cyan { background: #eff6ff; border: 1px solid #bfdbfe; }
+.badge-cyan .badge-txt { color: #1d4ed8; }
+
+.badge-emerald { background: #ecfdf5; border: 1px solid #a7f3d0; }
+.badge-emerald .badge-txt { color: #047857; }
+
+.badge-indigo { background: #eef2ff; border: 1px solid #c7d2fe; }
+.badge-indigo .badge-txt { color: #4338ca; }
+
+.badge-txt { font-size: 18rpx; font-weight: 600; }
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14rpx;
+  margin-bottom: 20rpx;
+}
+
+.metric-cell {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12rpx;
+  padding: 16rpx;
+}
+
+.m-label { font-size: 20rpx; color: #64748b; display: block; }
+.m-val { font-size: 30rpx; font-weight: 800; display: block; margin: 4rpx 0; color: #0f172a; }
+.m-hint { font-size: 18rpx; color: #64748b; display: block; line-height: 1.4; }
+
+.section-sub-title {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  margin-bottom: 10rpx;
+}
+
+.sub-dot { color: #2563eb; font-size: 20rpx; }
+.sub-txt { font-size: 22rpx; font-weight: 700; color: #1e293b; }
+
+.table-container {
+  border: 1px solid #e2e8f0;
+  border-radius: 12rpx;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.t-row {
+  display: flex;
+  padding: 12rpx 16rpx;
+  align-items: center;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.t-row:last-child { border-bottom: none; }
+.t-head { background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+.t-head .t-cell { color: #64748b; font-weight: 700; font-size: 20rpx; }
+.t-cell { font-size: 22rpx; color: #1e293b; }
+
+.f-1 { flex: 1; }
+.f-2 { flex: 2; }
+.text-center { text-align: center; }
+.font-med { font-weight: 500; }
+.font-bold { font-weight: 700; }
+
+.text-white { color: #0f172a; }
+.text-cyan { color: #0284c7; }
+.text-amber { color: #d97706; }
+.text-emerald { color: #059669; }
+.text-dim { color: #64748b; font-size: 20rpx; }
+
+.memo-notice {
+  background: #eff6ff;
+  border-left: 3rpx solid #2563eb;
+  border-radius: 8rpx;
+  padding: 12rpx 16rpx;
+}
+
+.notice-tag { font-size: 18rpx; color: #1d4ed8; font-weight: 700; display: block; margin-bottom: 2rpx; }
+.notice-txt { font-size: 20rpx; color: #1e3a8a; line-height: 1.5; display: block; }
+
+.doc-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16rpx;
+  margin-top: 16rpx;
+}
+
+@media (min-width: 800px) {
+  .doc-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.doc-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12rpx;
+  padding: 20rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+}
+
+.doc-card:hover {
+  transform: translateY(-2px);
+  border-color: #93c5fd;
+  box-shadow: 0 8px 24px rgba(37, 99, 235, 0.08);
+}
+
+.doc-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10rpx;
+}
+
+.doc-type-label { font-size: 18rpx; color: #1d4ed8; font-weight: 600; }
+.doc-status-tag {
+  font-size: 18rpx;
+  color: #047857;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 2rpx 10rpx;
+  border-radius: 9999rpx;
+  font-weight: 600;
+}
+
+.doc-title { font-size: 24rpx; font-weight: 700; color: #0f172a; line-height: 1.4; display: block; }
+.doc-number { font-size: 18rpx; color: #64748b; display: block; margin-top: 4rpx; }
+.doc-meta-row { display: flex; font-size: 18rpx; margin-top: 10rpx; }
+.meta-label { color: #64748b; }
+.meta-val { color: #334155; }
+
+.doc-quote-box {
+  background: #f8fafc;
+  border-left: 3rpx solid #cbd5e1;
+  padding: 10rpx 12rpx;
+  border-radius: 8rpx;
+  margin-top: 12rpx;
+}
+
+.quote-header { font-size: 16rpx; color: #64748b; display: block; margin-bottom: 2rpx; }
+.quote-content { font-size: 18rpx; color: #334155; line-height: 1.5; display: block; }
+
+.doc-actions-row { display: flex; gap: 10rpx; margin-top: 16rpx; }
+.doc-btn { flex: 1; padding: 8rpx 0; text-align: center; border-radius: 8rpx; cursor: pointer; }
+.btn-view { background: #eff6ff; border: 1px solid #bfdbfe; }
+.btn-view:hover { background: #dbeafe; }
+.btn-view .doc-btn-txt { color: #1d4ed8; }
+.btn-copy { background: #f8fafc; border: 1px solid #e2e8f0; }
+.btn-copy:hover { background: #f1f5f9; }
+.btn-copy .doc-btn-txt { color: #475569; }
+.doc-btn-txt { font-size: 18rpx; font-weight: 600; }
+
+
+/* ==================== 优雅收敛微弹性动效 ==================== */
+.cyber-dropdown-trigger,
+.dropdown-item,
+.tab-card,
+.doc-btn,
+.badge-pill {
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, background-color 0.18s ease, border-color 0.18s ease !important;
+  will-change: transform;
+}
+
+.cyber-dropdown-trigger:hover,
+.tab-card:hover,
+.doc-btn:hover {
+  transform: translateY(-1rpx) scale(1.008);
+}
+
+.cyber-dropdown-trigger:active,
+.dropdown-item:active,
+.tab-card:active,
+.doc-btn:active,
+.badge-pill:active {
+  transform: translateY(1rpx) scale(0.98) !important;
+  transition-duration: 0.08s !important;
+}
+
+
+.desktop-omni-nav { display: none; }
+
+@media (min-width: 860px) {
+  .page {
+    padding: 18px 28px 40px;
+  }
+
+  .desktop-omni-nav {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.45);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 9999rpx;
+    padding: 4px;
+    gap: 4px;
+    backdrop-filter: blur(16px);
+  }
+
+  .nav-pill-item {
+    padding: 6px 18px;
+    border-radius: 9999rpx;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-pill-item:hover { background: rgba(255, 255, 255, 0.08); }
+  .nav-pill-item.active {
+    background: rgba(0, 240, 255, 0.16);
+    border: 1px solid rgba(0, 240, 255, 0.4);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+  }
+
+  .nav-pill-txt { font-size: 13px; color: #94a3b8; font-weight: 600; }
+  .nav-pill-item.active .nav-pill-txt { color: #00f0ff; }
+}
+
+
+@media (min-width: 860px) {
+  .page {
+    padding: clamp(12px, 1.8vh, 24px) clamp(16px, 2vw, 32px);
+  }
+}
+
+@media (min-width: 860px) and (max-height: 780px) {
+  .page {
+    padding: 10px 18px;
+  }
+  .card {
+    padding: 14px 18px;
+  }
+}
+
+/* -------------------- 移动端响应式断点 (max-width: 768px) -------------------- */
+@media (max-width: 768px) {
+  .page {
+    padding: 14px 12px 36px;
+  }
+
+  .hero-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .hero-left {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .hero-title {
+    font-size: 32rpx;
+  }
+
+  .title-row {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .toolbar-pickers-row {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .picker-anchor {
+    width: 100%;
+  }
+
+  .cyber-dropdown-trigger {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .cyber-dropdown-menu {
+    left: 0;
+    right: 0;
+    min-width: 100%;
+    width: 100%;
+  }
+
+  .card {
+    padding: 20rpx 18rpx;
+  }
+}
+
+/* -------------------- 手机端及超窄视口 (max-width: 520px) -------------------- */
+@media (max-width: 520px) {
+  .page {
+    padding: 10px 8px 32px;
+  }
+
+  .tab-group-2 {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .tab-card {
+    padding: 16rpx 18rpx;
+  }
+
+  .tab-card-title {
+    font-size: 24rpx;
+  }
+
+  .tab-card-desc {
+    font-size: 18rpx;
+  }
+
+  .hero-title {
+    font-size: 28rpx;
+  }
+
+  .hero-desc {
+    font-size: 18rpx;
+    line-height: 1.4;
+  }
+
+  .card-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .card-head-title {
+    font-size: 26rpx;
+  }
+
+  .badge-pill {
+    align-self: flex-start;
+  }
+
+  .metric-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .metric-cell {
+    padding: 14rpx;
+  }
+
+  .m-label {
+    font-size: 18rpx;
+  }
+
+  .m-val {
+    font-size: 26rpx;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .t-row {
+    padding: 10rpx 12rpx;
+  }
+
+  .t-cell {
+    font-size: 19rpx;
+  }
+
+  .t-head .t-cell {
+    font-size: 18rpx;
+  }
+
+  .doc-meta-row {
+    flex-direction: column;
+    gap: 4rpx;
+  }
+
+  .doc-actions-row {
+    flex-direction: column;
+    gap: 8rpx;
+  }
+}
+
+</style>

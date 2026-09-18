@@ -1,0 +1,40 @@
+name: 自动化质量门禁与全域精算回归 (CI Pipeline)
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  validate-and-test:
+    name: 全国 344 统筹区合规审计与精算测试
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 配置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 安装项目依赖
+        run: npm ci || npm install
+
+      - name: 执行全量数据规范审计
+        run: npm run audit:data
+
+      - name: 执行 344 统筹区多维智能体检
+        run: npm run audit:smart
+
+      - name: 执行全国 6,804 项高精度自动化精算断言
+        run: npm run test:calc
+
+      - name: 执行医保官网连接管道巡检
+        run: npm run update:pipeline
+
+      - name: 执行 Uni-app H5 生产构建验证
+        run: npm run build:h5

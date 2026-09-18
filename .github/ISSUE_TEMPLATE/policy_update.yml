@@ -1,0 +1,52 @@
+name: 政策更新或数据纠偏提报 (Policy Update / Correction)
+description: 提交特定统筹区的最新红头文件或参数调整建议
+title: "[政策更新/纠偏] <省份> - <统筹区/城市名>"
+labels: ["policy-update", "data-audit"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您为“全国医疗保险待遇平台”提供最新政策支持！
+        为确保全国 344 个统筹区数据的真实性与权威性，请尽可能提供当地医疗保障局或人民政府的官方发文凭证。
+  - type: input
+    id: region
+    attributes:
+      label: 统筹区名称
+      description: 请填写具体的省份与统筹区（例如：陕西省咸阳市、广东省珠海市）
+      placeholder: 例如：四川省绵阳市
+    validations:
+      required: true
+  - type: dropdown
+    id: insurance_type
+    attributes:
+      label: 涉及险种
+      options:
+        - 职工基本医疗保险（门诊共济 / 住院）
+        - 城乡居民基本医疗保险（门诊统筹 / 住院）
+        - 大病保险 / 大额医疗费用补助
+        - 异地就医直接结算政策
+        - 经办服务专线 (12393) / 办公地址
+    validations:
+      required: true
+  - type: textarea
+    id: document_info
+    attributes:
+      label: 官方发文依据 (强要求)
+      description: 请提供红头文件文号、发文单位、施行日期及官方网页链接。
+      placeholder: |
+        文件全称：关于印发《XX市基本医疗保险办法》的通知
+        官方文号：X医保发〔2025〕XX号 或 X政办发〔2025〕XX号
+        施行日期：2025-01-01
+        官方公开链接：https://ybj.xxxx.gov.cn/...
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: 具体待遇标准变更内容
+      description: 请详细描述起付线、报销比例或最高封顶限额的调整前后对比。
+      placeholder: |
+        调整前：三级医院住院起付线 1000 元，报销比例 65%
+        调整后：依据新文件第十二条，起付线调整为 800 元，报销比例提升至 70%
+    validations:
+      required: true

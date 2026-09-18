@@ -1,0 +1,62 @@
+{
+  "pages": [
+    {
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "报销算一算",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/policy/index",
+      "style": {
+        "navigationBarTitleText": "各地报销待遇",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/remote/index",
+      "style": {
+        "navigationBarTitleText": "异地就医指南",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/service/index",
+      "style": {
+        "navigationBarTitleText": "热线与反馈",
+        "enablePullDownRefresh": false
+      }
+    }
+  ],
+  "globalStyle": {
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "全国医保智能报销测算",
+    "navigationBarBackgroundColor": "#060911",
+    "backgroundColor": "#060911"
+  },
+  "tabBar": {
+    "color": "#64748b",
+    "selectedColor": "#00f0ff",
+    "backgroundColor": "#090e1a",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "报销测算"
+      },
+      {
+        "pagePath": "pages/policy/index",
+        "text": "政策待遇"
+      },
+      {
+        "pagePath": "pages/remote/index",
+        "text": "异地就医"
+      },
+      {
+        "pagePath": "pages/service/index",
+        "text": "服务热线"
+      }
+    ]
+  }
+}

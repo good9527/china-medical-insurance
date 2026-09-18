@@ -1,0 +1,35 @@
+name: 常态化智能巡检与随机抽查 (Weekly Patrol Cron)
+
+on:
+  schedule:
+    # 每周一 UTC 时间 00:00 (北京时间早上 08:00) 自动触发巡检
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+    # 允许在 GitHub Actions 页面随时手动一键触发巡检
+
+jobs:
+  health-patrol:
+    name: 全国医保政策智能巡检与 35 区随机体检
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 配置 Node.js 环境
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 安装项目依赖
+        run: npm ci || npm install
+
+      - name: 运行全国 344 统筹区全量智能规则体检
+        run: npm run audit:smart
+
+      - name: 运行随机 35 个统筹区深层精算与倒挂抽检 (Patrol)
+        run: npm run audit:patrol
+
+      - name: 巡检各统筹区医保局官网与数据源连通性
+        run: npm run monitor:policies

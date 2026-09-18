@@ -1,0 +1,131 @@
+import type { CityInsuranceData } from '../types';
+
+export const yangjiangCityData: CityInsuranceData = {
+  cityCode: '441700',
+  cityName: '阳江市',
+  provinceCode: '440000',
+  provinceName: '广东省',
+  hotline: '0662-12393',
+  officialPortalUrl: 'http://www.yangjiang.gov.cn/yjybj/',
+  lastUpdated: '2026-03-01',
+
+  sourceDocs: [
+    {
+      docId: 'yj-employee-outpatient-2022-30',
+      title: '阳江市医疗保障局关于印发阳江市职工基本医疗保险门诊共济保障机制实施细则的通知',
+      docNumber: '阳医保〔2022〕30号',
+      issuingDept: ['阳江市医疗保障局', '阳江市财政局'],
+      publishDate: '2022-11-26',
+      effectiveDate: '2022-12-01',
+      status: 'active',
+      officialUrl: 'http://www.yangjiang.gov.cn/yjybj/zwgk/zcfg/202211/t20221129_219084.shtml',
+      summaryQuote: '职工普通门诊不设起付线。选定基层医疗机构普通门诊报销比例为75%（退休人员80%），二级医疗机构报销60%（退休65%），三级医疗机构报销50%（退休55%）。年度统筹支付限额在职约为2200元，退休约为2600元。'
+    },
+    {
+      docId: 'yj-medical-insurance-inpatient-2024',
+      title: '阳江市医疗保障局关于调整基本医疗保险住院及门诊特定病种报销比例的通知',
+      docNumber: '阳医保发〔2024〕16号',
+      issuingDept: ['阳江市医疗保障局', '阳江市财政局'],
+      publishDate: '2024-09-20',
+      effectiveDate: '2024-10-01',
+      status: 'active',
+      officialUrl: 'http://www.yangjiang.gov.cn/yjybj/zwgk/zcfg/202409/t20240925_241908.shtml',
+      summaryQuote: '职工住院起付线：一级及以下200元、二级500元、三级800元；报销比例在职一级95%、二级88%、三级82%（退休人员对应为97%、91%、85%）。居民住院起付线同级，支付比例一级88%、二级80%、三级70%。基本医保年限额50万元，大病最高35万元。'
+    }
+  ],
+
+  employee: {
+    outpatient: {
+      sourceDocId: 'yj-employee-outpatient-2022-30',
+      annualDeductible: 0,
+      annualCap: 2200,
+      annualCapRetiree: 2600,
+      tierBenefits: {
+        community: { tierName: '基层及一级选定医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级选定医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级选定医疗机构', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+      },
+      note: '普通门诊免设起付线。选点就医基层报销75%（退休80%），二级报销60%（退休65%），三级报销50%（退休55%）。在职限额2200元，退休2600元。'
+    },
+    inpatient: {
+      sourceDocId: 'yj-medical-insurance-inpatient-2024',
+      annualCap: 500000,
+      tierBenefits: {
+        community: { tierName: '一级及基层医疗机构', deductible: 200, reimbursementRatio: 0.95, retireeRatioBonus: 0.02 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.95, retireeRatioBonus: 0.02 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.88, retireeRatioBonus: 0.03 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.82, retireeRatioBonus: 0.03 },
+        tier3_top: { tierName: '市属重点三甲医院', deductible: 800, reimbursementRatio: 0.82, retireeRatioBonus: 0.03 }
+      },
+      repeatedDeductibleRule: '同自然年度内多次住院按医疗机构级别扣除起付标准；跨院转诊扣除差额。'
+    },
+    catastrophic: {
+      sourceDocId: 'yj-medical-insurance-inpatient-2024',
+      name: '职工大病医疗保险',
+      deductible: 12000,
+      annualCap: 350000,
+      tiers: [
+        { minAmount: 12000, maxAmount: 50000, ratio: 0.65 },
+        { minAmount: 50000, maxAmount: 100000, ratio: 0.75 },
+        { minAmount: 100000, ratio: 0.85 }
+      ]
+    },
+    remoteMedical: {
+      sourceDocId: 'yj-medical-insurance-inpatient-2024',
+      filingChannels: ['粤医保微信小程序', '国家医保服务平台APP'],
+      longTermFiledRatio: 1.0,
+      transferFiledRatio: 0.90,
+      unfiledEmergencyRatio: 0.90,
+      unfiledNormalRatio: 0.70,
+      specialNotes: ['跨省异地就医规范转诊下调10%，未备案自行外出就医按70%结算。']
+    }
+  },
+
+  resident: {
+    outpatient: {
+      sourceDocId: 'yj-medical-insurance-inpatient-2024',
+      annualCap: 1200,
+      tierBenefits: {
+        community: { tierName: '基层定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
+        tier2: { tierName: '二级定点机构(选定)', deductible: 0, reimbursementRatio: 0.50 },
+        tier3: { tierName: '三级定点机构(选定)', deductible: 0, reimbursementRatio: 0.40 },
+        tier3_top: { tierName: '市级三甲综合医院', deductible: 0, reimbursementRatio: 0.40 }
+      },
+      note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
+    },
+    inpatient: {
+      sourceDocId: 'yj-medical-insurance-inpatient-2024',
+      annualCap: 300000,
+      tierBenefits: {
+        community: { tierName: '一级医疗机构/卫生院', deductible: 200, reimbursementRatio: 0.88 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.88 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.80 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.70 },
+        tier3_top: { tierName: '市级三甲综合医院', deductible: 800, reimbursementRatio: 0.70 }
+      }
+    },
+    catastrophic: {
+      sourceDocId: 'yj-medical-insurance-inpatient-2024',
+      name: '城乡居民大病保险',
+      deductible: 12000,
+      annualCap: 350000,
+      tiers: [
+        { minAmount: 12000, maxAmount: 50000, ratio: 0.60 },
+        { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
+        { minAmount: 100000, ratio: 0.80 }
+      ]
+    },
+    remoteMedical: {
+      sourceDocId: 'yj-medical-insurance-inpatient-2024',
+      filingChannels: ['粤医保微信小程序', '国家医保服务平台APP'],
+      longTermFiledRatio: 1.0,
+      transferFiledRatio: 0.85,
+      unfiledEmergencyRatio: 0.85,
+      unfiledNormalRatio: 0.60,
+      specialNotes: ['跨省异地就医规范转诊下调15%，未备案临时外出下调20%。']
+    }
+  }
+};
