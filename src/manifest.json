@@ -68,5 +68,11 @@
     "uniStatistics": {  
         "enable": false
     },
+    "h5" : {
+        "router" : {
+            "mode" : "hash",
+            "base" : "./"
+        }
+    },
     "vueVersion" : "3"
 }
