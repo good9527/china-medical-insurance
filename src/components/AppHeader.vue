@@ -45,6 +45,18 @@
         </view>
         <view 
           class="nav-tab" 
+          :class="{ active: currentTab === 'ranking' }" 
+          @click="navTo('/pages/ranking/index')"
+        >
+          <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+          <text class="nav-label">政策对比</text>
+        </view>
+        <view 
+          class="nav-tab" 
           :class="{ active: currentTab === 'remote' }" 
           @click="navTo('/pages/remote/index')"
         >
@@ -82,7 +94,7 @@
 import AppLogo from './AppLogo.vue';
 
 defineProps<{
-  currentTab: 'index' | 'policy' | 'remote' | 'service';
+  currentTab: 'index' | 'policy' | 'ranking' | 'remote' | 'service';
 }>();
 
 function navTo(url: string) {
