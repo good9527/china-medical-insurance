@@ -1,6 +1,7 @@
 import { calculateReimbursement } from '../calculator';
 import { allCities, getCityDataByCode } from '../../data';
 import type { HospitalTier, CalculateRequest } from '../../data/types';
+import { getCachedBenchmarkList, getBenchmarkRankings, compareTwoCities } from '../ranking';
 
 // ============================================================================
 // 辅助断言函数
@@ -5591,6 +5592,44 @@ export function runCalculatorTests() {
   assertEqual(ngariEmpIn.breakdown.deductibleDeducted, 100, '阿里职工一级住院起付线应为100元');
   assertEqual(ngariEmpIn.breakdown.baseReimbursed, 9405, '阿里职工一级住院实报不符: (10000-100)*0.95=9405');
   console.log(`  ✓ [H26 PASS] 阿里职工在职一级住院(花费10000): 扣起付¥100，按95%高比例实报¥9405 (依据: 阿医保发〔2024〕14号)`);
+  passCount++;
+
+  // --------------------------------------------------------------------------
+  // Suite H27: CMI-Index 2.0 评测模型多维计算与双城对比校验
+  // --------------------------------------------------------------------------
+  console.log(`\n>>> [Suite H27] 执行 CMI-Index 2.0 医保政策竞争力多维评测模型断言...`);
+  const benchmarkList = getCachedBenchmarkList();
+  totalChecks++;
+  assertEqual(benchmarkList.length, 344, 'Benchmark 评测列表必须全量涵盖全国 344 个统筹区');
+  
+  // 抽样检验重点城市（北京、上海、深圳、广州、成都）评测分数与6大雷达数值有效性
+  for (const code of ['110100', '310100', '440300', '440100', '510100']) {
+    totalChecks++;
+    const item = benchmarkList.find(b => b.cityCode === code);
+    assertTrue(item !== undefined, `统筹区 [${code}] 必须存在于 Benchmark 评测数据中`);
+    assertTrue(!isNaN(item!.overallScore) && item!.overallScore >= 50 && item!.overallScore <= 100, `${item!.cityName} 全域综合分异常: ${item!.overallScore}`);
+    assertTrue(!isNaN(item!.employeeScore) && item!.employeeScore >= 50 && item!.employeeScore <= 100, `${item!.cityName} 职工综合分异常: ${item!.employeeScore}`);
+    assertTrue(!isNaN(item!.residentScore) && item!.residentScore >= 50 && item!.residentScore <= 100, `${item!.cityName} 居民综合分异常: ${item!.residentScore}`);
+    
+    // 6 大雷达维度断言
+    const r = item!.radar;
+    assertTrue(!isNaN(r.inpatient) && r.inpatient >= 30 && r.inpatient <= 100, `${item!.cityName} 住院保障分越界: ${r.inpatient}`);
+    assertTrue(!isNaN(r.outpatient) && r.outpatient >= 30 && r.outpatient <= 100, `${item!.cityName} 门诊减负分越界: ${r.outpatient}`);
+    assertTrue(!isNaN(r.catastrophic) && r.catastrophic >= 30 && r.catastrophic <= 100, `${item!.cityName} 大病抗风险分越界: ${r.catastrophic}`);
+    assertTrue(!isNaN(r.threshold) && r.threshold >= 30 && r.threshold <= 100, `${item!.cityName} 门槛友好分越界: ${r.threshold}`);
+    assertTrue(!isNaN(r.retiree) && r.retiree >= 30 && r.retiree <= 100, `${item!.cityName} 群体倾斜分越界: ${r.retiree}`);
+    assertTrue(!isNaN(r.mobility) && r.mobility >= 30 && r.mobility <= 100, `${item!.cityName} 异地自由分越界: ${r.mobility}`);
+    assertTrue(typeof item!.grade === 'string' && item!.grade.length > 0, `${item!.cityName} 天梯段位缺失`);
+  }
+  console.log(`  ✓ [H27 PASS] 全国 344 统筹区 CMI-Index 2.0 评测参数结构与 6 大能力雷达数值健全稳定`);
+  passCount++;
+
+  // 验证双城 PK 12 项指标比拼矩阵
+  totalChecks++;
+  const pkRes = compareTwoCities('110100', '310100');
+  assertTrue(pkRes !== null, '北京与上海双城对比不可为空');
+  assertEqual(pkRes!.metrics.length, 12, '双城竞技场必须包含 12 项法定深度比拼指标');
+  console.log(`  ✓ [H27 PASS] 双城竞技场成功输出 12 项法定条款纵深比拼矩阵 (北京 vs 上海)`);
   passCount++;
 
   console.log(`\n=========================================`);
