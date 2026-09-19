@@ -158,8 +158,18 @@ export function extractCityBenchmarkMetrics(city: CityInsuranceData): BenchmarkC
   };
 }
 
+// 性能优化：单例预计算缓存，避免对全国 344 个统筹区深层对象进行任何重复提取
+let cachedBenchmarkList: BenchmarkCityMetrics[] | null = null;
+
+export function getCachedBenchmarkList(): BenchmarkCityMetrics[] {
+  if (!cachedBenchmarkList) {
+    cachedBenchmarkList = allCities.map(extractCityBenchmarkMetrics);
+  }
+  return cachedBenchmarkList;
+}
+
 /**
- * 获取支持多维度群体分类与多列重排的全国医保 Benchmark 排行榜
+ * 获取支持多维度群体分类与多列重排的全国医保 Benchmark 排行榜 (亚毫秒级纯内存操作)
  */
 export function getBenchmarkRankings(
   category: BenchmarkCategory = 'overall',
@@ -168,7 +178,7 @@ export function getBenchmarkRankings(
   provinceFilter?: string,
   searchQuery?: string
 ): BenchmarkCityMetrics[] {
-  let list = allCities.map(extractCityBenchmarkMetrics);
+  let list = [...getCachedBenchmarkList()];
 
   if (provinceFilter && provinceFilter !== 'all') {
     list = list.filter(c => c.provinceName === provinceFilter);

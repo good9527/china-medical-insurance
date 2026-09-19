@@ -323,7 +323,7 @@
               <tbody>
                 <tr 
                   class="b-tbody-tr" 
-                  v-for="item in rankings" 
+                  v-for="item in displayedRankings" 
                   :key="item.cityCode"
                   @click="goToCityPolicy(item.cityCode)"
                 >
@@ -398,6 +398,62 @@
                 </tr>
               </tbody>
             </table>
+          </view>
+
+          <!-- 性能飞跃：现代化高性能分页条 -->
+          <view class="table-pagination-bar" v-if="rankings.length > 0">
+            <view class="page-summary">
+              <text class="page-sum-txt">共 {{ rankings.length }} 个统筹区 · 当前第 {{ currentPage }} / {{ totalPages }} 页</text>
+            </view>
+
+            <view class="pagination-controls">
+              <!-- 每页条数切换胶囊 -->
+              <view class="page-size-selector">
+                <text class="page-size-label">每页显示：</text>
+                <view class="page-size-pills">
+                  <view 
+                    class="size-pill" 
+                    :class="{ active: pageSize === 25 }" 
+                    @click="setPageSize(25)"
+                  >
+                    25 条
+                  </view>
+                  <view 
+                    class="size-pill" 
+                    :class="{ active: pageSize === 50 }" 
+                    @click="setPageSize(50)"
+                  >
+                    50 条
+                  </view>
+                  <view 
+                    class="size-pill" 
+                    :class="{ active: pageSize === 999 }" 
+                    @click="setPageSize(999)"
+                  >
+                    全部展开
+                  </view>
+                </view>
+              </view>
+
+              <!-- 翻页按钮组 -->
+              <view class="page-buttons" v-if="totalPages > 1 && pageSize !== 999">
+                <button 
+                  class="page-nav-btn" 
+                  :disabled="currentPage <= 1"
+                  @click="goToPage(currentPage - 1)"
+                >
+                  上一页
+                </button>
+                <text class="current-page-num">{{ currentPage }}</text>
+                <button 
+                  class="page-nav-btn" 
+                  :disabled="currentPage >= totalPages"
+                  @click="goToPage(currentPage + 1)"
+                >
+                  下一页
+                </button>
+              </view>
+            </view>
           </view>
 
           <!-- 空态 -->
@@ -587,7 +643,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import AppHeader from '../../components/AppHeader.vue';
 import { 
   getBenchmarkRankings, 
@@ -611,6 +667,7 @@ function switchCategory(cat: BenchmarkCategory) {
   currentCategory.value = cat;
   sortColumn.value = 'composite';
   sortAsc.value = false;
+  currentPage.value = 1;
 }
 
 const currentCategoryTitle = computed(() => {
@@ -668,6 +725,7 @@ function toggleSort(col: SortColumn) {
     sortColumn.value = col;
     sortAsc.value = false;
   }
+  currentPage.value = 1;
 }
 
 const rankings = computed(() => {
@@ -678,6 +736,36 @@ const rankings = computed(() => {
     selectedProvince.value,
     searchQuery.value
   );
+});
+
+// 性能飞跃：高性能分页体系
+const pageSize = ref(25);
+const currentPage = ref(1);
+
+const totalPages = computed(() => {
+  if (pageSize.value >= 999) return 1;
+  return Math.ceil(rankings.value.length / pageSize.value) || 1;
+});
+
+const displayedRankings = computed(() => {
+  if (pageSize.value >= 999) return rankings.value;
+  const start = (currentPage.value - 1) * pageSize.value;
+  return rankings.value.slice(start, start + pageSize.value);
+});
+
+function goToPage(p: number) {
+  if (p >= 1 && p <= totalPages.value) {
+    currentPage.value = p;
+  }
+}
+
+function setPageSize(size: number) {
+  pageSize.value = size;
+  currentPage.value = 1;
+}
+
+watch([selectedProvince, searchQuery], () => {
+  currentPage.value = 1;
 });
 
 function formatCap(cap: number): string {
@@ -1781,6 +1869,98 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 
 .metric-exp { font-size: 11px; color: #94a3b8; line-height: 1.3; max-width: 320px; }
 
+/* 高性能分页条样式 */
+.table-pagination-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.page-summary {
+  font-size: 13px;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.page-size-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.page-size-label {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.page-size-pills {
+  display: flex;
+  gap: 4px;
+}
+
+.size-pill {
+  font-size: 12px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.size-pill:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.size-pill.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.page-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.page-nav-btn {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  color: #1e293b;
+  cursor: pointer;
+}
+
+.page-nav-btn[disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.current-page-num {
+  font-size: 13px;
+  font-weight: 800;
+  color: #2563eb;
+  padding: 0 4px;
+}
+
 /* 移动端适配 */
 @media (max-width: 860px) {
   .benchmark-header {
@@ -1810,6 +1990,14 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   }
   .left-val, .right-val {
     align-items: center;
+  }
+  .table-pagination-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+  .pagination-controls {
+    justify-content: space-between;
   }
 }
 </style>
