@@ -1,4 +1,4 @@
-name: 自动化质量门禁与全域精算回归 (CI Pipeline)
+name: 自动化质量门禁与全域测算回归 (CI Pipeline)
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   validate-and-test:
-    name: 全国 344 统筹区合规审计与精算测试
+    name: 全国 344 统筹区合规审计与测算测试
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +30,7 @@ jobs:
       - name: 执行 344 统筹区多维智能体检
         run: npm run audit:smart
 
-      - name: 执行全国 6,804 项高精度自动化精算断言
+      - name: 执行全国 6,804 项高精度自动化测算断言
         run: npm run test:calc
 
       - name: 执行医保官网连接管道巡检

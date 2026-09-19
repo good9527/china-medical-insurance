@@ -114,7 +114,7 @@ export function savePipelineReport(report: ReturnType<typeof runPolicyUpdatePipe
   md += `\n## 2. 长效更新机制维护规范 (Maintenance Protocol)\n\n`;
   md += `1. **每周/每月例行探测**：运行 \`npm run update:pipeline\`，管道将遍历全国 344 个统筹区医保局官网与政务索引；\n`;
   md += `2. **地方政策调整响应**：若某统筹区医保局发布最新红头文件（如调整普通门诊封顶线、多次住院起付线递减优待等），在对应城市 TS 文件中修改参数并追加 \`sourceDocs\`；\n`;
-  md += `3. **合规性验证保障**：执行 \`npm run check:all\`，自动校验起付阶梯、报销比例递减及 6800+ 自动化精算断言，确保 100% 严谨准确。\n`;
+  md += `3. **合规性验证保障**：执行 \`npm run check:all\`，自动校验起付阶梯、报销比例递减及 6800+ 自动化测算断言，确保 100% 严谨准确。\n`;
 
   fs.writeFileSync(outPath, md, 'utf-8');
   console.log(`✅ 管道报告已持久化保存至: ${outPath}`);

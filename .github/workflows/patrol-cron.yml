@@ -28,7 +28,7 @@ jobs:
       - name: 运行全国 344 统筹区全量智能规则体检
         run: npm run audit:smart
 
-      - name: 运行随机 35 个统筹区深层精算与倒挂抽检 (Patrol)
+      - name: 运行随机 35 个统筹区深度测算与倒挂抽检 (Patrol)
         run: npm run audit:patrol
 
       - name: 巡检各统筹区医保局官网与数据源连通性

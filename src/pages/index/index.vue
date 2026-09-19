@@ -24,7 +24,7 @@
               <view class="title-row">
                 <text class="page-main-title">医保报销测算</text>
                 <view class="city-indicator-chip">
-                  <text class="city-indicator-txt">{{ currentCityOption.cityName }} · 实时精算</text>
+                  <text class="city-indicator-txt">{{ currentCityOption.cityName }} · 报销估算</text>
                 </view>
               </view>
               <text class="page-sub-title">输入就医花费及类型，快速估算医保统筹报销额度与个人自付明细</text>
@@ -47,7 +47,7 @@
 
       <!-- 双栏 Bento 工作台 -->
       <view class="bento-grid">
-        <!-- 左栏：精算配置器 (Actuarial Configurator) -->
+        <!-- 左栏：测算配置器 -->
         <view class="bento-card config-card">
           <!-- 模块 1: 参保统筹区 -->
           <view class="config-group">
@@ -303,7 +303,7 @@
           </view>
         </view>
 
-        <!-- 右栏：数字化精算凭证 (Digital Settlement Receipt) -->
+        <!-- 右栏：报销测算明细凭证 -->
         <view class="bento-card receipt-card">
           <view class="receipt-inner" v-if="result">
             <!-- 凭证顶栏 -->
@@ -351,10 +351,10 @@
               </view>
             </view>
 
-            <!-- 费用精算结构收据明细 (结构严整的清单) -->
+            <!-- 费用测算结构收据明细 (结构严整的清单) -->
             <view class="receipt-breakdown-card">
               <view class="breakdown-head" @click="showDetail = !showDetail">
-                <text class="b-head-title">精算分项结算明细</text>
+                <text class="b-head-title">费用分项测算明细</text>
                 <text class="b-head-action">{{ showDetail ? '收起 ▴' : '展开 ▾' }}</text>
               </view>
               <view class="breakdown-table" v-if="showDetail">
@@ -417,7 +417,7 @@
               </svg>
             </view>
             <text class="empty-title">等待输入费用金额</text>
-            <text class="empty-desc">在左侧输入医疗花费并选择就医参数，右侧将自动调取 {{ currentCityOption.cityName }} 现行医保法定政策精算报销凭证</text>
+            <text class="empty-desc">在左侧输入医疗花费并选择就医参数，右侧将自动调取 {{ currentCityOption.cityName }} 现行医保政策测算报销明细</text>
           </view>
         </view>
       </view>
@@ -780,7 +780,7 @@ onMounted(() => {
   justify-content: space-between;
 }
 
-/* -------------------- 左栏：精算配置器组件 -------------------- */
+/* -------------------- 左栏：测算配置器组件 -------------------- */
 .config-group {
   display: flex;
   flex-direction: column;
@@ -1286,7 +1286,7 @@ onMounted(() => {
 .mt-16 { margin-top: 16px; }
 .mt-12 { margin-top: 12px; }
 
-/* -------------------- 右栏：数字化精算凭证组件 -------------------- */
+/* -------------------- 右栏：报销测算凭证组件 -------------------- */
 .receipt-card {
   border-color: #e2e8f0;
 }
@@ -1457,7 +1457,7 @@ onMounted(() => {
   background: #cbd5e1; 
 }
 
-/* 精算结构清单 (Apple 结账单风格) */
+/* 费用测算结构清单 */
 .receipt-breakdown-card {
   margin-top: 14px;
   background: #f8fafc;
