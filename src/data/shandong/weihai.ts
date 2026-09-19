@@ -85,6 +85,7 @@ export const weihaiCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'wh-medical-insurance-inpatient-2024',
+      annualDeductible: 0,
       annualCap: 450,
       tierBenefits: {
         community: { tierName: '基层社区卫生服务中心及卫生院', deductible: 0, reimbursementRatio: 0.60 },
@@ -99,11 +100,11 @@ export const weihaiCityData: CityInsuranceData = {
       sourceDocId: 'wh-medical-insurance-inpatient-2024',
       annualCap: 200000,
       tierBenefits: {
-        community: { tierName: '基层及一级医疗机构', deductible: 300, reimbursementRatio: 0.95 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.95 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.925 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.90 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 800, reimbursementRatio: 0.90 }
+        community: { tierName: '基层及一级医疗机构', deductible: 100, reimbursementRatio: 0.88 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.88 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.78 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 700, reimbursementRatio: 0.68 },
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 700, reimbursementRatio: 0.68 }
       },
       repeatedDeductibleRule: '参保人员自然年度内第一、二次住院设起付标准，第三次住院起免除起付线。'
     },

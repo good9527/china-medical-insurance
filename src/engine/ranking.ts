@@ -1,21 +1,34 @@
 import { allCities } from '../data';
 import type { CityInsuranceData } from '../data/types';
 
-export type RankingDimension = 
-  | 'composite'         // 综合保障指数
-  | 'resident_inpatient' // 居民住院保障
-  | 'employee_outpatient'// 职工门诊待遇
-  | 'annual_cap'        // 最高支付限额
-  | 'retiree_preference';// 退休倾斜优待
+export type SortColumn = 
+  | 'composite'           // 综合竞争力指数
+  | 'emp_inpatient'       // 职工三级住院比例
+  | 'res_inpatient'       // 居民三级住院比例
+  | 'emp_outpatient_cap'  // 职工门诊封顶线
+  | 'annual_cap'          // 年度最高支付限额
+  | 'retiree_bonus';      // 退休优待上浮
 
-export interface CityRankItem {
+export interface BenchmarkCityMetrics {
   rank: number;
   cityCode: string;
   cityName: string;
   provinceName: string;
-  score: number;
-  highlightValue: string;
-  secondaryText: string;
+  overallScore: number;
+  empInpatientRatio: number;      // 职工三级住院比例 (0~1)
+  resInpatientRatio: number;      // 居民三级住院比例 (0~1)
+  empOutpatientCap: number;       // 职工门诊年度限额 (元)
+  empOutpatientDed: number;       // 职工门诊起付线 (元)
+  annualMaxCap: number;           // 医保年度总支付限额 (元)
+  retireeBonusRatio: number;      // 退休上浮比例 (0~1)
+  // 5大能力雷达维度 (0 - 100 分)
+  radar: {
+    inpatient: number;     // 住院保障力
+    outpatient: number;    // 门诊减负度
+    catastrophic: number;  // 大病抗风险
+    threshold: number;     // 门槛友好度 (起付越低越高)
+    retiree: number;       // 退休关怀度
+  };
   rawCity: CityInsuranceData;
 }
 
@@ -25,63 +38,103 @@ export interface CityComparisonMetric {
   city1Val: string;
   city2Val: string;
   advantage: 'city1' | 'city2' | 'equal' | 'neutral';
+  diffText?: string;
   explanation?: string;
 }
 
 /**
- * 计算单个统筹区的综合医保保障力指数 (0 - 100 分)
+ * 经典热门对决预设 (类似 AI 评测中的 GPT-4o vs Claude 3.5 Sonnet)
  */
-export function calculateCityCompositeScore(city: CityInsuranceData): number {
-  let score = 50; // 基准分
+export const popularBattles = [
+  { id: 'bj-sh', name: '超一线对决', city1: '110000', city2: '310000', label: '北京 VS 上海' },
+  { id: 'gz-sz', name: '大湾区双雄', city1: '440100', city2: '440300', label: '广州 VS 深圳' },
+  { id: 'xa-cd', name: '西部中心城', city1: '610100', city2: '510100', label: '西安 VS 成都' },
+  { id: 'hz-nj', name: '长三角先锋', city1: '330100', city2: '320100', label: '杭州 VS 南京' },
+  { id: 'jn-qd', name: '齐鲁双子星', city1: '370100', city2: '370200', label: '济南 VS 青岛' }
+];
 
-  const resIn = city.resident.inpatient;
-  const resOut = city.resident.outpatient;
+/**
+ * 计算统筹区的 5 维能力分与加权综合得分 (类似 AI 模型 Benchmark)
+ */
+export function extractCityBenchmarkMetrics(city: CityInsuranceData): BenchmarkCityMetrics {
   const empIn = city.employee.inpatient;
   const empOut = city.employee.outpatient;
+  const resIn = city.resident.inpatient;
+  const resOut = city.resident.outpatient;
 
-  // 1. 居民三级定点住院报销比例 (0.50 ~ 0.90 -> 贡献 0 ~ 20 分)
-  const tier3Ratio = resIn.tierBenefits.tier3?.reimbursementRatio || 0.60;
-  score += (tier3Ratio - 0.50) * 50; 
+  // 1. 职工与居民三级住院比例
+  const empInRatio = empIn.tierBenefits.tier3?.reimbursementRatio || 0.85;
+  const resInRatio = resIn.tierBenefits.tier3?.reimbursementRatio || 0.65;
 
-  // 2. 居民二级定点住院报销比例 (0.65 ~ 0.90 -> 贡献 0 ~ 10 分)
-  const tier2Ratio = resIn.tierBenefits.tier2?.reimbursementRatio || 0.70;
-  score += (tier2Ratio - 0.65) * 40;
+  // 2. 门诊共济参数
+  const empCap = empOut.annualCap || 3000;
+  const empDed = empOut.annualDeductible ?? 200;
 
-  // 3. 基本医保住院封顶线 (10w ~ 50w+ -> 贡献 0 ~ 12 分)
-  const annualCap = resIn.annualCap || 150000;
-  score += Math.min(12, (annualCap / 500000) * 12);
+  // 3. 年度限额
+  const maxCap = resIn.comprehensiveCap || resIn.annualCap || 200000;
 
-  // 4. 职工门诊封顶线 (1000 ~ 9999999+ -> 贡献 0 ~ 10 分)
-  if (empOut.annualCap >= 9999999) {
-    score += 10;
-  } else {
-    score += Math.min(8, (empOut.annualCap / 6000) * 8);
-  }
+  // 4. 退休倾斜
+  const retBonus = empIn.tierBenefits.tier3?.retireeRatioBonus || 0.03;
 
-  // 5. 职工门诊起付门槛 (0 ~ 1000 -> 越低分越高，贡献 0 ~ 5 分)
-  const empOutDed = empOut.annualDeductible || 0;
-  if (empOutDed === 0) {
-    score += 5;
-  } else {
-    score += Math.max(0, 5 - (empOutDed / 200));
-  }
+  // 5. 五大雷达维度评分 (0 - 100 标准化，基于真实政策区间)
+  // 住院保障力 (按职工85%~95%与居民60%~75%综合折算)
+  const inpatientScore = Math.min(100, Math.round(((empInRatio * 0.6 + resInRatio * 0.4) - 0.50) / 0.45 * 100));
+  
+  // 门诊减负度 (门诊封顶线 1000~10000+)
+  const isCapUncapped = empCap >= 9999999;
+  const outpatientScore = isCapUncapped ? 98 : Math.min(95, Math.round((Math.min(empCap, 8000) / 8000) * 80 + 15));
 
-  // 6. 退休人员优待幅度 (+5% ~ +10% -> 贡献 0 ~ 5 分)
-  const retireeBonus = empIn.tierBenefits.tier3?.retireeRatioBonus || 0.05;
-  score += Math.min(5, retireeBonus * 50);
+  // 大病抗风险 (年度封顶线 10w~80w+)
+  const catastrophicScore = Math.min(99, Math.round(Math.min(maxCap, 800000) / 800000 * 85 + 15));
 
-  return Math.max(30, Math.min(99.5, Math.round(score * 10) / 10));
+  // 门槛友好度 (起付线 0~1000 元，起付越低分越高)
+  const thresholdScore = empDed === 0 ? 98 : Math.max(30, Math.round(95 - (empDed / 1000) * 55));
+
+  // 退休关爱度 (退休上浮比例 0%~10% 及退休门诊额度)
+  const retireeScore = Math.min(98, Math.round((retBonus / 0.08) * 60 + 35));
+
+  // 加权综合总分 (权重：住院35% + 门诊25% + 大病20% + 门槛10% + 退休10%)
+  const overall = Math.round((
+    inpatientScore * 0.35 +
+    outpatientScore * 0.25 +
+    catastrophicScore * 0.20 +
+    thresholdScore * 0.10 +
+    retireeScore * 0.10
+  ) * 10) / 10;
+
+  return {
+    rank: 0,
+    cityCode: city.cityCode,
+    cityName: city.cityName,
+    provinceName: city.provinceName,
+    overallScore: overall,
+    empInpatientRatio: empInRatio,
+    resInpatientRatio: resInRatio,
+    empOutpatientCap: empCap,
+    empOutpatientDed: empDed,
+    annualMaxCap: maxCap,
+    retireeBonusRatio: retBonus,
+    radar: {
+      inpatient: Math.max(30, Math.min(100, inpatientScore)),
+      outpatient: Math.max(30, Math.min(100, outpatientScore)),
+      catastrophic: Math.max(30, Math.min(100, catastrophicScore)),
+      threshold: Math.max(30, Math.min(100, thresholdScore)),
+      retiree: Math.max(30, Math.min(100, retireeScore)),
+    },
+    rawCity: city
+  };
 }
 
 /**
- * 获取指定维度的排行榜
+ * 获取支持多列排序的全国医保 Benchmark 排行榜
  */
-export function getCityRankings(
-  dimension: RankingDimension, 
-  provinceFilter?: string, 
+export function getBenchmarkRankings(
+  sortCol: SortColumn = 'composite',
+  sortAsc: boolean = false,
+  provinceFilter?: string,
   searchQuery?: string
-): CityRankItem[] {
-  let list = [...allCities];
+): BenchmarkCityMetrics[] {
+  let list = allCities.map(extractCityBenchmarkMetrics);
 
   if (provinceFilter && provinceFilter !== 'all') {
     list = list.filter(c => c.provinceName === provinceFilter);
@@ -92,74 +145,34 @@ export function getCityRankings(
     list = list.filter(c => c.cityName.toLowerCase().includes(q) || c.provinceName.toLowerCase().includes(q));
   }
 
-  const scoredList = list.map(city => {
-    const resIn = city.resident.inpatient;
-    const resOut = city.resident.outpatient;
-    const empIn = city.employee.inpatient;
-    const empOut = city.employee.outpatient;
-
-    let score = 0;
-    let highlightValue = '';
-    let secondaryText = '';
-
-    switch (dimension) {
-      case 'composite': {
-        score = calculateCityCompositeScore(city);
-        highlightValue = `${score} 分`;
-        secondaryText = `三级报销 ${Math.round((resIn.tierBenefits.tier3?.reimbursementRatio || 0.65) * 100)}% · 封顶 ¥${Math.round(resIn.annualCap / 10000)}万`;
+  list.sort((a, b) => {
+    let diff = 0;
+    switch (sortCol) {
+      case 'composite':
+        diff = b.overallScore - a.overallScore;
         break;
-      }
-      case 'resident_inpatient': {
-        const t3 = resIn.tierBenefits.tier3?.reimbursementRatio || 0.65;
-        const t2 = resIn.tierBenefits.tier2?.reimbursementRatio || 0.75;
-        score = Math.round((t3 * 0.6 + t2 * 0.4) * 1000) / 10;
-        highlightValue = `三级 ${Math.round(t3 * 100)}%`;
-        secondaryText = `二级 ${Math.round(t2 * 100)}% · 一级 ${Math.round((resIn.tierBenefits.tier1?.reimbursementRatio || 0.85) * 100)}%`;
+      case 'emp_inpatient':
+        diff = b.empInpatientRatio - a.empInpatientRatio;
         break;
-      }
-      case 'employee_outpatient': {
-        const isUncapped = empOut.annualCap >= 9999999;
-        score = isUncapped ? 100000 : empOut.annualCap;
-        highlightValue = isUncapped ? '上不封顶' : `¥${empOut.annualCap}/年`;
-        const dedText = empOut.annualDeductible === 0 ? '0元起付' : `起付 ¥${empOut.annualDeductible}`;
-        secondaryText = `${dedText} · 基层报销 ${Math.round((empOut.tierBenefits.community?.reimbursementRatio || 0.80) * 100)}%`;
+      case 'res_inpatient':
+        diff = b.resInpatientRatio - a.resInpatientRatio;
         break;
-      }
-      case 'annual_cap': {
-        const cap = resIn.comprehensiveCap || resIn.annualCap;
-        score = cap;
-        highlightValue = `¥${Math.round(cap / 10000)} 万元`;
-        secondaryText = `基本险限额 ¥${Math.round(resIn.annualCap / 10000)}万`;
+      case 'emp_outpatient_cap':
+        diff = b.empOutpatientCap - a.empOutpatientCap;
         break;
-      }
-      case 'retiree_preference': {
-        const bonus = empIn.tierBenefits.tier3?.retireeRatioBonus || 0.05;
-        const retireeCap = empOut.annualCapRetiree || empOut.annualCap;
-        score = Math.round(bonus * 100);
-        highlightValue = `比例上浮 +${score}%`;
-        const capTip = retireeCap > empOut.annualCap ? `门诊封顶 ¥${retireeCap}` : '门诊与在职同额';
-        secondaryText = `${capTip} · 三级实报 ${Math.round(((empIn.tierBenefits.tier3?.reimbursementRatio || 0.80) + bonus) * 100)}%`;
+      case 'annual_cap':
+        diff = b.annualMaxCap - a.annualMaxCap;
         break;
-      }
+      case 'retiree_bonus':
+        diff = b.retireeBonusRatio - a.retireeBonusRatio;
+        break;
+      default:
+        diff = b.overallScore - a.overallScore;
     }
-
-    return {
-      rank: 0,
-      cityCode: city.cityCode,
-      cityName: city.cityName,
-      provinceName: city.provinceName,
-      score,
-      highlightValue,
-      secondaryText,
-      rawCity: city
-    };
+    return sortAsc ? -diff : diff;
   });
 
-  // 按得分从高到低排序
-  scoredList.sort((a, b) => b.score - a.score);
-
-  // 赋排名序号
-  return scoredList.map((item, index) => ({
+  return list.map((item, index) => ({
     ...item,
     rank: index + 1
   }));
@@ -169,132 +182,182 @@ export function getCityRankings(
  * 双城横向 PK 对比逻辑 (Side-by-Side City Battle)
  */
 export function compareTwoCities(cityCode1: string, cityCode2: string): {
-  city1: CityInsuranceData;
-  city2: CityInsuranceData;
-  city1Composite: number;
-  city2Composite: number;
+  city1: BenchmarkCityMetrics;
+  city2: BenchmarkCityMetrics;
   metrics: CityComparisonMetric[];
   city1WinCount: number;
   city2WinCount: number;
+  equalCount: number;
 } | null {
-  const city1 = allCities.find(c => c.cityCode === cityCode1);
-  const city2 = allCities.find(c => c.cityCode === cityCode2);
+  const raw1 = allCities.find(c => c.cityCode === cityCode1);
+  const raw2 = allCities.find(c => c.cityCode === cityCode2);
 
-  if (!city1 || !city2) return null;
+  if (!raw1 || !raw2) return null;
 
-  const score1 = calculateCityCompositeScore(city1);
-  const score2 = calculateCityCompositeScore(city2);
+  const city1 = extractCityBenchmarkMetrics(raw1);
+  const city2 = extractCityBenchmarkMetrics(raw2);
 
   const metrics: CityComparisonMetric[] = [];
   let win1 = 0;
   let win2 = 0;
+  let equal = 0;
 
   // 1. 职工门诊年起付线 (越低越好)
-  const empDed1 = city1.employee.outpatient.annualDeductible;
-  const empDed2 = city2.employee.outpatient.annualDeductible;
+  const empDed1 = city1.empOutpatientDed;
+  const empDed2 = city2.empOutpatientDed;
   let advDed: 'city1' | 'city2' | 'equal' = 'equal';
-  if (empDed1 < empDed2) { advDed = 'city1'; win1++; }
-  else if (empDed2 < empDed1) { advDed = 'city2'; win2++; }
+  let diffDed = '';
+  if (empDed1 < empDed2) { 
+    advDed = 'city1'; win1++; 
+    diffDed = `${city1.cityName} 起付门槛低 ¥${empDed2 - empDed1}`;
+  } else if (empDed2 < empDed1) { 
+    advDed = 'city2'; win2++; 
+    diffDed = `${city2.cityName} 起付门槛低 ¥${empDed1 - empDed2}`;
+  } else {
+    equal++;
+    diffDed = '双方门槛一致';
+  }
   metrics.push({
     name: '职工门诊年起付线',
     category: '门诊待遇',
-    city1Val: empDed1 === 0 ? '0 元 (免门槛)' : `¥${empDed1}`,
-    city2Val: empDed2 === 0 ? '0 元 (免门槛)' : `¥${empDed2}`,
+    city1Val: empDed1 === 0 ? '0 元 (免起付)' : `¥${empDed1}`,
+    city2Val: empDed2 === 0 ? '0 元 (免起付)' : `¥${empDed2}`,
     advantage: advDed,
-    explanation: '门诊自付累计超过起付线后方可按比例报销，门槛越低参保人获益越早'
+    diffText: diffDed,
+    explanation: '自然年度内累计自付超过此起付线后即时按比例报销，门槛越低参保人获益越早。'
   });
 
   // 2. 职工门诊年度封顶线 (越高越好)
-  const empCap1 = city1.employee.outpatient.annualCap;
-  const empCap2 = city2.employee.outpatient.annualCap;
+  const empCap1 = city1.empOutpatientCap;
+  const empCap2 = city2.empOutpatientCap;
   let advCap: 'city1' | 'city2' | 'equal' = 'equal';
-  if (empCap1 > empCap2) { advCap = 'city1'; win1++; }
-  else if (empCap2 > empCap1) { advCap = 'city2'; win2++; }
+  let diffCap = '';
+  if (empCap1 > empCap2) { 
+    advCap = 'city1'; win1++; 
+    diffCap = empCap1 >= 9999999 ? `${city1.cityName} 无限额限制` : `${city1.cityName} 额度高 ¥${empCap1 - empCap2}`;
+  } else if (empCap2 > empCap1) { 
+    advCap = 'city2'; win2++; 
+    diffCap = empCap2 >= 9999999 ? `${city2.cityName} 无限额限制` : `${city2.cityName} 额度高 ¥${empCap2 - empCap1}`;
+  } else {
+    equal++;
+    diffCap = '双方封顶限额一致';
+  }
   metrics.push({
-    name: '职工门诊年度最高限额',
+    name: '职工门诊年度封顶线',
     category: '门诊待遇',
     city1Val: empCap1 >= 9999999 ? '上不封顶' : `¥${empCap1}`,
     city2Val: empCap2 >= 9999999 ? '上不封顶' : `¥${empCap2}`,
-    advantage: advCap
+    advantage: advCap,
+    diffText: diffCap,
+    explanation: '职工门诊统筹基金自然年度内最高报销额度，额度越高门诊抗压能力越强。'
   });
 
-  // 3. 居民二级医院住院报销比例 (越高越好)
-  const resTier2_1 = city1.resident.inpatient.tierBenefits.tier2?.reimbursementRatio || 0.70;
-  const resTier2_2 = city2.resident.inpatient.tierBenefits.tier2?.reimbursementRatio || 0.70;
-  let advT2: 'city1' | 'city2' | 'equal' = 'equal';
-  if (resTier2_1 > resTier2_2) { advT2 = 'city1'; win1++; }
-  else if (resTier2_2 > resTier2_1) { advT2 = 'city2'; win2++; }
-  metrics.push({
-    name: '居民二级医院住院报销',
-    category: '住院待遇',
-    city1Val: `${Math.round(resTier2_1 * 100)}%`,
-    city2Val: `${Math.round(resTier2_2 * 100)}%`,
-    advantage: advT2
-  });
-
-  // 4. 居民三级医院住院报销比例 (越高越好)
-  const resTier3_1 = city1.resident.inpatient.tierBenefits.tier3?.reimbursementRatio || 0.60;
-  const resTier3_2 = city2.resident.inpatient.tierBenefits.tier3?.reimbursementRatio || 0.60;
-  let advT3: 'city1' | 'city2' | 'equal' = 'equal';
-  if (resTier3_1 > resTier3_2) { advT3 = 'city1'; win1++; }
-  else if (resTier3_2 > resTier3_1) { advT3 = 'city2'; win2++; }
-  metrics.push({
-    name: '居民三级医院住院报销',
-    category: '住院待遇',
-    city1Val: `${Math.round(resTier3_1 * 100)}%`,
-    city2Val: `${Math.round(resTier3_2 * 100)}%`,
-    advantage: advT3
-  });
-
-  // 5. 职工在职三级医院住院报销比例
-  const empTier3_1 = city1.employee.inpatient.tierBenefits.tier3?.reimbursementRatio || 0.80;
-  const empTier3_2 = city2.employee.inpatient.tierBenefits.tier3?.reimbursementRatio || 0.80;
+  // 3. 职工三级住院报销比例 (越高越好)
+  const empT3_1 = city1.empInpatientRatio;
+  const empT3_2 = city2.empInpatientRatio;
   let advET3: 'city1' | 'city2' | 'equal' = 'equal';
-  if (empTier3_1 > empTier3_2) { advET3 = 'city1'; win1++; }
-  else if (empTier3_2 > empTier3_1) { advET3 = 'city2'; win2++; }
+  let diffET3 = '';
+  if (empT3_1 > empT3_2) { 
+    advET3 = 'city1'; win1++; 
+    diffET3 = `${city1.cityName} 比例高 +${Math.round((empT3_1 - empT3_2) * 100)}%`;
+  } else if (empT3_2 > empT3_1) { 
+    advET3 = 'city2'; win2++; 
+    diffET3 = `${city2.cityName} 比例高 +${Math.round((empT3_2 - empT3_1) * 100)}%`;
+  } else {
+    equal++;
+    diffET3 = '三级住院报销比例持平';
+  }
   metrics.push({
-    name: '职工三级医院住院报销',
+    name: '职工三级住院报销',
     category: '住院待遇',
-    city1Val: `${Math.round(empTier3_1 * 100)}%`,
-    city2Val: `${Math.round(empTier3_2 * 100)}%`,
-    advantage: advET3
+    city1Val: `${Math.round(empT3_1 * 100)}%`,
+    city2Val: `${Math.round(empT3_2 * 100)}%`,
+    advantage: advET3,
+    diffText: diffET3,
+    explanation: '三级公立医院住院在职职工政策范围内报销比例，直接决定大病住院统筹支付力度。'
   });
 
-  // 6. 基本医保统筹基金年度封顶限额 (越高越好)
-  const cap1 = city1.resident.inpatient.annualCap;
-  const cap2 = city2.resident.inpatient.annualCap;
-  let advInCap: 'city1' | 'city2' | 'equal' = 'equal';
-  if (cap1 > cap2) { advInCap = 'city1'; win1++; }
-  else if (cap2 > cap1) { advInCap = 'city2'; win2++; }
+  // 4. 居民三级住院报销比例 (越高越好)
+  const resT3_1 = city1.resInpatientRatio;
+  const resT3_2 = city2.resInpatientRatio;
+  let advRT3: 'city1' | 'city2' | 'equal' = 'equal';
+  let diffRT3 = '';
+  if (resT3_1 > resT3_2) { 
+    advRT3 = 'city1'; win1++; 
+    diffRT3 = `${city1.cityName} 比例高 +${Math.round((resT3_1 - resT3_2) * 100)}%`;
+  } else if (resT3_2 > resT3_1) { 
+    advRT3 = 'city2'; win2++; 
+    diffRT3 = `${city2.cityName} 比例高 +${Math.round((resT3_2 - resT3_1) * 100)}%`;
+  } else {
+    equal++;
+    diffRT3 = '居民报销比例持平';
+  }
   metrics.push({
-    name: '居民住院基本医保封顶线',
+    name: '居民三级住院报销',
+    category: '住院待遇',
+    city1Val: `${Math.round(resT3_1 * 100)}%`,
+    city2Val: `${Math.round(resT3_2 * 100)}%`,
+    advantage: advRT3,
+    diffText: diffRT3,
+    explanation: '城乡居民在三级医疗机构住院政策范围内统筹报销比例。'
+  });
+
+  // 5. 居民基本住院封顶限额 (越高越好)
+  const cap1 = city1.annualMaxCap;
+  const cap2 = city2.annualMaxCap;
+  let advInCap: 'city1' | 'city2' | 'equal' = 'equal';
+  let diffInCap = '';
+  if (cap1 > cap2) { 
+    advInCap = 'city1'; win1++; 
+    diffInCap = `${city1.cityName} 封顶高 ¥${Math.round((cap1 - cap2) / 10000)}万`;
+  } else if (cap2 > cap1) { 
+    advInCap = 'city2'; win2++; 
+    diffInCap = `${city2.cityName} 封顶高 ¥${Math.round((cap2 - cap1) / 10000)}万`;
+  } else {
+    equal++;
+    diffInCap = '封顶线额度持平';
+  }
+  metrics.push({
+    name: '住院年度封顶限额',
     category: '基金限额',
     city1Val: `¥${Math.round(cap1 / 10000)} 万元`,
     city2Val: `¥${Math.round(cap2 / 10000)} 万元`,
-    advantage: advInCap
+    advantage: advInCap,
+    diffText: diffInCap,
+    explanation: '参保人年度内享受统筹基金报销的最大极限值。'
   });
 
-  // 7. 退休人员比例优待上浮幅度
-  const retBonus1 = city1.employee.inpatient.tierBenefits.tier3?.retireeRatioBonus || 0.05;
-  const retBonus2 = city2.employee.inpatient.tierBenefits.tier3?.retireeRatioBonus || 0.05;
+  // 6. 退休人员比例优待上浮幅度
+  const retBonus1 = city1.retireeBonusRatio;
+  const retBonus2 = city2.retireeBonusRatio;
   let advBonus: 'city1' | 'city2' | 'equal' = 'equal';
-  if (retBonus1 > retBonus2) { advBonus = 'city1'; win1++; }
-  else if (retBonus2 > retBonus1) { advBonus = 'city2'; win2++; }
+  let diffBonus = '';
+  if (retBonus1 > retBonus2) { 
+    advBonus = 'city1'; win1++; 
+    diffBonus = `${city1.cityName} 退休倾斜多 +${Math.round((retBonus1 - retBonus2) * 100)}%`;
+  } else if (retBonus2 > retBonus1) { 
+    advBonus = 'city2'; win2++; 
+    diffBonus = `${city2.cityName} 退休倾斜多 +${Math.round((retBonus2 - retBonus1) * 100)}%`;
+  } else {
+    equal++;
+    diffBonus = '退休上浮比例一致';
+  }
   metrics.push({
-    name: '退休职工报销上浮倾斜',
+    name: '退休人员上浮倾斜',
     category: '退休倾斜',
     city1Val: `+${Math.round(retBonus1 * 100)}%`,
     city2Val: `+${Math.round(retBonus2 * 100)}%`,
-    advantage: advBonus
+    advantage: advBonus,
+    diffText: diffBonus,
+    explanation: '退休职工在住院与门诊报销时相比在职人员获得的额外比例优待。'
   });
 
   return {
     city1,
     city2,
-    city1Composite: score1,
-    city2Composite: score2,
     metrics,
     city1WinCount: win1,
-    city2WinCount: win2
+    city2WinCount: win2,
+    equalCount: equal
   };
 }

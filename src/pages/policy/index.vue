@@ -343,17 +343,18 @@ const outpatientDeductibleDisplay = computed(() => {
       hint: '自然年度内门诊政策范围内费用累计自付满此起付线后按比例实时报销'
     };
   } else {
-    // 居民医保
-    if (pkg.annualDeductible === 0) {
+    // 居民医保 (防御式判断，彻底杜绝 undefined)
+    const dedVal = pkg.annualDeductible;
+    if (dedVal === undefined || dedVal === null || dedVal === 0) {
       return { 
         label: '年度门诊起付线',
-        val: '0 元 (基层免起付)', 
+        val: '0 元 (免起付)', 
         hint: '在定点基层乡镇卫生院或社区卫生服务中心凭医保凭证即时结算' 
       };
     }
     return {
       label: isPerVisit ? '门诊起付标准 (按诊次)' : '年度门诊起付线',
-      val: `¥${pkg.annualDeductible}`,
+      val: `¥${dedVal}`,
       hint: isPerVisit ? '每次就诊扣除起付线后按规定比例结算' : '自然年度内门诊政策范围内费用累计满此起付标准后按比例报销'
     };
   }
