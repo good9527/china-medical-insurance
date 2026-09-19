@@ -100,11 +100,11 @@ export const zhongshanCityData: CityInsuranceData = {
       sourceDocId: 'zs-medical-insurance-inpatient-2023',
       annualCap: 350000,
       tierBenefits: {
-        community: { tierName: '一级医疗机构/卫生院', deductible: 400, reimbursementRatio: 0.92 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.92 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.90 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.80 },
-        tier3_top: { tierName: '市级三甲综合医院', deductible: 800, reimbursementRatio: 0.80 }
+        community: { tierName: '一级医疗机构/卫生院', deductible: 400, reimbursementRatio: 0.90 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.90 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.85 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.75 },
+        tier3_top: { tierName: '市级三甲综合医院', deductible: 800, reimbursementRatio: 0.75 }
       }
     },
     catastrophic: {

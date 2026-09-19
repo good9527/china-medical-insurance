@@ -66,6 +66,16 @@ export const allCities: CityInsuranceData[] = [
   ...xizangCities
 ];
 
+// 统一数据安全规整 (彻底杜绝 undefined)
+for (const city of allCities) {
+  if (city.resident?.outpatient && city.resident.outpatient.annualDeductible === undefined) {
+    city.resident.outpatient.annualDeductible = 0;
+  }
+  if (city.employee?.outpatient && city.employee.outpatient.annualDeductible === undefined) {
+    city.employee.outpatient.annualDeductible = 0;
+  }
+}
+
 // 根据统筹区编码检索医保数据
 export function getCityDataByCode(cityCode: string): CityInsuranceData | undefined {
   return allCities.find(c => c.cityCode === cityCode);

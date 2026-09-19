@@ -12,11 +12,11 @@
               <text class="chip-txt">全国医保政策竞争力天梯榜 · Policy Benchmark 2026</text>
             </view>
             <view class="meta-tag">
-              <text class="meta-txt">344 统筹区全样本评测</text>
+              <text class="meta-txt">344 统筹区全样本量化评测</text>
             </view>
           </view>
           <text class="benchmark-title">全国各统筹区医保保障力排行与政策对决</text>
-          <text class="benchmark-sub">基于各地人民政府与医疗保障局现行法定规范性文件，从住院报销、门诊共济、大病封顶及退休优待多维度量化评测</text>
+          <text class="benchmark-sub">分设全域整体综合、城镇职工医保、城乡居民医保三大权威榜单，支持任意维度表头即时重排与自选双城同台竞技</text>
         </view>
 
         <!-- 模式切换：天梯榜单 vs 双城竞技场 -->
@@ -31,7 +31,7 @@
               <line x1="12" y1="20" x2="12" y2="4"></line>
               <line x1="6" y1="20" x2="6" y2="14"></line>
             </svg>
-            <text class="pill-label">全域天梯总榜</text>
+            <text class="pill-label">天梯榜单</text>
           </view>
           <view 
             class="switch-pill" 
@@ -50,11 +50,50 @@
       </view>
 
       <!-- ============================================================ -->
-      <!-- 视图 1：全域天梯总榜 (Full Benchmark Table)                   -->
+      <!-- 视图 1：天梯榜单 (Leaderboard)                                -->
       <!-- ============================================================ -->
       <view class="view-body" v-if="viewMode === 'leaderboard'">
         
-        <!-- 评测体系说明卡片 (可收起展开，展示 Benchmark 权重) -->
+        <!-- 群体分类大胶囊切换栏 (整体综合 / 职工医保 / 居民医保) -->
+        <view class="category-segmented-bar">
+          <view 
+            class="seg-item" 
+            :class="{ active: currentCategory === 'overall' }"
+            @click="switchCategory('overall')"
+          >
+            <span class="seg-icon">🌐</span>
+            <view class="seg-texts">
+              <text class="seg-title">全域整体综合榜</text>
+              <text class="seg-desc">兼顾职工与居民全域实力</text>
+            </view>
+          </view>
+
+          <view 
+            class="seg-item" 
+            :class="{ active: currentCategory === 'employee' }"
+            @click="switchCategory('employee')"
+          >
+            <span class="seg-icon">💼</span>
+            <view class="seg-texts">
+              <text class="seg-title">城镇职工医保榜</text>
+              <text class="seg-desc">门诊共济 · 住院保障 · 退休倾斜</text>
+            </view>
+          </view>
+
+          <view 
+            class="seg-item" 
+            :class="{ active: currentCategory === 'resident' }"
+            @click="switchCategory('resident')"
+          >
+            <span class="seg-icon">🏡</span>
+            <view class="seg-texts">
+              <text class="seg-title">城乡居民医保榜</text>
+              <text class="seg-desc">基层统筹 · 二三级住院 · 大病上限</text>
+            </view>
+          </view>
+        </view>
+
+        <!-- 评测体系说明卡片 (展示对应人群权重) -->
         <view class="methodology-card">
           <view class="method-head" @click="showMethodology = !showMethodology">
             <view class="method-left">
@@ -63,35 +102,30 @@
                 <line x1="12" y1="16" x2="12" y2="12"></line>
                 <line x1="12" y1="8" x2="12.01" y2="8"></line>
               </svg>
-              <text class="method-title">综合竞争力指数评测模型（加权体系）：</text>
-              <text class="method-weights">住院保障 35% · 门诊减负 25% · 大病抗风险 20% · 门槛友好 10% · 退休关怀 10%</text>
+              <text class="method-title">{{ currentCategoryTitle }}评测模型说明：</text>
+              <text class="method-weights">{{ currentCategoryWeightsSummary }}</text>
             </view>
             <view class="method-toggle">
-              <text class="toggle-txt">{{ showMethodology ? '收起模型说明 ▴' : '查看评测公式 ▾' }}</text>
+              <text class="toggle-txt">{{ showMethodology ? '收起说明 ▴' : '查看维度权重 ▾' }}</text>
             </view>
           </view>
           <view class="method-body" v-if="showMethodology">
-            <view class="weight-grid">
-              <view class="w-item">
-                <text class="w-name">🏥 住院保障 (35%)</text>
-                <text class="w-desc">三级定点医院职工与居民住院统筹报销比例加权</text>
-              </view>
-              <view class="w-item">
-                <text class="w-name">💊 门诊减负 (25%)</text>
-                <text class="w-desc">职工门诊共济年度最高封顶线及基层门诊政策</text>
-              </view>
-              <view class="w-item">
-                <text class="w-name">🛡️ 大病抗风险 (20%)</text>
-                <text class="w-desc">年度医疗费用报销封顶限额极限防御能力</text>
-              </view>
-              <view class="w-item">
-                <text class="w-name">🚪 门槛友好度 (10%)</text>
-                <text class="w-desc">职工门诊起付门槛（0元免起付得分最高）</text>
-              </view>
-              <view class="w-item">
-                <text class="w-name">👴 退休关怀 (10%)</text>
-                <text class="w-desc">退休人员住院及门诊统筹比例上浮倾斜优待</text>
-              </view>
+            <view class="weight-grid" v-if="currentCategory === 'overall'">
+              <view class="w-item"><text class="w-name">💼 职工权益综合 (50%)</text><text class="w-desc">职工门诊共济封顶、住院在职报销与退休人员倾斜优待</text></view>
+              <view class="w-item"><text class="w-name">🏡 居民托底保障 (50%)</text><text class="w-desc">居民二三级公立医院住院报销比例、基层门诊与大病额度</text></view>
+            </view>
+            <view class="weight-grid" v-else-if="currentCategory === 'employee'">
+              <view class="w-item"><text class="w-name">🏥 在职三级住院 (30%)</text><text class="w-desc">三级定点公立医院在职职工政策范围内统筹报销比例</text></view>
+              <view class="w-item"><text class="w-name">💊 门诊共济限额 (25%)</text><text class="w-desc">普通门诊统筹基金年度最高支付限额及上不封顶政策</text></view>
+              <view class="w-item"><text class="w-name">🚪 门诊起付门槛 (15%)</text><text class="w-desc">门诊年度起付线，0 元免起付门槛统筹区获最高分</text></view>
+              <view class="w-item"><text class="w-name">👴 退休倾斜优待 (15%)</text><text class="w-desc">退休职工住院报销比例相比在职人员额外上浮幅度</text></view>
+              <view class="w-item"><text class="w-name">🏨 二级定点住院 (15%)</text><text class="w-desc">二级公立医院在职职工住院报销比例</text></view>
+            </view>
+            <view class="weight-grid" v-else>
+              <view class="w-item"><text class="w-name">🏥 三级医院住院 (35%)</text><text class="w-desc">三级重点医院居民政策范围内报销比例（55%~90%）</text></view>
+              <view class="w-item"><text class="w-name">🏨 二级医院住院 (25%)</text><text class="w-desc">二级定点医院居民住院报销比例（65%~92%）</text></view>
+              <view class="w-item"><text class="w-name">💊 基层门诊统筹 (20%)</text><text class="w-desc">乡镇卫生院及社区卫生服务站门诊报销限额与比例</text></view>
+              <view class="w-item"><text class="w-name">🛡️ 年度抗风险限额 (20%)</text><text class="w-desc">基本医保与大病互助年度最高统筹支付限额</text></view>
             </view>
           </view>
         </view>
@@ -143,13 +177,13 @@
             <input 
               class="search-input" 
               v-model="searchQuery" 
-              placeholder="搜索统筹区或省份（如：西安 / 成都 / 山东）" 
+              placeholder="搜索统筹区或省份（如：西安 / 成都 / 威海）" 
             />
             <text class="search-clear" v-if="searchQuery" @click="searchQuery = ''">✕</text>
           </view>
         </view>
 
-        <!-- 前三甲领奖台高光卡片 (仅当全国综合排序且无搜索时展示) -->
+        <!-- 前三甲领奖台高光卡片 (动态匹配当前人群榜单) -->
         <view class="podium-row" v-if="!searchQuery && selectedProvince === 'all' && sortColumn === 'composite' && !sortAsc && rankings.length >= 3">
           <!-- 银牌 -->
           <view class="podium-card rank-2" @click="goToCityPolicy(rankings[1].cityCode)">
@@ -157,12 +191,12 @@
             <text class="podium-city">{{ rankings[1].cityName }}</text>
             <text class="podium-prov">{{ rankings[1].provinceName }}</text>
             <view class="podium-score-group">
-              <text class="score-num">{{ rankings[1].overallScore }}</text>
+              <text class="score-num">{{ getCategoryScore(rankings[1]) }}</text>
               <text class="score-unit">综合分</text>
             </view>
             <view class="podium-feats">
-              <text class="feat-tag">职工住院 {{ Math.round(rankings[1].empInpatientRatio * 100) }}%</text>
-              <text class="feat-tag">门诊封顶 {{ formatCap(rankings[1].empOutpatientCap) }}</text>
+              <text class="feat-tag">{{ getPodiumFeat1(rankings[1]) }}</text>
+              <text class="feat-tag">{{ getPodiumFeat2(rankings[1]) }}</text>
             </view>
             <view class="podium-btn" @click.stop="quickBattle(rankings[1].cityCode)">
               <text class="btn-txt">拉入 PK ⚔️</text>
@@ -175,12 +209,12 @@
             <text class="podium-city">{{ rankings[0].cityName }}</text>
             <text class="podium-prov">{{ rankings[0].provinceName }}</text>
             <view class="podium-score-group">
-              <text class="score-num gold-num">{{ rankings[0].overallScore }}</text>
+              <text class="score-num gold-num">{{ getCategoryScore(rankings[0]) }}</text>
               <text class="score-unit">综合分</text>
             </view>
             <view class="podium-feats">
-              <text class="feat-tag">职工住院 {{ Math.round(rankings[0].empInpatientRatio * 100) }}%</text>
-              <text class="feat-tag">门诊封顶 {{ formatCap(rankings[0].empOutpatientCap) }}</text>
+              <text class="feat-tag">{{ getPodiumFeat1(rankings[0]) }}</text>
+              <text class="feat-tag">{{ getPodiumFeat2(rankings[0]) }}</text>
             </view>
             <view class="podium-btn gold-btn" @click.stop="quickBattle(rankings[0].cityCode)">
               <text class="btn-txt">拉入 PK ⚔️</text>
@@ -193,12 +227,12 @@
             <text class="podium-city">{{ rankings[2].cityName }}</text>
             <text class="podium-prov">{{ rankings[2].provinceName }}</text>
             <view class="podium-score-group">
-              <text class="score-num">{{ rankings[2].overallScore }}</text>
+              <text class="score-num">{{ getCategoryScore(rankings[2]) }}</text>
               <text class="score-unit">综合分</text>
             </view>
             <view class="podium-feats">
-              <text class="feat-tag">职工住院 {{ Math.round(rankings[2].empInpatientRatio * 100) }}%</text>
-              <text class="feat-tag">门诊封顶 {{ formatCap(rankings[2].empOutpatientCap) }}</text>
+              <text class="feat-tag">{{ getPodiumFeat1(rankings[2]) }}</text>
+              <text class="feat-tag">{{ getPodiumFeat2(rankings[2]) }}</text>
             </view>
             <view class="podium-btn" @click.stop="quickBattle(rankings[2].cityCode)">
               <text class="btn-txt">拉入 PK ⚔️</text>
@@ -206,73 +240,86 @@
           </view>
         </view>
 
-        <!-- 核心：多列可排序 Benchmark 数据大宽表 (媲美 LMSYS / OpenCompass) -->
+        <!-- 核心：多列可排序 Benchmark 数据大宽表 -->
         <view class="benchmark-table-card">
           <view class="table-scroll-wrapper">
             <table class="benchmark-table">
               <thead>
-                <tr class="b-thead-tr">
+                <!-- 表头：根据当前群体分类动态呈现最关切的核心指标列 -->
+                <tr class="b-thead-tr" v-if="currentCategory === 'overall'">
                   <th class="col-rank"># 排名</th>
                   <th class="col-city">统筹区</th>
-                  
-                  <!-- 可点击排序的列表头 -->
-                  <th class="col-sortable col-score" @click="toggleSort('composite')">
+                  <th class="col-sortable col-score" @click="toggleSort('overall_score')">
                     <view class="th-sort-inner">
-                      <text>综合指数</text>
-                      <text class="sort-arrow" :class="{ active: sortColumn === 'composite' }">
-                        {{ sortColumn === 'composite' ? (sortAsc ? '▲' : '▼') : '↕' }}
+                      <text>全域综合分</text>
+                      <text class="sort-arrow" :class="{ active: sortColumn === 'overall_score' || sortColumn === 'composite' }">
+                        {{ sortColumn === 'overall_score' || sortColumn === 'composite' ? (sortAsc ? '▲' : '▼') : '↕' }}
                       </text>
                     </view>
                   </th>
-
+                  <th class="col-sortable" @click="toggleSort('employee_score')">
+                    <view class="th-sort-inner"><text>职工综合分</text><text class="sort-arrow" :class="{ active: sortColumn === 'employee_score' }">{{ sortColumn === 'employee_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('resident_score')">
+                    <view class="th-sort-inner"><text>居民综合分</text><text class="sort-arrow" :class="{ active: sortColumn === 'resident_score' }">{{ sortColumn === 'resident_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
                   <th class="col-sortable" @click="toggleSort('emp_inpatient')">
-                    <view class="th-sort-inner">
-                      <text>职工三级住院</text>
-                      <text class="sort-arrow" :class="{ active: sortColumn === 'emp_inpatient' }">
-                        {{ sortColumn === 'emp_inpatient' ? (sortAsc ? '▲' : '▼') : '↕' }}
-                      </text>
-                    </view>
+                    <view class="th-sort-inner"><text>职工三级住院</text><text class="sort-arrow" :class="{ active: sortColumn === 'emp_inpatient' }">{{ sortColumn === 'emp_inpatient' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
-
                   <th class="col-sortable" @click="toggleSort('res_inpatient')">
-                    <view class="th-sort-inner">
-                      <text>居民三级住院</text>
-                      <text class="sort-arrow" :class="{ active: sortColumn === 'res_inpatient' }">
-                        {{ sortColumn === 'res_inpatient' ? (sortAsc ? '▲' : '▼') : '↕' }}
-                      </text>
-                    </view>
+                    <view class="th-sort-inner"><text>居民三级住院</text><text class="sort-arrow" :class="{ active: sortColumn === 'res_inpatient' }">{{ sortColumn === 'res_inpatient' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
-
                   <th class="col-sortable" @click="toggleSort('emp_outpatient_cap')">
-                    <view class="th-sort-inner">
-                      <text>职工门诊共济限额</text>
-                      <text class="sort-arrow" :class="{ active: sortColumn === 'emp_outpatient_cap' }">
-                        {{ sortColumn === 'emp_outpatient_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}
-                      </text>
-                    </view>
+                    <view class="th-sort-inner"><text>职工门诊限额</text><text class="sort-arrow" :class="{ active: sortColumn === 'emp_outpatient_cap' }">{{ sortColumn === 'emp_outpatient_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
-
                   <th class="col-sortable" @click="toggleSort('annual_cap')">
-                    <view class="th-sort-inner">
-                      <text>住院年度封顶</text>
-                      <text class="sort-arrow" :class="{ active: sortColumn === 'annual_cap' }">
-                        {{ sortColumn === 'annual_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}
-                      </text>
-                    </view>
+                    <view class="th-sort-inner"><text>年度封顶限额</text><text class="sort-arrow" :class="{ active: sortColumn === 'annual_cap' }">{{ sortColumn === 'annual_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
+                  <th class="col-action text-right">操作</th>
+                </tr>
 
+                <!-- 表头：城镇职工医保专属列 -->
+                <tr class="b-thead-tr" v-else-if="currentCategory === 'employee'">
+                  <th class="col-rank"># 排名</th>
+                  <th class="col-city">统筹区</th>
+                  <th class="col-sortable col-score" @click="toggleSort('employee_score')">
+                    <view class="th-sort-inner"><text>职工综合分</text><text class="sort-arrow" :class="{ active: sortColumn === 'employee_score' || sortColumn === 'composite' }">{{ sortColumn === 'employee_score' || sortColumn === 'composite' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('emp_inpatient')">
+                    <view class="th-sort-inner"><text>在职三级住院</text><text class="sort-arrow" :class="{ active: sortColumn === 'emp_inpatient' }">{{ sortColumn === 'emp_inpatient' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th>二级住院比例</th>
+                  <th class="col-sortable" @click="toggleSort('emp_outpatient_cap')">
+                    <view class="th-sort-inner"><text>门诊共济封顶</text><text class="sort-arrow" :class="{ active: sortColumn === 'emp_outpatient_cap' }">{{ sortColumn === 'emp_outpatient_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th>门诊起付门槛</th>
                   <th class="col-sortable" @click="toggleSort('retiree_bonus')">
-                    <view class="th-sort-inner">
-                      <text>退休优待上浮</text>
-                      <text class="sort-arrow" :class="{ active: sortColumn === 'retiree_bonus' }">
-                        {{ sortColumn === 'retiree_bonus' ? (sortAsc ? '▲' : '▼') : '↕' }}
-                      </text>
-                    </view>
+                    <view class="th-sort-inner"><text>退休上浮优待</text><text class="sort-arrow" :class="{ active: sortColumn === 'retiree_bonus' }">{{ sortColumn === 'retiree_bonus' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
+                  <th class="col-action text-right">操作</th>
+                </tr>
 
+                <!-- 表头：城乡居民医保专属列 -->
+                <tr class="b-thead-tr" v-else>
+                  <th class="col-rank"># 排名</th>
+                  <th class="col-city">统筹区</th>
+                  <th class="col-sortable col-score" @click="toggleSort('resident_score')">
+                    <view class="th-sort-inner"><text>居民综合分</text><text class="sort-arrow" :class="{ active: sortColumn === 'resident_score' || sortColumn === 'composite' }">{{ sortColumn === 'resident_score' || sortColumn === 'composite' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('res_inpatient')">
+                    <view class="th-sort-inner"><text>居民三级住院</text><text class="sort-arrow" :class="{ active: sortColumn === 'res_inpatient' }">{{ sortColumn === 'res_inpatient' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th>居民二级住院</th>
+                  <th class="col-sortable" @click="toggleSort('res_outpatient_cap')">
+                    <view class="th-sort-inner"><text>基层门诊限额</text><text class="sort-arrow" :class="{ active: sortColumn === 'res_outpatient_cap' }">{{ sortColumn === 'res_outpatient_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('annual_cap')">
+                    <view class="th-sort-inner"><text>住院年度封顶</text><text class="sort-arrow" :class="{ active: sortColumn === 'annual_cap' }">{{ sortColumn === 'annual_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
                   <th class="col-action text-right">操作</th>
                 </tr>
               </thead>
+
               <tbody>
                 <tr 
                   class="b-tbody-tr" 
@@ -295,48 +342,50 @@
                     </view>
                   </td>
 
-                  <!-- 综合得分 (带渐变进度条与数据胶囊) -->
-                  <td class="col-score">
-                    <view class="score-cell-group">
-                      <text class="score-display font-bold">{{ item.overallScore }}</text>
-                      <view class="score-bar-bg">
-                        <view class="score-bar-fill" :style="{ width: item.overallScore + '%' }"></view>
+                  <!-- 全域整体模式数据行 -->
+                  <template v-if="currentCategory === 'overall'">
+                    <td class="col-score">
+                      <view class="score-cell-group">
+                        <text class="score-display font-bold">{{ item.overallScore }}</text>
+                        <view class="score-bar-bg"><view class="score-bar-fill" :style="{ width: item.overallScore + '%' }"></view></view>
                       </view>
-                    </view>
-                  </td>
+                    </td>
+                    <td><text class="plain-data-txt font-bold text-blue">{{ item.employeeScore }}</text></td>
+                    <td><text class="plain-data-txt font-bold text-emerald">{{ item.residentScore }}</text></td>
+                    <td><view class="data-pill pill-blue"><text class="data-txt">{{ Math.round(item.empInpatientRatio * 100) }}%</text></view></td>
+                    <td><view class="data-pill pill-emerald"><text class="data-txt">{{ Math.round(item.resInpatientRatio * 100) }}%</text></view></td>
+                    <td><text class="plain-data-txt" :class="{ 'text-emerald font-bold': item.empOutpatientCap >= 9999999 }">{{ formatCap(item.empOutpatientCap) }}</text></td>
+                    <td><text class="plain-data-txt font-bold">¥{{ Math.round(item.annualMaxCap / 10000) }}万</text></td>
+                  </template>
 
-                  <!-- 职工三级住院比例 -->
-                  <td>
-                    <view class="data-pill pill-blue">
-                      <text class="data-txt">{{ Math.round(item.empInpatientRatio * 100) }}%</text>
-                    </view>
-                  </td>
+                  <!-- 城镇职工医保模式数据行 -->
+                  <template v-else-if="currentCategory === 'employee'">
+                    <td class="col-score">
+                      <view class="score-cell-group">
+                        <text class="score-display font-bold text-blue">{{ item.employeeScore }}</text>
+                        <view class="score-bar-bg"><view class="score-bar-fill fill-blue" :style="{ width: item.employeeScore + '%' }"></view></view>
+                      </view>
+                    </td>
+                    <td><view class="data-pill pill-blue"><text class="data-txt">{{ Math.round(item.empInpatientRatio * 100) }}%</text></view></td>
+                    <td><text class="plain-data-txt">{{ Math.round(item.empInpatientTier2Ratio * 100) }}%</text></td>
+                    <td><text class="plain-data-txt" :class="{ 'text-emerald font-bold': item.empOutpatientCap >= 9999999 }">{{ formatCap(item.empOutpatientCap) }}</text></td>
+                    <td><text class="plain-data-txt">{{ item.empOutpatientDed === 0 ? '0元(免起付)' : '¥' + item.empOutpatientDed }}</text></td>
+                    <td><view class="data-pill pill-amber"><text class="data-txt">+{{ Math.round(item.retireeBonusRatio * 100) }}%</text></view></td>
+                  </template>
 
-                  <!-- 居民三级住院比例 -->
-                  <td>
-                    <view class="data-pill pill-emerald">
-                      <text class="data-txt">{{ Math.round(item.resInpatientRatio * 100) }}%</text>
-                    </view>
-                  </td>
-
-                  <!-- 职工门诊共济限额 -->
-                  <td>
-                    <text class="plain-data-txt" :class="{ 'text-emerald font-bold': item.empOutpatientCap >= 9999999 }">
-                      {{ formatCap(item.empOutpatientCap) }}
-                    </text>
-                  </td>
-
-                  <!-- 住院年度封顶 -->
-                  <td>
-                    <text class="plain-data-txt font-bold">¥{{ Math.round(item.annualMaxCap / 10000) }}万</text>
-                  </td>
-
-                  <!-- 退休优待上浮 -->
-                  <td>
-                    <view class="data-pill pill-amber">
-                      <text class="data-txt">+{{ Math.round(item.retireeBonusRatio * 100) }}%</text>
-                    </view>
-                  </td>
+                  <!-- 城乡居民医保模式数据行 -->
+                  <template v-else>
+                    <td class="col-score">
+                      <view class="score-cell-group">
+                        <text class="score-display font-bold text-emerald">{{ item.residentScore }}</text>
+                        <view class="score-bar-bg"><view class="score-bar-fill fill-emerald" :style="{ width: item.residentScore + '%' }"></view></view>
+                      </view>
+                    </td>
+                    <td><view class="data-pill pill-emerald"><text class="data-txt">{{ Math.round(item.resInpatientRatio * 100) }}%</text></view></td>
+                    <td><text class="plain-data-txt">{{ Math.round(item.resInpatientTier2Ratio * 100) }}%</text></td>
+                    <td><text class="plain-data-txt">¥{{ item.resOutpatientCap }}/年</text></td>
+                    <td><text class="plain-data-txt font-bold">¥{{ Math.round(item.annualMaxCap / 10000) }}万</text></td>
+                  </template>
 
                   <!-- 操作列：加入竞技场 PK -->
                   <td class="col-action text-right" @click.stop>
@@ -384,7 +433,6 @@
           <view class="combatant-box left-box">
             <view class="box-tag blue-tag">蓝方统筹区</view>
             
-            <!-- 城市选择下拉 -->
             <view class="picker-anchor mt-8">
               <view class="city-selector-trigger" @click.stop="toggleDropdown('battle1')">
                 <text class="sel-city-name">{{ battleResult.city1.cityName }}</text>
@@ -406,8 +454,9 @@
             </view>
 
             <view class="combatant-score">
-              <text class="score-label">综合得分：</text>
+              <text class="score-label">全域综合：</text>
               <text class="score-val text-blue">{{ battleResult.city1.overallScore }}</text>
+              <text class="score-sub-caps">(职工{{ battleResult.city1.employeeScore }} / 居民{{ battleResult.city1.residentScore }})</text>
             </view>
           </view>
 
@@ -422,7 +471,6 @@
             </view>
             <text class="equal-sub" v-if="battleResult.equalCount > 0">（{{ battleResult.equalCount }} 项打平）</text>
 
-            <!-- 胜负比重能量条 -->
             <view class="win-meter-bar">
               <view class="meter-blue" :style="{ width: blueWinPercent + '%' }"></view>
               <view class="meter-orange" :style="{ width: orangeWinPercent + '%' }"></view>
@@ -433,7 +481,6 @@
           <view class="combatant-box right-box">
             <view class="box-tag orange-tag">橙方统筹区</view>
             
-            <!-- 城市选择下拉 -->
             <view class="picker-anchor mt-8">
               <view class="city-selector-trigger" @click.stop="toggleDropdown('battle2')">
                 <text class="sel-city-name">{{ battleResult.city2.cityName }}</text>
@@ -455,8 +502,9 @@
             </view>
 
             <view class="combatant-score">
-              <text class="score-label">综合得分：</text>
+              <text class="score-label">全域综合：</text>
               <text class="score-val text-orange">{{ battleResult.city2.overallScore }}</text>
+              <text class="score-sub-caps">(职工{{ battleResult.city2.employeeScore }} / 居民{{ battleResult.city2.residentScore }})</text>
             </view>
           </view>
         </view>
@@ -539,12 +587,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import AppHeader from '../../components/AppHeader.vue';
 import { 
   getBenchmarkRankings, 
   compareTwoCities, 
   popularBattles,
+  type BenchmarkCategory,
   type SortColumn,
   type BenchmarkCityMetrics
 } from '../../engine/ranking';
@@ -554,6 +603,31 @@ import { allCities } from '../../data';
 // 视图模式：'leaderboard' | 'battle'
 const viewMode = ref<'leaderboard' | 'battle'>('leaderboard');
 const showMethodology = ref(false);
+
+// 三大人群分类：'overall' | 'employee' | 'resident'
+const currentCategory = ref<BenchmarkCategory>('overall');
+
+function switchCategory(cat: BenchmarkCategory) {
+  currentCategory.value = cat;
+  sortColumn.value = 'composite';
+  sortAsc.value = false;
+}
+
+const currentCategoryTitle = computed(() => {
+  if (currentCategory.value === 'employee') return '城镇职工医保';
+  if (currentCategory.value === 'resident') return '城乡居民医保';
+  return '全域整体综合';
+});
+
+const currentCategoryWeightsSummary = computed(() => {
+  if (currentCategory.value === 'employee') {
+    return '在职三级住院 30% · 门诊共济 25% · 退休倾斜 15% · 门诊起付 15% · 二级住院 15%';
+  }
+  if (currentCategory.value === 'resident') {
+    return '三级医院住院 35% · 二级医院住院 25% · 基层门诊 20% · 大病年限额 20%';
+  }
+  return '职工权益综合 50% · 居民托底保障 50%（统筹兼顾全人群全域实力）';
+});
 
 // 下拉菜单控制
 const openDropdown = ref<string | null>(null);
@@ -573,15 +647,19 @@ const searchQuery = ref('');
 const provinceOptions = computed(() => provinceList.map(p => p.name));
 
 const sortColumnLabels: Record<SortColumn, string> = {
-  composite: '综合竞争力指数',
+  composite: '综合分',
+  overall_score: '全域综合分',
+  employee_score: '职工综合分',
+  resident_score: '居民综合分',
   emp_inpatient: '职工三级住院比例',
   res_inpatient: '居民三级住院比例',
   emp_outpatient_cap: '职工门诊共济限额',
+  res_outpatient_cap: '居民门诊年度限额',
   annual_cap: '住院年度封顶限额',
   retiree_bonus: '退休优待上浮幅度'
 };
 
-const currentSortLabel = computed(() => sortColumnLabels[sortColumn.value]);
+const currentSortLabel = computed(() => sortColumnLabels[sortColumn.value] || '综合分');
 
 function toggleSort(col: SortColumn) {
   if (sortColumn.value === col) {
@@ -594,6 +672,7 @@ function toggleSort(col: SortColumn) {
 
 const rankings = computed(() => {
   return getBenchmarkRankings(
+    currentCategory.value,
     sortColumn.value,
     sortAsc.value,
     selectedProvince.value,
@@ -611,6 +690,24 @@ function getRankClass(rank: number): string {
   if (rank === 2) return 'rank-silver';
   if (rank === 3) return 'rank-bronze';
   return 'rank-normal';
+}
+
+function getCategoryScore(item: BenchmarkCityMetrics): number {
+  if (currentCategory.value === 'employee') return item.employeeScore;
+  if (currentCategory.value === 'resident') return item.residentScore;
+  return item.overallScore;
+}
+
+function getPodiumFeat1(item: BenchmarkCityMetrics): string {
+  if (currentCategory.value === 'employee') return `在职三级 ${Math.round(item.empInpatientRatio * 100)}%`;
+  if (currentCategory.value === 'resident') return `居民三级 ${Math.round(item.resInpatientRatio * 100)}%`;
+  return `职工住院 ${Math.round(item.empInpatientRatio * 100)}%`;
+}
+
+function getPodiumFeat2(item: BenchmarkCityMetrics): string {
+  if (currentCategory.value === 'employee') return `门诊封顶 ${formatCap(item.empOutpatientCap)}`;
+  if (currentCategory.value === 'resident') return `年封顶 ¥${Math.round(item.annualMaxCap / 10000)}万`;
+  return `居民住院 ${Math.round(item.resInpatientRatio * 100)}%`;
 }
 
 function goToCityPolicy(cityCode: string) {
@@ -690,7 +787,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   justify-content: space-between;
   align-items: flex-start;
   gap: 20px;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .badge-row {
@@ -786,6 +883,63 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 
 .pill-label {
   font-size: 13px;
+}
+
+/* 群体分类大胶囊栏 (全域综合 / 职工医保 / 居民医保) */
+.category-segmented-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  background: #e2e8f0;
+  padding: 6px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+}
+
+.seg-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  background: transparent;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.seg-item:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+.seg-item.active {
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.seg-icon {
+  font-size: 24px;
+}
+
+.seg-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.seg-title {
+  font-size: 15px;
+  font-weight: 800;
+  color: #334155;
+}
+
+.seg-item.active .seg-title {
+  color: #2563eb;
+}
+
+.seg-desc {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
 }
 
 /* 评测模型方法卡片 */
@@ -1253,6 +1407,14 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   border-radius: 3px;
 }
 
+.score-bar-fill.fill-blue {
+  background: linear-gradient(90deg, #2563eb, #60a5fa);
+}
+
+.score-bar-fill.fill-emerald {
+  background: linear-gradient(90deg, #059669, #34d399);
+}
+
 .data-pill {
   display: inline-flex;
   padding: 2px 8px;
@@ -1272,6 +1434,9 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   font-size: 13px;
   color: #1e293b;
 }
+
+.text-blue { color: #2563eb; }
+.text-emerald { color: #059669; }
 
 .mini-pk-btn {
   display: inline-flex;
@@ -1392,12 +1557,12 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   display: flex;
   align-items: baseline;
   gap: 4px;
+  flex-wrap: wrap;
 }
 
 .score-label { font-size: 12px; color: #64748b; }
 .score-val { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; }
-.text-blue { color: #2563eb; }
-.text-orange { color: #ea580c; }
+.score-sub-caps { font-size: 11px; color: #64748b; margin-left: 2px; }
 
 .arena-center-vs {
   display: flex;
@@ -1614,6 +1779,9 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 @media (max-width: 860px) {
   .benchmark-header {
     flex-direction: column;
+  }
+  .category-segmented-bar {
+    grid-template-columns: 1fr;
   }
   .podium-row {
     grid-template-columns: 1fr;
