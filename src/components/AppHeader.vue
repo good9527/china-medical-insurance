@@ -67,11 +67,11 @@
         </view>
       </view>
 
-      <!-- 右侧：等宽对称区 (与左侧240px完全对称，确保中间Tab栏绝对恒定居中) -->
+      <!-- 右侧：等宽对称区 (确保中间Tab栏居中) -->
       <view class="header-extra">
         <view class="status-pill">
           <view class="status-dot"></view>
-          <text class="status-txt">国家法定政策核验</text>
+          <text class="status-txt">344 统筹区政策在线</text>
         </view>
       </view>
     </view>

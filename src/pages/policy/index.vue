@@ -4,7 +4,7 @@
     <AppHeader currentTab="policy" />
 
     <view class="content-box">
-      <!-- 页面简明标题与操作栏 (清新实用，增加专属公文徽标与层次) -->
+      <!-- 页面简明标题与操作栏 -->
       <view class="page-intro-bar">
         <view class="intro-left">
           <view class="title-with-badge">
@@ -19,12 +19,11 @@
             </view>
             <view class="page-title-stack">
               <view class="title-row">
-                <text class="page-main-title">{{ currentCity.cityName }} 医保报销待遇</text>
+                <text class="page-main-title">{{ currentCity.cityName }} · 医保报销待遇</text>
                 <view class="city-indicator-chip">
-                  <text class="city-indicator-txt">现行有效 · 核验于 {{ cityLastUpdatedText }}</text>
+                  <text class="city-indicator-txt">现行有效标准</text>
                 </view>
               </view>
-              <text class="page-sub-title">普通门诊与住院起付线、各级医疗机构统筹报销比例及年度最高限额</text>
             </view>
           </view>
         </view>
@@ -73,23 +72,21 @@
         </view>
       </view>
 
-      <!-- 身份类型切换 (城镇职工医保 vs 城乡居民医保) -->
-      <view class="tab-group-2 mb-20">
+      <!-- 身份类型切换 (精致胶囊切换，去除冗余描述) -->
+      <view class="identity-switch-bar mb-20">
         <view 
-          class="tab-card" 
+          class="switch-pill-btn" 
           :class="{ active: currentType === 'employee' }"
           @click="currentType = 'employee'"
         >
-          <text class="tab-card-title">城镇职工基本医疗保险</text>
-          <text class="tab-card-desc">在职企事业单位职工 / 灵活就业参保人 / 退休职工</text>
+          <text class="pill-title">城镇职工医保</text>
         </view>
         <view 
-          class="tab-card" 
+          class="switch-pill-btn" 
           :class="{ active: currentType === 'resident' }"
           @click="currentType = 'resident'"
         >
-          <text class="tab-card-title">城乡居民基本医疗保险</text>
-          <text class="tab-card-desc">一老一小儿童老年人 / 在校学生 / 城乡普通居民</text>
+          <text class="pill-title">城乡居民医保</text>
         </view>
       </view>
 
@@ -99,44 +96,37 @@
         <view class="card">
           <view class="card-head">
             <view class="head-left">
-              <text class="card-head-title">普通门诊就医待遇</text>
+              <text class="card-head-title">普通门诊统筹待遇</text>
             </view>
             <view class="badge-pill" :class="currentType === 'employee' ? 'badge-cyan' : 'badge-emerald'">
-              <text class="badge-txt">{{ currentType === 'employee' ? '职工门诊共济机制' : '基层门诊统筹机制' }}</text>
+              <text class="badge-txt">{{ currentType === 'employee' ? '职工门诊共济' : '基层门诊统筹' }}</text>
             </view>
           </view>
 
-          <!-- 门诊核心两要素指标 -->
+          <!-- 门诊核心两要素指标 (纯净清晰，去除下方冗长描述) -->
           <view class="metric-grid">
             <view class="metric-cell">
               <text class="m-label">{{ outpatientDeductibleDisplay.label }}</text>
               <text class="m-val" :class="currentType === 'employee' ? 'text-cyan' : 'text-emerald'">{{ outpatientDeductibleDisplay.val }}</text>
-              <text class="m-hint">{{ outpatientDeductibleDisplay.hint }}</text>
             </view>
             <view class="metric-cell">
-              <text class="m-label">年度统筹基金最高支付限额 (封顶)</text>
+              <text class="m-label">年度统筹最高支付限额</text>
               <text class="m-val text-white">{{ outpatientCapDisplay.val }}</text>
-              <text class="m-hint">{{ outpatientCapDisplay.hint }}</text>
             </view>
           </view>
 
           <!-- 门诊各级医疗机构报销比例对照表 -->
-          <view class="section-sub-title">
-            <text class="sub-dot">▪</text>
-            <text class="sub-txt">各级医疗机构门诊起付与报销比例</text>
-          </view>
           <view class="table-container">
             <view class="t-row t-head">
               <text class="t-cell f-2">医疗机构等级</text>
               <text class="t-cell f-1 text-center">门诊起付</text>
-              <text class="t-cell f-1 text-center">在职比例</text>
+              <text class="t-cell f-1 text-center">{{ currentType === 'employee' ? '在职比例' : '报销比例' }}</text>
               <text class="t-cell f-1 text-center" v-if="currentType === 'employee'">退休比例</text>
-              <text class="t-cell f-2" v-else>就医说明</text>
             </view>
-            <view class="t-row" v-for="(tier, key) in currentPkg.outpatient.tierBenefits" :key="key">
+            <view class="t-row" v-for="(tier, key) in displayOutpatientTiers" :key="key">
               <view class="t-cell f-2 tier-cell">
-                <text class="tier-tag" :class="getTierTagClass(key)">{{ getTierTag(key) }}</text>
-                <text class="font-med text-white tier-title">{{ tier.tierName }}</text>
+                <view class="tier-tag" :class="getTierTagClass(key)">{{ getTierTag(key) }}</view>
+                <text class="tier-title">{{ getTierCleanName(key, tier.tierName) }}</text>
               </view>
               <text class="t-cell f-1 text-center font-bold" :class="tier.deductible === 0 ? 'text-emerald' : 'text-slate-light'">
                 {{ tier.deductible === 0 ? '0 元 (免)' : '¥' + tier.deductible }}
@@ -145,16 +135,11 @@
               <text class="t-cell f-1 text-center font-bold text-amber" v-if="currentType === 'employee'">
                 {{ Math.round((tier.reimbursementRatio + (tier.retireeRatioBonus || 0)) * 100) }}%
               </text>
-              <text class="t-cell f-2 text-dim" v-else>
-                {{ tier.reimbursementRatio > 0 ? (key === 'community' || key === 'tier1' ? '重点基层门诊保障' : '定点医院门诊报销') : '普通门诊统筹未覆盖' }}
-              </text>
             </view>
           </view>
-
-          <!-- 门诊经办备忘 -->
-          <view class="memo-notice mt-16">
-            <text class="notice-tag">门诊经办提醒</text>
-            <text class="notice-txt">{{ outpatientMemoText }}</text>
+          <!-- 门诊未覆盖医院极简注释 (替代原先3整行0%无效废行) -->
+          <view class="table-footnote" v-if="currentType === 'resident' && hasUncoveredOutpatientTiers">
+            <text class="footnote-txt">* 二级及以上定点医院普通门诊暂不纳入统筹报销</text>
           </view>
         </view>
 
@@ -170,21 +155,17 @@
           </view>
 
           <!-- 住院各级医院起付线与报销比例对照表 -->
-          <view class="section-sub-title">
-            <text class="sub-dot">▪</text>
-            <text class="sub-txt">各等级医疗机构起付线与支付比例</text>
-          </view>
           <view class="table-container">
             <view class="t-row t-head">
-              <text class="t-cell f-2">医院等级</text>
-              <text class="t-cell f-1 text-center">起付门槛</text>
+              <text class="t-cell f-2">医疗机构等级</text>
+              <text class="t-cell f-1 text-center">起付线</text>
               <text class="t-cell f-1 text-center">{{ currentType === 'employee' ? '在职比例' : '居民比例' }}</text>
               <text class="t-cell f-1 text-center" v-if="currentType === 'employee'">退休比例</text>
             </view>
             <view class="t-row" v-for="(tier, key) in currentPkg.inpatient.tierBenefits" :key="key">
               <view class="t-cell f-2 tier-cell">
-                <text class="tier-tag" :class="getTierTagClass(key)">{{ getTierTag(key) }}</text>
-                <text class="font-med text-white tier-title">{{ tier.tierName }}</text>
+                <view class="tier-tag" :class="getTierTagClass(key)">{{ getTierTag(key) }}</view>
+                <text class="tier-title">{{ getTierCleanName(key, tier.tierName) }}</text>
               </view>
               <text class="t-cell f-1 text-center font-bold text-white">¥{{ tier.deductible }}</text>
               <text class="t-cell f-1 text-center font-bold text-cyan">{{ Math.round(tier.reimbursementRatio * 100) }}%</text>
@@ -195,8 +176,8 @@
           </view>
 
           <!-- 多次住院递减规则 -->
-          <view class="memo-notice mt-16" v-if="currentPkg.inpatient.repeatedDeductibleRule">
-            <text class="notice-tag">多次住院起付线优待规则</text>
+          <view class="memo-notice mt-12" v-if="currentPkg.inpatient.repeatedDeductibleRule">
+            <text class="notice-tag">多次住院优待：</text>
             <text class="notice-txt">{{ currentPkg.inpatient.repeatedDeductibleRule }}</text>
           </view>
         </view>
@@ -432,6 +413,36 @@ const outpatientMemoText = computed(() => {
     }
   }
 });
+
+// 门诊表格过滤：居民医保下过滤 0% 未覆盖无效行，避免界面杂乱堆砌
+const displayOutpatientTiers = computed(() => {
+  const tiers = currentPkg.value.outpatient.tierBenefits;
+  if (currentType.value === 'resident') {
+    const activeEntries = Object.entries(tiers).filter(([_, t]) => t.reimbursementRatio > 0);
+    if (activeEntries.length > 0) {
+      return Object.fromEntries(activeEntries);
+    }
+  }
+  return tiers;
+});
+
+// 是否存在未覆盖的门诊机构
+const hasUncoveredOutpatientTiers = computed(() => {
+  const tiers = currentPkg.value.outpatient.tierBenefits;
+  return Object.values(tiers).some(t => t.reimbursementRatio === 0);
+});
+
+// 规范简洁的机构名称，杜绝重叠与长词挤压
+function getTierCleanName(key: string | number, rawName: string) {
+  switch (key) {
+    case 'community': return '社区卫生站 / 村卫生室';
+    case 'tier1': return '一级定点医院 / 卫生院';
+    case 'tier2': return '二级定点医院';
+    case 'tier3': return '三级定点医院';
+    case 'tier3_top': return '三甲重点医院';
+    default: return rawName;
+  }
+}
 
 function getTierTag(key: string | number) {
   switch (key) {
@@ -716,60 +727,51 @@ onMounted(() => {
 .dropdown-item.selected .item-name { color: #2563eb; font-weight: 700; }
 .dropdown-item .item-check { font-size: 22rpx; color: #2563eb; font-weight: 700; }
 
-/* 身份类型选择 */
-.tab-group-2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16rpx;
-}
-
-.mb-20 { margin-bottom: 24rpx; }
-.mt-24 { margin-top: 28rpx; }
-.mt-16 { margin-top: 20rpx; }
-
-.tab-card {
-  background: #ffffff;
+/* 身份类型切换（现代轻量胶囊风格） */
+.identity-switch-bar {
+  display: inline-flex;
+  background: #f1f5f9;
+  padding: 4px;
+  border-radius: 10px;
   border: 1px solid #e2e8f0;
-  border-radius: 12rpx;
-  padding: 20rpx 24rpx;
+  width: fit-content;
+  align-self: flex-start;
+}
+
+.switch-pill-btn {
+  padding: 8px 24px;
+  border-radius: 8px;
   cursor: pointer;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-  transition: all 0.2s;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.tab-card.active {
+.switch-pill-btn.active {
   background: #ffffff;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 1px #2563eb, 0 4px 12px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
-.tab-card-title {
-  font-size: 26rpx;
-  font-weight: 700;
-  color: #475569;
-  display: block;
-}
-
-.tab-card.active .tab-card-title {
-  color: #2563eb;
-}
-
-.tab-card-desc {
-  font-size: 20rpx;
+.pill-title {
+  font-size: 14px;
+  font-weight: 600;
   color: #64748b;
-  display: block;
-  margin-top: 4rpx;
+  line-height: 1;
 }
 
-.tab-card.active .tab-card-desc {
-  color: #475569;
+.switch-pill-btn.active .pill-title {
+  color: #0f172a;
+  font-weight: 700;
 }
+
+.mb-20 { margin-bottom: 20px; }
+.mt-24 { margin-top: 24px; }
+.mt-16 { margin-top: 16px; }
+.mt-12 { margin-top: 12px; }
 
 /* 待遇双栏 */
 .benefits-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 24rpx;
+  gap: 20px;
 }
 
 @media (min-width: 900px) {
@@ -781,12 +783,11 @@ onMounted(() => {
 .card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 16rpx;
-  padding: 28rpx 30rpx;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 8rpx 32rpx rgba(0, 0, 0, 0.04);
+  border-radius: 14px;
+  padding: 22px 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
   box-sizing: border-box;
   overflow: hidden;
-  word-break: break-word;
 }
 
 .card-head {
@@ -795,19 +796,20 @@ onMounted(() => {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px;
-  padding-bottom: 16rpx;
+  padding-bottom: 14px;
   border-bottom: 1px solid #f1f5f9;
-  margin-bottom: 20rpx;
+  margin-bottom: 18px;
 }
 
 .card-head-title {
-  font-size: 28rpx;
+  font-size: 17px;
   font-weight: 800;
   color: #0f172a;
+  letter-spacing: -0.2px;
 }
 
 .badge-pill {
-  padding: 4rpx 14rpx;
+  padding: 3px 10px;
   border-radius: 9999rpx;
 }
 
@@ -820,54 +822,89 @@ onMounted(() => {
 .badge-indigo { background: #eef2ff; border: 1px solid #c7d2fe; }
 .badge-indigo .badge-txt { color: #4338ca; }
 
-.badge-txt { font-size: 18rpx; font-weight: 600; }
+.badge-txt { font-size: 12px; font-weight: 600; }
 
 .metric-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 14rpx;
-  margin-bottom: 20rpx;
+  gap: 12px;
+  margin-bottom: 16px;
 }
 
 .metric-cell {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 12rpx;
-  padding: 16rpx;
+  border-radius: 10px;
+  padding: 14px;
 }
 
-.m-label { font-size: 20rpx; color: #64748b; display: block; }
-.m-val { font-size: 30rpx; font-weight: 800; display: block; margin: 4rpx 0; color: #0f172a; }
-.m-hint { font-size: 18rpx; color: #64748b; display: block; line-height: 1.4; }
-
-.section-sub-title {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  margin-bottom: 10rpx;
-}
-
-.sub-dot { color: #2563eb; font-size: 20rpx; }
-.sub-txt { font-size: 22rpx; font-weight: 700; color: #1e293b; }
+.m-label { font-size: 12px; color: #64748b; display: block; font-weight: 500; }
+.m-val { font-size: 20px; font-weight: 800; display: block; margin-top: 4px; color: #0f172a; }
 
 .table-container {
   border: 1px solid #e2e8f0;
-  border-radius: 12rpx;
+  border-radius: 10px;
   overflow: hidden;
   background: #ffffff;
 }
 
 .t-row {
   display: flex;
-  padding: 12rpx 16rpx;
+  padding: 10px 14px;
   align-items: center;
   border-bottom: 1px solid #f1f5f9;
 }
 
 .t-row:last-child { border-bottom: none; }
 .t-head { background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
-.t-head .t-cell { color: #64748b; font-weight: 700; font-size: 20rpx; }
-.t-cell { font-size: 22rpx; color: #1e293b; }
+.t-head .t-cell { color: #64748b; font-weight: 600; font-size: 12px; }
+.t-cell { font-size: 13px; color: #1e293b; }
+
+.tier-cell {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.tier-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.tag-emerald { background: #ecfdf5; color: #047857; border: 1px solid #a7f3d0; }
+.tag-blue { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.tag-cyan { background: #f0fdfa; color: #0f766e; border: 1px solid #99f6e4; }
+.tag-indigo { background: #eef2ff; color: #4338ca; border: 1px solid #c7d2fe; }
+.tag-amber { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+
+.tier-title {
+  font-size: 13px;
+  color: #1e293b;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-footnote {
+  padding: 8px 12px;
+  background: #f8fafc;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.footnote-txt {
+  font-size: 11px;
+  color: #94a3b8;
+}
 
 .f-1 { flex: 1; }
 .f-2 { flex: 2; }
@@ -875,21 +912,25 @@ onMounted(() => {
 .font-med { font-weight: 500; }
 .font-bold { font-weight: 700; }
 
+.text-dark { color: #0f172a; }
 .text-white { color: #0f172a; }
 .text-cyan { color: #0284c7; }
 .text-amber { color: #d97706; }
 .text-emerald { color: #059669; }
-.text-dim { color: #64748b; font-size: 20rpx; }
+.text-dim { color: #64748b; font-size: 12px; }
 
 .memo-notice {
   background: #eff6ff;
-  border-left: 3rpx solid #2563eb;
-  border-radius: 8rpx;
-  padding: 12rpx 16rpx;
+  border-left: 3px solid #2563eb;
+  border-radius: 6px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
 }
 
-.notice-tag { font-size: 18rpx; color: #1d4ed8; font-weight: 700; display: block; margin-bottom: 2rpx; }
-.notice-txt { font-size: 20rpx; color: #1e3a8a; line-height: 1.5; display: block; }
+.notice-tag { font-size: 12px; color: #1d4ed8; font-weight: 700; flex-shrink: 0; }
+.notice-txt { font-size: 12px; color: #1e3a8a; line-height: 1.5; }
 
 .doc-grid {
   display: grid;

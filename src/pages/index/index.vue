@@ -144,7 +144,6 @@
                 @click="form.insuranceType = 'employee'; triggerCalculation()"
               >
                 <text class="seg-title">城镇职工医保</text>
-                <text class="seg-desc">在职企事业 / 灵活就业</text>
               </view>
               <view 
                 class="seg-btn" 
@@ -152,15 +151,14 @@
                 @click="form.insuranceType = 'resident'; triggerCalculation()"
               >
                 <text class="seg-title">城乡居民医保</text>
-                <text class="seg-desc">老人学生儿童 / 居民</text>
               </view>
             </view>
 
-            <!-- 职工退休优待开关 (仅在职工时优雅展开，不外溢) -->
+            <!-- 职工退休优待开关 -->
             <view class="retiree-bar" v-if="form.insuranceType === 'employee'" @click="form.isRetiree = !form.isRetiree; triggerCalculation()">
               <view class="retiree-bar-left">
                 <text class="retiree-label">退休人员待遇优待</text>
-                <text class="retiree-sub">（法定享受各统筹区报销比例上浮 5%~10%）</text>
+                <text class="retiree-sub">（报销比例享受倾斜上浮）</text>
               </view>
               <view class="custom-switch" :class="{ checked: form.isRetiree }">
                 <view class="switch-handle"></view>
