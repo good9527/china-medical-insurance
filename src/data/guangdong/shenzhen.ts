@@ -69,15 +69,15 @@ export const shenzhenCityData: CityInsuranceData = {
     },
     inpatient: {
       sourceDocId: 'sz-medical-insurance-regulations-2023',
-      annualCap: 1050000, // 连续参保72个月以上统筹基金最高支付限额约105万元
+      annualCap: 1050000, // 连续参保72个月以上统筹基金最高支付限额达在岗职工年平均工资6倍（超100万元）
       tierBenefits: {
-        community: { tierName: '一级及社康中心', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.91, retireeRatioBonus: 0.04 },
+        community: { tierName: '一级及社康中心', deductible: 200, reimbursementRatio: 0.94, retireeRatioBonus: 0.01 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.94, retireeRatioBonus: 0.01 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
         tier3: { tierName: '三级定点医疗机构', deductible: 600, reimbursementRatio: 0.90, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '三级甲等综合医院', deductible: 600, reimbursementRatio: 0.90, retireeRatioBonus: 0.05 }
       },
-      repeatedDeductibleRule: '年度内二次及以上住院起付线减半（一级100元、二级200元、三级300元）。'
+      repeatedDeductibleRule: '依据《深圳市医疗保障办法》第三十六条，年度内二次及以上住院起付线减半（一级100元、二级200元、三级300元）。退休人员支付比例统一为95%。'
     },
     catastrophic: {
       sourceDocId: 'sz-medical-insurance-regulations-2023',
@@ -100,32 +100,32 @@ export const shenzhenCityData: CityInsuranceData = {
     }
   },
 
-  // 城乡居民医保待遇 (深圳标准)
+  // 城乡居民医保待遇 (深圳标准 - 全市统一保障标准)
   resident: {
     outpatient: {
       sourceDocId: 'sz-resident-medical-rules',
       annualDeductible: 0,
-      annualCap: 2655, // 在岗职工年平均工资1.5%
+      annualCap: 2655, // 在岗职工年平均工资1.5%（当前年度约2655元）
       tierBenefits: {
-        community: { tierName: '绑定的社康中心/基层医疗机构', deductible: 0, reimbursementRatio: 0.75 },
-        tier1: { tierName: '一级定点医疗机构（未绑定）', deductible: 0, reimbursementRatio: 0.00 },
-        tier2: { tierName: '二级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
-        tier3: { tierName: '三级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
-        tier3_top: { tierName: '三甲综合医院（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 }
+        community: { tierName: '选定绑定的社康中心/基层医疗机构', deductible: 0, reimbursementRatio: 0.75 },
+        tier1: { tierName: '选定的一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75 },
+        tier2: { tierName: '二级医疗机构（需基层定点转诊）', deductible: 0, reimbursementRatio: 0.65 },
+        tier3: { tierName: '三级医疗机构（需基层定点转诊）', deductible: 0, reimbursementRatio: 0.55 },
+        tier3_top: { tierName: '三甲综合医院（需基层定点转诊）', deductible: 0, reimbursementRatio: 0.55 }
       },
-      note: '居民普通门诊统筹限定在绑定的基层社康机构就诊，报销比例75%（60岁以上老人80%），年最高支付限额约2655元。'
+      note: '依据《深圳市医疗保障办法》第二十六、二十七条，居民普通门诊选定1家社康/基层首诊报销75%；经转诊至二级医院报销65%、三级医院报销55%（年满60周岁及以上老人各级别上浮5%）。年统筹基金最高支付限额为在岗职工年平均工资的1.5%（约2655元）。'
     },
     inpatient: {
       sourceDocId: 'sz-medical-insurance-regulations-2023',
-      annualCap: 500000, // 居民住院统筹年限额约 50 万元
+      annualCap: 1050000, // 依据第三十八条，统筹基金支付限额与连续参保时间挂钩，满72个月达6倍在岗平均工资
       tierBenefits: {
-        community: { tierName: '一级及基层医疗机构', deductible: 200, reimbursementRatio: 0.92 },
+        community: { tierName: '一级以下及基层医疗机构', deductible: 200, reimbursementRatio: 0.92 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.92 },
         tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.91 },
         tier3: { tierName: '三级定点医疗机构', deductible: 600, reimbursementRatio: 0.90 },
         tier3_top: { tierName: '三甲重点医疗机构', deductible: 600, reimbursementRatio: 0.90 }
       },
-      repeatedDeductibleRule: '多次住院起付线依次减半。'
+      repeatedDeductibleRule: '依据《深圳市医疗保障办法》第三十六条、第三十七条，参保人起付线一级200元、二级400元、三级600元，二次及以上住院减半；报销比例一级92%、二级91%、三级90%，年满60周岁及以上老人支付比例统一提升至95%。'
     },
     catastrophic: {
       sourceDocId: 'sz-resident-medical-rules',

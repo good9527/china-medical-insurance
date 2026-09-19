@@ -566,7 +566,7 @@ export function runCalculatorTests() {
   for (const city of allCities) {
     totalChecks++;
     const cap = city.resident.catastrophic.annualCap;
-    const testCost = cap ? Math.max(1500000, (city.resident.inpatient.annualCap + cap) * 1.6) : 1000000;
+    const testCost = Math.max(1500000, Math.ceil((city.resident.inpatient.annualCap + (cap || 0)) * 1.6));
     const res = calculateReimbursement({
       cityCode: city.cityCode,
       insuranceType: 'resident',
