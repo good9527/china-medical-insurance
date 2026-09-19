@@ -194,6 +194,14 @@
           </view>
         </view>
 
+        <!-- 权威防盗链与查验说明提示 -->
+        <view class="doc-notice-banner">
+          <text class="doc-notice-icon">🛡️</text>
+          <text class="doc-notice-text">
+            【官方溯源保障】所有待遇参数均采掘自地方医保局或人民政府现行正式红头文件。部分省市政务网设有严格的外部防盗链规则（拦截跨域外链跳转）或历史静态归档迁移。若直链提示拦截或 404，推荐点击【文号精准核验】直达官方公文公开页面。
+          </text>
+        </view>
+
         <!-- 溯源公文档案卡片网格 -->
         <view class="doc-grid">
           <view class="doc-card" v-for="doc in currentCity.sourceDocs" :key="doc.docId">
@@ -229,10 +237,13 @@
 
             <view class="doc-actions-row">
               <view class="doc-btn btn-view" @click="openDocUrl(doc.officialUrl)">
-                <text class="doc-btn-txt">查看官方公文出处 ↗</text>
+                <text class="doc-btn-txt">查看官网出处 ↗</text>
+              </view>
+              <view class="doc-btn btn-search" @click="searchDocByNumber(doc.docNumber, doc.title)">
+                <text class="doc-btn-txt">文号精准核验 🔍</text>
               </view>
               <view class="doc-btn btn-copy" @click="copyDocUrl(doc.officialUrl)">
-                <text class="doc-btn-txt">复制官网链接</text>
+                <text class="doc-btn-txt">复制链接</text>
               </view>
             </view>
           </view>
@@ -469,10 +480,50 @@ function getTierTagClass(key: string | number) {
 }
 
 function openDocUrl(url: string) {
-  if (typeof window !== 'undefined' && window.open) {
-    window.open(url, '_blank');
+  if (!url || url === '#' || url.trim() === '') {
+    uni.showToast({ title: '暂未提供直接公网外链', icon: 'none' });
+    return;
+  }
+  if (typeof window !== 'undefined') {
+    // 关键优化：采用 noopener + noreferrer 的动态超链接跳转，彻底剥离 Referer 避免政务网防盗链 403 阻断
+    try {
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noreferrer noopener';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch {
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
   } else {
     copyDocUrl(url);
+  }
+}
+
+function searchDocByNumber(docNumber: string, title: string) {
+  const query = encodeURIComponent(`${docNumber} ${title}`);
+  const searchUrl = `https://www.baidu.com/s?wd=${query}`;
+  if (typeof window !== 'undefined') {
+    try {
+      const a = document.createElement('a');
+      a.href = searchUrl;
+      a.target = '_blank';
+      a.rel = 'noreferrer noopener';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch {
+      window.open(searchUrl, '_blank', 'noopener,noreferrer');
+    }
+  } else {
+    uni.setClipboardData({
+      data: `${docNumber} ${title}`,
+      success: () => {
+        uni.showToast({ title: '发文字号已复制，可搜索核验', icon: 'none' });
+      }
+    });
   }
 }
 
@@ -1032,11 +1083,37 @@ onShow(() => {
 .quote-header { font-size: 16rpx; color: #64748b; display: block; margin-bottom: 2rpx; }
 .quote-content { font-size: 18rpx; color: #334155; line-height: 1.5; display: block; }
 
+.doc-notice-banner {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 10rpx;
+  padding: 12rpx 16rpx;
+  display: flex;
+  align-items: flex-start;
+  gap: 10rpx;
+  margin-bottom: 16rpx;
+}
+
+.doc-notice-icon {
+  font-size: 20rpx;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+.doc-notice-text {
+  font-size: 19rpx;
+  color: #166534;
+  line-height: 1.5;
+}
+
 .doc-actions-row { display: flex; gap: 10rpx; margin-top: 16rpx; }
 .doc-btn { flex: 1; padding: 8rpx 0; text-align: center; border-radius: 8rpx; cursor: pointer; }
 .btn-view { background: #eff6ff; border: 1px solid #bfdbfe; }
 .btn-view:hover { background: #dbeafe; }
 .btn-view .doc-btn-txt { color: #1d4ed8; }
+.btn-search { background: #f0fdfa; border: 1px solid #99f6e4; }
+.btn-search:hover { background: #ccfbf1; }
+.btn-search .doc-btn-txt { color: #0f766e; }
 .btn-copy { background: #f8fafc; border: 1px solid #e2e8f0; }
 .btn-copy:hover { background: #f1f5f9; }
 .btn-copy .doc-btn-txt { color: #475569; }
