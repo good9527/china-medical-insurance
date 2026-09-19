@@ -253,7 +253,7 @@
                 <!-- 表头：根据当前群体分类动态呈现最关切的核心指标列 -->
                 <tr class="b-thead-tr" v-if="currentCategory === 'overall'">
                   <th class="col-rank"># 排名</th>
-                  <th class="col-city">统筹区 / 段位</th>
+                  <th class="col-city">统筹区</th>
                   <th class="col-sortable col-score" @click="toggleSort('overall_score')">
                     <view class="th-sort-inner">
                       <text>全域综合分</text>
@@ -286,7 +286,7 @@
                 <!-- 表头：城镇职工医保专属列 -->
                 <tr class="b-thead-tr" v-else-if="currentCategory === 'employee'">
                   <th class="col-rank"># 排名</th>
-                  <th class="col-city">统筹区 / 段位</th>
+                  <th class="col-city">统筹区</th>
                   <th class="col-sortable col-score" @click="toggleSort('employee_score')">
                     <view class="th-sort-inner"><text>职工综合分</text><text class="sort-arrow" :class="{ active: sortColumn === 'employee_score' || sortColumn === 'composite' }">{{ sortColumn === 'employee_score' || sortColumn === 'composite' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
@@ -309,7 +309,7 @@
                 <!-- 表头：城乡居民医保专属列 -->
                 <tr class="b-thead-tr" v-else>
                   <th class="col-rank"># 排名</th>
-                  <th class="col-city">统筹区 / 段位</th>
+                  <th class="col-city">统筹区</th>
                   <th class="col-sortable col-score" @click="toggleSort('resident_score')">
                     <view class="th-sort-inner"><text>居民综合分</text><text class="sort-arrow" :class="{ active: sortColumn === 'resident_score' || sortColumn === 'composite' }">{{ sortColumn === 'resident_score' || sortColumn === 'composite' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
@@ -341,13 +341,10 @@
                     </view>
                   </td>
 
-                  <!-- 城市与省份 + 段位 -->
+                  <!-- 城市与省份 -->
                   <td class="col-city">
                     <view class="city-name-group">
-                      <view class="city-title-line">
-                        <text class="city-name">{{ item.cityName }}</text>
-                        <span class="grade-pill" :class="getGradeBadgeClass(item.grade)">{{ item.grade }}</span>
-                      </view>
+                      <text class="city-name">{{ item.cityName }}</text>
                       <text class="prov-tag">{{ item.provinceName }}</text>
                     </view>
                   </td>
@@ -821,14 +818,6 @@ function getRankClass(rank: number): string {
   return 'rank-normal';
 }
 
-function getGradeBadgeClass(grade: string): string {
-  if (grade.startsWith('S')) return 'grade-s';
-  if (grade.startsWith('A+')) return 'grade-aplus';
-  if (grade.startsWith('A')) return 'grade-a';
-  if (grade.startsWith('B+')) return 'grade-bplus';
-  return 'grade-b';
-}
-
 function getCategoryScore(item: BenchmarkCityMetrics): number {
   if (currentCategory.value === 'employee') return item.employeeScore;
   if (currentCategory.value === 'resident') return item.residentScore;
@@ -838,7 +827,7 @@ function getCategoryScore(item: BenchmarkCityMetrics): number {
 function getPodiumFeat1(item: BenchmarkCityMetrics): string {
   if (currentCategory.value === 'employee') return `在职三级 ${Math.round(item.empInpatientRatio * 100)}%`;
   if (currentCategory.value === 'resident') return `居民三级 ${Math.round(item.resInpatientRatio * 100)}%`;
-  return `全域评级 ${item.grade}`;
+  return `职工三级 ${Math.round(item.empInpatientRatio * 100)}%`;
 }
 
 function getPodiumFeat2(item: BenchmarkCityMetrics): string {
@@ -930,15 +919,23 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 20px;
+  gap: 24px;
   margin-bottom: 20px;
+}
+
+.header-main-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  min-width: 0;
+  flex: 1;
 }
 
 .badge-row {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
 }
 
 .benchmark-chip {
@@ -978,18 +975,22 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .benchmark-title {
-  font-size: 26px;
+  display: block;
+  font-size: 24px;
   font-weight: 900;
   color: #0f172a;
   letter-spacing: -0.5px;
-  line-height: 1.3;
+  line-height: 1.35;
+  word-break: break-word;
 }
 
 .benchmark-sub {
+  display: block;
   font-size: 13px;
   color: #64748b;
-  margin-top: 6px;
-  line-height: 1.5;
+  margin-top: 8px;
+  line-height: 1.6;
+  word-break: break-word;
 }
 
 /* 模式切换胶囊 */
@@ -1507,58 +1508,14 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 
 .city-name-group {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.city-title-line {
-  display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .city-name {
   font-size: 14px;
   font-weight: 700;
   color: #0f172a;
-}
-
-.grade-pill {
-  font-size: 10px;
-  font-weight: 800;
-  padding: 1px 6px;
-  border-radius: 4px;
-  line-height: 1.2;
-}
-
-.grade-s {
-  background: #fdf4ff;
-  color: #a21caf;
-  border: 1px solid #f0abfc;
-}
-
-.grade-aplus {
-  background: #eff6ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
-}
-
-.grade-a {
-  background: #ecfdf5;
-  color: #047857;
-  border: 1px solid #a7f3d0;
-}
-
-.grade-bplus {
-  background: #f0fdfa;
-  color: #0f766e;
-  border: 1px solid #99f6e4;
-}
-
-.grade-b {
-  background: #f8fafc;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
 }
 
 .prov-tag {

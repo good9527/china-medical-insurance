@@ -61,9 +61,6 @@ export interface BenchmarkCityMetrics {
     retiree: number;       // 👴 群体倾斜与关怀力 (退休/高龄优待)
     mobility: number;      // 🌐 异地就医流动自由度
   };
-  
-  // 综合评级 (S, A+, A, B+, B)
-  grade: string;
   rawCity: CityInsuranceData;
 }
 
@@ -87,17 +84,6 @@ export const popularBattles = [
   { id: 'hz-nj', name: '长三角先锋', city1: '330100', city2: '320100', label: '杭州 VS 南京' },
   { id: 'jn-qd', name: '齐鲁双子星', city1: '370100', city2: '370200', label: '济南 VS 青岛' }
 ];
-
-/**
- * 依据得分评定综合天梯段位 (S / A+ / A / B+ / B)
- */
-function calculateGrade(score: number): string {
-  if (score >= 92) return 'S 极优';
-  if (score >= 85) return 'A+ 拔尖';
-  if (score >= 78) return 'A 良好';
-  if (score >= 70) return 'B+ 稳健';
-  return 'B 达标';
-}
 
 /**
  * 计算统筹区的全域综合、职工专属与居民专属多维指数 (CMI-Index 2.0 算法模型)
@@ -203,8 +189,6 @@ export function extractCityBenchmarkMetrics(city: CityInsuranceData): BenchmarkC
     thresholdScore * 0.10
   ) * 10) / 10;
 
-  const grade = calculateGrade(overallScore);
-
   return {
     rank: 0,
     cityCode: city.cityCode,
@@ -235,7 +219,6 @@ export function extractCityBenchmarkMetrics(city: CityInsuranceData): BenchmarkC
       retiree: Math.max(30, Math.min(100, retireeScore)),
       mobility: Math.max(30, Math.min(100, mobilityScore))
     },
-    grade,
     rawCity: city
   };
 }

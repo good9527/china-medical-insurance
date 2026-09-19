@@ -5619,7 +5619,6 @@ export function runCalculatorTests() {
     assertTrue(!isNaN(r.threshold) && r.threshold >= 30 && r.threshold <= 100, `${item!.cityName} 门槛友好分越界: ${r.threshold}`);
     assertTrue(!isNaN(r.retiree) && r.retiree >= 30 && r.retiree <= 100, `${item!.cityName} 群体倾斜分越界: ${r.retiree}`);
     assertTrue(!isNaN(r.mobility) && r.mobility >= 30 && r.mobility <= 100, `${item!.cityName} 异地自由分越界: ${r.mobility}`);
-    assertTrue(typeof item!.grade === 'string' && item!.grade.length > 0, `${item!.cityName} 天梯段位缺失`);
   }
   console.log(`  ✓ [H27 PASS] 全国 344 统筹区 CMI-Index 2.0 评测参数结构与 6 大能力雷达数值健全稳定`);
   passCount++;
