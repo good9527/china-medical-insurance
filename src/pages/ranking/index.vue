@@ -711,6 +711,12 @@ function getPodiumFeat2(item: BenchmarkCityMetrics): string {
 }
 
 function goToCityPolicy(cityCode: string) {
+  uni.setStorageSync('selected_policy_city_code', cityCode);
+  if (currentCategory.value === 'employee') {
+    uni.setStorageSync('selected_policy_type', 'employee');
+  } else if (currentCategory.value === 'resident') {
+    uni.setStorageSync('selected_policy_type', 'resident');
+  }
   uni.switchTab({ url: '/pages/policy/index' });
 }
 

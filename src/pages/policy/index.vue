@@ -244,6 +244,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
 
@@ -484,12 +485,44 @@ function copyDocUrl(url: string) {
   });
 }
 
+function applySelectedCityFromStorage() {
+  const targetCityCode = uni.getStorageSync('selected_policy_city_code');
+  if (!targetCityCode) return;
+  uni.removeStorageSync('selected_policy_city_code');
+
+  const targetType = uni.getStorageSync('selected_policy_type');
+  if (targetType === 'employee' || targetType === 'resident') {
+    currentType.value = targetType;
+    uni.removeStorageSync('selected_policy_type');
+  }
+
+  // 遍历所有省份查找匹配该 cityCode 的省市索引
+  for (let pIdx = 0; pIdx < provinceList.length; pIdx++) {
+    const cities = getCitiesByProvinceCode(provinceList[pIdx].code);
+    const cIdx = cities.findIndex(c => c.cityCode === targetCityCode);
+    if (cIdx !== -1) {
+      selectedProvinceIndex.value = pIdx;
+      selectedCityIndex.value = cIdx;
+      break;
+    }
+  }
+
+  if (typeof window !== 'undefined') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
 onMounted(() => {
   if (typeof window !== 'undefined') {
     window.addEventListener('click', () => {
       openDropdown.value = null;
     });
   }
+  applySelectedCityFromStorage();
+});
+
+onShow(() => {
+  applySelectedCityFromStorage();
 });
 </script>
 
