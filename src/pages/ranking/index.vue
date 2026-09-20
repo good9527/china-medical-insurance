@@ -315,7 +315,7 @@
               <text class="crest-txt">NO.2 · 榜眼席</text>
             </view>
             <text class="podium-city">{{ rankings[1].cityName }}</text>
-            <text class="podium-prov">{{ rankings[1].provinceName }} · 卓越示范统筹区</text>
+            <text class="podium-prov">{{ getPodiumSub(rankings[1], "卓越示范统筹区") }}</text>
             <view class="podium-score-group">
               <text class="score-num silver-num">{{ getCategoryScore(rankings[1]) }}</text>
               <text class="score-unit">综合指数</text>
@@ -339,7 +339,7 @@
               <text class="crest-txt">NO.1 · 榜首领跑者</text>
             </view>
             <text class="podium-city gold-city">{{ rankings[0].cityName }}</text>
-            <text class="podium-prov">{{ rankings[0].provinceName }} · 国家标杆统筹区</text>
+            <text class="podium-prov">{{ getPodiumSub(rankings[0], "国家标杆统筹区") }}</text>
             <view class="podium-score-group">
               <text class="score-num gold-num">{{ getCategoryScore(rankings[0]) }}</text>
               <text class="score-unit gold-unit">综合指数</text>
@@ -364,7 +364,7 @@
               <text class="crest-txt">NO.3 · 探花席</text>
             </view>
             <text class="podium-city">{{ rankings[2].cityName }}</text>
-            <text class="podium-prov">{{ rankings[2].provinceName }} · 卓越示范统筹区</text>
+            <text class="podium-prov">{{ getPodiumSub(rankings[2], "卓越示范统筹区") }}</text>
             <view class="podium-score-group">
               <text class="score-num bronze-num">{{ getCategoryScore(rankings[2]) }}</text>
               <text class="score-unit">综合指数</text>
@@ -398,7 +398,7 @@
                 <view class="brc-name-stack">
                   <view class="brc-title-row">
                     <text class="brc-city">{{ item.cityName }}</text>
-                    <text class="brc-prov">{{ item.provinceName }}</text>
+                    <text class="brc-prov" v-if="getProvinceSubtext(item)">{{ getProvinceSubtext(item) }}</text>
                   </view>
                   <text class="brc-tier" :class="getTierBadge(item.rank).class">{{ getTierBadge(item.rank).text }}</text>
                 </view>
@@ -565,46 +565,43 @@
                     </view>
                   </td>
 
-                  <!-- 城市与省份 -->
+                  <!-- 城市与省份：极简化设计，消除重复城市名与塑料灰色标签 -->
                   <td class="col-city">
-                    <view class="city-name-group">
+                    <view class="city-cell-stack">
                       <text class="city-name">{{ item.cityName }}</text>
-                      <text class="prov-tag">{{ item.provinceName }}</text>
+                      <text class="city-prov-sub" v-if="getProvinceSubtext(item)">{{ getProvinceSubtext(item) }}</text>
                     </view>
                   </td>
 
-                  <!-- 全域整体模式数据行 -->
+                  <!-- 全域整体模式数据行：消除多余背景框，聚焦核心数字与法定待遇明细 -->
                   <template v-if="currentCategory === 'overall'">
                     <td class="col-score">
-                      <view class="score-cell-group">
-                        <text class="score-display font-bold">{{ item.overallScore }}</text>
-                        <view class="score-bar-bg"><view class="score-bar-fill" :style="{ width: item.overallScore + '%' }"></view></view>
-                      </view>
+                      <text class="score-display font-bold">{{ item.overallScore }}</text>
                     </td>
                     <td><text class="plain-data-txt font-bold text-blue">{{ item.employeeScore }}</text></td>
                     <td><text class="plain-data-txt font-bold text-emerald">{{ item.residentScore }}</text></td>
                     <td>
-                      <view class="dim-score-pill pill-cyan">
-                        <text class="dim-score-val">{{ item.radar.inpatient }}</text>
-                        <text class="dim-score-sub">({{ Math.round(item.empInpatientRatio * 100) }}%/{{ Math.round(item.resInpatientRatio * 100) }}%)</text>
+                      <view class="dim-stat-cell">
+                        <text class="dim-stat-score text-cyan">{{ item.radar.inpatient }}</text>
+                        <text class="dim-stat-detail">{{ Math.round(item.empInpatientRatio * 100) }}% / {{ Math.round(item.resInpatientRatio * 100) }}%</text>
                       </view>
                     </td>
                     <td>
-                      <view class="dim-score-pill pill-blue">
-                        <text class="dim-score-val">{{ item.radar.outpatient }}</text>
-                        <text class="dim-score-sub">({{ formatCap(item.empOutpatientCap) }})</text>
+                      <view class="dim-stat-cell">
+                        <text class="dim-stat-score text-blue">{{ item.radar.outpatient }}</text>
+                        <text class="dim-stat-detail">{{ formatCap(item.empOutpatientCap) }}</text>
                       </view>
                     </td>
                     <td>
-                      <view class="dim-score-pill pill-purple">
-                        <text class="dim-score-val">{{ item.radar.catastrophic }}</text>
-                        <text class="dim-score-sub">({{ item.isCatastrophicUncapped ? '不设封顶' : '¥' + Math.round(item.annualMaxCap / 10000) + '万' }})</text>
+                      <view class="dim-stat-cell">
+                        <text class="dim-stat-score text-purple">{{ item.radar.catastrophic }}</text>
+                        <text class="dim-stat-detail">{{ item.isCatastrophicUncapped ? '不设封顶' : '¥' + Math.round(item.annualMaxCap / 10000) + '万' }}</text>
                       </view>
                     </td>
                     <td>
-                      <view class="dim-score-pill pill-amber">
-                        <text class="dim-score-val">{{ item.radar.retiree }}</text>
-                        <text class="dim-score-sub">(+{{ Math.round(item.retireeBonusRatio * 100) }}%)</text>
+                      <view class="dim-stat-cell">
+                        <text class="dim-stat-score text-amber">{{ item.radar.retiree }}</text>
+                        <text class="dim-stat-detail">+{{ Math.round(item.retireeBonusRatio * 100) }}%</text>
                       </view>
                     </td>
                   </template>
@@ -612,33 +609,27 @@
                   <!-- 城镇职工医保模式数据行 -->
                   <template v-else-if="currentCategory === 'employee'">
                     <td class="col-score">
-                      <view class="score-cell-group">
-                        <text class="score-display font-bold text-blue">{{ item.employeeScore }}</text>
-                        <view class="score-bar-bg"><view class="score-bar-fill fill-blue" :style="{ width: item.employeeScore + '%' }"></view></view>
-                      </view>
+                      <text class="score-display font-bold text-blue">{{ item.employeeScore }}</text>
                     </td>
-                    <td><view class="data-pill pill-blue"><text class="data-txt">{{ Math.round(item.empInpatientRatio * 100) }}%</text></view></td>
+                    <td><text class="plain-data-txt font-semibold text-blue">{{ Math.round(item.empInpatientRatio * 100) }}%</text></td>
                     <td><text class="plain-data-txt">{{ Math.round(item.empInpatientTier2Ratio * 100) }}%</text></td>
                     <td><text class="plain-data-txt" :class="{ 'text-emerald font-bold': item.empOutpatientCap >= 9999999 }">{{ formatCap(item.empOutpatientCap) }}</text></td>
                     <td><text class="plain-data-txt">{{ item.empOutpatientDed === 0 ? '0元 (免起付)' : '¥' + item.empOutpatientDed }}</text></td>
-                    <td><view class="data-pill pill-amber"><text class="data-txt">+{{ Math.round(item.retireeBonusRatio * 100) }}%</text></view></td>
+                    <td><text class="plain-data-txt font-semibold text-amber">+{{ Math.round(item.retireeBonusRatio * 100) }}%</text></td>
                   </template>
 
                   <!-- 城乡居民医保模式数据行 -->
                   <template v-else>
                     <td class="col-score">
-                      <view class="score-cell-group">
-                        <text class="score-display font-bold text-emerald">{{ item.residentScore }}</text>
-                        <view class="score-bar-bg"><view class="score-bar-fill fill-emerald" :style="{ width: item.residentScore + '%' }"></view></view>
-                      </view>
+                      <text class="score-display font-bold text-emerald">{{ item.residentScore }}</text>
                     </td>
-                    <td><view class="data-pill pill-emerald"><text class="data-txt">{{ Math.round(item.resInpatientRatio * 100) }}%</text></view></td>
+                    <td><text class="plain-data-txt font-semibold text-emerald">{{ Math.round(item.resInpatientRatio * 100) }}%</text></td>
                     <td><text class="plain-data-txt">{{ Math.round(item.resInpatientTier2Ratio * 100) }}%</text></td>
                     <td><text class="plain-data-txt">¥{{ item.resOutpatientCap }}/年</text></td>
                     <td>
-                      <view class="dim-score-pill pill-purple">
-                        <text class="dim-score-val">{{ item.radar.catastrophic }}分</text>
-                        <text class="dim-score-sub">{{ item.isCatastrophicUncapped ? '不设封顶' : '¥' + Math.round(item.annualMaxCap / 10000) + '万' }}</text>
+                      <view class="dim-stat-cell">
+                        <text class="dim-stat-score text-purple">{{ item.radar.catastrophic }}分</text>
+                        <text class="dim-stat-detail">{{ item.isCatastrophicUncapped ? '不设封顶' : '¥' + Math.round(item.annualMaxCap / 10000) + '万' }}</text>
                       </view>
                     </td>
                   </template>
@@ -748,7 +739,7 @@
             <view class="picker-anchor mt-8">
               <view class="city-selector-trigger" @click.stop="toggleDropdown('battle1')">
                 <text class="sel-city-name">{{ battleResult.city1.cityName }}</text>
-                <text class="sel-prov-name">({{ battleResult.city1.provinceName }})</text>
+                <text class="sel-prov-name" v-if="battleResult.city1.provinceName !== battleResult.city1.cityName">({{ battleResult.city1.provinceName }})</text>
                 <text class="sel-caret">▾</text>
               </view>
               <view class="dropdown-menu" v-if="openDropdown === 'battle1'" @click.stop>
@@ -759,7 +750,7 @@
                   :class="{ active: cityCode1 === c.cityCode }"
                   @click.stop="cityCode1 = c.cityCode; openDropdown = null"
                 >
-                  <text class="item-name">{{ c.cityName }} ({{ c.provinceName }})</text>
+                  <text class="item-name">{{ c.cityName }}<template v-if="c.provinceName !== c.cityName"> ({{ c.provinceName }})</template></text>
                   <svg class="check-svg" v-if="cityCode1 === c.cityCode" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 </view>
               </view>
@@ -804,7 +795,7 @@
             <view class="picker-anchor mt-8">
               <view class="city-selector-trigger" @click.stop="toggleDropdown('battle2')">
                 <text class="sel-city-name">{{ battleResult.city2.cityName }}</text>
-                <text class="sel-prov-name">({{ battleResult.city2.provinceName }})</text>
+                <text class="sel-prov-name" v-if="battleResult.city2.provinceName !== battleResult.city2.cityName">({{ battleResult.city2.provinceName }})</text>
                 <text class="sel-caret">▾</text>
               </view>
               <view class="dropdown-menu" v-if="openDropdown === 'battle2'" @click.stop>
@@ -815,7 +806,7 @@
                   :class="{ active: cityCode2 === c.cityCode }"
                   @click.stop="cityCode2 = c.cityCode; openDropdown = null"
                 >
-                  <text class="item-name">{{ c.cityName }} ({{ c.provinceName }})</text>
+                  <text class="item-name">{{ c.cityName }}<template v-if="c.provinceName !== c.cityName"> ({{ c.provinceName }})</template></text>
                   <svg class="check-svg" v-if="cityCode2 === c.cityCode" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 </view>
               </view>
@@ -1094,6 +1085,11 @@ watch([selectedProvince, searchQuery], () => {
 
 function formatCap(cap: number): string {
   if (cap >= 9999999) return '上不封顶';
+  if (cap >= 10000) {
+    if (cap % 10000 === 0) return `¥${cap / 10000}万`;
+    const inWan = cap / 10000;
+    return `¥${inWan.toFixed(1).replace(/\.0$/, '')}万`;
+  }
   return `¥${cap}`;
 }
 
@@ -1138,6 +1134,26 @@ function getCategoryScore(item: BenchmarkCityMetrics): number {
   if (currentCategory.value === 'employee') return item.employeeScore;
   if (currentCategory.value === 'resident') return item.residentScore;
   return item.overallScore;
+}
+
+
+function getProvinceSubtext(item: BenchmarkCityMetrics | any): string {
+  if (!item) return ''
+  // 若已在省份筛选器中锁定某一省份，则统筹区列无需重复罗列相同省份
+  if (selectedProvince.value !== 'all') return ''
+  // 若统筹区名称与省份名称相同（如北京市、上海市、天津市、重庆市），严禁出现“上海市 上海市”这类冗余重名
+  if (item.provinceName === item.cityName || ['北京市', '上海市', '天津市', '重庆市'].includes(item.cityName)) {
+    return ''
+  }
+  return item.provinceName
+}
+
+function getPodiumSub(item: BenchmarkCityMetrics | any, defaultTier: string): string {
+  if (!item) return defaultTier
+  if (item.provinceName === item.cityName || ['北京市', '上海市', '天津市', '重庆市'].includes(item.cityName)) {
+    return `直辖示范 · ${defaultTier}`
+  }
+  return `${item.provinceName} · ${defaultTier}`
 }
 
 function getPodiumFeat1(item: BenchmarkCityMetrics): string {
@@ -3544,6 +3560,69 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 .clear-svg:hover {
   stroke: #475569;
+}
+
+
+.city-cell-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.25;
+}
+
+.city-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.city-prov-sub {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+  font-weight: 400;
+  letter-spacing: 0.2px;
+}
+
+.dim-stat-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  line-height: 1.25;
+}
+
+.dim-stat-score {
+  font-size: 13.5px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.dim-stat-detail {
+  font-size: 11px;
+  color: #64748b;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  margin-top: 1px;
+}
+
+.text-cyan {
+  color: #0284c7;
+}
+
+.text-blue {
+  color: #2563eb;
+}
+
+.text-emerald {
+  color: #059669;
+}
+
+.text-purple {
+  color: #7c3aed;
+}
+
+.text-amber {
+  color: #d97706;
 }
 
 </style>
