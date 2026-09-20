@@ -854,16 +854,16 @@ onMounted(() => {
 /* -------------------- 手机端及超窄视口 (max-width: 520px) -------------------- */
 @media (max-width: 520px) {
   .page {
-    padding: 10px 8px 32px;
+    padding: 10px 10px 48px;
   }
 
   .hero-title {
-    font-size: 28rpx;
+    font-size: 32rpx;
   }
 
   .hero-desc {
-    font-size: 18rpx;
-    line-height: 1.4;
+    font-size: 24rpx;
+    line-height: 1.5;
   }
 
   .card-head {
@@ -873,7 +873,7 @@ onMounted(() => {
   }
 
   .card-head-title {
-    font-size: 26rpx;
+    font-size: 28rpx;
   }
 
   .badge-pill {
@@ -881,51 +881,53 @@ onMounted(() => {
   }
 
   .hotline-card {
-    padding: 16rpx;
+    padding: 20rpx 18rpx;
   }
 
   .phone-number {
-    font-size: 32rpx;
+    font-size: 36rpx;
   }
 
   .hotline-actions {
-    gap: 6px;
+    gap: 8px;
   }
 
   .action-btn {
-    padding: 8rpx 0;
+    padding: 14rpx 0;
   }
 
   .btn-label {
-    font-size: 18rpx;
+    font-size: 24rpx;
   }
 
   .desc-tip {
-    font-size: 19rpx;
+    font-size: 22rpx;
+    line-height: 1.45;
   }
 
   .feedback-form {
-    padding: 16rpx;
+    padding: 20rpx 18rpx;
   }
 
   .form-label {
-    font-size: 18rpx;
+    font-size: 24rpx;
   }
 
   .form-input {
-    height: 60rpx;
-    font-size: 19rpx;
+    height: 76rpx;
+    font-size: 26rpx;
   }
 
   .form-textarea {
-    font-size: 19rpx;
+    font-size: 26rpx;
   }
 
   .btn-submit-feedback {
     width: 100%;
     text-align: center;
-    padding: 12rpx 0;
+    padding: 18rpx 0;
     box-sizing: border-box;
+    font-size: 26rpx;
   }
 
   .form-submit-row {

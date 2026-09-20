@@ -1680,24 +1680,24 @@ onMounted(() => {
 /* -------------------- 手机端及超窄视口 (max-width: 520px) -------------------- */
 @media (max-width: 520px) {
   .page {
-    padding: 10px 8px 32px;
+    padding: 10px 10px 48px;
   }
 
   .hero-title {
-    font-size: 28rpx;
+    font-size: 32rpx;
   }
 
   .hero-desc {
-    font-size: 18rpx;
-    line-height: 1.4;
+    font-size: 24rpx;
+    line-height: 1.5;
   }
 
   .bento-card {
-    padding: 16rpx 14rpx;
+    padding: 20rpx 18rpx;
   }
 
   .price-number {
-    font-size: 52rpx;
+    font-size: 56rpx;
   }
 
   .preset-pill-row {
@@ -1707,7 +1707,7 @@ onMounted(() => {
 
   .preset-pill {
     min-width: calc(33.33% - 6px);
-    padding: 10rpx 0;
+    padding: 12rpx 0;
   }
 }
 
@@ -1722,16 +1722,16 @@ onMounted(() => {
   }
 
   .price-number {
-    font-size: 46rpx;
+    font-size: 48rpx;
   }
 
   .compare-matrix {
-    padding: 10px 6px;
-    gap: 6px;
+    padding: 12px 8px;
+    gap: 8px;
   }
 
   .cell-val {
-    font-size: 22rpx;
+    font-size: 24rpx;
   }
 }
 

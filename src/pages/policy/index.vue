@@ -284,6 +284,41 @@ function selectCity(idx: number) {
   openDropdown.value = null;
 }
 
+function syncCityFromStorage() {
+  try {
+    const targetCityCode = uni.getStorageSync('selected_policy_city_code');
+    if (targetCityCode) {
+      for (let pIdx = 0; pIdx < provinceList.length; pIdx++) {
+        const p = provinceList[pIdx];
+        const cities = getCitiesByProvinceCode(p.code);
+        const cIdx = cities.findIndex(c => c.cityCode === targetCityCode);
+        if (cIdx !== -1) {
+          selectedProvinceIndex.value = pIdx;
+          selectedCityIndex.value = cIdx;
+          break;
+        }
+      }
+      uni.removeStorageSync('selected_policy_city_code');
+    }
+
+    const targetType = uni.getStorageSync('selected_policy_type');
+    if (targetType === 'employee' || targetType === 'resident') {
+      currentType.value = targetType;
+      uni.removeStorageSync('selected_policy_type');
+    }
+  } catch (e) {
+    console.error('Failed to sync policy city:', e);
+  }
+}
+
+onMounted(() => {
+  syncCityFromStorage();
+});
+
+onShow(() => {
+  syncCityFromStorage();
+});
+
 // 省市二级联动
 const selectedProvinceIndex = ref(0);
 const currentProvince = computed(() => provinceList[selectedProvinceIndex.value]);
@@ -1258,33 +1293,33 @@ onShow(() => {
 /* -------------------- 手机端及超窄视口 (max-width: 520px) -------------------- */
 @media (max-width: 520px) {
   .page {
-    padding: 10px 8px 32px;
+    padding: 10px 10px 48px;
   }
 
   .tab-group-2 {
     grid-template-columns: 1fr;
-    gap: 10px;
+    gap: 8px;
   }
 
   .tab-card {
-    padding: 16rpx 18rpx;
+    padding: 18rpx 20rpx;
   }
 
   .tab-card-title {
-    font-size: 24rpx;
-  }
-
-  .tab-card-desc {
-    font-size: 18rpx;
-  }
-
-  .hero-title {
     font-size: 28rpx;
   }
 
+  .tab-card-desc {
+    font-size: 22rpx;
+  }
+
+  .hero-title {
+    font-size: 32rpx;
+  }
+
   .hero-desc {
-    font-size: 18rpx;
-    line-height: 1.4;
+    font-size: 24rpx;
+    line-height: 1.5;
   }
 
   .card-head {
@@ -1294,7 +1329,7 @@ onShow(() => {
   }
 
   .card-head-title {
-    font-size: 26rpx;
+    font-size: 28rpx;
   }
 
   .badge-pill {
@@ -1307,15 +1342,15 @@ onShow(() => {
   }
 
   .metric-cell {
-    padding: 14rpx;
+    padding: 16rpx 18rpx;
   }
 
   .m-label {
-    font-size: 18rpx;
+    font-size: 24rpx;
   }
 
   .m-val {
-    font-size: 26rpx;
+    font-size: 30rpx;
   }
 
   .table-container {
@@ -1324,25 +1359,34 @@ onShow(() => {
   }
 
   .t-row {
-    padding: 10rpx 12rpx;
+    padding: 14rpx 16rpx;
   }
 
   .t-cell {
-    font-size: 19rpx;
+    font-size: 24rpx;
   }
 
   .t-head .t-cell {
-    font-size: 18rpx;
+    font-size: 24rpx;
+    font-weight: 700;
   }
 
   .doc-meta-row {
     flex-direction: column;
-    gap: 4rpx;
+    gap: 6rpx;
   }
 
   .doc-actions-row {
-    flex-direction: column;
-    gap: 8rpx;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .doc-btn {
+    flex: 1;
+    min-width: calc(50% - 6px);
+    justify-content: center;
+    padding: 10rpx 14rpx;
   }
 }
 

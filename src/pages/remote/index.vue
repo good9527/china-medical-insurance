@@ -870,16 +870,16 @@ onMounted(() => {
 /* -------------------- 手机端及超窄视口 (max-width: 520px) -------------------- */
 @media (max-width: 520px) {
   .page {
-    padding: 10px 8px 32px;
+    padding: 10px 10px 48px;
   }
 
   .hero-title {
-    font-size: 28rpx;
+    font-size: 32rpx;
   }
 
   .hero-desc {
-    font-size: 18rpx;
-    line-height: 1.4;
+    font-size: 24rpx;
+    line-height: 1.5;
   }
 
   .card-head {
@@ -889,7 +889,7 @@ onMounted(() => {
   }
 
   .card-head-title {
-    font-size: 26rpx;
+    font-size: 28rpx;
   }
 
   .segment-switch-sm {
@@ -904,7 +904,7 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 8rpx 0;
+    padding: 12rpx 0;
   }
 
   .ratio-grid {
@@ -913,49 +913,52 @@ onMounted(() => {
   }
 
   .ratio-card {
-    padding: 16rpx;
+    padding: 18rpx 20rpx;
   }
 
   .r-val {
-    font-size: 40rpx;
+    font-size: 44rpx;
   }
 
   .dual-info-grid {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 
   .steps-col {
-    gap: 8px;
+    gap: 10px;
   }
 
   .step-card {
-    padding: 12rpx;
+    padding: 16rpx 18rpx;
   }
 
   .step-badge {
-    width: 32rpx;
-    height: 32rpx;
-    font-size: 18rpx;
+    width: 40rpx;
+    height: 40rpx;
+    font-size: 24rpx;
   }
 
   .step-name {
-    font-size: 20rpx;
+    font-size: 26rpx;
   }
 
   .step-info {
-    font-size: 17rpx;
+    font-size: 22rpx;
+    line-height: 1.45;
   }
 
   .rule-card {
-    padding: 14rpx;
+    padding: 16rpx 18rpx;
   }
 
   .rule-headline {
-    font-size: 22rpx;
+    font-size: 26rpx;
   }
 
   .rule-paragraph {
-    font-size: 17rpx;
+    font-size: 22rpx;
+    line-height: 1.45;
   }
 }
 

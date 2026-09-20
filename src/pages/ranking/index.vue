@@ -247,6 +247,18 @@
 
         <!-- 核心：多列可排序 Benchmark 数据大宽表 -->
         <view class="benchmark-table-card">
+          <!-- 移动端横滑提示栏 -->
+          <view class="mobile-table-hint">
+            <svg class="hint-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6"></polyline>
+              <polyline points="9 18 3 12 9 6"></polyline>
+            </svg>
+            <text class="hint-txt">可左右滑动查看 6 大维度细分指标 · 排名与城市已置顶固定</text>
+            <svg class="hint-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="9 18 15 12 9 6"></polyline>
+              <polyline points="15 18 21 12 15 6"></polyline>
+            </svg>
+          </view>
           <view class="table-scroll-wrapper">
             <table class="benchmark-table">
               <thead>
@@ -1418,6 +1430,29 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
 }
 
+.mobile-table-hint {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #eff6ff;
+  border-bottom: 1px solid #dbeafe;
+}
+
+.hint-svg {
+  width: 14px;
+  height: 14px;
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.hint-txt {
+  font-size: 11px;
+  color: #1e40af;
+  font-weight: 600;
+}
+
 .table-scroll-wrapper {
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -1425,22 +1460,24 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 
 .benchmark-table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
   text-align: left;
   min-width: 900px;
 }
 
 .b-thead-tr {
   background: #f8fafc;
-  border-bottom: 2px solid #e2e8f0;
 }
 
 .b-thead-tr th {
-  padding: 12px 16px;
+  padding: 12px 14px;
   font-size: 12px;
   font-weight: 700;
   color: #475569;
   user-select: none;
+  border-bottom: 2px solid #e2e8f0;
+  background: #f8fafc;
 }
 
 .col-sortable {
@@ -1470,34 +1507,65 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .b-tbody-tr {
-  border-bottom: 1px solid #f1f5f9;
   transition: background 0.15s ease;
   cursor: pointer;
 }
 
-.b-tbody-tr:hover {
+.b-tbody-tr td {
+  padding: 12px 14px;
+  font-size: 13px;
+  vertical-align: middle;
+  border-bottom: 1px solid #f1f5f9;
+  background: #ffffff;
+}
+
+.b-tbody-tr:hover td {
   background: #f8fafc;
 }
 
-.b-tbody-tr td {
-  padding: 12px 16px;
-  font-size: 13px;
-  vertical-align: middle;
+/* 粘性固定列：排名列与统筹区列在横向滑动时不丢失 */
+.col-rank {
+  width: 50px;
+  min-width: 50px;
+  max-width: 50px;
+  text-align: center;
+  position: sticky;
+  left: 0;
+  z-index: 2;
 }
 
-.col-rank {
-  width: 60px;
-  text-align: center;
+.b-thead-tr th.col-rank {
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  background: #f8fafc;
+}
+
+.col-city {
+  width: 130px;
+  min-width: 130px;
+  position: sticky;
+  left: 50px;
+  z-index: 2;
+  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.06);
+}
+
+.b-thead-tr th.col-city {
+  position: sticky;
+  left: 50px;
+  z-index: 4;
+  background: #f8fafc;
+  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.06);
 }
 
 .rank-badge {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 800;
 }
 
@@ -1509,7 +1577,8 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 .city-name-group {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  white-space: nowrap;
 }
 
 .city-name {
@@ -1519,12 +1588,12 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .prov-tag {
-  font-size: 11px;
+  font-size: 10px;
   color: #64748b;
   background: #f1f5f9;
-  padding: 1px 6px;
+  padding: 1px 5px;
   border-radius: 4px;
-  align-self: flex-start;
+  align-self: center;
 }
 
 .score-cell-group {
@@ -2035,43 +2104,486 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   padding: 0 4px;
 }
 
-/* 移动端适配 */
-@media (max-width: 860px) {
+/* ------------------------------------------------------------- */
+/* 移动端深度优化与极速适配 (< 768px & < 520px)                   */
+/* ------------------------------------------------------------- */
+@media (max-width: 768px) {
+  .content-box {
+    padding: 12px 10px 48px;
+  }
+
   .benchmark-header {
     flex-direction: column;
+    gap: 12px;
+    margin-bottom: 14px;
   }
+
+  .badge-row {
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .benchmark-chip {
+    padding: 3px 8px;
+  }
+
+  .chip-txt {
+    font-size: 11px;
+  }
+
+  .meta-txt {
+    font-size: 10px;
+  }
+
+  .benchmark-title {
+    font-size: 19px;
+    line-height: 1.3;
+    margin-bottom: 4px;
+  }
+
+  .benchmark-sub {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  .arena-switch-bar {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 3px;
+    box-sizing: border-box;
+  }
+
+  .switch-pill {
+    justify-content: center;
+    padding: 8px 10px;
+  }
+
+  .pill-label {
+    font-size: 12px;
+  }
+
+  /* 群体分类切换器：移动端紧凑三等分胶囊 */
   .category-segmented-bar {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    padding: 4px;
+    margin-bottom: 12px;
   }
-  .podium-row {
-    grid-template-columns: 1fr;
-  }
-  .arena-board-card {
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .combatant-box.left-box, .combatant-box.right-box {
+
+  .seg-item {
+    flex-direction: column;
     align-items: center;
+    text-align: center;
+    padding: 8px 4px;
+    gap: 2px;
   }
-  .radar-dim-row {
+
+  .seg-icon {
+    font-size: 18px;
+  }
+
+  .seg-title {
+    font-size: 12px;
+    font-weight: 700;
+  }
+
+  .seg-desc {
+    display: none; /* 移动端隐藏冗长副标题，节省手机高度 */
+  }
+
+  /* 评测模型方法卡片 */
+  .methodology-card {
+    margin-bottom: 12px;
+  }
+
+  .method-head {
+    padding: 10px 12px;
+  }
+
+  .method-title {
+    font-size: 12px;
+  }
+
+  .method-weights {
+    display: none; /* 移动端在折叠状态下隐藏长副标题 */
+  }
+
+  .toggle-txt {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+
+  .method-body {
+    padding: 12px;
+  }
+
+  .weight-grid {
     grid-template-columns: 1fr;
     gap: 8px;
   }
-  .battle-item-row {
-    grid-template-columns: 1fr;
-    gap: 10px;
-    text-align: center;
+
+  .w-name {
+    font-size: 12px;
   }
-  .left-val, .right-val {
+
+  .w-desc {
+    font-size: 11px;
+  }
+
+  /* 筛选工具栏 */
+  .filter-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+
+  .filter-left {
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
+    width: 100%;
+    gap: 8px;
   }
+
+  .picker-anchor {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .dropdown-trigger {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 10px;
+  }
+
+  .dropdown-label {
+    font-size: 12px;
+  }
+
+  .dropdown-menu {
+    min-width: 180px;
+    max-height: 280px;
+  }
+
+  .sort-indicator-pill {
+    padding: 6px 10px;
+    white-space: nowrap;
+    font-size: 11px;
+    flex-shrink: 0;
+  }
+
+  .sort-tip-label, .sort-tip-val {
+    font-size: 11px;
+  }
+
+  .search-input-box {
+    width: 100%;
+    min-width: unset;
+    box-sizing: border-box;
+    height: 38px;
+  }
+
+  /* 前三甲高光卡片：移动端保持紧凑优雅的奥运领奖台三联排 */
+  .podium-row {
+    grid-template-columns: 1fr 1.08fr 1fr;
+    gap: 6px;
+    margin-bottom: 14px;
+    align-items: flex-end;
+  }
+
+  .podium-card {
+    padding: 10px 4px 8px;
+    border-radius: 10px;
+  }
+
+  .podium-card.rank-1 {
+    padding: 14px 4px 10px;
+  }
+
+  .medal-tag {
+    font-size: 9px;
+    padding: 2px 4px;
+    margin-bottom: 4px;
+  }
+
+  .podium-city {
+    font-size: 13px;
+    font-weight: 800;
+  }
+
+  .podium-prov {
+    font-size: 10px;
+  }
+
+  .podium-score-group {
+    margin: 4px 0;
+    gap: 2px;
+  }
+
+  .score-num {
+    font-size: 18px;
+    letter-spacing: -0.5px;
+  }
+
+  .score-unit {
+    font-size: 9px;
+  }
+
+  .podium-feats {
+    flex-direction: column;
+    gap: 2px;
+    margin-bottom: 6px;
+  }
+
+  .feat-tag {
+    font-size: 9px;
+    padding: 1px 3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .podium-btn {
+    padding: 4px 4px;
+    border-radius: 4px;
+  }
+
+  .podium-btn .btn-txt {
+    font-size: 10px;
+  }
+
+  /* 大宽表移动端优化 */
+  .benchmark-table-card {
+    border-radius: 10px;
+  }
+
+  .benchmark-table {
+    min-width: 820px;
+  }
+
+  .b-thead-tr th {
+    padding: 10px 8px;
+    font-size: 11px;
+  }
+
+  .b-tbody-tr td {
+    padding: 10px 8px;
+    font-size: 12px;
+  }
+
+  .col-rank {
+    width: 44px;
+    min-width: 44px;
+    max-width: 44px;
+  }
+
+  .col-city {
+    width: 108px;
+    min-width: 108px;
+    left: 44px;
+  }
+
+  .b-thead-tr th.col-city {
+    left: 44px;
+  }
+
+  .city-name {
+    font-size: 13px;
+  }
+
+  .prov-tag {
+    font-size: 9px;
+    padding: 1px 3px;
+  }
+
+  .score-display {
+    font-size: 13px;
+  }
+
+  .score-cell-group {
+    min-width: 76px;
+  }
+
+  .data-pill, .dim-score-pill {
+    padding: 2px 6px;
+  }
+
+  .data-txt {
+    font-size: 11px;
+  }
+
+  .dim-score-val {
+    font-size: 12px;
+  }
+
+  .dim-score-sub {
+    font-size: 9px;
+  }
+
+  .mini-pk-btn {
+    padding: 4px 8px;
+  }
+
+  .pk-btn-txt {
+    font-size: 11px;
+  }
+
   .table-pagination-bar {
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
+    padding: 12px 10px;
   }
+
+  .page-summary {
+    text-align: center;
+  }
+
+  .page-sum-txt {
+    font-size: 11px;
+  }
+
   .pagination-controls {
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .page-size-selector {
+    justify-content: center;
+  }
+
+  /* 竞技场战斗视图移动端适配 */
+  .preset-battle-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .preset-label {
+    font-size: 12px;
+  }
+
+  .preset-chips {
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 4px;
+    gap: 6px;
+  }
+
+  .preset-chip {
+    padding: 4px 10px;
+    flex-shrink: 0;
+  }
+
+  .chip-name {
+    font-size: 11px;
+  }
+
+  .arena-board-card {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+
+  .combatant-box.left-box, .combatant-box.right-box {
+    align-items: center;
+  }
+
+  .city-selector-trigger {
+    padding: 6px 12px;
+  }
+
+  .sel-city-name {
+    font-size: 14px;
+  }
+
+  .combatant-score {
+    margin-top: 6px;
+  }
+
+  .score-val {
+    font-size: 26px;
+  }
+
+  .score-sub-caps {
+    font-size: 10px;
+  }
+
+  .vs-score-title {
+    font-size: 16px;
+  }
+
+  .score-win {
+    font-size: 16px;
+  }
+
+  .arena-radar-card, .battle-matrix-card {
+    padding: 14px 10px;
+    margin-bottom: 14px;
+  }
+
+  .radar-head-title, .metrics-head-title {
+    font-size: 15px;
+  }
+
+  .radar-head-sub, .metrics-head-sub {
+    font-size: 11px;
+  }
+
+  .radar-dim-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .radar-dim-card {
+    padding: 10px 8px;
+  }
+
+  .dim-name {
+    font-size: 12px;
+  }
+
+  .radar-score {
+    font-size: 15px;
+  }
+
+  .metrics-head {
+    padding: 12px 14px;
+  }
+
+  .battle-item-row {
+    grid-template-columns: 1fr 1.2fr 1fr;
+    gap: 4px;
+    padding: 12px 6px;
+  }
+
+  .val-txt {
+    font-size: 13px;
+  }
+
+  .metric-title {
+    font-size: 12px;
+  }
+
+  .diff-badge {
+    padding: 2px 6px;
+  }
+
+  .diff-txt {
+    font-size: 10px;
+  }
+
+  .metric-exp {
+    display: none; /* 移动端在对决列表中隐藏长解释，凸显数字比拼 */
   }
 }
 </style>
