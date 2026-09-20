@@ -47,42 +47,44 @@
           <view class="form-section">
             <text class="section-label">1. 选择所属统筹区与险种</text>
             <view class="region-row">
-              <!-- 省份选择 -->
-              <view class="picker-anchor">
-                <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'province' }" @click.stop="toggleDropdown('province')">
-                  <text class="select-val">{{ currentProvince.name }}</text>
-                  <text class="select-arrow" :class="{ rotated: openDropdown === 'province' }">▾</text>
-                </view>
-                <view class="cyber-dropdown-menu" v-if="openDropdown === 'province'" @click.stop>
-                  <view 
-                    class="dropdown-item" 
-                    v-for="(p, idx) in provinceList" 
-                    :key="p.code"
-                    :class="{ selected: selectedProvinceIndex === idx }"
-                    @click.stop="selectProvince(idx)"
-                  >
-                    <text class="item-name">{{ p.name }}</text>
-                    <text class="item-check" v-if="selectedProvinceIndex === idx">✓</text>
+              <view class="region-selectors-grid">
+                <!-- 省份选择 -->
+                <view class="picker-anchor">
+                  <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'province' }" @click.stop="toggleDropdown('province')">
+                    <text class="select-val">{{ currentProvince.name }}</text>
+                    <text class="select-arrow" :class="{ rotated: openDropdown === 'province' }">▾</text>
+                  </view>
+                  <view class="cyber-dropdown-menu" v-if="openDropdown === 'province'" @click.stop>
+                    <view 
+                      class="dropdown-item" 
+                      v-for="(p, idx) in provinceList" 
+                      :key="p.code"
+                      :class="{ selected: selectedProvinceIndex === idx }"
+                      @click.stop="selectProvince(idx)"
+                    >
+                      <text class="item-name">{{ p.name }}</text>
+                      <text class="item-check" v-if="selectedProvinceIndex === idx">✓</text>
+                    </view>
                   </view>
                 </view>
-              </view>
 
-              <!-- 城市选择 -->
-              <view class="picker-anchor">
-                <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'city' }" @click.stop="toggleDropdown('city')">
-                  <text class="select-val">{{ currentCityOption.cityName }}</text>
-                  <text class="select-arrow" :class="{ rotated: openDropdown === 'city' }">▾</text>
-                </view>
-                <view class="cyber-dropdown-menu" v-if="openDropdown === 'city'" @click.stop>
-                  <view 
-                    class="dropdown-item" 
-                    v-for="(c, idx) in cityOptions" 
-                    :key="c.cityCode"
-                    :class="{ selected: selectedCityIndex === idx }"
-                    @click.stop="selectCity(idx)"
-                  >
-                    <text class="item-name">{{ c.cityName }}</text>
-                    <text class="item-check" v-if="selectedCityIndex === idx">✓</text>
+                <!-- 城市选择 -->
+                <view class="picker-anchor">
+                  <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'city' }" @click.stop="toggleDropdown('city')">
+                    <text class="select-val">{{ currentCityOption.cityName }}</text>
+                    <text class="select-arrow" :class="{ rotated: openDropdown === 'city' }">▾</text>
+                  </view>
+                  <view class="cyber-dropdown-menu" v-if="openDropdown === 'city'" @click.stop>
+                    <view 
+                      class="dropdown-item" 
+                      v-for="(c, idx) in cityOptions" 
+                      :key="c.cityCode"
+                      :class="{ selected: selectedCityIndex === idx }"
+                      @click.stop="selectCity(idx)"
+                    >
+                      <text class="item-name">{{ c.cityName }}</text>
+                      <text class="item-check" v-if="selectedCityIndex === idx">✓</text>
+                    </view>
                   </view>
                 </view>
               </view>
@@ -646,16 +648,22 @@ onMounted(() => {
 }
 
 .city-indicator-chip {
-  padding: 2px 8px;
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 9999px;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
+  box-sizing: border-box;
 }
 
 .city-indicator-txt {
   font-size: 11px;
   font-weight: 700;
   color: #2563eb;
+  line-height: 1;
 }
 
 .page-sub-title {
@@ -754,6 +762,12 @@ onMounted(() => {
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+}
+
+.region-selectors-grid {
+  display: flex;
+  gap: 10px;
+  flex: 1;
 }
 
 .picker-anchor {
@@ -1365,6 +1379,21 @@ onMounted(() => {
     gap: 4px;
   }
 
+  .page-main-title {
+    font-size: 18px;
+    white-space: nowrap;
+  }
+
+  .title-row {
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .city-indicator-chip {
+    white-space: nowrap;
+  }
+
   .page-intro-bar {
     flex-direction: column;
     align-items: stretch;
@@ -1379,6 +1408,33 @@ onMounted(() => {
   .region-row {
     flex-direction: column;
     align-items: stretch;
+    gap: 8px;
+  }
+
+  .region-selectors-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .region-selectors-grid .picker-anchor {
+    min-width: 0;
+  }
+
+  .type-capsule-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .type-capsule-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 0;
   }
 
   .suggest-input-row {

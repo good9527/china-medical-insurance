@@ -1434,6 +1434,21 @@ onMounted(() => {
     margin-bottom: 14px;
   }
 
+  .page-main-title {
+    font-size: 20px;
+    white-space: nowrap;
+  }
+
+  .title-row {
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .city-indicator-chip {
+    white-space: nowrap;
+  }
+
   .toolbar-pickers-row {
     width: 100%;
   }
@@ -1442,9 +1457,53 @@ onMounted(() => {
     flex: 1;
   }
 
+  /* 险种切换与折算基准在移动端优雅两行展开，告别挤压成竖排文字 */
+  .card-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .head-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .segment-switch-sm {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    box-sizing: border-box;
+  }
+
+  .segment-switch-sm .switch-pill {
+    justify-content: center;
+    padding: 6px 0;
+    text-align: center;
+  }
+
   .ratio-grid {
     grid-template-columns: 1fr 1fr;
     gap: 8px;
+  }
+
+  .ratio-card {
+    padding: 12px;
+  }
+
+  .r-num-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin: 4px 0;
+  }
+
+  .r-coef-tag {
+    margin-left: 0;
+    white-space: nowrap;
   }
 
   .dual-info-grid {

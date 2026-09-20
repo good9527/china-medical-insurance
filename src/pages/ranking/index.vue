@@ -1661,6 +1661,9 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   font-size: 13px;
   font-weight: 600;
   color: #1e293b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .dropdown-caret {
@@ -3466,6 +3469,34 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 
   .page-size-selector {
     display: none;
+  }
+
+  /* 热门对战预设移动端横向自适应流 */
+  .preset-battle-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 14px;
+    width: 100%;
+  }
+
+  .preset-chips {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    padding-bottom: 4px;
+  }
+
+  .preset-chips::-webkit-scrollbar {
+    display: none;
+  }
+
+  .preset-chip {
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 
   /* 竞技场移动端 */

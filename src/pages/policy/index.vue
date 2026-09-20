@@ -214,6 +214,18 @@
             </view>
           </view>
 
+          <!-- 住院核心两要素指标 (与普通门诊统筹待遇左右完美对称) -->
+          <view class="metric-grid">
+            <view class="metric-cell">
+              <text class="m-label">基本医疗统筹年封顶线</text>
+              <text class="m-val text-indigo">{{ inpatientCapDisplay }}</text>
+            </view>
+            <view class="metric-cell">
+              <text class="m-label">定点医院起付线区间</text>
+              <text class="m-val text-cyan">{{ inpatientDeductibleRangeDisplay }}</text>
+            </view>
+          </view>
+
           <!-- 住院各级医院起付线与报销比例对照表 -->
           <view class="table-container">
             <view class="t-row t-head">
@@ -566,6 +578,25 @@ const inpatientCapBadgeText = computed(() => {
   }
   return `基本医保年封顶 ¥${inPkg.annualCap / 10000}万`;
 });
+
+// 住院核心指标与起付区间（与门诊指标卡左右严格对称）
+const inpatientCapDisplay = computed(() => {
+  const cap = currentPkg.value.inpatient.annualCap;
+  if (!cap || cap >= 9999999) return '不设统筹限额';
+  return `¥${Math.round(cap / 10000)} 万元 / 年`;
+});
+
+const inpatientDeductibleRangeDisplay = computed(() => {
+  const tiers = Object.values(currentPkg.value.inpatient.tierBenefits);
+  if (!tiers || tiers.length === 0) return '按定点等级设立';
+  const deductibles = tiers.map((t: any) => t.deductible).filter((d: any) => typeof d === 'number');
+  if (deductibles.length === 0) return '按定点等级设立';
+  const min = Math.min(...deductibles);
+  const max = Math.max(...deductibles);
+  if (min === max) return `¥${min} / 次`;
+  return `¥${min} ~ ¥${max}`;
+});
+
 
 // 门诊经办提醒文案
 const outpatientMemoText = computed(() => {
@@ -1360,6 +1391,7 @@ onShow(() => {
 .text-dark { color: #0f172a; }
 .text-white { color: #0f172a; }
 .text-cyan { color: #0284c7; }
+.text-indigo { color: #4338ca; }
 .text-amber { color: #d97706; }
 .text-emerald { color: #059669; }
 .text-dim { color: #64748b; font-size: 12px; }
@@ -1685,6 +1717,13 @@ onShow(() => {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
+  }
+
+  .quick-search-trigger {
+    grid-column: 1 / -1;
+    width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
   }
 
   .picker-anchor {

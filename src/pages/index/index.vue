@@ -24,7 +24,7 @@
               <view class="title-row">
                 <text class="page-main-title">医保报销测算</text>
                 <view class="city-indicator-chip">
-                  <text class="city-indicator-txt">{{ currentCityOption.cityName }} · 报销估算</text>
+                  <text class="city-indicator-txt">{{ currentCityOption.cityName }}</text>
                 </view>
               </view>
               <text class="page-sub-title">输入就医花费及类型，快速估算医保统筹报销额度与个人自付明细</text>
@@ -90,7 +90,7 @@
             </view>
 
             <!-- 省市二级下拉 (等宽并排) -->
-            <view class="grid-2col dropdown-anchor-row">
+            <view class="region-dropdown-grid dropdown-anchor-row">
               <view class="col-field">
                 <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'province' }" @click.stop="toggleDropdown('province')">
                   <text class="select-val">{{ currentProvince.name }}</text>
@@ -1026,7 +1026,8 @@ onShow(() => {
 .empty-txt { font-size: 18rpx; color: #64748b; }
 
 /* 双列栅格 */
-.grid-2col {
+.grid-2col,
+.region-dropdown-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
@@ -1340,7 +1341,8 @@ onShow(() => {
 
 /* 预设金额药丸行 */
 .preset-pill-row {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
   gap: 8px;
   margin-top: 8px;
 }
@@ -1882,13 +1884,24 @@ onShow(() => {
   }
 
   .preset-pill-row {
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
     gap: 6px;
+    flex-wrap: nowrap;
   }
 
   .preset-pill {
-    min-width: calc(33.33% - 6px);
-    padding: 12rpx 0;
+    min-width: 0;
+    padding: 10rpx 2rpx;
+  }
+
+  .pill-text {
+    font-size: 19rpx;
+    white-space: nowrap;
+  }
+
+  .region-dropdown-grid {
+    gap: 8px;
   }
 
   .content-box {
