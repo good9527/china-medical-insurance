@@ -30,7 +30,7 @@ export const suiningCityData: CityInsuranceData = {
       effectiveDate: '2024-06-01',
       status: 'active',
       officialUrl: 'http://ybj.suining.gov.cn/zwgk/zcfg/202404/t20240422_231908.shtml',
-      summaryQuote: '职工住院起付线：一级200元、二级400元、三级800元；在职支付比例一级92%、二级88%、三级84%（退休人员各项提高3%）。居民住院起付线一级100元、二级250元、三级600元，支付比例一级85%、二级78%、三级65%。大病保险起付线13000元，支付比例60%-75%。'
+      summaryQuote: '职工住院起付线：一级200元、二级450元、三级750元；在职支付比例一级92%、二级88%、三级84%（退休人员各项提高3%）。居民住院起付线：基层300元(90%)、一级400元(80%)、二级500元(70%)、三级700元(60%)、市级三甲800元(55%)。居民基本医保年度限额15万元，大病保险起付线13000元，支付比例60%-75%。'
     }
   ],
 
@@ -98,7 +98,7 @@ export const suiningCityData: CityInsuranceData = {
     },
     inpatient: {
       sourceDocId: 'sn-medical-insurance-inpatient-2024',
-      annualCap: 220000,
+      annualCap: 150000,
       tierBenefits: {
         community: { tierName: '基层社区及乡镇卫生院', deductible: 300, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.80 },
