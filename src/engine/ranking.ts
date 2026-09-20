@@ -362,15 +362,39 @@ export function compareTwoCities(cityCode1: string, cityCode2: string): {
     let diffText = '双方指标持平';
     if (v1 !== v2) {
       const isCity1Better = higherIsBetter ? v1 > v2 : v1 < v2;
-      const diffVal = Math.abs(Math.round((v1 - v2) * 100) / 100);
+      const betterCity = isCity1Better ? city1 : city2;
+      advantage = isCity1Better ? 'city1' : 'city2';
       if (isCity1Better) {
-        advantage = 'city1';
         win1++;
-        diffText = `${city1.cityName} 更优 (+${diffVal}${unit})`;
       } else {
-        advantage = 'city2';
         win2++;
-        diffText = `${city2.cityName} 更优 (+${diffVal}${unit})`;
+      }
+
+      if (v1 >= 9999999 || v2 >= 9999999) {
+        diffText = `${betterCity.cityName} 更优 (上不封顶/无限制)`;
+      } else if (unit === '%') {
+        // v1 and v2 are decimals between 0 and 1, convert to percentage points
+        const pctDiff = Math.abs(Math.round((v1 - v2) * 1000) / 10);
+        const diffStr = pctDiff % 1 === 0 ? pctDiff.toFixed(0) : pctDiff.toFixed(1);
+        diffText = `${betterCity.cityName} 更优 (+${diffStr}%)`;
+      } else if (unit === '元') {
+        const rawDiff = Math.abs(v1 - v2);
+        let diffStr = '';
+        if (rawDiff >= 10000 && rawDiff % 10000 === 0) {
+          diffStr = `${rawDiff / 10000}万元`;
+        } else if (rawDiff >= 10000) {
+          diffStr = `${(rawDiff / 10000).toFixed(1)}万元`;
+        } else {
+          diffStr = `¥${rawDiff}`;
+        }
+        if (!higherIsBetter) {
+          diffText = `${betterCity.cityName} 更优 (起付低 ${diffStr})`;
+        } else {
+          diffText = `${betterCity.cityName} 更优 (+${diffStr})`;
+        }
+      } else {
+        const rawDiff = Math.abs(Math.round((v1 - v2) * 100) / 100);
+        diffText = `${betterCity.cityName} 更优 (+${rawDiff}${unit})`;
       }
     } else {
       equal++;
@@ -386,6 +410,15 @@ export function compareTwoCities(cityCode1: string, cityCode2: string): {
       explanation
     });
   }
+
+function formatMoney(amount: number): string {
+  if (amount >= 9999999) return '上不封顶';
+  if (amount >= 10000) {
+    if (amount % 10000 === 0) return `¥${amount / 10000}万`;
+    return `¥${(amount / 10000).toFixed(1).replace(/\.0$/, '')}万`;
+  }
+  return `¥${amount}`;
+}
 
   // 1. 职工门诊起付线 (越低越好)
   pushMetric(
@@ -404,8 +437,8 @@ export function compareTwoCities(cityCode1: string, cityCode2: string): {
   pushMetric(
     '职工门诊年度封顶',
     '门诊共济',
-    city1.empOutpatientCap >= 9999999 ? '上不封顶' : `¥${city1.empOutpatientCap}`,
-    city2.empOutpatientCap >= 9999999 ? '上不封顶' : `¥${city2.empOutpatientCap}`,
+    city1.empOutpatientCap >= 9999999 ? '上不封顶' : formatMoney(city1.empOutpatientCap),
+    city2.empOutpatientCap >= 9999999 ? '上不封顶' : formatMoney(city2.empOutpatientCap),
     city1.empOutpatientCap,
     city2.empOutpatientCap,
     true,
@@ -417,8 +450,8 @@ export function compareTwoCities(cityCode1: string, cityCode2: string): {
   pushMetric(
     '居民基层门诊年限额',
     '门诊共济',
-    `¥${city1.resOutpatientCap}`,
-    `¥${city2.resOutpatientCap}`,
+    formatMoney(city1.resOutpatientCap),
+    formatMoney(city2.resOutpatientCap),
     city1.resOutpatientCap,
     city2.resOutpatientCap,
     true,
@@ -482,8 +515,8 @@ export function compareTwoCities(cityCode1: string, cityCode2: string): {
   pushMetric(
     '基本医保年度封顶线',
     '大病兜底',
-    `¥${Math.round(city1.annualMaxCap / 10000)} 万元`,
-    `¥${Math.round(city2.annualMaxCap / 10000)} 万元`,
+    formatMoney(city1.annualMaxCap),
+    formatMoney(city2.annualMaxCap),
     city1.annualMaxCap,
     city2.annualMaxCap,
     true,
