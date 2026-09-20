@@ -22,16 +22,23 @@
       }
     },
     {
-      "path": "pages/remote/index",
+      "path": "pages/service/index",
       "style": {
-        "navigationBarTitleText": "异地就医指南",
+        "navigationBarTitleText": "便民服务",
         "enablePullDownRefresh": false
       }
     },
     {
-      "path": "pages/service/index",
+      "path": "pages/correction/index",
       "style": {
-        "navigationBarTitleText": "热线与反馈",
+        "navigationBarTitleText": "政策纠错中心",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
+      "path": "pages/remote/index",
+      "style": {
+        "navigationBarTitleText": "异地就医指南",
         "enablePullDownRefresh": false
       }
     }
@@ -61,12 +68,12 @@
         "text": "政策对比"
       },
       {
-        "pagePath": "pages/remote/index",
-        "text": "异地就医"
+        "pagePath": "pages/service/index",
+        "text": "便民服务"
       },
       {
-        "pagePath": "pages/service/index",
-        "text": "服务热线"
+        "pagePath": "pages/correction/index",
+        "text": "政策纠错"
       }
     ]
   }

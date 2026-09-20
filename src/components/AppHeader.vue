@@ -57,25 +57,29 @@
         </view>
         <view 
           class="nav-tab" 
-          :class="{ active: currentTab === 'remote' }" 
-          @click="navTo('/pages/remote/index')"
-        >
-          <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="2" y1="12" x2="22" y2="12"></line>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-          </svg>
-          <text class="nav-label">异地就医</text>
-        </view>
-        <view 
-          class="nav-tab" 
-          :class="{ active: currentTab === 'service' }" 
+          :class="{ active: currentTab === 'service' || currentTab === 'remote' }" 
           @click="navTo('/pages/service/index')"
         >
           <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            <circle cx="12" cy="12" r="10"></circle>
+            <circle cx="12" cy="12" r="4"></circle>
+            <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+            <line x1="14.83" y1="14.83" x2="19.07" y2="19.07"></line>
+            <line x1="14.83" y1="9.17" x2="19.07" y2="4.93"></line>
+            <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
           </svg>
-          <text class="nav-label">服务热线</text>
+          <text class="nav-label">便民服务</text>
+        </view>
+        <view 
+          class="nav-tab" 
+          :class="{ active: currentTab === 'correction' }" 
+          @click="navTo('/pages/correction/index')"
+        >
+          <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <path d="m9 12 2 2 4-4"></path>
+          </svg>
+          <text class="nav-label">政策纠错</text>
         </view>
       </view>
 
@@ -94,7 +98,7 @@
 import AppLogo from './AppLogo.vue';
 
 defineProps<{
-  currentTab: 'index' | 'policy' | 'ranking' | 'remote' | 'service';
+  currentTab: 'index' | 'policy' | 'ranking' | 'remote' | 'service' | 'correction';
 }>();
 
 function navTo(url: string) {

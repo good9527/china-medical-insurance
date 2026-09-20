@@ -247,6 +247,10 @@ import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
 
+onMounted(() => {
+  uni.switchTab({ url: '/pages/service/index' });
+});
+
 const openDropdown = ref<string | null>(null);
 
 function navToTab(url: string) {
