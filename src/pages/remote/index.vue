@@ -243,11 +243,11 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
 
 const openDropdown = ref<string | null>(null);
-
 
 function navToTab(url: string) {
   uni.switchTab({ url });
@@ -263,11 +263,46 @@ function selectProvince(idx: number) {
   selectedProvinceIndex.value = idx;
   selectedCityIndex.value = 0;
   openDropdown.value = null;
+  persistCityChoice();
 }
 
 function selectCity(idx: number) {
   selectedCityIndex.value = idx;
   openDropdown.value = null;
+  persistCityChoice();
+}
+
+function persistCityChoice() {
+  if (currentCityOption.value?.cityCode) {
+    uni.setStorageSync('selected_medical_city_code', currentCityOption.value.cityCode);
+    uni.setStorageSync('selected_policy_city_code', currentCityOption.value.cityCode);
+    uni.setStorageSync('selected_policy_type', currentType.value);
+  }
+}
+
+function syncCityFromStorage() {
+  try {
+    const targetCityCode = uni.getStorageSync('selected_medical_city_code') || uni.getStorageSync('selected_policy_city_code');
+    if (targetCityCode && targetCityCode !== currentCityOption.value.cityCode) {
+      for (let pIdx = 0; pIdx < provinceList.length; pIdx++) {
+        const p = provinceList[pIdx];
+        const cities = getCitiesByProvinceCode(p.code);
+        const cIdx = cities.findIndex(c => c.cityCode === targetCityCode);
+        if (cIdx !== -1) {
+          selectedProvinceIndex.value = pIdx;
+          selectedCityIndex.value = cIdx;
+          break;
+        }
+      }
+    }
+
+    const targetType = uni.getStorageSync('selected_policy_type');
+    if (targetType === 'employee' || targetType === 'resident') {
+      currentType.value = targetType;
+    }
+  } catch (e) {
+    console.error('Failed to sync remote city:', e);
+  }
 }
 
 const selectedProvinceIndex = ref(0);
@@ -297,6 +332,11 @@ onMounted(() => {
       openDropdown.value = null;
     });
   }
+  syncCityFromStorage();
+});
+
+onShow(() => {
+  syncCityFromStorage();
 });
 </script>
 
@@ -959,6 +999,10 @@ onMounted(() => {
   .rule-paragraph {
     font-size: 22rpx;
     line-height: 1.45;
+  }
+
+  .content-box {
+    padding: 12px 12px calc(80px + env(safe-area-inset-bottom)) !important;
   }
 }
 

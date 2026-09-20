@@ -419,12 +419,28 @@
           </view>
         </view>
       </view>
+
+      <!-- 移动端底部悬浮结果快捷卡片 (仅手机视口展示，实时反馈测算结论) -->
+      <view class="mobile-calc-float-bar" v-if="result" @click="scrollToReceipt">
+        <view class="float-bar-left">
+          <text class="float-tag">预估报销</text>
+          <view class="float-val-group">
+            <text class="float-currency">¥</text>
+            <text class="float-amount">{{ result.breakdown.totalReimbursed.toLocaleString() }}</text>
+          </view>
+          <text class="float-ratio">({{ result.breakdown.effectiveRatio }}%)</text>
+        </view>
+        <view class="float-bar-right">
+          <text class="float-cta">查看测算凭证 ↓</text>
+        </view>
+      </view>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import type { HospitalTier, CalculateRequest, CalculateResult } from '../../data/types';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
@@ -450,13 +466,23 @@ function selectProvince(idx: number) {
   selectedProvinceIndex.value = idx;
   selectedCityIndex.value = 0;
   openDropdown.value = null;
+  persistCityChoice();
   triggerCalculation();
 }
 
 function selectCity(idx: number) {
   selectedCityIndex.value = idx;
   openDropdown.value = null;
+  persistCityChoice();
   triggerCalculation();
+}
+
+function persistCityChoice() {
+  if (currentCityOption.value?.cityCode) {
+    uni.setStorageSync('selected_medical_city_code', currentCityOption.value.cityCode);
+    uni.setStorageSync('selected_policy_city_code', currentCityOption.value.cityCode);
+    uni.setStorageSync('selected_policy_type', form.insuranceType);
+  }
 }
 
 function selectHospital(idx: number) {
@@ -507,6 +533,7 @@ function selectSearchedCity(item: { cityCode: string; provinceCode: string }) {
   }
   showSearchModal.value = false;
   citySearchQuery.value = '';
+  persistCityChoice();
   triggerCalculation();
 }
 
@@ -607,13 +634,47 @@ function openDocUrl() {
   }
 }
 
+function scrollToReceipt() {
+  uni.pageScrollTo({
+    selector: '.receipt-card',
+    duration: 350,
+    offsetTop: -16
+  });
+}
+
+function syncCityFromStorage() {
+  const savedCode = uni.getStorageSync('selected_medical_city_code') || uni.getStorageSync('selected_policy_city_code');
+  if (savedCode && savedCode !== currentCityOption.value.cityCode) {
+    for (let pIdx = 0; pIdx < provinceList.length; pIdx++) {
+      const p = provinceList[pIdx];
+      const cities = getCitiesByProvinceCode(p.code);
+      const cIdx = cities.findIndex(c => c.cityCode === savedCode);
+      if (cIdx !== -1) {
+        selectedProvinceIndex.value = pIdx;
+        selectedCityIndex.value = cIdx;
+        break;
+      }
+    }
+  }
+
+  const savedType = uni.getStorageSync('selected_policy_type');
+  if (savedType === 'employee' || savedType === 'resident') {
+    form.insuranceType = savedType;
+  }
+  triggerCalculation();
+}
+
 onMounted(() => {
   if (typeof window !== 'undefined') {
     window.addEventListener('click', () => {
       openDropdown.value = null;
     });
   }
-  triggerCalculation();
+  syncCityFromStorage();
+});
+
+onShow(() => {
+  syncCityFromStorage();
 });
 </script>
 
@@ -1709,6 +1770,98 @@ onMounted(() => {
     min-width: calc(33.33% - 6px);
     padding: 12rpx 0;
   }
+
+  .content-box {
+    padding: 12px 12px calc(110px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .mobile-calc-float-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    bottom: calc(56px + env(safe-area-inset-bottom));
+    left: 12px;
+    right: 12px;
+    background: rgba(15, 23, 42, 0.94);
+    color: #ffffff;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 10px 14px;
+    border-radius: 9999rpx;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.12);
+    z-index: 990;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+  }
+
+  .mobile-calc-float-bar:active {
+    transform: scale(0.98);
+  }
+
+  .float-bar-left {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    overflow: hidden;
+  }
+
+  .float-tag {
+    font-size: 11px;
+    color: #94a3b8;
+    background: rgba(255, 255, 255, 0.12);
+    padding: 2px 6px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  .float-val-group {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    white-space: nowrap;
+  }
+
+  .float-currency {
+    font-size: 12px;
+    color: #60a5fa;
+    font-weight: 700;
+  }
+
+  .float-amount {
+    font-size: 17px;
+    font-weight: 800;
+    color: #60a5fa;
+  }
+
+  .float-ratio {
+    font-size: 11px;
+    color: #93c5fd;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .float-bar-right {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  .float-cta {
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+    background: #2563eb;
+    padding: 5px 10px;
+    border-radius: 9999rpx;
+    white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+  }
+}
+
+.mobile-calc-float-bar {
+  display: none;
 }
 
 @media (max-width: 380px) {

@@ -133,6 +133,7 @@
 
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import { provinceList, getCitiesByProvinceCode } from '../../data/provinces';
 import { getCityDataByCode } from '../../data';
@@ -269,12 +270,30 @@ function submitFeedback() {
   feedback.content = '';
 }
 
+function syncProvinceFromStorage() {
+  const savedCode = uni.getStorageSync('selected_medical_city_code') || uni.getStorageSync('selected_policy_city_code');
+  if (savedCode) {
+    for (let pIdx = 0; pIdx < provinceList.length; pIdx++) {
+      const cities = getCitiesByProvinceCode(provinceList[pIdx].code);
+      if (cities.some(c => c.cityCode === savedCode)) {
+        selectedProvinceIndex.value = pIdx;
+        break;
+      }
+    }
+  }
+}
+
 onMounted(() => {
   if (typeof window !== 'undefined') {
     window.addEventListener('click', () => {
       openDropdown.value = null;
     });
   }
+  syncProvinceFromStorage();
+});
+
+onShow(() => {
+  syncProvinceFromStorage();
 });
 </script>
 
@@ -932,6 +951,10 @@ onMounted(() => {
 
   .form-submit-row {
     justify-content: stretch;
+  }
+
+  .content-box {
+    padding: 12px 12px calc(80px + env(safe-area-inset-bottom)) !important;
   }
 }
 

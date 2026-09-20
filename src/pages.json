@@ -37,16 +37,16 @@
     }
   ],
   "globalStyle": {
-    "navigationBarTextStyle": "white",
+    "navigationBarTextStyle": "black",
     "navigationBarTitleText": "全国医保智能报销测算",
-    "navigationBarBackgroundColor": "#060911",
-    "backgroundColor": "#060911"
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f8fafc"
   },
   "tabBar": {
     "color": "#64748b",
-    "selectedColor": "#00f0ff",
-    "backgroundColor": "#090e1a",
-    "borderStyle": "black",
+    "selectedColor": "#2563eb",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",

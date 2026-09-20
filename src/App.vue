@@ -236,6 +236,31 @@ uni-page-head {
   }
 }
 
+/* 移动端沉浸式磨砂微光 TabBar 与安全区适配 */
+@media (max-width: 767px) {
+  uni-tabbar, .uni-tabbar {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(20px) !important;
+    -webkit-backdrop-filter: blur(20px) !important;
+    border-top: 1px solid rgba(226, 232, 240, 0.9) !important;
+    box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.05) !important;
+    padding-bottom: env(safe-area-inset-bottom) !important;
+  }
+  .uni-tabbar .uni-tabbar__item {
+    padding: 6px 0 !important;
+    transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+  .uni-tabbar .uni-tabbar__item:active {
+    transform: scale(0.94) !important;
+  }
+  .uni-tabbar .uni-tabbar__label {
+    font-size: 11.5px !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.2px !important;
+    margin-top: 2px !important;
+  }
+}
+
 /* 全局 QQ 弹弹交互基础类与按压反馈 */
 button, .elastic-btn, .interactive-item {
   position: relative;

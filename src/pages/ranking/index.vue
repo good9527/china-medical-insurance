@@ -558,6 +558,11 @@
               <text class="score-val text-blue">{{ battleResult.city1.overallScore }}</text>
               <text class="score-sub-caps">(职工{{ battleResult.city1.employeeScore }} / 居民{{ battleResult.city1.residentScore }})</text>
             </view>
+
+            <view class="combatant-actions mt-8">
+              <text class="combat-act-btn btn-policy" @click="goToCityPolicy(battleResult.city1.cityCode)">政策详情 ↗</text>
+              <text class="combat-act-btn btn-calc" @click="goToCityCalc(battleResult.city1.cityCode)">测算报销 ➔</text>
+            </view>
           </view>
 
           <!-- 中间：胜场比分与能量条 -->
@@ -605,6 +610,11 @@
               <text class="score-label">全域综合：</text>
               <text class="score-val text-orange">{{ battleResult.city2.overallScore }}</text>
               <text class="score-sub-caps">(职工{{ battleResult.city2.employeeScore }} / 居民{{ battleResult.city2.residentScore }})</text>
+            </view>
+
+            <view class="combatant-actions mt-8">
+              <text class="combat-act-btn btn-policy" @click="goToCityPolicy(battleResult.city2.cityCode)">政策详情 ↗</text>
+              <text class="combat-act-btn btn-calc" @click="goToCityCalc(battleResult.city2.cityCode)">测算报销 ➔</text>
             </view>
           </view>
         </view>
@@ -849,6 +859,7 @@ function getPodiumFeat2(item: BenchmarkCityMetrics): string {
 }
 
 function goToCityPolicy(cityCode: string) {
+  uni.setStorageSync('selected_medical_city_code', cityCode);
   uni.setStorageSync('selected_policy_city_code', cityCode);
   if (currentCategory.value === 'employee') {
     uni.setStorageSync('selected_policy_type', 'employee');
@@ -856,6 +867,17 @@ function goToCityPolicy(cityCode: string) {
     uni.setStorageSync('selected_policy_type', 'resident');
   }
   uni.switchTab({ url: '/pages/policy/index' });
+}
+
+function goToCityCalc(cityCode: string) {
+  uni.setStorageSync('selected_medical_city_code', cityCode);
+  uni.setStorageSync('selected_policy_city_code', cityCode);
+  if (currentCategory.value === 'employee') {
+    uni.setStorageSync('selected_policy_type', 'employee');
+  } else if (currentCategory.value === 'resident') {
+    uni.setStorageSync('selected_policy_type', 'resident');
+  }
+  uni.switchTab({ url: '/pages/index/index' });
 }
 
 // -------------------------------------------------------------
@@ -1801,6 +1823,38 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 .score-val { font-size: 26px; font-weight: 900; letter-spacing: -0.5px; }
 .score-sub-caps { font-size: 11px; color: #64748b; margin-left: 2px; }
 
+.combatant-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.combat-act-btn {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.combat-act-btn:active {
+  transform: scale(0.96);
+}
+
+.btn-policy {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.btn-calc {
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+}
+
 .arena-center-vs {
   display: flex;
   flex-direction: column;
@@ -2109,7 +2163,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 /* ------------------------------------------------------------- */
 @media (max-width: 768px) {
   .content-box {
-    padding: 12px 10px 48px;
+    padding: 12px 10px calc(80px + env(safe-area-inset-bottom));
   }
 
   .benchmark-header {

@@ -28,8 +28,12 @@
           </view>
         </view>
 
-        <!-- 地区切换自定义下拉框 -->
+        <!-- 地区切换自定义下拉框与快速搜索 -->
         <view class="toolbar-pickers-row">
+          <view class="quick-search-trigger" @click="showSearchModal = !showSearchModal">
+            <text class="search-trigger-txt">{{ showSearchModal ? '收起 ✕' : '快速检索城市 ↵' }}</text>
+          </view>
+
           <!-- 省份下拉 -->
           <view class="picker-anchor">
             <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'province' }" @click.stop="toggleDropdown('province')">
@@ -72,21 +76,77 @@
         </view>
       </view>
 
+      <!-- 城市快速搜索面板 -->
+      <view class="search-panel" v-if="showSearchModal" @click.stop>
+        <view class="input-wrap">
+          <input 
+            class="search-input" 
+            v-model="citySearchQuery" 
+            placeholder="输入城市拼音或中文（如：成都 / 拉萨 / 咸阳）" 
+            :focus="true"
+            @confirm="onSearchConfirm"
+          />
+          <text class="search-clear-btn" v-if="citySearchQuery" @click.stop="citySearchQuery = ''">✕</text>
+        </view>
+        <view class="search-results-list" v-if="filteredSearchCities.length > 0">
+          <view 
+            class="search-result-row" 
+            v-for="item in filteredSearchCities" 
+            :key="item.cityCode"
+            @click="selectSearchedCity(item)"
+          >
+            <view class="row-left">
+              <text class="c-name">{{ item.cityName }}</text>
+              <text class="c-prov">{{ item.provinceName }}</text>
+            </view>
+            <text class="c-action">查看待遇 ↵</text>
+          </view>
+        </view>
+        <view class="search-empty" v-else-if="citySearchQuery.trim()">
+          <text class="empty-txt">未匹配到该城市，请尝试省份全称</text>
+        </view>
+      </view>
+
       <!-- 身份类型切换 (精致胶囊切换，去除冗余描述) -->
-      <view class="identity-switch-bar mb-20">
+      <view class="identity-switch-bar mb-16">
         <view 
           class="switch-pill-btn" 
           :class="{ active: currentType === 'employee' }"
-          @click="currentType = 'employee'"
+          @click="currentType = 'employee'; persistCityChoice()"
         >
           <text class="pill-title">城镇职工医保</text>
         </view>
         <view 
           class="switch-pill-btn" 
           :class="{ active: currentType === 'resident' }"
-          @click="currentType = 'resident'"
+          @click="currentType = 'resident'; persistCityChoice()"
         >
           <text class="pill-title">城乡居民医保</text>
+        </view>
+      </view>
+
+      <!-- 立即去测算 CTA 卡片 (高转换导流横幅) -->
+      <view class="calc-shortcut-banner mb-20" @click="goToCalculator">
+        <view class="banner-left">
+          <view class="banner-icon-wrap">
+            <svg class="banner-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+              <line x1="8" y1="6" x2="16" y2="6"></line>
+              <line x1="16" y1="14" x2="16" y2="14.01"></line>
+              <line x1="8" y1="14" x2="8" y2="14.01"></line>
+              <line x1="12" y1="14" x2="12" y2="14.01"></line>
+              <line x1="8" y1="18" x2="8" y2="18.01"></line>
+              <line x1="12" y1="18" x2="12" y2="18.01"></line>
+              <line x1="16" y1="18" x2="16" y2="18.01"></line>
+            </svg>
+          </view>
+          <view class="banner-text">
+            <text class="banner-title">想了解在 {{ currentCity.cityName }} 能实际报销多少？</text>
+            <text class="banner-sub">一键带入当前 {{ currentType === 'employee' ? '职工' : '居民' }} 政策参数，快速模拟医疗花费与自付金额</text>
+          </view>
+        </view>
+        <view class="banner-btn">
+          <text class="banner-btn-txt">立即去测算 ➔</text>
         </view>
       </view>
 
@@ -258,10 +318,10 @@ import { ref, computed, onMounted } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
+import { allCities } from '../../data';
 
 // 下拉菜单控制
 const openDropdown = ref<string | null>(null);
-
 
 function navToTab(url: string) {
   uni.switchTab({ url });
@@ -277,17 +337,63 @@ function selectProvince(idx: number) {
   selectedProvinceIndex.value = idx;
   selectedCityIndex.value = 0;
   openDropdown.value = null;
+  persistCityChoice();
 }
 
 function selectCity(idx: number) {
   selectedCityIndex.value = idx;
   openDropdown.value = null;
+  persistCityChoice();
+}
+
+const showSearchModal = ref(false);
+const citySearchQuery = ref('');
+const filteredSearchCities = computed(() => {
+  const q = citySearchQuery.value.trim().toLowerCase();
+  if (!q) return [];
+  return allCities
+    .filter(c => c.cityName.toLowerCase().includes(q) || c.provinceName.toLowerCase().includes(q))
+    .slice(0, 10);
+});
+
+function selectSearchedCity(item: { cityCode: string; provinceCode: string }) {
+  const pIndex = provinceList.findIndex(p => p.code === item.provinceCode);
+  if (pIndex !== -1) {
+    selectedProvinceIndex.value = pIndex;
+    const cities = getCitiesByProvinceCode(item.provinceCode);
+    const cIndex = cities.findIndex(c => c.cityCode === item.cityCode);
+    if (cIndex !== -1) {
+      selectedCityIndex.value = cIndex;
+    }
+  }
+  showSearchModal.value = false;
+  citySearchQuery.value = '';
+  persistCityChoice();
+}
+
+function onSearchConfirm() {
+  if (filteredSearchCities.value.length > 0) {
+    selectSearchedCity(filteredSearchCities.value[0]);
+  }
+}
+
+function persistCityChoice() {
+  if (currentCityOption.value?.cityCode) {
+    uni.setStorageSync('selected_medical_city_code', currentCityOption.value.cityCode);
+    uni.setStorageSync('selected_policy_city_code', currentCityOption.value.cityCode);
+    uni.setStorageSync('selected_policy_type', currentType.value);
+  }
+}
+
+function goToCalculator() {
+  persistCityChoice();
+  uni.switchTab({ url: '/pages/index/index' });
 }
 
 function syncCityFromStorage() {
   try {
-    const targetCityCode = uni.getStorageSync('selected_policy_city_code');
-    if (targetCityCode) {
+    const targetCityCode = uni.getStorageSync('selected_policy_city_code') || uni.getStorageSync('selected_medical_city_code');
+    if (targetCityCode && targetCityCode !== currentCityOption.value.cityCode) {
       for (let pIdx = 0; pIdx < provinceList.length; pIdx++) {
         const p = provinceList[pIdx];
         const cities = getCitiesByProvinceCode(p.code);
@@ -298,13 +404,11 @@ function syncCityFromStorage() {
           break;
         }
       }
-      uni.removeStorageSync('selected_policy_city_code');
     }
 
     const targetType = uni.getStorageSync('selected_policy_type');
     if (targetType === 'employee' || targetType === 'resident') {
       currentType.value = targetType;
-      uni.removeStorageSync('selected_policy_type');
     }
   } catch (e) {
     console.error('Failed to sync policy city:', e);
@@ -571,44 +675,17 @@ function copyDocUrl(url: string) {
   });
 }
 
-function applySelectedCityFromStorage() {
-  const targetCityCode = uni.getStorageSync('selected_policy_city_code');
-  if (!targetCityCode) return;
-  uni.removeStorageSync('selected_policy_city_code');
-
-  const targetType = uni.getStorageSync('selected_policy_type');
-  if (targetType === 'employee' || targetType === 'resident') {
-    currentType.value = targetType;
-    uni.removeStorageSync('selected_policy_type');
-  }
-
-  // 遍历所有省份查找匹配该 cityCode 的省市索引
-  for (let pIdx = 0; pIdx < provinceList.length; pIdx++) {
-    const cities = getCitiesByProvinceCode(provinceList[pIdx].code);
-    const cIdx = cities.findIndex(c => c.cityCode === targetCityCode);
-    if (cIdx !== -1) {
-      selectedProvinceIndex.value = pIdx;
-      selectedCityIndex.value = cIdx;
-      break;
-    }
-  }
-
-  if (typeof window !== 'undefined') {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
-}
-
 onMounted(() => {
   if (typeof window !== 'undefined') {
     window.addEventListener('click', () => {
       openDropdown.value = null;
     });
   }
-  applySelectedCityFromStorage();
+  syncCityFromStorage();
 });
 
 onShow(() => {
-  applySelectedCityFromStorage();
+  syncCityFromStorage();
 });
 </script>
 
@@ -772,10 +849,204 @@ onShow(() => {
   margin-top: 4px;
 }
 
+/* 快速检索城市触发器与面板 */
+.quick-search-trigger {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 12rpx;
+  padding: 0 16rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.search-trigger-txt {
+  font-size: 22rpx;
+  color: #2563eb;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.search-panel {
+  background: #ffffff;
+  border: 1px solid #93c5fd;
+  border-radius: 12rpx;
+  padding: 12px;
+  margin-bottom: 14px;
+  box-shadow: 0 12rpx 32rpx rgba(37, 99, 235, 0.08);
+}
+
+.input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  height: 76rpx;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8rpx;
+  padding: 0 50rpx 0 20rpx;
+  font-size: 24rpx;
+  color: #0f172a;
+  box-sizing: border-box;
+}
+
+.search-clear-btn {
+  position: absolute;
+  right: 18rpx;
+  font-size: 24rpx;
+  color: #94a3b8;
+  cursor: pointer;
+  padding: 4rpx;
+}
+
+.search-results-list {
+  margin-top: 10px;
+  max-height: 380rpx;
+  overflow-y: auto;
+  border-top: 1px solid #f1f5f9;
+}
+
+.search-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14rpx 10rpx;
+  border-bottom: 1px solid #f8fafc;
+  cursor: pointer;
+}
+
+.search-result-row:hover {
+  background: #f0fdf4;
+}
+
+.row-left {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.c-name {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.c-prov {
+  font-size: 22rpx;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2rpx 10rpx;
+  border-radius: 4rpx;
+}
+
+.c-action {
+  font-size: 22rpx;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.search-empty {
+  padding: 16px 0;
+  text-align: center;
+}
+
+.empty-txt {
+  font-size: 24rpx;
+  color: #94a3b8;
+}
+
+/* 立即去测算 CTA 卡片 */
+.calc-shortcut-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+  border: 1px solid #bfdbfe;
+  border-radius: 14px;
+  padding: 14px 18px;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.05);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.calc-shortcut-banner:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.1);
+  border-color: #93c5fd;
+}
+
+.calc-shortcut-banner:active {
+  transform: scale(0.99);
+}
+
+.banner-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.banner-icon-wrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.08);
+}
+
+.banner-svg {
+  width: 20px;
+  height: 20px;
+  stroke: #2563eb;
+}
+
+.banner-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.banner-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.banner-sub {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.banner-btn {
+  background: #2563eb;
+  color: #ffffff;
+  padding: 8px 16px;
+  border-radius: 9999rpx;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
+}
+
+.banner-btn-txt {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
 /* 地区选择器行 */
 .toolbar-pickers-row {
   display: flex;
   gap: 12rpx;
+  flex-wrap: wrap;
 }
 
 .picker-anchor {
@@ -1387,6 +1658,57 @@ onShow(() => {
     min-width: calc(50% - 6px);
     justify-content: center;
     padding: 10rpx 14rpx;
+  }
+
+  .content-box {
+    padding: 12px 12px calc(80px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .calc-shortcut-banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 12px 14px;
+  }
+
+  .banner-left {
+    gap: 10px;
+  }
+
+  .banner-icon-wrap {
+    width: 32px;
+    height: 32px;
+  }
+
+  .banner-svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .banner-title {
+    font-size: 13px;
+  }
+
+  .banner-sub {
+    font-size: 11px;
+  }
+
+  .banner-btn {
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+  }
+
+  .banner-btn-txt {
+    font-size: 13px;
+  }
+
+  .quick-search-trigger {
+    width: 100%;
+    justify-content: center;
   }
 }
 
