@@ -845,19 +845,26 @@ onShow(() => {
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.4px;
+  line-height: 1.25;
 }
 
 .city-indicator-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(37, 99, 235, 0.06);
   border: 1px solid rgba(37, 99, 235, 0.2);
-  padding: 2px 10px;
-  border-radius: 9999rpx;
+  padding: 0 10px;
+  height: 24px;
+  border-radius: 9999px;
+  box-sizing: border-box;
 }
 
 .city-indicator-txt {
   font-size: 12px;
   color: #2563eb;
   font-weight: 600;
+  line-height: 1;
 }
 
 .page-sub-title {

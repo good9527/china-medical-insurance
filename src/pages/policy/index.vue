@@ -303,7 +303,13 @@
                 <view class="doc-btn-inner"><text class="doc-btn-txt">文号精准核验</text><svg class="btn-micro-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></view>
               </view>
               <view class="doc-btn btn-copy" @click="copyDocUrl(doc.officialUrl)">
-                <text class="doc-btn-txt">复制链接</text>
+                <view class="doc-btn-inner">
+                  <text class="doc-btn-txt">复制链接</text>
+                  <svg class="btn-micro-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                </view>
               </view>
             </view>
           </view>
@@ -831,16 +837,19 @@ onShow(() => {
 .doc-seal-pill {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
-  padding: 3px 10px;
-  border-radius: 9999rpx;
+  padding: 0 10px;
+  height: 24px;
+  border-radius: 9999px;
+  box-sizing: border-box;
 }
 
 .seal-svg {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   stroke: #2563eb;
   flex-shrink: 0;
 }
@@ -850,19 +859,26 @@ onShow(() => {
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.4px;
+  line-height: 1.25;
 }
 
 .city-indicator-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: rgba(37, 99, 235, 0.06);
   border: 1px solid rgba(37, 99, 235, 0.2);
-  padding: 2px 10px;
-  border-radius: 9999rpx;
+  padding: 0 10px;
+  height: 24px;
+  border-radius: 9999px;
+  box-sizing: border-box;
 }
 
 .city-indicator-txt {
   font-size: 12px;
   color: #2563eb;
   font-weight: 600;
+  line-height: 1;
 }
 
 .page-sub-title {
@@ -1208,10 +1224,16 @@ onShow(() => {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
   padding-bottom: 14px;
   border-bottom: 1px solid #f1f5f9;
   margin-bottom: 18px;
+}
+
+.head-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .card-head-title {
@@ -1219,11 +1241,17 @@ onShow(() => {
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.2px;
+  line-height: 1.25;
 }
 
 .badge-pill {
-  padding: 3px 10px;
-  border-radius: 9999rpx;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: 9999px;
+  box-sizing: border-box;
 }
 
 .badge-cyan { background: #eff6ff; border: 1px solid #bfdbfe; }
@@ -1235,7 +1263,11 @@ onShow(() => {
 .badge-indigo { background: #eef2ff; border: 1px solid #c7d2fe; }
 .badge-indigo .badge-txt { color: #4338ca; }
 
-.badge-txt { font-size: 12px; font-weight: 600; }
+.badge-txt {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+}
 
 .metric-grid {
   display: grid;
@@ -1348,8 +1380,8 @@ onShow(() => {
 .doc-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 16rpx;
-  margin-top: 16rpx;
+  gap: 14px;
+  margin-top: 14px;
 }
 
 @media (min-width: 800px) {
@@ -1361,13 +1393,13 @@ onShow(() => {
 .doc-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 12rpx;
-  padding: 20rpx;
+  border-radius: 12px;
+  padding: 18px 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+  box-sizing: border-box;
 }
 
 .doc-card:hover {
@@ -1380,72 +1412,157 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10rpx;
+  margin-bottom: 12px;
 }
 
-.doc-type-label { font-size: 18rpx; color: #1d4ed8; font-weight: 600; }
+.doc-type-label {
+  font-size: 11px;
+  color: #1d4ed8;
+  font-weight: 600;
+  line-height: 1;
+}
+
 .doc-status-tag {
-  font-size: 18rpx;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
   color: #047857;
   background: #ecfdf5;
   border: 1px solid #a7f3d0;
-  padding: 2rpx 10rpx;
-  border-radius: 9999rpx;
+  padding: 0 8px;
+  height: 22px;
+  border-radius: 9999px;
   font-weight: 600;
+  line-height: 1;
+  box-sizing: border-box;
 }
 
-.doc-title { font-size: 24rpx; font-weight: 700; color: #0f172a; line-height: 1.4; display: block; }
-.doc-number { font-size: 18rpx; color: #64748b; display: block; margin-top: 4rpx; }
-.doc-meta-row { display: flex; font-size: 18rpx; margin-top: 10rpx; }
-.meta-label { color: #64748b; }
-.meta-val { color: #334155; }
+.doc-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.45;
+  display: block;
+}
+
+.doc-number {
+  font-size: 12px;
+  color: #64748b;
+  display: block;
+  margin-top: 6px;
+}
+
+.doc-meta-row {
+  display: flex;
+  align-items: flex-start;
+  font-size: 12px;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+.meta-label {
+  color: #64748b;
+  flex-shrink: 0;
+}
+
+.meta-val {
+  color: #334155;
+}
 
 .doc-quote-box {
   background: #f8fafc;
-  border-left: 3rpx solid #cbd5e1;
-  padding: 10rpx 12rpx;
-  border-radius: 8rpx;
-  margin-top: 12rpx;
+  border-left: 3px solid #cbd5e1;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-top: 12px;
 }
 
-.quote-header { font-size: 16rpx; color: #64748b; display: block; margin-bottom: 2rpx; }
-.quote-content { font-size: 18rpx; color: #334155; line-height: 1.5; display: block; }
+.quote-header {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.quote-content {
+  font-size: 12px;
+  color: #334155;
+  line-height: 1.55;
+  display: block;
+}
 
 .doc-notice-banner {
   background: #f0fdf4;
   border: 1px solid #bbf7d0;
-  border-radius: 10rpx;
-  padding: 12rpx 16rpx;
+  border-radius: 8px;
+  padding: 10px 14px;
   display: flex;
   align-items: flex-start;
-  gap: 10rpx;
-  margin-bottom: 16rpx;
-}
-
-.doc-notice-icon {
-  font-size: 20rpx;
-  line-height: 1.4;
-  flex-shrink: 0;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 
 .doc-notice-text {
-  font-size: 19rpx;
+  font-size: 12px;
   color: #166534;
-  line-height: 1.5;
+  line-height: 1.55;
 }
 
-.doc-actions-row { display: flex; gap: 10rpx; margin-top: 16rpx; }
-.doc-btn { flex: 1; padding: 8rpx 0; text-align: center; border-radius: 8rpx; cursor: pointer; }
+.doc-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 16px;
+}
+
+.doc-btn {
+  flex: 1;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  cursor: pointer;
+  box-sizing: border-box;
+  padding: 0 8px;
+}
+
 .btn-view { background: #eff6ff; border: 1px solid #bfdbfe; }
 .btn-view:hover { background: #dbeafe; }
 .btn-view .doc-btn-txt { color: #1d4ed8; }
+
 .btn-search { background: #f0fdfa; border: 1px solid #99f6e4; }
 .btn-search:hover { background: #ccfbf1; }
 .btn-search .doc-btn-txt { color: #0f766e; }
+
 .btn-copy { background: #f8fafc; border: 1px solid #e2e8f0; }
 .btn-copy:hover { background: #f1f5f9; }
 .btn-copy .doc-btn-txt { color: #475569; }
-.doc-btn-txt { font-size: 18rpx; font-weight: 600; }
+
+.doc-btn-inner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  width: 100%;
+}
+
+.doc-btn-txt {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.btn-micro-svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+  flex-shrink: 0;
+}
 
 
 /* ==================== 优雅收敛微弹性动效 ==================== */

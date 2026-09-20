@@ -1145,6 +1145,7 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 24px;
 }
 
 .city-name-wrap {
@@ -1154,32 +1155,46 @@ onMounted(() => {
 }
 
 .city-name {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
   color: #0f172a;
+  line-height: 1.2;
 }
 
 .city-code-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 10px;
   font-weight: 600;
   color: #64748b;
   background: #f1f5f9;
-  padding: 1px 4px;
+  padding: 0 5px;
+  height: 18px;
   border-radius: 4px;
+  line-height: 1;
+  box-sizing: border-box;
 }
 
 .current-tag {
-  font-size: 9px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
   font-weight: 700;
   color: #0d9488;
   background: #ccfbf1;
-  padding: 1px 4px;
-  border-radius: 3px;
+  padding: 0 5px;
+  height: 18px;
+  border-radius: 4px;
+  line-height: 1;
+  box-sizing: border-box;
 }
 
 .update-chip {
-  font-size: 10px;
+  font-size: 11px;
   color: #94a3b8;
+  line-height: 1;
 }
 
 .phone-list-wrap {
@@ -1192,44 +1207,59 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 8px;
+  padding: 0 10px;
+  height: 38px;
   border-radius: 6px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
+  box-sizing: border-box;
 }
 
 .phone-item-left {
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .phone-tag-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 10px;
   color: #64748b;
   background: #f1f5f9;
-  padding: 1px 5px;
+  padding: 0 6px;
+  height: 20px;
   border-radius: 4px;
+  line-height: 1;
+  box-sizing: border-box;
 }
 
 .phone-number-txt {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   color: #0f172a;
+  line-height: 1;
 }
 
 .btn-micro-dial {
-  padding: 2px 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  padding: 0 8px;
   border-radius: 4px;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .micro-dial-txt {
   font-size: 11px;
   font-weight: 700;
   color: #2563eb;
+  line-height: 1;
 }
 
 .hotline-card-foot {
@@ -1238,21 +1268,30 @@ onMounted(() => {
 }
 
 .btn-portal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: #ffffff;
   border: 1px solid #cbd5e1;
-  text-align: center;
-  padding: 6px 8px;
+  border-radius: 6px;
+  height: 32px;
+  padding: 0 10px;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
 .btn-portal .btn-label {
   font-size: 11px;
   font-weight: 600;
   color: #334155;
+  line-height: 1;
 }
 
 .btn-portal:hover {
   border-color: #2563eb;
   color: #2563eb;
+  background: #eff6ff;
 }
 
 /* 拨打规范 */

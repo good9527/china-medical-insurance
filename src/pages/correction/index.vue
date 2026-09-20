@@ -1021,23 +1021,39 @@ onMounted(() => {
 .mini-verified-badge {
   position: absolute;
   right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
   font-size: 11px;
   font-weight: 700;
   color: #15803d;
   background: #dcfce7;
-  padding: 2px 6px;
+  padding: 0 8px;
   border-radius: 4px;
+  line-height: 1;
+  box-sizing: border-box;
 }
 
 .mini-gov-badge {
   position: absolute;
   right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 22px;
   font-size: 11px;
   font-weight: 700;
   color: #0e7490;
   background: #cffafe;
-  padding: 2px 6px;
+  padding: 0 8px;
   border-radius: 4px;
+  line-height: 1;
+  box-sizing: border-box;
 }
 
 .cyber-clean-textarea {
