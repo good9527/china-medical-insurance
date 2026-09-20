@@ -88,10 +88,10 @@ export const rizhaoCityData: CityInsuranceData = {
       annualCap: 350,
       tierBenefits: {
         community: { tierName: '基层社区卫生服务中心及卫生院', deductible: 0, reimbursementRatio: 0.60 },
-        tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 100, reimbursementRatio: 0.80 },
-        tier2: { tierName: '二级医疗机构(未纳统筹)', deductible: 300, reimbursementRatio: 0.70 },
-        tier3: { tierName: '三级医疗机构(未纳统筹)', deductible: 500, reimbursementRatio: 0.55 },
-        tier3_top: { tierName: '重点三甲医院(未纳统筹)', deductible: 500, reimbursementRatio: 0.55 }
+        tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
+        tier2: { tierName: '二级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '重点三甲医院(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
       note: '居民普通门诊在基层定点机构免起付线报销60%，年度限额350元。'
     },
