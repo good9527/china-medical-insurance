@@ -28,7 +28,7 @@
 
         <view class="audit-status-badge">
           <view class="status-pulse-dot"></view>
-          <text class="audit-status-txt">全国 344 统筹区政策开放核对</text>
+          <text class="audit-status-txt">全国 348 统筹区政策开放核对</text>
         </view>
       </view>
 

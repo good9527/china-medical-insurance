@@ -1601,6 +1601,37 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H3 PASS] 海口居民三级住院(花费10000): 扣起付¥600，统筹实报¥6110 (65%比例)`);
   passCount++;
 
+  // 32-1. 三亚市职工门诊与住院(琼医保规〔2024〕12号全省统筹)实测断言
+  totalChecks++;
+  const sanyaEmpOut = calculateReimbursement({
+    cityCode: '460200',
+    insuranceType: 'employee',
+    isRetiree: false,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(sanyaEmpOut.breakdown.deductibleDeducted, 10, '三亚职工一级门诊起付线应为10元');
+  assertEqual(sanyaEmpOut.breakdown.baseReimbursed, 693, '三亚职工一级门诊报销不符: (1000-10)*0.70=693');
+  console.log(`  ✓ [H3 PASS] 三亚职工一级门诊(花费1000): 扣起付¥10，统筹实报¥693 (70%比例，全省统筹依据)`);
+  passCount++;
+
+  // 32-2. 儋州市居民三级住院(花费10000)实测断言
+  totalChecks++;
+  const danzhouResIn = calculateReimbursement({
+    cityCode: '460400',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(danzhouResIn.breakdown.deductibleDeducted, 600, '儋州居民三级住院起付线应为600元');
+  assertEqual(danzhouResIn.breakdown.baseReimbursed, 6110, '儋州居民三级住院实报应为6110元');
+  console.log(`  ✓ [H3 PASS] 儋州居民三级住院(花费10000): 扣起付¥600，统筹实报¥6110 (65%比例，全省统筹依据)`);
+  passCount++;
+
   // 33. 呼和浩特市职工门诊(1000起付/80%)与居民住院(800起付/60%)实测断言
   totalChecks++;
   const hhhtEmpOut = calculateReimbursement({
@@ -5482,6 +5513,37 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H25 PASS] 阿勒泰职工退休三级门诊(花费1000): 扣起付¥90，按65%实报¥591.5 (依据: 新政办发〔2024〕13号)`);
   passCount++;
 
+  // 新疆生产建设兵团 (660000) - 职工在职三级门诊(花费1000, 起付100, 55%)与退休二级住院(花费10000, 起付400, 88%+3%=91%)实测断言
+  totalChecks++;
+  const xpccEmpOut = calculateReimbursement({
+    cityCode: '660000',
+    insuranceType: 'employee',
+    isRetiree: false,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(xpccEmpOut.breakdown.deductibleDeducted, 100, '兵团职工三级门诊起付线应为100元');
+  assertEqual(xpccEmpOut.breakdown.baseReimbursed, 495, '兵团职工三级门诊实报不符: (1000-100)*0.55=495');
+  console.log(`  ✓ [H25 PASS] 新疆生产建设兵团职工在职三级门诊(花费1000): 扣起付¥100，按55%实报¥495 (依据: 兵医保规〔2022〕2号)`);
+  passCount++;
+
+  totalChecks++;
+  const xpccEmpIn = calculateReimbursement({
+    cityCode: '660000',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(xpccEmpIn.breakdown.deductibleDeducted, 400, '兵团职工二级住院起付线应为400元');
+  assertEqual(xpccEmpIn.breakdown.baseReimbursed, 8736, '兵团职工退休二级住院实报不符: (10000-400)*0.91=8736');
+  console.log(`  ✓ [H25 PASS] 新疆生产建设兵团职工退休二级住院(花费10000): 扣起付¥400，按91%高比例实报¥8736 (依据: 兵医保发〔2024〕18号)`);
+  passCount++;
+
   // =========================================================================
   // Suite H26: 西藏自治区地级市与地区专项医保测算断言
   // =========================================================================
@@ -5600,7 +5662,7 @@ export function runCalculatorTests() {
   console.log(`\n>>> [Suite H27] 执行 CMI-Index 2.0 医保政策竞争力多维评测模型断言...`);
   const benchmarkList = getCachedBenchmarkList();
   totalChecks++;
-  assertEqual(benchmarkList.length, 344, 'Benchmark 评测列表必须全量涵盖全国 344 个统筹区');
+  assertEqual(benchmarkList.length, 348, 'Benchmark 评测列表必须全量涵盖全国 348 个统筹区');
   
   // 抽样检验重点城市（北京、上海、深圳、广州、成都）评测分数与6大雷达数值有效性
   for (const code of ['110100', '310100', '440300', '440100', '510100']) {
@@ -5620,7 +5682,7 @@ export function runCalculatorTests() {
     assertTrue(!isNaN(r.retiree) && r.retiree >= 30 && r.retiree <= 100, `${item!.cityName} 群体倾斜分越界: ${r.retiree}`);
     assertTrue(!isNaN(r.mobility) && r.mobility >= 30 && r.mobility <= 100, `${item!.cityName} 异地自由分越界: ${r.mobility}`);
   }
-  console.log(`  ✓ [H27 PASS] 全国 344 统筹区 CMI-Index 2.0 评测参数结构与 6 大能力雷达数值健全稳定`);
+  console.log(`  ✓ [H27 PASS] 全国 348 统筹区 CMI-Index 2.0 评测参数结构与 6 大能力雷达数值健全稳定`);
   passCount++;
 
   // 验证双城 PK 12 项指标比拼矩阵

@@ -25,7 +25,7 @@
                   <text class="city-indicator-txt">参保地: {{ currentCityOption.cityName }} ({{ currentProvince.name }})</text>
                 </view>
               </view>
-              <text class="page-sub-title">全国 344 统筹区异地就医直接结算指南、12393 咨询热线与医保政务网入口一站式通达</text>
+              <text class="page-sub-title">全国 348 统筹区异地就医直接结算指南、12393 咨询热线与医保政务网入口一站式通达</text>
             </view>
           </view>
         </view>

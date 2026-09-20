@@ -15,7 +15,7 @@
               <svg class="meta-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
               </svg>
-              <text class="meta-txt">344 统筹区多维量化核验</text>
+              <text class="meta-txt">348 统筹区多维量化核验</text>
             </view>
           </view>
           <text class="benchmark-title">全国各统筹区医保保障力排行与政策对决</text>
@@ -226,7 +226,7 @@
                   <line x1="8" y1="2" x2="8" y2="18"></line>
                   <line x1="16" y1="6" x2="16" y2="22"></line>
                 </svg>
-                <text class="dropdown-label">{{ selectedProvince === 'all' ? '全国 344 统筹区' : selectedProvince }}</text>
+                <text class="dropdown-label">{{ selectedProvince === 'all' ? '全国 348 统筹区' : selectedProvince }}</text>
                 <text class="dropdown-caret">▾</text>
               </view>
               <view class="dropdown-menu" v-if="openDropdown === 'province'" @click.stop>
@@ -235,7 +235,7 @@
                   :class="{ active: selectedProvince === 'all' }"
                   @click.stop="selectedProvince = 'all'; openDropdown = null"
                 >
-                  <text class="item-name">全国 344 统筹区 (全量数据)</text>
+                  <text class="item-name">全国 348 统筹区 (全量数据)</text>
                   <svg class="check-svg" v-if="selectedProvince === 'all'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 </view>
                 <view 

@@ -45,7 +45,8 @@ export const provinceList: ProvinceItem[] = [
   { code: '640000', name: '宁夏回族自治区', enabled: true },
   { code: '650000', name: '新疆维吾尔自治区', enabled: true },
   { code: '630000', name: '青海省', enabled: true },
-  { code: '540000', name: '西藏自治区', enabled: true }
+  { code: '540000', name: '西藏自治区', enabled: true },
+  { code: '660000', name: '新疆生产建设兵团', enabled: true }
 ];
 
 
@@ -453,7 +454,10 @@ export function getCitiesByProvinceCode(provinceCode: string): CityOption[] {
   }
   if (provinceCode === '460000') {
     return [
-      { cityCode: '460100', cityName: '海口市', hasData: true }
+      { cityCode: '460100', cityName: '海口市', hasData: true },
+      { cityCode: '460200', cityName: '三亚市', hasData: true },
+      { cityCode: '460400', cityName: '儋州市', hasData: true },
+      { cityCode: '460300', cityName: '三沙市', hasData: true }
     ];
   }
   if (provinceCode === '150000') {
@@ -496,7 +500,13 @@ export function getCitiesByProvinceCode(provinceCode: string): CityOption[] {
       { cityCode: '653200', cityName: '和田地区', hasData: true },
       { cityCode: '654000', cityName: '伊犁哈萨克自治州', hasData: true },
       { cityCode: '654200', cityName: '塔城地区', hasData: true },
-      { cityCode: '654300', cityName: '阿勒泰地区', hasData: true }
+      { cityCode: '654300', cityName: '阿勒泰地区', hasData: true },
+      { cityCode: '660000', cityName: '新疆生产建设兵团', hasData: true }
+    ];
+  }
+  if (provinceCode === '660000') {
+    return [
+      { cityCode: '660000', cityName: '新疆生产建设兵团(兵团本级及各师市)', hasData: true }
     ];
   }
   if (provinceCode === '630000') {

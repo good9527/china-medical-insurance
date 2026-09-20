@@ -87,7 +87,7 @@
       <view class="header-extra">
         <view class="status-pill">
           <view class="status-dot"></view>
-          <text class="status-txt">344 统筹区政策在线</text>
+          <text class="status-txt">348 统筹区政策在线</text>
         </view>
       </view>
     </view>

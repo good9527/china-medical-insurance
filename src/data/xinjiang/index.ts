@@ -12,6 +12,7 @@ import { hotanData } from './hotan';
 import { iliData } from './ili';
 import { tachengData } from './tacheng';
 import { altayData } from './altay';
+import { xpccCityData } from './xpcc';
 import type { CityInsuranceData } from '../types';
 
 export const xinjiangCities: CityInsuranceData[] = [
@@ -28,7 +29,8 @@ export const xinjiangCities: CityInsuranceData[] = [
   hotanData,
   iliData,
   tachengData,
-  altayData
+  altayData,
+  xpccCityData
 ];
 
 export {
@@ -45,6 +47,6 @@ export {
   hotanData,
   iliData,
   tachengData,
-  altayData
+  altayData,
+  xpccCityData
 };
-
