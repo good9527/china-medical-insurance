@@ -97,25 +97,26 @@ export const qingdaoCityData: CityInsuranceData = {
     },
     inpatient: {
       sourceDocId: 'qd-medical-insurance-inpatient-2024',
-      annualCap: 250000,
+      annualCap: 180000, // 基本统筹封顶线确为 18 万元
       tierBenefits: {
-        community: { tierName: '基层及一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
+        community: { tierName: '基层及社区医疗机构', deductible: 200, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.75 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.70 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 800, reimbursementRatio: 0.70 }
+        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.80 },
+        tier3: { tierName: '普通三级定点医疗机构', deductible: 800, reimbursementRatio: 0.70 },
+        tier3_top: { tierName: '青大附院/市立等6家重点三甲', deductible: 1000, reimbursementRatio: 0.70 }
       },
-      repeatedDeductibleRule: '居民参保人年度内多次住院，起付线按规定依次递减。'
+      repeatedDeductibleRule: '第二次住院起付线减半，第三次及以上住院统一为100元。'
     },
     catastrophic: {
       sourceDocId: 'qd-medical-insurance-inpatient-2024',
       name: '青岛市城乡居民大病保险',
-      deductible: 14000,
-      annualCap: 300000,
+      deductible: 20000,
+      annualCap: 400000,
       tiers: [
-        { minAmount: 14000, maxAmount: 100000, ratio: 0.60 },
+        { minAmount: 20000, maxAmount: 100000, ratio: 0.60 },
         { minAmount: 100000, maxAmount: 200000, ratio: 0.65 },
-        { minAmount: 200000, ratio: 0.75 }
+        { minAmount: 200000, maxAmount: 300000, ratio: 0.70 },
+        { minAmount: 300000, ratio: 0.75 }
       ]
     },
     remoteMedical: {

@@ -128,24 +128,26 @@ export const guangzhouCityData: CityInsuranceData = {
     },
     inpatient: {
       sourceDocId: 'gz-medical-insurance-inpatient-2023',
-      annualCap: 350000, // 居民医保基本统筹限额 35 万元
+      annualCap: 340000, // 统筹基金年度最高支付限额为上上年度社平工资6倍（约34万元）
       tierBenefits: {
         community: { tierName: '一级医疗机构/社区中心', deductible: 150, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 150, reimbursementRatio: 0.90 },
         tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.80 },
         tier3: { tierName: '三级定点医疗机构', deductible: 500, reimbursementRatio: 0.70 },
         tier3_top: { tierName: '三甲重点医疗机构', deductible: 500, reimbursementRatio: 0.70 }
-      }
+      },
+      repeatedDeductibleRule: '参保人每次住院支付一次起付标准；精神病专科住院免设起付线。未成年人及在校学生享受优待比例：一级90%、二级85%、三级80%。'
     },
     catastrophic: {
       sourceDocId: 'gz-resident-medical-2024',
       name: '城乡居民大病保险',
       deductible: 18000,
       tiers: [
-        { minAmount: 18000, maxAmount: 100000, ratio: 0.60 },
-        { minAmount: 100000, ratio: 0.70 }
+        { minAmount: 18000, maxAmount: 36000, ratio: 0.60 },
+        { minAmount: 36000, maxAmount: 340000, ratio: 0.75 },
+        { minAmount: 340000, ratio: 0.90 }
       ],
-      annualCap: 450000
+      annualCap: 400000 // 基础最高支付限额40万元，连续参保满2年及以上提升至45万元；医疗救助对象不设封顶
     },
     remoteMedical: {
       sourceDocId: 'gz-medical-insurance-inpatient-2023',

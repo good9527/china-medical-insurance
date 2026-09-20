@@ -59,7 +59,7 @@ export const xianyangCityData: CityInsuranceData = {
       effectiveDate: '2020-01-01',
       status: 'active',
       officialUrl: 'https://ybj.xianyang.gov.cn/zfxxgk/fdzdgknr/zcwj/zcfg1/202412/t20241231_1894800.html',
-      summaryQuote: '咸阳市城乡居民基本医疗保险市内定点医疗机构住院待遇：一级定点医疗机构起付线160元、政策范围内报销比例90%；二级定点医疗机构起付线550元、报销比例80%；三级定点医疗机构起付线1000元、报销比例65%。年度基本医保统筹最高支付限额20万元。大病保险起付线1.5万元，分段报销比例分别为60%、70%、80%，不设封顶线。'
+      summaryQuote: '咸阳市城乡居民基本医疗保险住院待遇（市内）：一级医疗机构/镇卫生院起付金160元、报销比例90%；二级医疗机构起付金550元、报销比例75%；三级医疗机构起付金1500元、报销比例60%；三特医疗机构（西京、唐都、交大一附院、交大二附院、西安市中心医院、陕西省人民医院）起付金3000元、报销比例50%（经规范转诊提高5个百分点为55%）。年度最高支付限额20万元。大病保险起付金1.5万元（特困低保0.75万元），5万元以下报销60%、5万-10万元报销65%、10万元以上报销70%，封顶线30万元（特困低保无封顶）。'
     }
   ],
 
@@ -129,21 +129,22 @@ export const xianyangCityData: CityInsuranceData = {
       sourceDocId: 'xy-resident-inpatient-regulations',
       annualCap: 200000,
       tierBenefits: {
-        community: { tierName: '一级及以下定点医疗机构', deductible: 160, reimbursementRatio: 0.90 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 160, reimbursementRatio: 0.90 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 550, reimbursementRatio: 0.80 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 1000, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '三甲重点医疗机构', deductible: 1000, reimbursementRatio: 0.65 }
+        community: { tierName: '一级医疗机构/镇卫生院(社区卫生中心)', deductible: 160, reimbursementRatio: 0.90 },
+        tier1: { tierName: '一级医疗机构/卫生院', deductible: 160, reimbursementRatio: 0.90 },
+        tier2: { tierName: '二级医疗机构', deductible: 550, reimbursementRatio: 0.75 },
+        tier3: { tierName: '三级医疗机构', deductible: 1500, reimbursementRatio: 0.60 },
+        tier3_top: { tierName: '三特医疗机构(西京/唐都/交大等)', deductible: 3000, reimbursementRatio: 0.50 }
       }
     },
     catastrophic: {
       sourceDocId: 'xy-medical-adjust-2024-48',
       name: '城乡居民大病保险',
-      deductible: 15000, // 咸医保发〔2024〕48号新政：2025年起居民大病起付线调整为 1.5 万元
+      deductible: 15000, // 咸阳市居民大病保险起付线：一般群众1.5万元，特困低保0.75万元
+      annualCap: 300000, // 一般群众封顶线 30 万元，特困/低保/返贫致贫人口无封顶
       tiers: [
         { minAmount: 15000, maxAmount: 50000, ratio: 0.60 },
-        { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
-        { minAmount: 100000, ratio: 0.80 }
+        { minAmount: 50000, maxAmount: 100000, ratio: 0.65 },
+        { minAmount: 100000, ratio: 0.70 }
       ]
     },
     remoteMedical: {
@@ -152,9 +153,12 @@ export const xianyangCityData: CityInsuranceData = {
       longTermFiledRatio: 1.0,
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
-      unfiledNormalRatio: 0.80,
+      unfiledNormalRatio: 0.70,
       specialNotes: [
-        '按咸医保发〔2024〕48号新规，经规范转诊到省内异地三级医疗机构的，居民住院报销比例提高5个百分点为55%。'
+        '省内异地/跨省异地长期居住：一级起付160/90%，二级起付1500/70%，三级起付3000/50%。',
+        '跨省异地转诊和急救人员：一级起付160/80%，二级起付1500/70%，三级起付3000/50%。',
+        '跨省其他临时外出及未办理备案人员：一级起付160/70%，二级起付1500/60%，三级起付3000/40%。',
+        '经市内二、三级医疗机构因病情需要规范转诊到省内异地三级或三特医疗机构就医，城乡居民住院报销比例提高5个百分点为55%。'
       ]
     }
   }

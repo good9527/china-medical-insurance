@@ -85,7 +85,7 @@ export const yantaiCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'yt-medical-insurance-inpatient-2023',
-      annualCap: 400,
+      annualCap: 200, // 一档200元，二档350元
       tierBenefits: {
         community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.60 },
         tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
@@ -93,28 +93,30 @@ export const yantaiCityData: CityInsuranceData = {
         tier3: { tierName: '三级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '重点三甲医院(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民普通门诊在基层定点机构免起付线报销60%，年度限额400元。'
+      note: '居民普通门诊在基层定点机构免起付线报销60%，一档年度限额200元。'
     },
     inpatient: {
       sourceDocId: 'yt-medical-insurance-inpatient-2023',
-      annualCap: 250000,
+      annualCap: 160000, // 烟台居民基本医保封顶线确为 16 万元
       tierBenefits: {
-        community: { tierName: '基层及一级医疗机构', deductible: 150, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 150, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.75 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 800, reimbursementRatio: 0.65 }
+        community: { tierName: '基层医疗机构(实施基药)', deductible: 300, reimbursementRatio: 0.90 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.70 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.58 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.45 },
+        tier3_top: { tierName: '重点三甲医院(如毓璜顶医院)', deductible: 800, reimbursementRatio: 0.45 }
       },
-      repeatedDeductibleRule: '参保人员自然年度内多次住院的，起付标准相应递减。'
+      repeatedDeductibleRule: '第二次住院起付标准减半，第三次及以上住院统一降低为100元。'
     },
     catastrophic: {
       sourceDocId: 'yt-medical-insurance-inpatient-2023',
       name: '烟台市城乡居民大病保险',
       deductible: 14000,
-      annualCap: 300000,
+      annualCap: 400000,
       tiers: [
         { minAmount: 14000, maxAmount: 100000, ratio: 0.60 },
-        { minAmount: 100000, ratio: 0.70 }
+        { minAmount: 100000, maxAmount: 200000, ratio: 0.65 },
+        { minAmount: 200000, maxAmount: 300000, ratio: 0.70 },
+        { minAmount: 300000, ratio: 0.75 }
       ]
     },
     remoteMedical: {

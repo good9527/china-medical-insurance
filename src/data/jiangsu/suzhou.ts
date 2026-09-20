@@ -103,7 +103,7 @@ export const suzhouCityData: CityInsuranceData = {
     },
     inpatient: {
       sourceDocId: 'sz-medical-insurance-inpatient-2023',
-      annualCap: 250000,
+      annualCap: 200000,
       repeatedDeductibleRule: '年度内多次住院起付线依次递减50%',
       tierBenefits: {
         community: { tierName: '基层卫生院/社区医院', deductible: 400, reimbursementRatio: 0.85 },
@@ -114,13 +114,13 @@ export const suzhouCityData: CityInsuranceData = {
       }
     },
     catastrophic: {
-      name: '苏州市城乡居民大病保险',
-      deductible: 15000,
-      annualCap: 350000,
+      name: '苏州市城乡居民大病保险（上不封顶）',
+      deductible: 12000,
       tiers: [
-        { minAmount: 15000, maxAmount: 50000, ratio: 0.60 },
-        { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
-        { minAmount: 100000, ratio: 0.80 }
+        { minAmount: 12000, maxAmount: 30000, ratio: 0.50 },
+        { minAmount: 30000, maxAmount: 100000, ratio: 0.60 },
+        { minAmount: 100000, maxAmount: 200000, ratio: 0.70 },
+        { minAmount: 200000, ratio: 0.85 }
       ]
     },
     remoteMedical: {

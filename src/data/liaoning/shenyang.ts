@@ -100,25 +100,25 @@ export const shenyangCityData: CityInsuranceData = {
       note: '普通门诊在基层医疗机构免起付线，报销50%-60%，年度限额400元。'
     },
     inpatient: {
-      sourceDocId: 'sy-medical-insurance-inpatient-2025',
+      sourceDocId: 'sy-resident-medical-2019-19',
       annualCap: 150000, // 居民基本统筹限额 15 万元
       tierBenefits: {
         community: { tierName: '一级医疗机构及社区中心', deductible: 200, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.75 },
-        tier3: { tierName: '市属三级定点医疗机构', deductible: 800, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '特大型三级综合医院', deductible: 1200, reimbursementRatio: 0.60 }
-      }
+        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.80 },
+        tier3: { tierName: '市属三级定点医疗机构', deductible: 800, reimbursementRatio: 0.75 },
+        tier3_top: { tierName: '特大型三级综合医院', deductible: 1200, reimbursementRatio: 0.70 }
+      },
+      repeatedDeductibleRule: '从第二次住院起，起付标准递减15%，一年内最多递减两次。恶性肿瘤患者一个自然年度内只需交纳首次住院起付标准。'
     },
     catastrophic: {
-      sourceDocId: 'sy-medical-insurance-inpatient-2025',
-      name: '城乡居民大病保险',
+      sourceDocId: 'sy-resident-medical-2019-19',
+      name: '城乡居民大病保险（上不封顶）',
       deductible: 15000,
-      annualCap: 400000,
       tiers: [
         { minAmount: 15000, maxAmount: 50000, ratio: 0.60 },
         { minAmount: 50000, maxAmount: 100000, ratio: 0.65 },
-        { minAmount: 100000, ratio: 0.75 }
+        { minAmount: 100000, ratio: 0.70 }
       ]
     },
     remoteMedical: {

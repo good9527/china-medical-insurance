@@ -150,7 +150,7 @@ export const beijingCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 1300, reimbursementRatio: 0.75 },
         tier3_top: { tierName: '区属三级医疗机构', deductible: 1300, reimbursementRatio: 0.78 }
       },
-      repeatedDeductibleRule: '老年人和劳动年龄内居民一个年度内第二次及以后住院起付线减半；学生儿童住院起付线均减半。'
+      repeatedDeductibleRule: '老年人和劳动年龄内居民一个年度内第二次及以后住院起付线减半；学生儿童住院起付线直接减半（一级150元、二级400元、三级650元）。'
     },
     catastrophic: {
       sourceDocId: 'bj-catastrophic-official',

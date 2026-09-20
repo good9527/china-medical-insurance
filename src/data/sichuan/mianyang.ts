@@ -109,10 +109,10 @@ export const mianyangCityData: CityInsuranceData = {
       repeatedDeductibleRule: '参保人员自然年度内第二次及以上住院，起付线降低50%。'
     },
     catastrophic: {
-      sourceDocId: 'my-medical-insurance-inpatient-2024',
+      sourceDocId: 'my-medical-insurance-inpatient-2021',
       name: '城乡居民大病保险',
       deductible: 12000,
-      annualCap: 350000,
+      annualCap: 300000, // 对齐四川省统一居民大病保险年度最高支付限额30万元/年
       tiers: [
         { minAmount: 12000, maxAmount: 50000, ratio: 0.60 },
         { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
@@ -120,13 +120,16 @@ export const mianyangCityData: CityInsuranceData = {
       ]
     },
     remoteMedical: {
-      sourceDocId: 'my-medical-insurance-inpatient-2024',
-      filingChannels: ['国家医保服务平台APP', '四川医保微信小程序'],
+      sourceDocId: 'my-medical-insurance-inpatient-2021',
+      filingChannels: ['国家医保服务平台APP', '四川医保公共服务平台微信小程序'],
       longTermFiledRatio: 1.0,
-      transferFiledRatio: 0.85,
-      unfiledEmergencyRatio: 0.85,
-      unfiledNormalRatio: 0.60,
-      specialNotes: ['跨省异地就医规范转诊下调15%，未备案临时外出下调20%。']
+      transferFiledRatio: 0.90,
+      unfiledEmergencyRatio: 0.90,
+      unfiledNormalRatio: 0.70,
+      specialNotes: [
+        '四川省内跨市就医直接联网结算，无需备案享受本地同等报销待遇。',
+        '跨省异地就医按规定办理转诊或备案手续，临时未备案外出就医支付比例相应下调。'
+      ]
     }
   }
 };

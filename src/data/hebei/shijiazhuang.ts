@@ -123,14 +123,15 @@ export const shijiazhuangData: CityInsuranceData = {
       ]
     },
     remoteMedical: {
-      sourceDocId: 'sjz-resident-inpatient-outpatient-2025',
+      sourceDocId: 'sjz-resident-inpatient-outpatient-2021',
       filingChannels: ['国家医保服务平台APP', '河北智慧医保小程序'],
       longTermFiledRatio: 1.0,
-      transferFiledRatio: 0.85,
+      transferFiledRatio: 0.77, // 省外转诊经备案支付比例统一为50%（折合参保地三级65%的约77%）
       unfiledEmergencyRatio: 0.85,
-      unfiledNormalRatio: 0.60,
+      unfiledNormalRatio: 0.46, // 省外未备案自行就医直接按30%结算（折合约46%），且自付不进大病保险
       specialNotes: [
-        '京津冀区域内就医视同本地就医，免证明免备案直接联网结算。'
+        '京津冀区域内就医视同本地就医，免证明免备案直接联网结算。',
+        '河北省内市外就医按本市同等级别医疗机构标准执行；转往省外经备案支付比例为50%（起付线2000元），省外未备案自行就医支付比例仅为30%（起付线4000元且自付部分不计入大病保险）。'
       ]
     }
   }

@@ -771,8 +771,8 @@ export function runCalculatorTests() {
     totalCost: 8000
   });
   assertEqual(xyResInTier2.breakdown.deductibleDeducted, 550, '咸阳居民二级医疗机构起付线应为550元');
-  assertEqual(xyResInTier2.breakdown.baseReimbursed, 5960, '咸阳居民二级医疗机构报销不符: (8000-550)*0.80=5960');
-  console.log(`  ✓ [H3 PASS] 咸阳居民二级住院(花费8000): 扣起付¥550，统筹实报¥5960 (80%比例，依据咸政办发〔2019〕60号)`);
+  assertEqual(xyResInTier2.breakdown.baseReimbursed, 5587.5, '咸阳居民二级医疗机构报销不符: (8000-550)*0.75=5587.5');
+  console.log(`  ✓ [H3 PASS] 咸阳居民二级住院(花费8000): 扣起付¥550，统筹实报¥5587.5 (75%比例，依据咸阳市现行城乡居民医保政策)`);
   passCount++;
 
   totalChecks++;
@@ -784,9 +784,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 10000
   });
-  assertEqual(xyResInTier3.breakdown.deductibleDeducted, 1000, '咸阳居民三级医疗机构起付线应为1000元');
-  assertEqual(xyResInTier3.breakdown.baseReimbursed, 5850, '咸阳居民三级医疗机构报销不符: (10000-1000)*0.65=5850');
-  console.log(`  ✓ [H3 PASS] 咸阳居民三级住院(花费10000): 扣起付¥1000，统筹实报¥5850 (65%比例，依据咸政办发〔2019〕60号)`);
+  assertEqual(xyResInTier3.breakdown.deductibleDeducted, 1500, '咸阳居民三级医疗机构起付线应为1500元');
+  assertEqual(xyResInTier3.breakdown.baseReimbursed, 5100, '咸阳居民三级医疗机构报销不符: (10000-1500)*0.60=5100');
+  console.log(`  ✓ [H3 PASS] 咸阳居民三级住院(花费10000): 扣起付¥1500，统筹实报¥5100 (60%比例，依据咸阳市现行城乡居民医保政策)`);
   passCount++;
 
   // 5. 北京市城镇职工住院(1300/85%)与城乡居民住院(1300/75%)实测断言
@@ -1027,8 +1027,8 @@ export function runCalculatorTests() {
     totalCost: 10000
   });
   assertEqual(njResIn.breakdown.deductibleDeducted, 1000, '南京居民三级住院起付线应为1000元');
-  assertEqual(njResIn.breakdown.baseReimbursed, 5850, '南京居民三级住院报销不符: (10000-1000)*0.65=5850');
-  console.log(`  ✓ [H3 PASS] 南京居民三级住院(花费10000): 扣起付¥1000，统筹实报¥5850 (65%比例)`);
+  assertEqual(njResIn.breakdown.baseReimbursed, 7200, '南京居民三级住院报销不符: (10000-1000)*0.80=7200');
+  console.log(`  ✓ [H3 PASS] 南京居民三级住院(花费10000): 扣起付¥1000，统筹实报¥7200 (80%高比例，依据宁政规字〔2021〕6号)`);
   passCount++;
 
   // 14. 武汉市职工门诊(0起付/65%)与居民住院(800起付/65%)实测断言
@@ -1117,8 +1117,8 @@ export function runCalculatorTests() {
     totalCost: 10000
   });
   assertEqual(jnResIn.breakdown.deductibleDeducted, 1000, '济南居民三级住院起付线应为1000元');
-  assertEqual(jnResIn.breakdown.baseReimbursed, 6300, '济南居民三级住院报销不符: (10000-1000)*0.70=6300');
-  console.log(`  ✓ [H3 PASS] 济南居民三级住院(花费10000): 扣起付¥1000，统筹实报¥6300 (70%比例)`);
+  assertEqual(jnResIn.breakdown.baseReimbursed, 5400, '济南居民三级住院报销不符: (10000-1000)*0.60=5400');
+  console.log(`  ✓ [H3 PASS] 济南居民三级住院(花费10000): 扣起付¥1000，统筹实报¥5400 (60%比例，省部属为50%)`);
   passCount++;
 
   // 17. 兰州市职工门诊(200起付/60%)与居民住院(600起付/70%)实测断言
@@ -1327,8 +1327,8 @@ export function runCalculatorTests() {
     totalCost: 10000
   });
   assertEqual(syResIn.breakdown.deductibleDeducted, 800, '沈阳居民三级住院起付线应为800元');
-  assertEqual(syResIn.breakdown.baseReimbursed, 5980, '沈阳居民三级住院报销不符: (10000-800)*0.65=5980');
-  console.log(`  ✓ [H3 PASS] 沈阳居民三级住院(花费10000): 扣起付¥800，统筹实报¥5980 (65%比例)`);
+  assertEqual(syResIn.breakdown.baseReimbursed, 6900, '沈阳居民三级住院报销不符: (10000-800)*0.75=6900');
+  console.log(`  ✓ [H3 PASS] 沈阳居民三级住院(花费10000): 扣起付¥800，统筹实报¥6900 (75%比例，依据沈政发〔2019〕19号)`);
   passCount++;
 
   // 24. 大连市职工门诊(200起付/65%)与居民住院(800起付/65%)实测断言

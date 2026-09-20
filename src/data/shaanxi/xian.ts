@@ -242,13 +242,11 @@ export const xianCityData: CityInsuranceData = {
     catastrophic: {
       sourceDocId: 'xa-resident-basic-2019-40',
       name: '城乡居民大病保险',
-      deductible: 10000, // 大病保险起付线（全省统一约1万元）
+      deductible: 20000, // 2025年1月1日起调为20000元（特困人员、低保对象10000元）
+      annualCap: 300000, // 年度最高支付限额30万元（特困人员、低保对象无封顶）
       tiers: [
-        { minAmount: 10000, maxAmount: 50000, ratio: 0.60 },
-        { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
-        { minAmount: 100000, ratio: 0.80 }
-      ],
-      annualCap: undefined // 居民大病保险原则上不设封顶线
+        { minAmount: 20000, ratio: 0.60 } // 政策范围内合规自付费用统一报销60%
+      ]
     },
     remoteMedical: {
       sourceDocId: 'xa-remote-medical-2022',

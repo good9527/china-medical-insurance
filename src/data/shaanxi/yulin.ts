@@ -159,7 +159,7 @@ export const yulinCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'yl-resident-catastrophic-2025-49',
       annualDeductible: 0,
-      annualCap: 150, // 城乡居民普通门诊统筹年度限额100~150元
+      annualCap: 100, // 榆林市城乡居民普通门诊统筹年度限额为 100 元/人（两病患者可叠加用药补助）
       tierBenefits: {
         community: {
           tierName: '定点村卫生室/社区服务站',

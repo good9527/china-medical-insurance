@@ -108,21 +108,22 @@ export const nanjingCityData: CityInsuranceData = {
       sourceDocId: 'nj-medical-insurance-inpatient',
       annualCap: 360000, // 居民住院年最高限额 36 万元
       tierBenefits: {
-        community: { tierName: '基层社区卫生服务中心', deductible: 300, reimbursementRatio: 0.90 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.90 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.85 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 1000, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '三甲重点医疗机构', deductible: 1000, reimbursementRatio: 0.65 }
+        community: { tierName: '基层社区卫生服务中心', deductible: 300, reimbursementRatio: 0.95 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.95 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.90 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 1000, reimbursementRatio: 0.80 },
+        tier3_top: { tierName: '三甲重点医疗机构', deductible: 1000, reimbursementRatio: 0.80 }
       },
       repeatedDeductibleRule: '第二次住院起付线减半，第三次及以上免起付线。'
     },
     catastrophic: {
       sourceDocId: 'nj-medical-insurance-inpatient',
-      name: '城乡居民大病保险',
+      name: '南京市城乡居民大病保险（上不封顶）',
       deductible: 15000,
       tiers: [
-        { minAmount: 15000, maxAmount: 50000, ratio: 0.60 },
-        { minAmount: 50000, ratio: 0.70 }
+        { minAmount: 15000, maxAmount: 80000, ratio: 0.60 },
+        { minAmount: 80000, maxAmount: 100000, ratio: 0.65 },
+        { minAmount: 100000, ratio: 0.70 }
       ]
     },
     remoteMedical: {

@@ -95,31 +95,33 @@ export const baojiCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'bj-resident-inpatient-adjust-2022-66',
       annualDeductible: 0,
-      annualCap: 200,
+      annualCap: 80, // 宝鸡市城乡居民普通门诊统筹年度最高支付限额为 80 元/人
       tierBenefits: {
-        community: { tierName: '定点村卫生室/社区服务站', deductible: 0, reimbursementRatio: 0.70 },
-        tier1: { tierName: '定点乡镇卫生院/社区服务中心', deductible: 0, reimbursementRatio: 0.60 },
+        community: { tierName: '定点村卫生室/社区服务站', deductible: 0, reimbursementRatio: 0.60 },
+        tier1: { tierName: '定点乡镇卫生院/社区服务中心', deductible: 0, reimbursementRatio: 0.50 },
         tier2: { tierName: '二级医疗机构（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
         tier3: { tierName: '三级医疗机构（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '三级甲等医院（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊主要享受基层定点医疗机构门诊统筹（免起付线报销60%~70%，限额200元）及高血压、糖尿病“两病”专项门诊用药报销。二级及三级医院普通门诊不予报销。'
+      note: '居民门诊统筹限定在基层定点机构：村卫生室/社区站报销60%（日限额30元），镇卫生院/社区中心报销50%（日限额50元），每人每年最高支付限额80元（部分试点区县100元）。两病专项用药报销60%，限额300元（双病600元）。'
     },
     inpatient: {
       sourceDocId: 'bj-resident-inpatient-adjust-2022-66',
-      annualCap: 200000,
+      annualCap: 130000, // 宝鸡市城乡居民基本医疗保险统筹基金年度最高支付限额13万元
+      repeatedDeductibleRule: '参保人在同级别定点医疗机构住院，按规定执行起付标准；分级诊疗转诊差额补齐起付线。',
       tierBenefits: {
-        community: { tierName: '基层卫生院/一级定点', deductible: 400, reimbursementRatio: 0.90 },
+        community: { tierName: '定点镇卫生院/基层机构', deductible: 400, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.90 },
         tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.80 },
         tier3: { tierName: '三级定点医疗机构', deductible: 1500, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '三甲重点医院', deductible: 1500, reimbursementRatio: 0.65 }
+        tier3_top: { tierName: '三级重点公立医院', deductible: 1500, reimbursementRatio: 0.65 }
       }
     },
     catastrophic: {
       sourceDocId: 'bj-resident-inpatient-adjust-2022-66',
       name: '城乡居民大病保险',
       deductible: 10000,
+      annualCap: 300000, // 宝鸡市城乡居民大病保险年度最高支付限额30万元
       tiers: [
         { minAmount: 10000, maxAmount: 50000, ratio: 0.60 },
         { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },

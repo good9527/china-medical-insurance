@@ -189,7 +189,7 @@ export const ankangCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'ak-resident-basic-2019',
       annualCap: 120000, // 居民统筹基金年度最高支付限额12万元
-      repeatedDeductibleRule: '一个自然年度内，参保居民在二级以上医院第2次住院起付线降低30%，第3次降低50%，第4次及以上不设起付线。',
+      repeatedDeductibleRule: '根据安康市最新现行规定，住院起付标准不执行多次住院减免政策，参保人员每次住院均统一执行定点机构首次起付标准。',
       tierBenefits: {
         community: {
           tierName: '乡镇卫生院/社区卫生服务中心',

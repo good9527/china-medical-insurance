@@ -142,8 +142,9 @@ export const wuhanCityData: CityInsuranceData = {
     },
     catastrophic: {
       sourceDocId: 'wh-medical-insurance-inpatient',
-      name: '城乡居民大病保险',
+      name: '武汉市城乡居民大病保险',
       deductible: 12000,
+      annualCap: 300000, // 武汉市城乡居民大病保险年度最高支付限额30万元
       tiers: [
         { minAmount: 12000, maxAmount: 30000, ratio: 0.60 },
         { minAmount: 30000, maxAmount: 100000, ratio: 0.65 },

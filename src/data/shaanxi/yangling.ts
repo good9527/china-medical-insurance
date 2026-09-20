@@ -132,36 +132,36 @@ export const yanglingCityData: CityInsuranceData = {
       sourceDocId: 'yl-resident-basic-2022',
       annualCap: 150,
       tierBenefits: {
-        community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.60 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier2: { tierName: '二级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
-        tier3: { tierName: '三级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
-        tier3_top: { tierName: '重点三甲医院(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 }
+        community: { tierName: '定点村卫生室/社区卫生服务站', deductible: 0, reimbursementRatio: 0.60 },
+        tier1: { tierName: '定点乡镇卫生院/社区服务中心', deductible: 0, reimbursementRatio: 0.50 },
+        tier2: { tierName: '二级医疗机构(普通门诊未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级医疗机构(普通门诊未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '重点三甲医院(普通门诊未纳统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '城乡居民门诊统筹主要在区内基层医疗机构就医：村卫生室/社区站报销60%，乡镇卫生院/社区中心报销50%，年度统筹支付最高限额150元。二级及以上医疗机构不设普通门诊统筹。'
+      note: '城乡居民门诊统筹限定在基层定点机构：村卫生室/社区站报销60%，乡镇卫生院/社区中心报销50%，年度统筹支付限额150元。'
     },
     inpatient: {
       sourceDocId: 'yl-resident-basic-2022',
-      annualCap: 200000, // 居民基本医疗保险年度统筹基金最高支付限额13万元
-      repeatedDeductibleRule: '统筹年度内多次住院起付线按规定标准执行，鼓励基层就医。',
+      annualCap: 150000, // 杨凌居民基本医保年度统筹基金住院最高支付限额15万元
+      repeatedDeductibleRule: '参保人在一个自然年度内多次住院，起付线按规定执行。',
       tierBenefits: {
-        community: { tierName: '基层医疗机构及卫生院', deductible: 160, reimbursementRatio: 0.90 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 160, reimbursementRatio: 0.90 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 550, reimbursementRatio: 0.80 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 1000, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 1000, reimbursementRatio: 0.65 }
+        community: { tierName: '基层医疗机构/乡镇卫生院', deductible: 500, reimbursementRatio: 0.90 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 500, reimbursementRatio: 0.90 },
+        tier2: { tierName: '二级定点医院(公立900元/民营700元)', deductible: 900, reimbursementRatio: 0.85 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 1500, reimbursementRatio: 0.75 },
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 1500, reimbursementRatio: 0.75 }
       }
     },
     catastrophic: {
       sourceDocId: 'yl-resident-basic-2022',
       name: '杨凌示范区城乡居民大病保险',
-      deductible: 10000, // 居民大病保险起付线1万元
+      deductible: 10000,
+      annualCap: 300000, // 居民大病保险最高支付限额30万元
       tiers: [
         { minAmount: 10000, maxAmount: 50000, ratio: 0.60 },
         { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
         { minAmount: 100000, ratio: 0.80 }
-      ],
-      annualCap: undefined // 居民大病保险原则上不设封顶线
+      ]
     },
     remoteMedical: {
       sourceDocId: 'yl-resident-basic-2022',

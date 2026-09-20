@@ -135,12 +135,14 @@ export const chengduCityData: CityInsuranceData = {
         tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.82 },
         tier3: { tierName: '三级定点医疗机构', deductible: 500, reimbursementRatio: 0.68 },
         tier3_top: { tierName: '三甲重点医疗机构', deductible: 500, reimbursementRatio: 0.68 }
-      }
+      },
+      repeatedDeductibleRule: '基准数据为成年人高档缴费；成年人低档缴费三级医院报销比例为53%、二级75%、一级85%、基层95%；学生儿童及大学生三级医院报销比例为60%、二级75%、一级85%、基层95%。'
     },
     catastrophic: {
       sourceDocId: 'cd-medical-insurance-regulations-2023',
       name: '城乡居民大病保险',
       deductible: 18000, // 约1.8万元起付线
+      annualCap: 300000, // 四川省统一执行大病保险最高支付限额30万元/年（激励最高可达36万元）
       tiers: [
         { minAmount: 18000, maxAmount: 68000, ratio: 0.60 },
         { minAmount: 68000, maxAmount: 118000, ratio: 0.70 },
@@ -149,13 +151,14 @@ export const chengduCityData: CityInsuranceData = {
     },
     remoteMedical: {
       sourceDocId: 'cd-medical-insurance-regulations-2023',
-      filingChannels: ['国家医保服务平台APP', '四川医保微信小程序'],
+      filingChannels: ['国家医保服务平台APP', '四川医保微信小程序', '成都医保'],
       longTermFiledRatio: 1.0,
-      transferFiledRatio: 0.90,
-      unfiledEmergencyRatio: 0.90,
-      unfiledNormalRatio: 0.70,
+      transferFiledRatio: 0.95, // 临时外出就医/异地转诊仅在本地支付比例基础上降低5%
+      unfiledEmergencyRatio: 0.95,
+      unfiledNormalRatio: 0.95, // 未办理异地备案人员在本地住院支付比例基础上降低5%（大病保险不降）
       specialNotes: [
-        '川内及跨省异地就医直接结算，规范备案人员与参保地报销待遇一致。'
+        '四川省内、重庆市、云南省、贵州省、西藏自治区、广州市、南京市就医免备案，直接享受本地同等报销待遇。',
+        '跨省临时就医及未备案人员在异地住院结算时，基本医保支付比例仅在本地基础上降低5个百分点，居民大病保险报销比例不变。'
       ]
     }
   }

@@ -119,13 +119,12 @@ export const zhengzhouCityData: CityInsuranceData = {
     },
     catastrophic: {
       sourceDocId: 'zz-medical-insurance-inpatient',
-      name: '城乡居民大病保险',
+      name: '郑州市城乡居民大病保险',
       deductible: 11000,
       annualCap: 400000,
       tiers: [
-        { minAmount: 11000, maxAmount: 50000, ratio: 0.60 },
-        { minAmount: 50000, maxAmount: 100000, ratio: 0.65 },
-        { minAmount: 100000, ratio: 0.75 }
+        { minAmount: 11000, maxAmount: 100000, ratio: 0.60 },
+        { minAmount: 100000, ratio: 0.70 }
       ]
     },
     remoteMedical: {

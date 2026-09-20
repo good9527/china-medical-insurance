@@ -126,15 +126,17 @@ export const tianjinCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 500, reimbursementRatio: 0.65 },
         tier3_top: { tierName: '三甲综合医院', deductible: 500, reimbursementRatio: 0.65 }
       },
-      repeatedDeductibleRule: '自然年度内第二次及以上住院不再设起付线。'
+      repeatedDeductibleRule: '基准数据为成年人低档缴费；高档缴费人员（及学生儿童新生儿享受高档待遇）住院报销比例各提高10个百分点：一级85%、二级80%、三级75%。自然年度内第二次及以上住院不再设起付线。'
     },
     catastrophic: {
       sourceDocId: 'tj-resident-outpatient-regulations',
       name: '城乡居民大病保险',
-      deductible: 28000,
+      deductible: 26790.5, // 动态调整（上年度全市居民人均可支配收入50%，2026年为26790.5元）
+      annualCap: 321486, // 动态调整（人均可支配收入6倍，2026年为321486元；医疗救助对象取消封顶）
       tiers: [
-        { minAmount: 28000, maxAmount: 100000, ratio: 0.60 },
-        { minAmount: 100000, ratio: 0.70 }
+        { minAmount: 26790.5, maxAmount: 107162, ratio: 0.65 },
+        { minAmount: 107162, maxAmount: 214324, ratio: 0.70 },
+        { minAmount: 214324, ratio: 0.75 }
       ]
     },
     remoteMedical: {

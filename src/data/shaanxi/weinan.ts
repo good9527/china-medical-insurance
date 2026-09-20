@@ -215,8 +215,8 @@ export const weinanCityData: CityInsuranceData = {
           reimbursementRatio: 0.65
         },
         tier3_top: {
-          tierName: '三级甲等综合医院',
-          deductible: 1000,
+          tierName: '省内外三级特等医院(西京/唐都/省人医等)',
+          deductible: 3000,
           reimbursementRatio: 0.65
         }
       }
@@ -240,7 +240,10 @@ export const weinanCityData: CityInsuranceData = {
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.80,
       specialNotes: [
-        '异地转诊备案及急诊报销比例下浮10%，未备案自行跨省就医报销比例下浮20%。'
+        '2024年4月1日起执行渭医保发〔2024〕50号新规。',
+        '统筹区外住院起付标准：省内一级500元、二级1000元、三级2500元、三特3000元；跨省二级1000元、三级2500元、三特3000元。',
+        '统筹区内未规范转诊报销比例下调10%，统筹区外未规范转诊报销比例下调20%。',
+        '基本医疗保险起付标准费用不计入城乡居民大病保险合规自付范围。'
       ]
     }
   }

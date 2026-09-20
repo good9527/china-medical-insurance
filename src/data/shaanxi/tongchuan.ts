@@ -227,7 +227,7 @@ export const tongchuanCityData: CityInsuranceData = {
         { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
         { minAmount: 100000, ratio: 0.80 }
       ],
-      annualCap: undefined // 居民大病保险原则上不设封顶线
+      annualCap: 300000 // 铜川市城乡居民大病保险年度最高支付限额30万元（特困人员/低保对象除外）
     },
     remoteMedical: {
       sourceDocId: 'tc-resident-basic-2024',

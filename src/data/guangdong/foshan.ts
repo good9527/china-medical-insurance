@@ -100,20 +100,21 @@ export const foshanCityData: CityInsuranceData = {
       sourceDocId: 'fs-medical-insurance-inpatient-2023',
       annualCap: 350000,
       tierBenefits: {
-        community: { tierName: '一级医疗机构/卫生院', deductible: 250, reimbursementRatio: 0.90 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 250, reimbursementRatio: 0.90 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.85 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 1000, reimbursementRatio: 0.80 },
-        tier3_top: { tierName: '市级三甲综合医院', deductible: 1000, reimbursementRatio: 0.80 }
-      }
+        community: { tierName: '一级医疗机构/卫生院', deductible: 300, reimbursementRatio: 0.95 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.95 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.90 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 1200, reimbursementRatio: 0.85 },
+        tier3_top: { tierName: '市级三甲综合医院', deductible: 1200, reimbursementRatio: 0.85 }
+      },
+      repeatedDeductibleRule: '参保人员每次住院支付一次起付标准；日间手术起付标准为500元/次；严重精神障碍住院不设起付标准。'
     },
     catastrophic: {
       sourceDocId: 'fs-medical-insurance-inpatient-2023',
       name: '城乡居民大病保险',
-      deductible: 15000,
-      annualCap: 400000,
+      deductible: 12000,
+      annualCap: 762538, // 挂钩上上年度职工年平均工资7倍（2024-2025年为762538元）
       tiers: [
-        { minAmount: 15000, maxAmount: 50000, ratio: 0.60 },
+        { minAmount: 12000, maxAmount: 50000, ratio: 0.60 },
         { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
         { minAmount: 100000, ratio: 0.80 }
       ]
@@ -122,10 +123,12 @@ export const foshanCityData: CityInsuranceData = {
       sourceDocId: 'fs-medical-insurance-inpatient-2023',
       filingChannels: ['粤医保微信小程序', '国家医保服务平台APP'],
       longTermFiledRatio: 1.0,
-      transferFiledRatio: 0.85,
-      unfiledEmergencyRatio: 0.85,
-      unfiledNormalRatio: 0.60,
-      specialNotes: ['跨省异地就医规范转诊下调15%，未备案临时外出下调20%。']
+      transferFiledRatio: 0.90,
+      unfiledEmergencyRatio: 0.90,
+      unfiledNormalRatio: 0.75, // 临时自行到市外就医支付比例提高为一级75%、二级70%、三级65%
+      specialNotes: [
+        '长期居住异地备案享受市内同等待遇。未备案临时市外就医支付比例为一级75%、二级70%、三级65%，大病保险降低25个百分点。'
+      ]
     }
   }
 };

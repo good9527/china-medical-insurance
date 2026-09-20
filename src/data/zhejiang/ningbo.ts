@@ -93,7 +93,7 @@ export const ningboCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'nb-medical-insurance-measures-2023',
-      annualCap: 1500,
+      annualCap: 5000, // 普通门诊限额已提高至 5000 元
       tierBenefits: {
         community: { tierName: '社区卫生服务机构', deductible: 0, reimbursementRatio: 0.60 },
         tier1: { tierName: '一级定点机构', deductible: 0, reimbursementRatio: 0.60 },
@@ -101,29 +101,27 @@ export const ningboCityData: CityInsuranceData = {
         tier3: { tierName: '三级医疗机构', deductible: 300, reimbursementRatio: 0.40 },
         tier3_top: { tierName: '重点三级甲等医院', deductible: 300, reimbursementRatio: 0.40 }
       },
-      note: '居民门诊在基层医疗机构免起付线报销60%，限额1500元。'
+      note: '居民门诊在基层免起付线报销60%，二级/三级设300元起付线，年度封顶提升至5000元。'
     },
     inpatient: {
       sourceDocId: 'nb-medical-insurance-measures-2023',
       annualCap: 300000,
-      repeatedDeductibleRule: '年度内多次住院按最高等级医院计算一次起付线',
+      repeatedDeductibleRule: '年度内多次住院按最高等级医院计算一次起付线（上限1200元）',
       tierBenefits: {
-        community: { tierName: '基层社区医院', deductible: 300, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点机构', deductible: 300, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点机构', deductible: 600, reimbursementRatio: 0.75 },
-        tier3: { tierName: '三级定点机构', deductible: 1200, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '重点三甲医疗机构', deductible: 1200, reimbursementRatio: 0.65 }
+        community: { tierName: '基层社区卫生服务机构', deductible: 300, reimbursementRatio: 0.80 }, // 4万以上85%
+        tier1: { tierName: '一级定点机构', deductible: 300, reimbursementRatio: 0.70 }, // 4万以上75%
+        tier2: { tierName: '二级定点机构', deductible: 600, reimbursementRatio: 0.70 }, // 4万以上75%
+        tier3: { tierName: '三级定点机构', deductible: 1200, reimbursementRatio: 0.70 }, // 4万以上75%
+        tier3_top: { tierName: '重点三甲医疗机构', deductible: 1200, reimbursementRatio: 0.70 } // 4万以上75%
       }
     },
     catastrophic: {
       sourceDocId: 'nb-medical-insurance-measures-2023',
       name: '宁波市城乡居民大病保险',
       deductible: 20000,
-      annualCap: 400000,
+      annualCap: 500000,
       tiers: [
-        { minAmount: 20000, maxAmount: 50000, ratio: 0.60 },
-        { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
-        { minAmount: 100000, ratio: 0.80 }
+        { minAmount: 20000, ratio: 0.70 }
       ]
     },
     remoteMedical: {

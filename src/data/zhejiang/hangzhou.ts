@@ -130,11 +130,13 @@ export const hangzhouCityData: CityInsuranceData = {
     },
     catastrophic: {
       sourceDocId: 'hz-resident-medical-2024',
-      name: '城乡居民大病保险',
+      name: '杭州市城乡居民大病保险',
       deductible: 25000,
+      annualCap: 600000, // 明确基准最高支付限额 60 万元
       tiers: [
-        { minAmount: 25000, maxAmount: 50000, ratio: 0.60 },
-        { minAmount: 50000, ratio: 0.75 }
+        { minAmount: 25000, maxAmount: 100000, ratio: 0.70 },
+        { minAmount: 100000, maxAmount: 200000, ratio: 0.75 },
+        { minAmount: 200000, ratio: 0.80 }
       ]
     },
     remoteMedical: {

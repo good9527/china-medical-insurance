@@ -128,22 +128,25 @@ export const shenzhenCityData: CityInsuranceData = {
       repeatedDeductibleRule: '依据《深圳市医疗保障办法》第三十六条、第三十七条，参保人起付线一级200元、二级400元、三级600元，二次及以上住院减半；报销比例一级92%、二级91%、三级90%，年满60周岁及以上老人支付比例统一提升至95%。'
     },
     catastrophic: {
-      sourceDocId: 'sz-resident-medical-rules',
-      name: '城乡居民大病保险',
+      sourceDocId: 'sz-medical-insurance-regulations-2023',
+      name: '城乡居民大病保险（二次报销）',
       deductible: 10000,
+      annualCap: 1000000, // 连续参保72个月以上大病保险限额达100万元
       tiers: [
-        { minAmount: 10000, ratio: 0.80 }
+        { minAmount: 10000, maxAmount: 30000, ratio: 0.70 },
+        { minAmount: 30000, ratio: 0.80 }
       ]
     },
     remoteMedical: {
       sourceDocId: 'sz-medical-insurance-regulations-2023',
-      filingChannels: ['国家医保服务平台APP', '深圳医保微信公众号'],
+      filingChannels: ['国家医保服务平台APP', '深圳医保微信公众号', '粤医保'],
       longTermFiledRatio: 1.0,
-      transferFiledRatio: 0.90,
-      unfiledEmergencyRatio: 0.90,
-      unfiledNormalRatio: 0.70,
+      transferFiledRatio: 1.0, // 已办理规范转诊备案，执行与市内就医相同比例 (100%)
+      unfiledEmergencyRatio: 0.90, // 异地急诊抢救按市内比例90%支付
+      unfiledNormalRatio: 0.80, // 跨省临时就医按市内比例80%支付（广东省内跨市直接结算按市内比例90%支付）
       specialNotes: [
-        '省内及跨省异地就医直接结算，规范备案享受本地待遇。'
+        '省内及跨省异地就医直接结算，规范办理长期居住备案或市外转诊手续的，享受与市内就医同等待遇。',
+        '未办理转诊的跨省临时外出就医按市内同级别标准的80%支付，广东省内跨市直接结算按90%支付。'
       ]
     }
   }

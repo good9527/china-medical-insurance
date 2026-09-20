@@ -102,20 +102,20 @@ export const wuxiCityData: CityInsuranceData = {
     },
     inpatient: {
       sourceDocId: 'wx-medical-insurance-inpatient-2023',
-      annualCap: 250000,
+      annualCap: 350000, // 调整为 35 万元
       repeatedDeductibleRule: '二次及多次住院起付线逐次递减',
       tierBenefits: {
-        community: { tierName: '基层卫生机构', deductible: 300, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点机构', deductible: 400, reimbursementRatio: 0.85 },
+        community: { tierName: '基层卫生机构', deductible: 200, reimbursementRatio: 0.85 },
+        tier1: { tierName: '一级定点机构', deductible: 300, reimbursementRatio: 0.85 },
         tier2: { tierName: '二级定点机构', deductible: 600, reimbursementRatio: 0.75 },
-        tier3: { tierName: '三级定点机构', deductible: 800, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '重点三级甲等医院', deductible: 800, reimbursementRatio: 0.65 }
+        tier3: { tierName: '三级定点机构', deductible: 600, reimbursementRatio: 0.65 },
+        tier3_top: { tierName: '重点三级甲等医院', deductible: 600, reimbursementRatio: 0.65 }
       }
     },
     catastrophic: {
       name: '无锡市城乡居民大病保险',
       deductible: 15000,
-      annualCap: 350000,
+      annualCap: 500000, // 按照江苏省统一调整为 50 万元
       tiers: [
         { minAmount: 15000, maxAmount: 50000, ratio: 0.60 },
         { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },

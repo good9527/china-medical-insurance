@@ -97,24 +97,24 @@ export const dongguanCityData: CityInsuranceData = {
       note: '居民门诊免设起付线，社区就医报销70%，转诊定点医院报销40%-50%，年度限额1200元。'
     },
     inpatient: {
-      sourceDocId: 'dg-medical-insurance-inpatient-2023',
+      sourceDocId: 'dg-medical-insurance-regulations-2023',
       annualCap: 350000,
       tierBenefits: {
-        community: { tierName: '一级医疗机构/社区医院', deductible: 500, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 500, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 800, reimbursementRatio: 0.80 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 1300, reimbursementRatio: 0.75 },
-        tier3_top: { tierName: '市级三甲综合医院', deductible: 1300, reimbursementRatio: 0.75 }
-      }
+        community: { tierName: '一级医疗机构/社区医院', deductible: 500, reimbursementRatio: 0.95 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 500, reimbursementRatio: 0.95 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 800, reimbursementRatio: 0.90 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 1300, reimbursementRatio: 0.85 },
+        tier3_top: { tierName: '市级三甲综合医院', deductible: 1300, reimbursementRatio: 0.85 }
+      },
+      repeatedDeductibleRule: '14周岁以下儿童起付标准减半执行（一级250元、二级400元、三级650元）。基本医疗费用10万元以内按基准比例支付，超10万元以上部分支付比例各下浮10%（一级85%、二级80%、三级75%）。'
     },
     catastrophic: {
-      sourceDocId: 'dg-medical-insurance-inpatient-2023',
+      sourceDocId: 'dg-medical-insurance-regulations-2023',
       name: '城乡居民大病保险',
       deductible: 12000,
-      annualCap: 400000,
+      annualCap: 650000, // 上上年度城镇在岗职工年平均工资6倍（动态调整，约65-70万元）
       tiers: [
-        { minAmount: 12000, maxAmount: 50000, ratio: 0.60 },
-        { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
+        { minAmount: 12000, maxAmount: 100000, ratio: 0.70 },
         { minAmount: 100000, ratio: 0.80 }
       ]
     },

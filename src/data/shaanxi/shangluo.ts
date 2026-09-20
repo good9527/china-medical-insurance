@@ -193,28 +193,28 @@ export const shangluoCityData: CityInsuranceData = {
       tierBenefits: {
         community: {
           tierName: '乡镇卫生院/社区卫生服务中心',
-          deductible: 100,
-          reimbursementRatio: 0.80
+          deductible: 200,
+          reimbursementRatio: 0.85
         },
         tier1: {
-          tierName: '一级定点医疗机构',
-          deductible: 300,
-          reimbursementRatio: 0.80
+          tierName: '一级定点公立医疗机构',
+          deductible: 200,
+          reimbursementRatio: 0.85
         },
         tier2: {
           tierName: '二级定点医疗机构',
-          deductible: 400,
+          deductible: 600,
           reimbursementRatio: 0.75
         },
         tier3: {
           tierName: '三级定点医疗机构',
-          deductible: 500,
-          reimbursementRatio: 0.70
+          deductible: 1400,
+          reimbursementRatio: 0.60
         },
         tier3_top: {
           tierName: '三级甲等综合医院',
-          deductible: 500,
-          reimbursementRatio: 0.70
+          deductible: 1400,
+          reimbursementRatio: 0.60
         }
       }
     },
