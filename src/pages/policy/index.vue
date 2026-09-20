@@ -827,7 +827,7 @@ onShow(() => {
 }
 
 .tier-tag {
-  font-size: 10px;
+  font-size: 11px;
   padding: 1px 6px;
   border-radius: 4px;
   font-weight: 700;
@@ -886,10 +886,10 @@ onShow(() => {
 }
 
 .page-main-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   color: #0f172a;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.3px;
   line-height: 1.25;
 }
 
@@ -906,7 +906,7 @@ onShow(() => {
 }
 
 .city-indicator-txt {
-  font-size: 12px;
+  font-size: 11.5px;
   color: #2563eb;
   font-weight: 600;
   line-height: 1;
@@ -916,24 +916,25 @@ onShow(() => {
   font-size: 13px;
   color: #64748b;
   margin-top: 4px;
+  line-height: 1.5;
 }
 
 /* 快速检索城市触发器与面板 */
 .quick-search-trigger {
   background: #eff6ff;
   border: 1px solid #bfdbfe;
-  border-radius: 12rpx;
-  padding: 0 16rpx;
-  height: 72rpx;
+  border-radius: 8px;
+  padding: 0 12px;
+  height: 38px;
   display: flex;
   align-items: center;
   cursor: pointer;
 }
 
 .search-trigger-txt {
-  font-size: 22rpx;
+  font-size: 12px;
   color: #2563eb;
-  font-weight: 700;
+  font-weight: 600;
   white-space: nowrap;
 }
 
@@ -954,23 +955,23 @@ onShow(() => {
 
 .search-input {
   width: 100%;
-  height: 76rpx;
+  height: 36px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
-  border-radius: 8rpx;
-  padding: 0 50rpx 0 20rpx;
-  font-size: 24rpx;
+  border-radius: 8px;
+  padding: 0 40px 0 12px;
+  font-size: 13px;
   color: #0f172a;
   box-sizing: border-box;
 }
 
 .search-clear-btn {
   position: absolute;
-  right: 18rpx;
-  font-size: 24rpx;
+  right: 12px;
+  font-size: 13px;
   color: #94a3b8;
   cursor: pointer;
-  padding: 4rpx;
+  padding: 4px;
 }
 
 .search-results-list {
@@ -984,7 +985,7 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14rpx 10rpx;
+  padding: 10px 8px;
   border-bottom: 1px solid #f8fafc;
   cursor: pointer;
 }
@@ -996,25 +997,25 @@ onShow(() => {
 .row-left {
   display: flex;
   align-items: center;
-  gap: 12rpx;
+  gap: 8px;
 }
 
 .c-name {
-  font-size: 26rpx;
+  font-size: 13px;
   font-weight: 700;
   color: #0f172a;
 }
 
 .c-prov {
-  font-size: 22rpx;
+  font-size: 11.5px;
   color: #64748b;
   background: #f1f5f9;
-  padding: 2rpx 10rpx;
-  border-radius: 4rpx;
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
 .c-action {
-  font-size: 22rpx;
+  font-size: 12px;
   color: #2563eb;
   font-weight: 600;
 }
@@ -1025,7 +1026,7 @@ onShow(() => {
 }
 
 .empty-txt {
-  font-size: 24rpx;
+  font-size: 12px;
   color: #94a3b8;
 }
 
@@ -1123,14 +1124,14 @@ onShow(() => {
 }
 
 .cyber-dropdown-trigger {
-  height: 72rpx;
+  height: 38px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
-  padding: 0 20rpx;
-  border-radius: 12rpx;
+  padding: 0 12px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
-  gap: 10rpx;
+  gap: 8px;
   cursor: pointer;
   transition: all 0.2s;
 }
@@ -1142,13 +1143,13 @@ onShow(() => {
 }
 
 .select-val {
-  font-size: 24rpx;
+  font-size: 13px;
   font-weight: 600;
   color: #0f172a;
 }
 
 .select-arrow {
-  font-size: 20rpx;
+  font-size: 11px;
   color: #64748b;
   transition: transform 0.2s;
 }
@@ -1160,14 +1161,14 @@ onShow(() => {
 
 .cyber-dropdown-menu {
   position: absolute;
-  top: calc(100% + 8rpx);
+  top: calc(100% + 4px);
   right: 0;
-  min-width: 220rpx;
-  max-height: 420rpx;
+  min-width: 140px;
+  max-height: 240px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 12rpx;
-  box-shadow: 0 16rpx 40rpx rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
   z-index: 100;
 }
@@ -1176,16 +1177,16 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14rpx 18rpx;
+  padding: 8px 12px;
   border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
 }
 
 .dropdown-item:hover { background: #f8fafc; }
 .dropdown-item.selected { background: #eff6ff; }
-.dropdown-item .item-name { font-size: 24rpx; color: #334155; }
+.dropdown-item .item-name { font-size: 13px; color: #334155; font-weight: 500; }
 .dropdown-item.selected .item-name { color: #2563eb; font-weight: 700; }
-.dropdown-item .item-check { font-size: 22rpx; color: #2563eb; font-weight: 700; }
+.dropdown-item .item-check { font-size: 12px; color: #2563eb; font-weight: 700; }
 
 /* 身份类型切换（现代轻量胶囊风格） */
 .identity-switch-bar {
@@ -1211,7 +1212,7 @@ onShow(() => {
 }
 
 .pill-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: #64748b;
   line-height: 1;
@@ -1268,11 +1269,11 @@ onShow(() => {
 }
 
 .card-head-title {
-  font-size: 17px;
-  font-weight: 800;
+  font-size: 16px;
+  font-weight: 700;
   color: #0f172a;
   letter-spacing: -0.2px;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 
 .badge-pill {
@@ -1295,7 +1296,7 @@ onShow(() => {
 .badge-indigo .badge-txt { color: #4338ca; }
 
 .badge-txt {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   line-height: 1;
 }
@@ -1704,7 +1705,7 @@ onShow(() => {
   }
 
   .hero-title {
-    font-size: 32rpx;
+    font-size: 19px;
   }
 
   .title-row {
@@ -1743,7 +1744,7 @@ onShow(() => {
   }
 
   .card {
-    padding: 20rpx 18rpx;
+    padding: 12px 14px;
   }
 }
 
@@ -1759,23 +1760,23 @@ onShow(() => {
   }
 
   .tab-card {
-    padding: 18rpx 20rpx;
+    padding: 10px 12px;
   }
 
   .tab-card-title {
-    font-size: 28rpx;
+    font-size: 14px;
   }
 
   .tab-card-desc {
-    font-size: 22rpx;
+    font-size: 11.5px;
   }
 
   .hero-title {
-    font-size: 32rpx;
+    font-size: 19px;
   }
 
   .hero-desc {
-    font-size: 24rpx;
+    font-size: 12.5px;
     line-height: 1.5;
   }
 
@@ -1786,7 +1787,7 @@ onShow(() => {
   }
 
   .card-head-title {
-    font-size: 28rpx;
+    font-size: 15px;
   }
 
   .badge-pill {
@@ -1799,15 +1800,16 @@ onShow(() => {
   }
 
   .metric-cell {
-    padding: 16rpx 18rpx;
+    padding: 10px 12px;
   }
 
   .m-label {
-    font-size: 24rpx;
+    font-size: 12px;
   }
 
   .m-val {
-    font-size: 30rpx;
+    font-size: 18px;
+    font-variant-numeric: tabular-nums;
   }
 
   .table-container {
@@ -1816,15 +1818,15 @@ onShow(() => {
   }
 
   .t-row {
-    padding: 14rpx 16rpx;
+    padding: 10px 12px;
   }
 
   .t-cell {
-    font-size: 24rpx;
+    font-size: 12.5px;
   }
 
   .t-head .t-cell {
-    font-size: 24rpx;
+    font-size: 12px;
     font-weight: 700;
   }
 

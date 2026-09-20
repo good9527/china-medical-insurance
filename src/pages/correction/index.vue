@@ -641,9 +641,10 @@ onMounted(() => {
 }
 
 .page-main-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 800;
   color: #0f172a;
+  letter-spacing: -0.3px;
   line-height: 1.25;
 }
 
@@ -660,16 +661,16 @@ onMounted(() => {
 }
 
 .city-indicator-txt {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 11.5px;
+  font-weight: 600;
   color: #2563eb;
   line-height: 1;
 }
 
 .page-sub-title {
-  font-size: 12px;
+  font-size: 13px;
   color: #64748b;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .audit-status-badge {
@@ -725,8 +726,9 @@ onMounted(() => {
 
 .card-head-title {
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 700;
   color: #0f172a;
+  letter-spacing: -0.2px;
 }
 
 .head-tip {
@@ -741,7 +743,7 @@ onMounted(() => {
 }
 
 .section-label {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #334155;
 }
@@ -1261,7 +1263,7 @@ onMounted(() => {
 }
 
 .r-tag {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: #2563eb;
   background: #eff6ff;
@@ -1281,7 +1283,7 @@ onMounted(() => {
 }
 
 .recent-doc {
-  font-size: 10px;
+  font-size: 11px;
   color: #64748b;
 }
 
@@ -1320,7 +1322,7 @@ onMounted(() => {
 }
 
 .my-rec-status {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: #b45309;
   background: #fef3c7;
@@ -1335,7 +1337,7 @@ onMounted(() => {
 }
 
 .my-rec-id {
-  font-size: 10px;
+  font-size: 11px;
   color: #94a3b8;
 }
 
@@ -1380,8 +1382,12 @@ onMounted(() => {
   }
 
   .page-main-title {
-    font-size: 18px;
+    font-size: 19px;
     white-space: nowrap;
+  }
+
+  .card-head-title {
+    font-size: 15px;
   }
 
   .title-row {

@@ -214,7 +214,17 @@ function initAntigravityCanvas() {
   --fluid-pad-x: clamp(12px, 2vw, 28px);
   --fluid-pad-y: clamp(10px, 1.5vh, 20px);
   --card-pad: clamp(14px, 1.5vw, 22px);
-  --input-h: clamp(36px, 4.2vh, 44px);
+  /* 全局统一字号阶梯规范 (Design System Typographic Scale) */
+  --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  
+  --font-hero: 32px;
+  --font-h1: 22px;
+  --font-h2: 16px;
+  --font-h3: 13.5px;
+  --font-body: 13px;
+  --font-sub: 12px;
+  --font-caption: 11px;
 }
 
 *, *::before, *::after {
@@ -224,11 +234,21 @@ function initAntigravityCanvas() {
 page {
   background-color: #f8fafc;
   color: #1e293b;
-  font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  font-family: var(--font-family-base);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
   line-height: 1.5;
   user-select: none;
+}
+
+/* 强制所有表单元素继承全局字体与抗锯齿渲染 */
+input, button, select, textarea, uni-input, uni-button {
+  font-family: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* 全局主视口容器：严格锁定最大黄金极限 1280px，杜绝超宽屏变形与稀疏 */

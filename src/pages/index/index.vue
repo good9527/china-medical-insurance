@@ -841,10 +841,10 @@ onShow(() => {
 }
 
 .page-main-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   color: #0f172a;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.3px;
   line-height: 1.25;
 }
 
@@ -861,7 +861,7 @@ onShow(() => {
 }
 
 .city-indicator-txt {
-  font-size: 12px;
+  font-size: 11.5px;
   color: #2563eb;
   font-weight: 600;
   line-height: 1;
@@ -871,6 +871,7 @@ onShow(() => {
   font-size: 13px;
   color: #64748b;
   margin-top: 4px;
+  line-height: 1.5;
 }
 
 .intro-right {
@@ -946,7 +947,7 @@ onShow(() => {
 }
 
 .group-label {
-  font-size: 22rpx;
+  font-size: 13.5px;
   font-weight: 700;
   color: #1e293b;
 }
@@ -954,13 +955,14 @@ onShow(() => {
 .quick-search-trigger {
   cursor: pointer;
   padding: 2px 8px;
-  border-radius: 6rpx;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
 }
 
 .search-trigger-txt {
-  font-size: 18rpx;
+  font-size: 12px;
+  font-weight: 600;
   color: #2563eb;
 }
 
@@ -982,23 +984,23 @@ onShow(() => {
 
 .search-input {
   width: 100%;
-  height: 64rpx;
+  height: 36px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
-  border-radius: 8rpx;
+  border-radius: 8px;
   color: #0f172a;
-  padding: 0 54rpx 0 16rpx;
-  font-size: 20rpx;
+  padding: 0 40px 0 12px;
+  font-size: 13px;
   box-sizing: border-box;
 }
 
 .search-clear-btn {
   position: absolute;
-  right: 16rpx;
-  font-size: 22rpx;
+  right: 12px;
+  font-size: 13px;
   color: #64748b;
   cursor: pointer;
-  padding: 4rpx;
+  padding: 4px;
 }
 
 .search-results-list {
@@ -1020,10 +1022,10 @@ onShow(() => {
   background: #eff6ff;
 }
 
-.c-name { font-size: 22rpx; color: #0f172a; font-weight: 600; }
-.c-prov { font-size: 18rpx; color: #64748b; margin-left: 10rpx; }
-.c-action { font-size: 18rpx; color: #2563eb; font-weight: 600; }
-.empty-txt { font-size: 18rpx; color: #64748b; }
+.c-name { font-size: 13px; color: #0f172a; font-weight: 600; }
+.c-prov { font-size: 11.5px; color: #64748b; margin-left: 8px; }
+.c-action { font-size: 12px; color: #2563eb; font-weight: 600; }
+.empty-txt { font-size: 12px; color: #64748b; }
 
 /* 双列栅格 */
 .grid-2col,
@@ -1064,7 +1066,7 @@ onShow(() => {
 }
 
 .select-val {
-  font-size: 22rpx;
+  font-size: 13px;
   color: #0f172a;
   font-weight: 600;
   white-space: nowrap;
@@ -1073,7 +1075,7 @@ onShow(() => {
 }
 
 .select-arrow {
-  font-size: 18rpx;
+  font-size: 11px;
   color: #64748b;
   transition: transform 0.2s ease;
 }
@@ -1116,7 +1118,7 @@ onShow(() => {
 }
 
 .dropdown-item .item-name {
-  font-size: 22rpx;
+  font-size: 13px;
   color: #334155;
   font-weight: 500;
 }
@@ -1127,7 +1129,7 @@ onShow(() => {
 }
 
 .dropdown-item .item-check {
-  font-size: 20rpx;
+  font-size: 12px;
   color: #2563eb;
   font-weight: 700;
 }
@@ -1158,7 +1160,7 @@ onShow(() => {
 }
 
 .seg-title {
-  font-size: 22rpx;
+  font-size: 13px;
   font-weight: 700;
   color: #64748b;
   display: block;
@@ -1169,10 +1171,10 @@ onShow(() => {
 }
 
 .seg-desc {
-  font-size: 16rpx;
+  font-size: 11px;
   color: #94a3b8;
   display: block;
-  margin-top: 2rpx;
+  margin-top: 2px;
 }
 
 .seg-btn.active .seg-desc {
@@ -1199,13 +1201,13 @@ onShow(() => {
 }
 
 .retiree-label {
-  font-size: 20rpx;
+  font-size: 13px;
   color: #1e293b;
   font-weight: 600;
 }
 
 .retiree-sub {
-  font-size: 16rpx;
+  font-size: 11.5px;
   color: #64748b;
 }
 
@@ -1266,7 +1268,7 @@ onShow(() => {
 }
 
 .sub-seg-txt {
-  font-size: 20rpx;
+  font-size: 13px;
   color: #64748b;
   font-weight: 600;
 }
@@ -1285,15 +1287,15 @@ onShow(() => {
 }
 
 .notice-badge {
-  font-size: 16rpx;
+  font-size: 11.5px;
   color: #1d4ed8;
   font-weight: 700;
   display: block;
-  margin-bottom: 2rpx;
+  margin-bottom: 2px;
 }
 
 .notice-content {
-  font-size: 18rpx;
+  font-size: 12px;
   color: #1e3a8a;
   line-height: 1.5;
   display: block;
@@ -1319,22 +1321,23 @@ onShow(() => {
 }
 
 .currency-symbol {
-  font-size: 36rpx;
+  font-size: 20px;
   color: #2563eb;
   font-weight: 700;
-  margin-right: 12rpx;
+  margin-right: 8px;
 }
 
 .main-amount-input {
   flex: 1;
   height: 100%;
   color: #0f172a;
-  font-size: 34rpx;
+  font-size: 22px;
   font-weight: 700;
+  font-variant-numeric: tabular-nums;
 }
 
 .currency-unit {
-  font-size: 20rpx;
+  font-size: 13px;
   color: #64748b;
   font-weight: 600;
 }
@@ -1369,7 +1372,7 @@ onShow(() => {
 }
 
 .pill-text {
-  font-size: 20rpx;
+  font-size: 12px;
   color: #64748b;
   font-weight: 600;
   white-space: nowrap;
@@ -1397,13 +1400,13 @@ onShow(() => {
 }
 
 .trigger-label {
-  font-size: 18rpx;
+  font-size: 12.5px;
   color: #475569;
   font-weight: 600;
 }
 
 .trigger-arrow {
-  font-size: 18rpx;
+  font-size: 11px;
   color: #64748b;
 }
 
@@ -1419,7 +1422,7 @@ onShow(() => {
 }
 
 .field-label {
-  font-size: 18rpx;
+  font-size: 12px;
   color: #64748b;
   margin-bottom: 4px;
   display: block;
@@ -1427,13 +1430,13 @@ onShow(() => {
 
 .collapse-input {
   width: 100%;
-  height: 64rpx;
+  height: 36px;
   background: #ffffff;
   border: 1px solid #cbd5e1;
-  border-radius: 10rpx;
+  border-radius: 8px;
   color: #0f172a;
-  padding: 0 16rpx;
-  font-size: 20rpx;
+  padding: 0 12px;
+  font-size: 13px;
   box-sizing: border-box;
 }
 
@@ -1473,7 +1476,7 @@ onShow(() => {
 }
 
 .receipt-title {
-  font-size: 22rpx;
+  font-size: 15px;
   color: #0f172a;
   font-weight: 700;
 }
@@ -1481,12 +1484,12 @@ onShow(() => {
 .ratio-pill {
   background: #eff6ff;
   border: 1px solid #bfdbfe;
-  padding: 4rpx 14rpx;
-  border-radius: 9999rpx;
+  padding: 4px 10px;
+  border-radius: 9999px;
 }
 
 .ratio-text {
-  font-size: 18rpx;
+  font-size: 12px;
   color: #1d4ed8;
   font-weight: 700;
 }
@@ -1502,7 +1505,7 @@ onShow(() => {
 }
 
 .receipt-hero-label {
-  font-size: 18rpx;
+  font-size: 13px;
   color: #059669;
   font-weight: 600;
   display: block;
@@ -1516,20 +1519,21 @@ onShow(() => {
 }
 
 .price-symbol {
-  font-size: 32rpx;
+  font-size: 20px;
   color: #059669;
   font-weight: 700;
 }
 
 .price-number {
-  font-size: 64rpx;
+  font-size: 32px;
   font-weight: 900;
   color: #047857;
-  letter-spacing: -1.5rpx;
+  letter-spacing: -0.5px;
+  font-variant-numeric: tabular-nums;
 }
 
 .receipt-note {
-  font-size: 16rpx;
+  font-size: 12px;
   color: #64748b;
   display: block;
   margin-top: 4px;
@@ -1556,16 +1560,17 @@ onShow(() => {
 }
 
 .cell-label {
-  font-size: 16rpx;
+  font-size: 12px;
   color: #64748b;
   display: block;
   margin-bottom: 2px;
 }
 
 .cell-val {
-  font-size: 24rpx;
+  font-size: 16px;
   font-weight: 700;
   display: block;
+  font-variant-numeric: tabular-nums;
 }
 
 .text-cyan { color: #0284c7; }
@@ -1586,7 +1591,7 @@ onShow(() => {
 }
 
 .prog-txt {
-  font-size: 16rpx;
+  font-size: 11.5px;
   font-weight: 600;
 }
 
@@ -1647,13 +1652,13 @@ onShow(() => {
 }
 
 .b-head-title {
-  font-size: 18rpx;
+  font-size: 13.5px;
   color: #1e293b;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .b-head-action {
-  font-size: 16rpx;
+  font-size: 12px;
   color: #64748b;
 }
 
@@ -1667,12 +1672,12 @@ onShow(() => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 4px 0;
-  font-size: 18rpx;
+  padding: 5px 0;
+  font-size: 13px;
 }
 
-.b-col-name { color: #64748b; }
-.b-col-val { font-weight: 600; color: #0f172a; }
+.b-col-name { color: #64748b; font-size: 13px; }
+.b-col-val { font-weight: 600; color: #0f172a; font-size: 13px; font-variant-numeric: tabular-nums; }
 
 /* 政策备忘 */
 .policy-memo {
@@ -1691,8 +1696,8 @@ onShow(() => {
 }
 
 .memo-row:last-child { margin-bottom: 0; }
-.memo-dot { color: #2563eb; font-size: 20rpx; line-height: 1; }
-.memo-txt { font-size: 16rpx; color: #475569; line-height: 1.5; flex: 1; }
+.memo-dot { color: #2563eb; font-size: 14px; line-height: 1; }
+.memo-txt { font-size: 12px; color: #475569; line-height: 1.5; flex: 1; }
 
 /* 底部官方依据卡片 (稳固收口) */
 .official-statute-badge {
@@ -1726,13 +1731,13 @@ onShow(() => {
 }
 
 .statute-tag {
-  font-size: 14rpx;
+  font-size: 11px;
   color: #2563eb;
   font-weight: 700;
 }
 
 .statute-doc-num {
-  font-size: 16rpx;
+  font-size: 12px;
   color: #64748b;
   white-space: nowrap;
   overflow: hidden;
@@ -1740,7 +1745,7 @@ onShow(() => {
 }
 
 .statute-title {
-  font-size: 18rpx;
+  font-size: 13px;
   color: #0f172a;
   font-weight: 600;
   display: block;
@@ -1753,13 +1758,13 @@ onShow(() => {
 .statute-btn {
   background: #eff6ff;
   border: 1px solid #bfdbfe;
-  padding: 4rpx 14rpx;
-  border-radius: 8rpx;
+  padding: 4px 10px;
+  border-radius: 6px;
   flex-shrink: 0;
 }
 
 .statute-btn-txt {
-  font-size: 16rpx;
+  font-size: 12px;
   color: #1d4ed8;
   font-weight: 600;
 }
@@ -1790,8 +1795,8 @@ onShow(() => {
   stroke: #94a3b8;
 }
 
-.empty-title { font-size: 24rpx; font-weight: 700; color: #475569; }
-.empty-desc { font-size: 18rpx; color: #64748b; margin-top: 8px; line-height: 1.5; max-width: 360rpx; }
+.empty-title { font-size: 15px; font-weight: 700; color: #475569; }
+.empty-desc { font-size: 12.5px; color: #64748b; margin-top: 8px; line-height: 1.5; max-width: 320px; }
 
 /* -------------------- 3. 响应式布局：移动端自适应 -------------------- */
 @media (min-width: 860px) {
@@ -1834,8 +1839,8 @@ onShow(() => {
     gap: 12px;
   }
 
-  .hero-title {
-    font-size: 32rpx;
+  .page-main-title {
+    font-size: 19px;
   }
 
   .title-row {
@@ -1866,13 +1871,8 @@ onShow(() => {
     padding: 10px 10px 48px;
   }
 
-  .hero-title {
-    font-size: 32rpx;
-  }
-
-  .hero-desc {
-    font-size: 24rpx;
-    line-height: 1.5;
+  .page-main-title {
+    font-size: 19px;
   }
 
   .bento-card {
@@ -1880,7 +1880,7 @@ onShow(() => {
   }
 
   .price-number {
-    font-size: 56rpx;
+    font-size: 28px;
   }
 
   .preset-pill-row {
@@ -1896,7 +1896,7 @@ onShow(() => {
   }
 
   .pill-text {
-    font-size: 19rpx;
+    font-size: 12px;
     white-space: nowrap;
   }
 
@@ -2008,7 +2008,7 @@ onShow(() => {
   }
 
   .price-number {
-    font-size: 48rpx;
+    font-size: 26px;
   }
 
   .compare-matrix {
@@ -2017,7 +2017,7 @@ onShow(() => {
   }
 
   .cell-val {
-    font-size: 24rpx;
+    font-size: 14.5px;
   }
 }
 

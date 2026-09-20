@@ -1335,10 +1335,11 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .benchmark-title {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 800;
   color: #0f172a;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
   margin-bottom: 6px;
 }
 
@@ -1457,13 +1458,13 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .seg-title {
-  font-size: 15px;
-  font-weight: 800;
+  font-size: 14px;
+  font-weight: 700;
   color: #1e293b;
 }
 
 .seg-badge {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   padding: 1px 6px;
   border-radius: 4px;
@@ -2122,7 +2123,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .brc-tier {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   margin-top: 2px;
 }
@@ -2439,7 +2440,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .prov-tag {
-  font-size: 10px;
+  font-size: 11px;
   color: #64748b;
   background: #f1f5f9;
   padding: 1px 5px;
@@ -2455,8 +2456,10 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .score-display {
-  font-size: 14px;
+  font-size: 13.5px;
+  font-weight: 700;
   color: #0f172a;
+  font-variant-numeric: tabular-nums;
 }
 
 .score-bar-bg {
@@ -2492,12 +2495,14 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 .dim-score-val {
   font-size: 12px;
   font-weight: 800;
+  font-variant-numeric: tabular-nums;
 }
 
 .dim-score-sub {
-  font-size: 10px;
+  font-size: 11px;
   opacity: 0.85;
   margin-top: 1px;
+  font-variant-numeric: tabular-nums;
 }
 
 .pill-cyan { background: #f0fdfa; color: #0f766e; border: 1px solid #ccfbf1; }
@@ -2689,7 +2694,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 
 .winner-tag-badge {
   margin-left: 6px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   color: #d97706;
   background: #fef3c7;
@@ -2887,7 +2892,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 
 .blue-fill { background: linear-gradient(90deg, #60a5fa, #2563eb); }
 .orange-fill { background: linear-gradient(90deg, #fb923c, #ea580c); }
-.bar-label { font-size: 10px; font-weight: 800; color: #ffffff; }
+.bar-label { font-size: 11px; font-weight: 800; color: #ffffff; }
 
 /* 12项条款比拼表 */
 .metrics-battle-card {
@@ -2936,16 +2941,18 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   font-size: 14px;
   font-weight: 700;
   color: #334155;
+  font-variant-numeric: tabular-nums;
 }
 
 .val-win .val-txt {
   font-size: 15px;
   font-weight: 800;
   color: #0f172a;
+  font-variant-numeric: tabular-nums;
 }
 
 .win-tag {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   padding: 2px 6px;
   border-radius: 4px;
@@ -3134,7 +3141,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .fab-txt {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 800;
   color: #2563eb;
   margin-top: -1px;
@@ -3155,12 +3162,12 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   }
 
   .benchmark-title {
-    font-size: 20px;
+    font-size: 19px;
     line-height: 1.3;
   }
 
   .benchmark-sub {
-    font-size: 12px;
+    font-size: 12.5px;
   }
 
   .arena-switch-bar {
@@ -3387,7 +3394,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 
   .podium-card.rank-2 .podium-crest,
   .podium-card.rank-3 .podium-crest {
-    font-size: 10px;
+    font-size: 11px;
     padding: 2px 8px;
     margin-bottom: 6px;
   }
@@ -3400,7 +3407,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 
   .podium-card.rank-2 .podium-prov,
   .podium-card.rank-3 .podium-prov {
-    font-size: 10.5px;
+    font-size: 11px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -3426,7 +3433,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 
   .podium-card.rank-2 .feat-tag,
   .podium-card.rank-3 .feat-tag {
-    font-size: 10px;
+    font-size: 11px;
     padding: 2px 4px;
     white-space: nowrap;
     overflow: hidden;

@@ -666,9 +666,10 @@ onMounted(() => {
 }
 
 .page-main-title {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 800;
   color: #0f172a;
+  letter-spacing: -0.3px;
   line-height: 1.25;
 }
 
@@ -680,15 +681,15 @@ onMounted(() => {
 }
 
 .city-indicator-txt {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 11.5px;
+  font-weight: 600;
   color: #2563eb;
 }
 
 .page-sub-title {
-  font-size: 12px;
+  font-size: 13px;
   color: #64748b;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .toolbar-pickers-row {
@@ -803,9 +804,11 @@ onMounted(() => {
 .dot-emerald { background: #10b981; }
 
 .card-head-title {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 700;
   color: #0f172a;
+  letter-spacing: -0.2px;
+  line-height: 1.3;
 }
 
 .city-benchmark-badge {
@@ -818,7 +821,7 @@ onMounted(() => {
 }
 
 .benchmark-txt {
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 600;
   color: #2563eb;
 }
@@ -845,7 +848,7 @@ onMounted(() => {
 }
 
 .pill-txt {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: #64748b;
 }
@@ -889,7 +892,7 @@ onMounted(() => {
 }
 
 .ratio-seq {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   color: #94a3b8;
 }
@@ -910,6 +913,7 @@ onMounted(() => {
   font-size: 26px;
   font-weight: 800;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .r-coef-tag {
@@ -928,9 +932,9 @@ onMounted(() => {
 .text-rose { color: #e11d48; }
 
 .r-sub {
-  font-size: 11px;
+  font-size: 11.5px;
   color: #64748b;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 /* 双栏指引流程 */
@@ -981,9 +985,9 @@ onMounted(() => {
 }
 
 .step-desc {
-  font-size: 11px;
+  font-size: 12px;
   color: #64748b;
-  line-height: 1.45;
+  line-height: 1.5;
 }
 
 .rule-card {
@@ -997,7 +1001,7 @@ onMounted(() => {
 }
 
 .rule-seq-tag {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   text-transform: uppercase;
 }
@@ -1009,7 +1013,7 @@ onMounted(() => {
 }
 
 .rule-paragraph {
-  font-size: 11px;
+  font-size: 12px;
   color: #475569;
   line-height: 1.5;
 }
@@ -1070,7 +1074,7 @@ onMounted(() => {
   background: #0d9488;
   color: #ffffff;
   border-radius: 4px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -1165,7 +1169,7 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: #64748b;
   background: #f1f5f9;
@@ -1180,7 +1184,7 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   color: #0d9488;
   background: #ccfbf1;
@@ -1225,7 +1229,7 @@ onMounted(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 10px;
+  font-size: 11px;
   color: #64748b;
   background: #f1f5f9;
   padding: 0 6px;
@@ -1236,10 +1240,11 @@ onMounted(() => {
 }
 
 .phone-number-txt {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #0f172a;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .btn-micro-dial {
@@ -1282,7 +1287,7 @@ onMounted(() => {
 }
 
 .btn-portal .btn-label {
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   color: #334155;
   line-height: 1;
@@ -1357,7 +1362,7 @@ onMounted(() => {
 }
 
 .guide-main-txt {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #0f172a;
 }
@@ -1414,7 +1419,7 @@ onMounted(() => {
 }
 
 .fab-txt {
-  font-size: 9px;
+  font-size: 10px;
   font-weight: 700;
   color: #2563eb;
   line-height: 1;
@@ -1435,8 +1440,14 @@ onMounted(() => {
   }
 
   .page-main-title {
-    font-size: 20px;
+    font-size: 19px;
     white-space: nowrap;
+  }
+
+  .card-head-title,
+  .section-title-txt,
+  .c-city-title {
+    font-size: 15px;
   }
 
   .title-row {
