@@ -146,7 +146,7 @@
           </view>
         </view>
         <view class="banner-btn">
-          <text class="banner-btn-txt">立即去测算 ➔</text>
+          <view class="banner-btn-inner"><text class="banner-btn-txt">立即去测算</text><svg class="banner-btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></view>
         </view>
       </view>
 
@@ -256,7 +256,7 @@
 
         <!-- 权威防盗链与查验说明提示 -->
         <view class="doc-notice-banner">
-          <text class="doc-notice-icon">🛡️</text>
+          <svg class="doc-notice-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           <text class="doc-notice-text">
             【官方溯源保障】所有待遇参数均采掘自地方医保局或人民政府现行正式红头文件。部分省市政务网设有严格的外部防盗链规则（拦截跨域外链跳转）或历史静态归档迁移。若直链提示拦截或 404，推荐点击【文号精准核验】直达官方公文公开页面。
           </text>
@@ -297,10 +297,10 @@
 
             <view class="doc-actions-row">
               <view class="doc-btn btn-view" @click="openDocUrl(doc.officialUrl)">
-                <text class="doc-btn-txt">查看官网出处 ↗</text>
+                <view class="doc-btn-inner"><text class="doc-btn-txt">查看官网出处</text><svg class="btn-micro-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></view>
               </view>
               <view class="doc-btn btn-search" @click="searchDocByNumber(doc.docNumber, doc.title)">
-                <text class="doc-btn-txt">文号精准核验 🔍</text>
+                <view class="doc-btn-inner"><text class="doc-btn-txt">文号精准核验</text><svg class="btn-micro-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></view>
               </view>
               <view class="doc-btn btn-copy" @click="copyDocUrl(doc.officialUrl)">
                 <text class="doc-btn-txt">复制链接</text>
@@ -1803,4 +1803,35 @@ onShow(() => {
   font-weight: 700;
   line-height: 1;
 }
+
+.banner-btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.banner-btn-svg {
+  width: 13px;
+  height: 13px;
+  stroke: #ffffff;
+}
+.doc-notice-svg {
+  width: 18px;
+  height: 18px;
+  stroke: #16a34a;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.doc-btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.btn-micro-svg {
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+}
+
 </style>
