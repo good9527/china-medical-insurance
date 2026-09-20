@@ -4,7 +4,7 @@
     <AppHeader currentTab="correction" />
 
     <view class="content-box">
-      <!-- 顶部标题与智库服务声明 -->
+      <!-- 页面简明标题与简介 (清新大方，低心智负担) -->
       <view class="page-intro-bar">
         <view class="intro-left">
           <view class="title-with-badge">
@@ -16,43 +16,39 @@
             </view>
             <view class="page-title-stack">
               <view class="title-row">
-                <text class="page-main-title">政策纠错与智库核验中心</text>
+                <text class="page-main-title">医保政策纠错与数据核验</text>
                 <view class="city-indicator-chip">
-                  <text class="city-indicator-txt">344 统筹区开放查验</text>
+                  <text class="city-indicator-txt">全国智库协同</text>
                 </view>
               </view>
-              <text class="page-sub-title">联动全国官方红头公文溯源、智能现行参数调取、即时差异比对推演与开放智库透明公示</text>
+              <text class="page-sub-title">发现参保地政策变动、报销比例或官方公文有误？欢迎提交，智库将在 24 小时内完成核验并同步入库。</text>
             </view>
           </view>
         </view>
 
         <view class="audit-status-badge">
           <view class="status-pulse-dot"></view>
-          <text class="audit-status-txt">双人交叉核验 · 24h 敏捷入库</text>
+          <text class="audit-status-txt">全国 344 统筹区政策开放核对</text>
         </view>
       </view>
 
-      <!-- 主体双栏响应式网格 -->
-      <view class="correction-layout-grid">
-        <!-- 左侧：智能纠错交互工作台 -->
-        <view class="workbench-column">
-          <!-- 步骤1: 统筹区与业务维度选择 -->
-          <view class="card">
-            <view class="card-head">
-              <view class="head-left">
-                <text class="step-num">01</text>
-                <text class="card-head-title">定位纠错统筹区与业务板块</text>
-              </view>
-              <view class="badge-pill badge-blue">
-                <text class="badge-txt">现行依据在线</text>
-              </view>
+      <!-- 双栏布局：左侧简洁直接表单，右侧最新采纳动态 -->
+      <view class="correction-main-grid">
+        <!-- 左侧：极简纠错工作台 (单卡片一体化流程) -->
+        <view class="form-card">
+          <view class="card-head">
+            <view class="head-left">
+              <text class="card-head-title">提交政策纠错与建议</text>
             </view>
+            <text class="head-tip">带 * 为关键项，公文依据越详实入库越快</text>
+          </view>
 
-            <!-- 省市选择下拉框与险种切换 -->
-            <view class="selector-row-dual">
+          <!-- 第 1 部分：统筹区与险种选择 -->
+          <view class="form-section">
+            <text class="section-label">1. 选择所属统筹区与险种</text>
+            <view class="region-row">
               <!-- 省份选择 -->
               <view class="picker-anchor">
-                <text class="input-label-sm">所属省份/直辖市</text>
                 <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'province' }" @click.stop="toggleDropdown('province')">
                   <text class="select-val">{{ currentProvince.name }}</text>
                   <text class="select-arrow" :class="{ rotated: openDropdown === 'province' }">▾</text>
@@ -71,9 +67,8 @@
                 </view>
               </view>
 
-              <!-- 统筹区/城市选择 -->
+              <!-- 城市选择 -->
               <view class="picker-anchor">
-                <text class="input-label-sm">统筹地区</text>
                 <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'city' }" @click.stop="toggleDropdown('city')">
                   <text class="select-val">{{ currentCityOption.cityName }}</text>
                   <text class="select-arrow" :class="{ rotated: openDropdown === 'city' }">▾</text>
@@ -91,425 +86,210 @@
                   </view>
                 </view>
               </view>
-            </view>
 
-            <!-- 险种模式切换 -->
-            <view class="sub-form-group mt-16">
-              <text class="input-label-sm">参保险种分类</text>
-              <view class="mode-switch-dock">
+              <!-- 险种胶囊切换 -->
+              <view class="type-capsule-group">
                 <view 
-                  class="mode-switch-btn" 
+                  class="type-capsule-btn" 
                   :class="{ active: currentInsuranceType === 'employee' }"
                   @click="currentInsuranceType = 'employee'"
                 >
-                  <svg class="mode-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                  </svg>
-                  <text class="mode-btn-txt">城镇职工基本医疗保险</text>
+                  <text class="type-btn-txt">职工医保</text>
                 </view>
                 <view 
-                  class="mode-switch-btn" 
+                  class="type-capsule-btn" 
                   :class="{ active: currentInsuranceType === 'resident' }"
                   @click="currentInsuranceType = 'resident'"
                 >
-                  <svg class="mode-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="9" cy="7" r="4"></circle>
-                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                  </svg>
-                  <text class="mode-btn-txt">城乡居民基本医疗保险</text>
-                </view>
-              </view>
-            </view>
-
-            <!-- 纠错维度分类标签 -->
-            <view class="sub-form-group mt-16">
-              <text class="input-label-sm">拟核验/纠错业务板块</text>
-              <view class="dimension-chips-row">
-                <view 
-                  class="dim-chip" 
-                  v-for="dim in dimensionList" 
-                  :key="dim.id"
-                  :class="{ active: currentDimension === dim.id }"
-                  @click="selectDimension(dim.id)"
-                >
-                  <text class="dim-chip-txt">{{ dim.name }}</text>
+                  <text class="type-btn-txt">居民医保</text>
                 </view>
               </view>
             </view>
           </view>
 
-          <!-- 步骤2: 智能调取当前库内现行参数卡片 -->
-          <view class="card mt-16 highlight-card">
-            <view class="card-head">
-              <view class="head-left">
-                <text class="step-num">02</text>
-                <text class="card-head-title">库内现行标准参数调取</text>
-              </view>
-              <view class="badge-pill badge-emerald">
-                <text class="badge-txt">核验基准</text>
+          <!-- 第 2 部分：纠错类别胶囊选择 -->
+          <view class="form-section mt-16">
+            <text class="section-label">2. 拟纠错板块</text>
+            <view class="category-pills-row">
+              <view 
+                class="cat-pill" 
+                v-for="cat in categoryList" 
+                :key="cat.id"
+                :class="{ active: currentCategory === cat.id }"
+                @click="selectCategory(cat.id)"
+              >
+                <text class="cat-pill-txt">{{ cat.name }}</text>
               </view>
             </view>
+          </view>
 
-            <view class="live-param-box">
-              <view class="param-main-row">
-                <view class="param-item">
-                  <text class="param-lbl">核验标的统筹区</text>
-                  <text class="param-val highlight-txt">{{ currentCityOption.cityName }} ({{ currentCityOption.cityCode }})</text>
+          <!-- 智能现行参数轻提示 (自动根据城市+分类调取，一行清爽展示) -->
+          <view class="live-param-banner mt-12">
+            <view class="live-banner-left">
+              <text class="live-bulb">💡</text>
+              <text class="live-banner-txt"><text class="font-bold">{{ currentCityOption.cityName }} · {{ currentCategoryObj.name }}</text> 库内现行数据：{{ liveBenchmarkText }}</text>
+            </view>
+          </view>
+
+          <!-- 第 3 部分：纠错项与修改建议 -->
+          <view class="form-section mt-16">
+            <text class="section-label">3. 修正建议 <text class="required-star">*</text></text>
+            <view class="suggest-input-row">
+              <!-- 快捷字段选择 -->
+              <view class="field-picker-wrap">
+                <view class="field-trigger" @click.stop="toggleDropdown('field')">
+                  <text class="field-val">{{ currentFieldObj.label }}</text>
+                  <text class="select-arrow" :class="{ rotated: openDropdown === 'field' }">▾</text>
                 </view>
-                <view class="param-item">
-                  <text class="param-lbl">核验业务项</text>
-                  <text class="param-val">{{ currentDimensionObj.name }} · {{ currentFieldObj.label }}</text>
-                </view>
-                <view class="param-item">
-                  <text class="param-lbl">库内现行参数值</text>
-                  <view class="param-val-with-tag">
-                    <text class="param-current-metric">{{ currentLiveValueDisplay }}</text>
+                <view class="cyber-dropdown-menu" v-if="openDropdown === 'field'" @click.stop>
+                  <view 
+                    class="dropdown-item" 
+                    v-for="f in currentFieldList" 
+                    :key="f.id"
+                    :class="{ selected: currentFieldId === f.id }"
+                    @click.stop="selectField(f.id)"
+                  >
+                    <text class="item-name">{{ f.label }}</text>
+                    <text class="item-check" v-if="currentFieldId === f.id">✓</text>
                   </view>
                 </view>
               </view>
 
-              <!-- 依据官方文件溯源 -->
-              <view class="source-doc-banner">
-                <svg class="doc-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                  <line x1="16" y1="13" x2="8" y2="13"></line>
-                  <line x1="16" y1="17" x2="8" y2="17"></line>
-                </svg>
-                <view class="doc-banner-info">
-                  <text class="doc-banner-title">现行依据：{{ currentCityMainDoc.title || '《' + currentCityOption.cityName + '医疗保障待遇管理实施细则》' }}</text>
-                  <text class="doc-banner-meta">发文字号：{{ currentCityMainDoc.docNumber || '现行规范性文件' }} · 核验周期：{{ currentCityData.lastUpdated || '2026年最新' }}</text>
-                </view>
-              </view>
-            </view>
-          </view>
-
-          <!-- 步骤3: 修正建议录入与智能差异推演 -->
-          <view class="card mt-16">
-            <view class="card-head">
-              <view class="head-left">
-                <text class="step-num">03</text>
-                <text class="card-head-title">修正建议与智能差异推演</text>
-              </view>
-              <view class="badge-pill badge-cyan">
-                <text class="badge-txt">实时测算模拟</text>
-              </view>
-            </view>
-
-            <!-- 目标字段选择下拉 -->
-            <view class="sub-form-group">
-              <text class="input-label-sm">核验字段明细</text>
-              <view class="field-select-row">
-                <view 
-                  class="field-radio-pill"
-                  v-for="f in currentFieldOptions" 
-                  :key="f.id"
-                  :class="{ active: currentFieldId === f.id }"
-                  @click="currentFieldId = f.id"
-                >
-                  <text class="field-radio-txt">{{ f.label }}</text>
-                </view>
-              </view>
-            </view>
-
-            <!-- 建议值输入 -->
-            <view class="diff-input-grid mt-16">
-              <view class="diff-box current-box">
-                <text class="diff-title">当前库内值</text>
-                <text class="diff-metric-txt">{{ currentLiveValueDisplay }}</text>
-                <text class="diff-sub-txt">{{ currentFieldObj.unitDesc }}</text>
-              </view>
-
-              <view class="diff-arrow-wrap">
-                <svg class="diff-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </view>
-
-              <view class="diff-box suggestion-box">
-                <text class="diff-title highlight-cyan">您的建议修正值</text>
-                <view class="input-unit-wrap">
-                  <input 
-                    class="cyber-input-metric" 
-                    v-model="suggestedValue" 
-                    :placeholder="currentFieldObj.placeholder" 
-                    placeholder-class="placeholder-dim"
-                  />
-                  <text class="unit-tail-txt">{{ currentFieldObj.unit }}</text>
-                </view>
-                <text class="diff-sub-txt">请输入真实准确的官方数据</text>
-              </view>
-            </view>
-
-            <!-- 实时推演与差异展示徽章 -->
-            <view class="simulation-banner mt-16" v-if="suggestedDiffAnalysis">
-              <view class="sim-header">
-                <view class="sim-badge" :class="suggestedDiffAnalysis.badgeClass">
-                  <text class="sim-badge-txt">{{ suggestedDiffAnalysis.deltaLabel }}</text>
-                </view>
-                <text class="sim-title">智库精算引擎即时推演</text>
-              </view>
-              <text class="sim-desc">{{ suggestedDiffAnalysis.impactText }}</text>
-            </view>
-          </view>
-
-          <!-- 步骤4: 官方红头公文溯源佐证 (智库权威准入关键) -->
-          <view class="card mt-16">
-            <view class="card-head">
-              <view class="head-left">
-                <text class="step-num">04</text>
-                <text class="card-head-title">官方红头公文溯源佐证 (关键)</text>
-              </view>
-              <view class="badge-pill badge-purple">
-                <text class="badge-txt">权威发文溯源</text>
-              </view>
-            </view>
-
-            <view class="form-stack">
-              <!-- 文件全称 -->
-              <view class="form-field">
-                <view class="label-row">
-                  <text class="field-label">政策法规/红头文件全称 <text class="required-star">*</text></text>
-                </view>
+              <!-- 建议修改值输入 -->
+              <view class="suggest-value-box">
                 <input 
-                  class="cyber-input" 
-                  v-model="docTitle" 
-                  placeholder="例如：《xx市关于进一步完善基本医疗保险门诊共济保障机制的通知》"
+                  class="cyber-clean-input" 
+                  v-model="suggestedValue" 
+                  :placeholder="'建议值 (现行: ' + currentFieldValue + ')'"
                   placeholder-class="placeholder-dim"
                 />
+                <text class="unit-text" v-if="currentFieldObj.unit">{{ currentFieldObj.unit }}</text>
               </view>
+            </view>
 
-              <!-- 发文字号与生效日期 -->
-              <view class="form-row-dual">
-                <view class="form-field">
-                  <view class="label-row">
-                    <text class="field-label">官方发文字号 <text class="required-star">*</text></text>
-                    <text class="badge-verified" v-if="isDocNumberStandard">✓ 标准格式</text>
-                  </view>
-                  <input 
-                    class="cyber-input" 
-                    v-model="docNumber" 
-                    placeholder="如：穗府规〔2024〕6号"
-                    placeholder-class="placeholder-dim"
-                  />
-                </view>
+            <!-- 极简差异微提示 (仅在有输入时轻量显示) -->
+            <view class="diff-chip-hint mt-8" v-if="diffHintText">
+              <text class="diff-hint-txt">{{ diffHintText }}</text>
+            </view>
+          </view>
 
-                <view class="form-field">
-                  <view class="label-row">
-                    <text class="field-label">新政施行生效日期</text>
-                  </view>
-                  <input 
-                    class="cyber-input" 
-                    v-model="effectiveDate" 
-                    placeholder="例如：2025-01-01"
-                    placeholder-class="placeholder-dim"
-                  />
-                </view>
-              </view>
-
-              <!-- 官方发布网址 -->
-              <view class="form-field">
-                <view class="label-row">
-                  <text class="field-label">发文官方发布链接 (.gov.cn)</text>
-                  <text class="badge-verified badge-gov" v-if="isGovUrl">✓ 官方政务网认证直达</text>
-                </view>
+          <!-- 第 4 部分：官方依据与说明 (合并简明输入) -->
+          <view class="form-section mt-16">
+            <text class="section-label">4. 官方依据文件与说明</text>
+            <view class="doc-input-stack">
+              <view class="input-with-badge">
                 <input 
-                  class="cyber-input" 
+                  class="cyber-clean-input full-width" 
+                  v-model="docTitleOrNumber" 
+                  placeholder="发文全称或发文字号 (如：成医保发〔2024〕3号 或 当地医保局通知)"
+                  placeholder-class="placeholder-dim"
+                />
+                <text class="mini-verified-badge" v-if="isDocStandard">✓ 格式规范</text>
+              </view>
+
+              <view class="input-with-badge">
+                <input 
+                  class="cyber-clean-input full-width" 
                   v-model="docUrl" 
-                  placeholder="如：http://ybj.xx.gov.cn/zwgk/zcfg/... 或政府网公开页面"
+                  placeholder="发文官方链接 (如政府网/医保局官网链接，选填)"
                   placeholder-class="placeholder-dim"
                 />
+                <text class="mini-gov-badge" v-if="isGovUrl">✓ 官方政务网</text>
               </view>
 
-              <!-- 核心条款原文摘录与修改说明 -->
-              <view class="form-field">
-                <view class="label-row">
-                  <text class="field-label">政策条款原文摘录与修改说明 <text class="required-star">*</text></text>
-                  <text class="field-hint">直接复制红头公文具体章节与条目</text>
-                </view>
-                <textarea 
-                  class="cyber-textarea" 
-                  v-model="reasonQuote" 
-                  placeholder="例如：根据文件第十二条第一款，自2025年1月1日起，在职职工三级定点医疗机构住院统筹报销比例调整为88%，起付线调整为800元..."
-                  placeholder-class="placeholder-dim"
-                ></textarea>
-              </view>
-
-              <!-- 快速填入模板 -->
-              <view class="quick-template-row">
-                <text class="tmpl-label">常用模板快捷填入：</text>
-                <view class="tmpl-chip" @click="applyTemplate('ratio')">
-                  <text class="tmpl-txt">+ 比例上浮条款</text>
-                </view>
-                <view class="tmpl-chip" @click="applyTemplate('deductible')">
-                  <text class="tmpl-txt">+ 起付线调整条款</text>
-                </view>
-                <view class="tmpl-chip" @click="applyTemplate('cap')">
-                  <text class="tmpl-txt">+ 封顶额度变动</text>
-                </view>
-              </view>
+              <textarea 
+                class="cyber-clean-textarea" 
+                v-model="reasonQuote" 
+                placeholder="补充说明或条款原文 (选填，例如：根据新政通知，自2025年起住院起付线下调至800元...)"
+                placeholder-class="placeholder-dim"
+              ></textarea>
             </view>
           </view>
 
-          <!-- 步骤5: 联系人信息与提交 -->
-          <view class="card mt-16">
-            <view class="card-head">
-              <view class="head-left">
-                <text class="step-num">05</text>
-                <text class="card-head-title">纠错人与受理反馈</text>
-              </view>
-              <view class="badge-pill badge-neutral">
-                <text class="badge-txt">可匿名</text>
-              </view>
-            </view>
-
-            <view class="form-row-dual">
-              <view class="form-field">
-                <text class="field-label">姓名/单位机构 (用于公开致谢)</text>
-                <input 
-                  class="cyber-input" 
-                  v-model="submitterName" 
-                  placeholder="如：某三甲医院医保办 / 张研究员 / 匿名"
-                  placeholder-class="placeholder-dim"
-                />
-              </view>
-              <view class="form-field">
-                <text class="field-label">联系方式 (微信/手机/邮箱，接收审核进展)</text>
-                <input 
-                  class="cyber-input" 
-                  v-model="submitterContact" 
-                  placeholder="核验通过后系统将推送通知"
-                  placeholder-class="placeholder-dim"
-                />
-              </view>
-            </view>
-
-            <!-- 提交按钮 -->
-            <view class="submit-action-bar mt-20">
-              <view class="btn-primary-submit" @click="handleSubmitCorrection">
+          <!-- 第 5 部分：联系人与提交 -->
+          <view class="form-section mt-16">
+            <view class="submit-row">
+              <input 
+                class="cyber-clean-input contact-input" 
+                v-model="submitterContact" 
+                placeholder="您的称呼或联系方式 (选填，核验后通知)"
+                placeholder-class="placeholder-dim"
+              />
+              <view class="btn-clean-submit" @click="handleSubmitCorrection">
                 <svg class="btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <polyline points="20 6 9 17 4 12"></polyline>
                 </svg>
-                <text class="btn-submit-txt">正式提交智库核验勘误</text>
+                <text class="btn-submit-txt">提交政策纠错</text>
               </view>
-              <text class="submit-disclaimer">提交后将由国家医保政策智库教研组在24小时内依据法定红头公文完成双人核验并合并发布。</text>
+            </view>
+          </view>
+
+          <!-- 提交成功提示 -->
+          <view class="submission-success-bar mt-16" v-if="lastSubmittedId">
+            <view class="success-left">
+              <text class="success-icon">✓</text>
+              <view class="success-txts">
+                <text class="success-title">纠错已受理！智库核验编号：{{ lastSubmittedId }}</text>
+                <text class="success-sub">感谢您对国家医保数据库的贡献，专职研究员将在 24 小时内核对公文并入库更新。</text>
+              </view>
             </view>
           </view>
         </view>
 
-        <!-- 右侧：智库透明公示榜、我的提交记录与公信规范 -->
+        <!-- 右侧：智库近期采纳与透明动态 (简洁展示，去除说教) -->
         <view class="sidebar-column">
-          <!-- 智库最新已采纳纠错公示榜 -->
-          <view class="card">
+          <!-- 我的在审记录 (如果有) -->
+          <view class="card mb-16" v-if="myRecords.length > 0">
             <view class="card-head">
               <view class="head-left">
-                <svg class="head-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                </svg>
-                <text class="card-head-title">智库最新已采纳勘误公示</text>
+                <text class="card-head-title">我的纠错进度</text>
               </view>
-              <view class="badge-pill badge-emerald">
-                <text class="badge-txt">全公开透明</text>
-              </view>
+              <text class="head-chip">{{ myRecords.length }} 项在审</text>
             </view>
-
-            <view class="bulletin-list">
-              <view class="bulletin-item" v-for="item in publicAuditBulletin" :key="item.id">
-                <view class="bulletin-top">
-                  <view class="bulletin-city-wrap">
-                    <text class="bulletin-city">{{ item.city }}</text>
-                    <text class="bulletin-tag">{{ item.type }}</text>
-                  </view>
-                  <text class="bulletin-time">{{ item.date }}</text>
+            <view class="my-rec-list">
+              <view class="my-rec-item" v-for="rec in myRecords" :key="rec.id">
+                <view class="my-rec-top">
+                  <text class="my-rec-city">{{ rec.cityName }} · {{ rec.fieldName }}</text>
+                  <text class="my-rec-status">核验中</text>
                 </view>
-                <text class="bulletin-desc">{{ item.desc }}</text>
-                <view class="bulletin-doc-row">
-                  <text class="bulletin-doc">依据：{{ item.doc }}</text>
-                  <text class="bulletin-status">✓ 已合入生产库</text>
-                </view>
+                <text class="my-rec-diff">建议：{{ rec.suggestedValue }}</text>
+                <text class="my-rec-id">编号: {{ rec.id }}</text>
               </view>
             </view>
           </view>
 
-          <!-- 我的纠错提交流水 (持久化存储展示) -->
-          <view class="card mt-16">
+          <!-- 智库最新已采纳动态 -->
+          <view class="card">
             <view class="card-head">
               <view class="head-left">
                 <svg class="head-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 14 14"></polyline>
                 </svg>
-                <text class="card-head-title">我的纠错受理流水</text>
+                <text class="card-head-title">智库近期采纳动态</text>
               </view>
-              <view class="badge-pill badge-cyan">
-                <text class="badge-txt">{{ mySubmissionRecords.length }} 项在审</text>
-              </view>
+              <text class="head-chip-emerald">实时公开</text>
             </view>
 
-            <view class="my-records-wrap" v-if="mySubmissionRecords.length > 0">
-              <view class="submission-card" v-for="rec in mySubmissionRecords" :key="rec.trackingId">
-                <view class="submission-head">
-                  <text class="sub-track-id">{{ rec.trackingId }}</text>
-                  <text class="sub-status-pill">{{ rec.status }}</text>
+            <view class="recent-list">
+              <view class="recent-item" v-for="item in recentUpdates" :key="item.id">
+                <view class="recent-item-top">
+                  <view class="recent-city-tag">
+                    <text class="r-city">{{ item.city }}</text>
+                    <text class="r-tag">{{ item.type }}</text>
+                  </view>
+                  <text class="r-date">{{ item.date }}</text>
                 </view>
-                <text class="sub-target-info">{{ rec.cityName }} · {{ rec.dimensionName }} · {{ rec.fieldName }}</text>
-                <view class="sub-diff-preview">
-                  <text class="sub-diff-old">原：{{ rec.oldValue }}</text>
-                  <text class="sub-diff-arrow">→</text>
-                  <text class="sub-diff-new">建议：{{ rec.suggestedValue }}</text>
-                </view>
-                <text class="sub-doc-title">公文：{{ rec.docTitle || '已提供发文依据' }}</text>
+                <text class="recent-desc">{{ item.desc }}</text>
+                <text class="recent-doc">依据：{{ item.doc }} · <text class="text-emerald">已合入生产库</text></text>
               </view>
-            </view>
-            <view class="empty-submission-wrap" v-else>
-              <svg class="empty-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-              </svg>
-              <text class="empty-hint-txt">您暂未提交纠错记录</text>
-              <text class="empty-sub-txt">欢迎在左侧工作台向智库提交最新官方政策公文</text>
             </view>
           </view>
 
-          <!-- 智库公信与数据准入规范 -->
-          <view class="card mt-16 rule-card">
-            <view class="card-head">
-              <view class="head-left">
-                <svg class="head-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                </svg>
-                <text class="card-head-title">智库核验三项基本铁律</text>
-              </view>
-            </view>
-
-            <view class="rule-list">
-              <view class="rule-item">
-                <view class="rule-badge">1</view>
-                <view class="rule-body">
-                  <text class="rule-strong">唯一法定公文原则</text>
-                  <text class="rule-detail">不采纳非官方自媒体或未经证实网帖，必须提供各级人民政府或医保局官方网站印发的红头文件。</text>
-                </view>
-              </view>
-
-              <view class="rule-item">
-                <view class="rule-badge">2</view>
-                <view class="rule-body">
-                  <text class="rule-strong">精算交叉复核机制</text>
-                  <text class="rule-detail">所有提交数据均由专职医保精算研究员进行公式验算，校验起付线、报销比例与目录自付逻辑。</text>
-                </view>
-              </view>
-
-              <view class="rule-item">
-                <view class="rule-badge">3</view>
-                <view class="rule-body">
-                  <text class="rule-strong">自动化测试回归发布</text>
-                  <text class="rule-detail">更新入库必须通过全站 6,827+ 项算例的自动化测试回归，确保全国统筹区测算模型 100% 稳健可靠。</text>
-                </view>
-              </view>
-            </view>
+          <!-- 极简说明卡片 -->
+          <view class="clean-tip-card mt-16">
+            <text class="tip-title">为什么需要官方公文？</text>
+            <text class="tip-body">本站所有测算模型均与各统筹区红头文件严格对齐。提供官方公文或政务网链接能帮助研究员在 24 小时内以最快速度完成核实并发布生效。</text>
           </view>
         </view>
       </view>
@@ -519,354 +299,210 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
-import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
 import type { CityInsuranceData } from '../../data/types';
 
-// 下拉控制
+// 下拉菜单控制
 const openDropdown = ref<string | null>(null);
 function closeAllDropdowns() { openDropdown.value = null; }
 function toggleDropdown(type: string) {
   openDropdown.value = openDropdown.value === type ? null : type;
 }
 
-// 省市选择状态
+// 省市与险种
 const selectedProvinceIndex = ref(0);
 const selectedCityIndex = ref(0);
+const currentInsuranceType = ref<'employee' | 'resident'>('employee');
 
-const currentProvince = computed(() => {
-  return provinceList[selectedProvinceIndex.value] || provinceList[0];
-});
-
-const cityOptions = computed(() => {
-  return getCitiesByProvinceCode(currentProvince.value.code);
-});
-
-const currentCityOption = computed(() => {
-  const cities = cityOptions.value;
-  return cities[selectedCityIndex.value] || cities[0] || { cityName: '北京市', cityCode: '110000' };
-});
-
-const currentCityData = computed<CityInsuranceData>(() => {
-  return getCityData(currentCityOption.value.cityCode);
-});
+const currentProvince = computed(() => provinceList[selectedProvinceIndex.value] || provinceList[0]);
+const cityOptions = computed(() => getCitiesByProvinceCode(currentProvince.value.code));
+const currentCityOption = computed(() => cityOptions.value[selectedCityIndex.value] || cityOptions.value[0]);
+const currentCityData = computed<CityInsuranceData>(() => getCityData(currentCityOption.value.cityCode));
 
 function selectProvince(idx: number) {
   selectedProvinceIndex.value = idx;
   selectedCityIndex.value = 0;
   openDropdown.value = null;
-  persistCityChoice();
 }
 
 function selectCity(idx: number) {
   selectedCityIndex.value = idx;
   openDropdown.value = null;
-  persistCityChoice();
 }
 
-function persistCityChoice() {
-  if (currentCityOption.value?.cityCode) {
-    uni.setStorageSync('selected_medical_city_code', currentCityOption.value.cityCode);
-    uni.setStorageSync('selected_policy_city_code', currentCityOption.value.cityCode);
-  }
-}
+// 纠错板块分类 (轻巧5大类)
+const currentCategory = ref('inpatient');
+const categoryList = [
+  { id: 'inpatient', name: '住院待遇' },
+  { id: 'outpatient', name: '门诊共济' },
+  { id: 'catastrophic', name: '大病保险' },
+  { id: 'remote', name: '异地就医' },
+  { id: 'doc_other', name: '官方公文/其他' }
+];
 
-// 险种模式
-const currentInsuranceType = ref<'employee' | 'resident'>('employee');
-
-// 纠错业务板块
-const currentDimension = ref<'inpatient' | 'outpatient' | 'catastrophic' | 'remote' | 'doc'>('inpatient');
-
-const dimensionList = [
-  { id: 'inpatient', name: '住院统筹待遇' },
-  { id: 'outpatient', name: '普通门诊共济' },
-  { id: 'catastrophic', name: '大病保险互助' },
-  { id: 'remote', name: '异地就医结算' },
-  { id: 'doc', name: '官方公文文号' }
-] as const;
-
-function selectDimension(dimId: any) {
-  currentDimension.value = dimId;
-  const fields = fieldMap[dimId] || [];
+function selectCategory(id: string) {
+  currentCategory.value = id;
+  const fields = fieldOptionsMap[id] || [];
   if (fields.length > 0) {
     currentFieldId.value = fields[0].id;
   }
 }
 
-const currentDimensionObj = computed(() => {
-  return dimensionList.find(d => d.id === currentDimension.value) || dimensionList[0];
+const currentCategoryObj = computed(() => {
+  return categoryList.find(c => c.id === currentCategory.value) || categoryList[0];
 });
 
-// 字段明细映射
-interface FieldOption {
+// 字段映射与现行数据
+interface FieldDef {
   id: string;
   label: string;
   unit: string;
-  unitDesc: string;
-  placeholder: string;
 }
 
-const fieldMap: Record<string, FieldOption[]> = {
+const fieldOptionsMap: Record<string, FieldDef[]> = {
   inpatient: [
-    { id: 'tier3_ratio', label: '三级医院住院报销比例', unit: '%', unitDesc: '百分比 (如 85)', placeholder: '如：88' },
-    { id: 'tier2_ratio', label: '二级医院住院报销比例', unit: '%', unitDesc: '百分比 (如 90)', placeholder: '如：92' },
-    { id: 'tier1_ratio', label: '一级/基层住院报销比例', unit: '%', unitDesc: '百分比 (如 95)', placeholder: '如：96' },
-    { id: 'tier3_deductible', label: '三级医院首次起付标准', unit: '元', unitDesc: '起付线金额 (元)', placeholder: '如：1000' },
-    { id: 'annual_cap', label: '基本医保统筹年度封顶线', unit: '元', unitDesc: '统筹年度限额 (元)', placeholder: '如：550000' }
+    { id: 'tier3_ratio', label: '三级医院住院报销比例', unit: '%' },
+    { id: 'tier2_ratio', label: '二级医院住院报销比例', unit: '%' },
+    { id: 'tier3_deductible', label: '三级医院起付标准', unit: '元' },
+    { id: 'annual_cap', label: '统筹基金年度封顶限额', unit: '元' }
   ],
   outpatient: [
-    { id: 'annual_deductible', label: '门诊年度累计起付线', unit: '元', unitDesc: '门诊起付门槛 (元)', placeholder: '如：500' },
-    { id: 'tier3_ratio', label: '三级医院门诊报销比例', unit: '%', unitDesc: '百分比 (如 50)', placeholder: '如：55' },
-    { id: 'community_ratio', label: '基层/社区门诊报销比例', unit: '%', unitDesc: '百分比 (如 80)', placeholder: '如：85' },
-    { id: 'annual_cap', label: '门诊统筹年度最高支付限额', unit: '元', unitDesc: '门诊年度限额 (元)', placeholder: '如：3500' }
+    { id: 'annual_deductible', label: '门诊年度起付线', unit: '元' },
+    { id: 'tier3_ratio', label: '三级医院门诊报销比例', unit: '%' },
+    { id: 'community_ratio', label: '社区/基层门诊报销比例', unit: '%' },
+    { id: 'annual_cap', label: '门诊年度最高支付限额', unit: '元' }
   ],
   catastrophic: [
-    { id: 'deductible', label: '大病保险起付线标准', unit: '元', unitDesc: '大病起步起付线 (元)', placeholder: '如：12000' },
-    { id: 'tier1_ratio', label: '大病首段报销比例', unit: '%', unitDesc: '百分比 (如 60)', placeholder: '如：65' },
-    { id: 'annual_cap', label: '大病保险年度综合封顶线', unit: '元', unitDesc: '大病封顶 (元或填无)', placeholder: '如：不设封顶' }
+    { id: 'deductible', label: '大病保险起付线', unit: '元' },
+    { id: 'tier1_ratio', label: '大病首段报销比例', unit: '%' },
+    { id: 'annual_cap', label: '大病年度封顶线', unit: '元' }
   ],
   remote: [
-    { id: 'longterm_ratio', label: '长期异地居住备案报销折算系数', unit: '%', unitDesc: '系数百分比 (如 100)', placeholder: '如：100' },
-    { id: 'transfer_ratio', label: '异地转诊备案报销折算系数', unit: '%', unitDesc: '系数百分比 (如 90)', placeholder: '如：85' },
-    { id: 'emergency_ratio', label: '异地急诊抢救结算折算系数', unit: '%', unitDesc: '系数百分比 (如 90)', placeholder: '如：90' },
-    { id: 'unfiled_ratio', label: '未备案自行就医结算折算系数', unit: '%', unitDesc: '系数百分比 (如 80)', placeholder: '如：70' }
+    { id: 'longterm_ratio', label: '长期异地居住备案报销折算系数', unit: '%' },
+    { id: 'transfer_ratio', label: '异地转诊备案报销折算系数', unit: '%' },
+    { id: 'unfiled_ratio', label: '未备案自行就医结算折算系数', unit: '%' }
   ],
-  doc: [
-    { id: 'doc_title', label: '现行最新红头公文全称', unit: '', unitDesc: '发文全称', placeholder: '如：《成都市医疗保障局...》' },
-    { id: 'doc_number', label: '现行官方发文字号', unit: '', unitDesc: '公文字号', placeholder: '如：成医保规〔2024〕3号' },
-    { id: 'portal_url', label: '市医保局官方政务网链接', unit: '', unitDesc: '官网直达链接', placeholder: '如：http://ybj.xx.gov.cn' }
+  doc_other: [
+    { id: 'doc_title', label: '最新红头文件全称变更', unit: '' },
+    { id: 'doc_number', label: '官方发文字号修订', unit: '' },
+    { id: 'other', label: '其他政策或待遇数据变动', unit: '' }
   ]
 };
 
 const currentFieldId = ref('tier3_ratio');
 
-const currentFieldOptions = computed(() => {
-  return fieldMap[currentDimension.value] || fieldMap.inpatient;
+const currentFieldList = computed(() => {
+  return fieldOptionsMap[currentCategory.value] || fieldOptionsMap.inpatient;
 });
 
 const currentFieldObj = computed(() => {
-  return currentFieldOptions.value.find(f => f.id === currentFieldId.value) || currentFieldOptions.value[0];
+  return currentFieldList.value.find(f => f.id === currentFieldId.value) || currentFieldList.value[0];
 });
 
-// 计算当前城市在库真实值
-const currentLiveValueDisplay = computed(() => {
+function selectField(id: string) {
+  currentFieldId.value = id;
+  openDropdown.value = null;
+}
+
+// 智能提取库内现行数据
+const liveBenchmarkText = computed(() => {
   const city = currentCityData.value;
-  if (!city) return '加载中...';
-
+  if (!city) return '载入中...';
   const pkg = currentInsuranceType.value === 'employee' ? city.employee : city.resident;
-  const dim = currentDimension.value;
-  const field = currentFieldId.value;
+  const cat = currentCategory.value;
 
-  if (dim === 'inpatient') {
-    if (field === 'tier3_ratio') return Math.round((pkg.inpatient.tierBenefits?.tier3?.reimbursementRatio || 0.85) * 100) + '%';
-    if (field === 'tier2_ratio') return Math.round((pkg.inpatient.tierBenefits?.tier2?.reimbursementRatio || 0.90) * 100) + '%';
-    if (field === 'tier1_ratio') return Math.round((pkg.inpatient.tierBenefits?.tier1?.reimbursementRatio || 0.92) * 100) + '%';
-    if (field === 'tier3_deductible') return '¥' + (pkg.inpatient.tierBenefits?.tier3?.deductible ?? 1200);
-    if (field === 'annual_cap') return pkg.inpatient.annualCap ? '¥' + pkg.inpatient.annualCap.toLocaleString() : '不设限额';
-  } else if (dim === 'outpatient') {
-    if (field === 'annual_deductible') return '¥' + (pkg.outpatient.annualDeductible ?? 500);
-    if (field === 'tier3_ratio') return Math.round((pkg.outpatient.tierBenefits?.tier3?.reimbursementRatio || 0.50) * 100) + '%';
-    if (field === 'community_ratio') return Math.round((pkg.outpatient.tierBenefits?.community?.reimbursementRatio || 0.80) * 100) + '%';
-    if (field === 'annual_cap') return pkg.outpatient.annualCap ? '¥' + pkg.outpatient.annualCap.toLocaleString() : '不设限额';
-  } else if (dim === 'catastrophic') {
-    if (field === 'deductible') return '¥' + (pkg.catastrophic?.deductible ?? 10000);
-    if (field === 'tier1_ratio') {
-      const firstTier = pkg.catastrophic?.tiers?.[0];
-      return firstTier ? Math.round(firstTier.ratio * 100) + '%' : '60%';
-    }
-    if (field === 'annual_cap') return pkg.catastrophic?.annualCap ? '¥' + pkg.catastrophic.annualCap.toLocaleString() : '不设封顶';
-  } else if (dim === 'remote') {
-    if (field === 'longterm_ratio') return Math.round((pkg.remoteMedical?.longTermFiledRatio || 1.0) * 100) + '%';
-    if (field === 'transfer_ratio') return Math.round((pkg.remoteMedical?.transferFiledRatio || 0.9) * 100) + '%';
-    if (field === 'emergency_ratio') return Math.round((pkg.remoteMedical?.unfiledEmergencyRatio || 0.9) * 100) + '%';
-    if (field === 'unfiled_ratio') return Math.round((pkg.remoteMedical?.unfiledNormalRatio || 0.8) * 100) + '%';
-  } else if (dim === 'doc') {
+  if (cat === 'inpatient') {
+    const r3 = Math.round((pkg.inpatient.tierBenefits?.tier3?.reimbursementRatio || 0.85) * 100);
+    const d3 = pkg.inpatient.tierBenefits?.tier3?.deductible ?? 1200;
+    const cap = pkg.inpatient.annualCap ? '¥' + Math.round(pkg.inpatient.annualCap / 10000) + '万' : '不设限额';
+    return `三级报销 ${r3}%，起付线 ¥${d3}，封顶 ${cap}`;
+  } else if (cat === 'outpatient') {
+    const ded = pkg.outpatient.annualDeductible ?? 500;
+    const r3 = Math.round((pkg.outpatient.tierBenefits?.tier3?.reimbursementRatio || 0.50) * 100);
+    const cap = pkg.outpatient.annualCap ? '¥' + pkg.outpatient.annualCap : '不设限额';
+    return `门诊起付 ¥${ded}，三级报销 ${r3}%，年度限额 ${cap}`;
+  } else if (cat === 'catastrophic') {
+    const ded = pkg.catastrophic?.deductible ?? 10000;
+    const r1 = pkg.catastrophic?.tiers?.[0]?.ratio ? Math.round(pkg.catastrophic.tiers[0].ratio * 100) : 60;
+    return `起付线 ¥${ded}，首段比例 ${r1}%`;
+  } else if (cat === 'remote') {
+    const rLong = Math.round((pkg.remoteMedical?.longTermFiledRatio || 1.0) * 100);
+    const rTrans = Math.round((pkg.remoteMedical?.transferFiledRatio || 0.9) * 100);
+    return `长期备案 ${rLong}%，转诊备案 ${rTrans}%`;
+  } else {
     const doc = city.sourceDocs?.[0];
-    if (field === 'doc_title') return doc?.title || '现行官方实施方案';
-    if (field === 'doc_number') return doc?.docNumber || '现行发文字号';
-    if (field === 'portal_url') return city.officialPortalUrl || '政府网政务公开';
+    return doc ? `现行发文《${doc.title}》(${doc.docNumber})` : '现行规范性文件';
   }
-
-  return '正常在线';
 });
 
-const currentCityMainDoc = computed(() => {
-  return currentCityData.value?.sourceDocs?.[0] || {
-    title: `《${currentCityOption.value.cityName}医疗保障待遇政策规定》`,
-    docNumber: '现行有效文件'
-  };
+const currentFieldValue = computed(() => {
+  const city = currentCityData.value;
+  if (!city) return '';
+  const pkg = currentInsuranceType.value === 'employee' ? city.employee : city.resident;
+  const fid = currentFieldId.value;
+
+  if (fid === 'tier3_ratio') return Math.round((pkg.inpatient.tierBenefits?.tier3?.reimbursementRatio || 0.85) * 100) + '%';
+  if (fid === 'tier2_ratio') return Math.round((pkg.inpatient.tierBenefits?.tier2?.reimbursementRatio || 0.90) * 100) + '%';
+  if (fid === 'tier3_deductible') return '¥' + (pkg.inpatient.tierBenefits?.tier3?.deductible ?? 1200);
+  if (fid === 'annual_cap') return pkg.inpatient.annualCap ? '¥' + pkg.inpatient.annualCap : '不设限额';
+  if (fid === 'annual_deductible') return '¥' + (pkg.outpatient.annualDeductible ?? 500);
+  if (fid === 'community_ratio') return Math.round((pkg.outpatient.tierBenefits?.community?.reimbursementRatio || 0.80) * 100) + '%';
+  if (fid === 'deductible') return '¥' + (pkg.catastrophic?.deductible ?? 10000);
+  if (fid === 'tier1_ratio') return '60%';
+  if (fid === 'longterm_ratio') return Math.round((pkg.remoteMedical?.longTermFiledRatio || 1.0) * 100) + '%';
+  if (fid === 'transfer_ratio') return Math.round((pkg.remoteMedical?.transferFiledRatio || 0.9) * 100) + '%';
+  if (fid === 'unfiled_ratio') return Math.round((pkg.remoteMedical?.unfiledNormalRatio || 0.8) * 100) + '%';
+  return '现行有效';
 });
 
-// 表单输入项
+// 表单输入
 const suggestedValue = ref('');
-const docTitle = ref('');
-const docNumber = ref('');
-const effectiveDate = ref('');
+const docTitleOrNumber = ref('');
 const docUrl = ref('');
 const reasonQuote = ref('');
-const submitterName = ref('');
 const submitterContact = ref('');
+const lastSubmittedId = ref('');
 
-// 智能验证
-const isDocNumberStandard = computed(() => {
-  const num = docNumber.value.trim();
-  if (!num) return false;
-  return /[〔\[（(]\s*\d{4}\s*[〕\]）)]\s*\d+\s*号?/.test(num) || num.includes('号');
+// 智能小徽标
+const isDocStandard = computed(() => {
+  const t = docTitleOrNumber.value.trim();
+  return /〔|\[|（|\(|\d{4}|号|通知|细则/.test(t) && t.length > 5;
 });
 
 const isGovUrl = computed(() => {
-  const url = docUrl.value.trim().toLowerCase();
-  return url.includes('.gov.cn');
+  return docUrl.value.trim().toLowerCase().includes('.gov.cn');
 });
 
-// 智能推演与差异分析
-const suggestedDiffAnalysis = computed(() => {
-  const input = suggestedValue.value.trim();
-  if (!input) return null;
-
-  const currentStr = currentLiveValueDisplay.value;
-  const numCurrent = parseFloat(currentStr.replace(/[^0-9.]/g, ''));
-  const numInput = parseFloat(input.replace(/[^0-9.]/g, ''));
-
-  if (isNaN(numCurrent) || isNaN(numInput)) {
-    return {
-      deltaLabel: '格式校验中',
-      badgeClass: 'badge-neutral',
-      impactText: `建议将【${currentFieldObj.value.label}】由现行标准“${currentStr}”调整为“${input}”。`
-    };
-  }
-
-  const delta = numInput - numCurrent;
-  const isRatio = currentFieldObj.value.unit === '%';
-  const isDeductible = currentFieldId.value.includes('deductible');
-  const isCap = currentFieldId.value.includes('cap');
-
-  let deltaLabel = '';
-  let badgeClass = 'badge-cyan';
-  let impactText = '';
-
-  if (isRatio) {
-    if (delta > 0) {
-      deltaLabel = `上浮 +${delta.toFixed(1)}%`;
-      badgeClass = 'badge-emerald';
-      impactText = `💡 智库推演：报销比例提升 ${delta.toFixed(1)} 个百分点。以住院 20,000 元合规费用测算，统筹基金将多支付约 ¥${Math.round(20000 * delta / 100)} 元，直接减轻群众自付压力。`;
-    } else if (delta < 0) {
-      deltaLabel = `下调 ${delta.toFixed(1)}%`;
-      badgeClass = 'badge-orange';
-      impactText = `💡 智库推演：报销比例下调 ${Math.abs(delta).toFixed(1)} 个百分点。系统将启动严格双人公文交叉复查，确保公文施行时间与适用人群准确无误。`;
-    } else {
-      deltaLabel = '与现行库内一致';
-      badgeClass = 'badge-neutral';
-      impactText = '建议值与当前库内数据一致，无需调整。若有公文条款补充可在下方补充说明。';
-    }
-  } else if (isDeductible) {
-    if (delta < 0) {
-      deltaLabel = `起付线下调 ¥${Math.abs(delta)}`;
-      badgeClass = 'badge-emerald';
-      impactText = `💡 智库推演：起付线降低 ¥${Math.abs(delta)} 元，显著降低参保人员就医门槛，更多门诊或住院小额费用即可纳入统筹支付体系。`;
-    } else if (delta > 0) {
-      deltaLabel = `起付线上浮 ¥${delta}`;
-      badgeClass = 'badge-orange';
-      impactText = `💡 智库推演：起付线提高 ¥${delta} 元，将依最新红头公文核对统筹基金基准门槛。`;
-    } else {
-      deltaLabel = '与现行库内一致';
-      badgeClass = 'badge-neutral';
-      impactText = '起付线金额与现行参数相同。';
-    }
-  } else if (isCap) {
-    if (delta > 0) {
-      deltaLabel = `封顶提升 +¥${delta.toLocaleString()}`;
-      badgeClass = 'badge-emerald';
-      impactText = `💡 智库推演：年度最高支付限额扩大 ¥${delta.toLocaleString()} 元，为重特大疾病患者提供更持久的托底抗风险能力。`;
-    } else {
-      deltaLabel = `限额变动 ¥${delta.toLocaleString()}`;
-      badgeClass = 'badge-orange';
-      impactText = '限额标准发生变动，将核查是否叠加了大病补充医疗保险。';
-    }
-  } else {
-    deltaLabel = `差异：${delta > 0 ? '+' : ''}${delta}`;
-    impactText = `建议调整值为 ${input}${currentFieldObj.value.unit}。`;
-  }
-
-  return { deltaLabel, badgeClass, impactText };
+// 极简差异微提示
+const diffHintText = computed(() => {
+  const val = suggestedValue.value.trim();
+  if (!val) return '';
+  return `💡 已录入建议修改为：“${val}${currentFieldObj.value.unit}” (原现行标准为：${currentFieldValue.value})`;
 });
 
-// 常用模板快捷填入
-function applyTemplate(type: 'ratio' | 'deductible' | 'cap') {
-  if (type === 'ratio') {
-    reasonQuote.value = `根据发文规定第X条：自2025年起，三级定点医疗机构基本医保统筹基金支付比例统一提高至${suggestedValue.value || '88'}%，退休人员按规定享受相应上浮待遇。`;
-  } else if (type === 'deductible') {
-    reasonQuote.value = `根据发文规定：调整参保人员门诊/住院起付标准，统一降低为${suggestedValue.value || '800'}元，年内多次就医按规定执行递减政策。`;
-  } else if (type === 'cap') {
-    reasonQuote.value = `根据发文规定：基本医疗保险统筹基金年度最高支付限额提高为${suggestedValue.value || '650000'}元，超出部分自动纳入大病保险/大额互助合规报销。`;
-  }
-}
-
-// 历史公示勘误榜数据
-const publicAuditBulletin = [
-  {
-    id: 'b1',
-    city: '上海市',
-    type: '门诊共济起付',
-    date: '2026-03',
-    desc: '门急诊在职职工自负段起付标准动态校准为1500元，退休人员梯次优待',
-    doc: '沪医保规〔2024〕1号'
-  },
-  {
-    id: 'b2',
-    city: '深圳市',
-    type: '大病综合限额',
-    date: '2026-02',
-    desc: '居民大额医疗综合封顶线动态上浮至65.5万元，取消单次限额',
-    doc: '深府规〔2023〕7号'
-  },
-  {
-    id: 'b3',
-    city: '成都市',
-    type: '门诊待遇优待',
-    date: '2026-01',
-    desc: '职工退休人员普通门诊统筹年度起付标准精准核准为150元',
-    doc: '成医保发〔2022〕28号'
-  },
-  {
-    id: 'b4',
-    city: '广州市',
-    type: '一类门特病种',
-    date: '2025-12',
-    desc: '扩增高血压、糖尿病等门诊特定病种用药范围及待遇比例',
-    doc: '穗府规〔2022〕2号'
-  },
-  {
-    id: 'b5',
-    city: '武汉市',
-    type: '大额互助衔接',
-    date: '2025-11',
-    desc: '职工医保统筹年度封顶24万后，叠加职工大额医疗保险至50万',
-    doc: '武医保规〔2023〕1号'
-  }
+// 历史采纳动态
+const recentUpdates = [
+  { id: 'u1', city: '上海市', type: '门诊自负段', date: '03-18', desc: '门急诊在职职工自负段起付调整为1500元已完成更新', doc: '沪医保规〔2024〕1号' },
+  { id: 'u2', city: '深圳市', type: '大病综合限额', date: '03-12', desc: '居民大额医疗综合封顶线动态上浮至65.5万已合入', doc: '深府规〔2023〕7号' },
+  { id: 'u3', city: '成都市', type: '门诊起付优待', date: '02-28', desc: '退休人员普通门诊年度起付标准150元核准', doc: '成医保发〔2022〕28号' },
+  { id: 'u4', city: '广州市', type: '一类门特扩展', date: '02-15', desc: '高血压等一类门特病种目录与统筹支付扩增更新', doc: '穗府规〔2022〕2号' }
 ];
 
-// 本地提交记录管理
-interface SubmissionRecord {
-  trackingId: string;
+interface MyRecord {
+  id: string;
   cityName: string;
-  dimensionName: string;
   fieldName: string;
-  oldValue: string;
   suggestedValue: string;
-  docTitle: string;
-  status: string;
-  createdAt: string;
 }
 
-const mySubmissionRecords = ref<SubmissionRecord[]>([]);
+const myRecords = ref<MyRecord[]>([]);
 
-function loadMySubmissions() {
+function loadMyRecords() {
   try {
-    const raw = uni.getStorageSync('my_correction_records');
+    const raw = uni.getStorageSync('simple_correction_records');
     if (raw && Array.isArray(raw)) {
-      mySubmissionRecords.value = raw;
+      myRecords.value = raw;
     }
   } catch (e) {
     console.error(e);
@@ -874,60 +510,44 @@ function loadMySubmissions() {
 }
 
 function handleSubmitCorrection() {
-  if (!suggestedValue.value.trim() && !reasonQuote.value.trim()) {
-    uni.showToast({ title: '请填写建议修正值或公文条款说明', icon: 'none' });
+  const val = suggestedValue.value.trim();
+  const quote = reasonQuote.value.trim();
+  const doc = docTitleOrNumber.value.trim();
+
+  if (!val && !quote) {
+    uni.showToast({ title: '请填写建议修改值或条款说明', icon: 'none' });
     return;
   }
 
-  if (!docTitle.value.trim() && !docNumber.value.trim()) {
-    uni.showToast({ title: '为保证智库公信力，请至少填写发文全称或发文字号', icon: 'none' });
-    return;
-  }
+  const randomNum = Math.floor(1000 + Math.random() * 9000);
+  const trackId = `CHK-2026-${currentCityOption.value.cityCode}-${randomNum}`;
+  lastSubmittedId.value = trackId;
 
-  const randomDigits = Math.floor(1000 + Math.random() * 9000);
-  const trackingId = `CHK-2026-${currentCityOption.value.cityCode}-${randomDigits}`;
-
-  const newRec: SubmissionRecord = {
-    trackingId,
+  const newRec: MyRecord = {
+    id: trackId,
     cityName: currentCityOption.value.cityName,
-    dimensionName: currentDimensionObj.value.name,
     fieldName: currentFieldObj.value.label,
-    oldValue: currentLiveValueDisplay.value,
-    suggestedValue: suggestedValue.value.trim() || '公文条款校准',
-    docTitle: docTitle.value.trim() || docNumber.value.trim(),
-    status: '智库双人复核中 (24h内)',
-    createdAt: new Date().toLocaleDateString()
+    suggestedValue: val || '条款勘误'
   };
 
-  mySubmissionRecords.value.unshift(newRec);
+  myRecords.value.unshift(newRec);
   try {
-    uni.setStorageSync('my_correction_records', mySubmissionRecords.value);
+    uni.setStorageSync('simple_correction_records', myRecords.value);
   } catch (e) {
     console.error(e);
   }
 
-  uni.showModal({
-    title: '勘误申请已受理',
-    content: `已生成智库核验编号：${trackingId}\n\n感谢您对国家医保数据库的科研智库贡献！专职研究员将在24小时内核查红头公文并完成自动化回归测试。`,
-    showCancel: false,
-    confirmText: '我知道了'
-  });
+  uni.showToast({ title: '纠错已提交，感谢贡献！', icon: 'success' });
 
-  // 清空关键输入项
+  // 重置输入
   suggestedValue.value = '';
   reasonQuote.value = '';
+  docTitleOrNumber.value = '';
+  docUrl.value = '';
 }
 
 onMounted(() => {
-  loadMySubmissions();
-  syncCityFromStorage();
-});
-
-onShow(() => {
-  syncCityFromStorage();
-});
-
-function syncCityFromStorage() {
+  loadMyRecords();
   try {
     const targetCityCode = uni.getStorageSync('selected_policy_city_code') || uni.getStorageSync('selected_medical_city_code');
     if (targetCityCode && targetCityCode !== currentCityOption.value.cityCode) {
@@ -945,7 +565,7 @@ function syncCityFromStorage() {
   } catch (e) {
     console.error(e);
   }
-}
+});
 </script>
 
 <style scoped>
@@ -1028,14 +648,14 @@ function syncCityFromStorage() {
 .city-indicator-chip {
   padding: 2px 8px;
   border-radius: 6px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
 }
 
 .city-indicator-txt {
   font-size: 11px;
-  font-weight: 600;
-  color: #475569;
+  font-weight: 700;
+  color: #2563eb;
 }
 
 .page-sub-title {
@@ -1059,7 +679,6 @@ function syncCityFromStorage() {
   height: 8px;
   border-radius: 50%;
   background: #10b981;
-  box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.2);
 }
 
 .audit-status-txt {
@@ -1068,110 +687,79 @@ function syncCityFromStorage() {
   color: #166534;
 }
 
-/* 主网格双栏布局 */
-.correction-layout-grid {
+/* 主布局 */
+.correction-main-grid {
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 360px;
   gap: 20px;
   align-items: start;
 }
 
-.workbench-column {
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebar-column {
-  display: flex;
-  flex-direction: column;
-}
-
-/* 卡片通用 */
-.card {
+/* 单卡片一体化纠错表单 */
+.form-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 14px;
-  padding: 18px 20px;
+  padding: 22px 24px;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03);
+  display: flex;
+  flex-direction: column;
 }
-
-.mt-16 { margin-top: 16px; }
-.mt-20 { margin-top: 20px; }
 
 .card-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
-  padding-bottom: 12px;
+  padding-bottom: 14px;
   border-bottom: 1px solid #f1f5f9;
-}
-
-.head-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.step-num {
-  font-size: 13px;
-  font-weight: 800;
-  color: #2563eb;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  padding: 1px 6px;
-  border-radius: 6px;
-}
-
-.head-svg {
-  width: 16px;
-  height: 16px;
-  stroke: #2563eb;
+  margin-bottom: 18px;
 }
 
 .card-head-title {
-  font-size: 15px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 800;
   color: #0f172a;
 }
 
-.badge-pill {
-  padding: 3px 8px;
-  border-radius: 6px;
+.head-tip {
   font-size: 11px;
-  font-weight: 600;
+  color: #94a3b8;
 }
 
-.badge-blue { background: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8; }
-.badge-emerald { background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; }
-.badge-cyan { background: #ecfeff; border: 1px solid #a5f3fc; color: #0e7490; }
-.badge-purple { background: #faf5ff; border: 1px solid #e9d5ff; color: #7e22ce; }
-.badge-orange { background: #fff7ed; border: 1px solid #fed7aa; color: #c2410c; }
-.badge-neutral { background: #f8fafc; border: 1px solid #e2e8f0; color: #64748b; }
-
-.badge-txt {
-  font-size: 11px;
-  font-weight: 600;
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
-/* 省市双下拉 */
-.selector-row-dual {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+.section-label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.required-star {
+  color: #ef4444;
+}
+
+.mt-8 { margin-top: 8px; }
+.mt-12 { margin-top: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-20 { margin-top: 20px; }
+.mb-16 { margin-bottom: 16px; }
+
+/* 地区行与胶囊 */
+.region-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 .picker-anchor {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.input-label-sm {
-  font-size: 12px;
-  font-weight: 600;
-  color: #475569;
+  flex: 1;
+  min-width: 130px;
 }
 
 .cyber-dropdown-trigger {
@@ -1199,7 +787,7 @@ function syncCityFromStorage() {
 }
 
 .select-arrow {
-  font-size: 12px;
+  font-size: 11px;
   color: #64748b;
   transition: transform 0.2s ease;
 }
@@ -1213,6 +801,7 @@ function syncCityFromStorage() {
   top: calc(100% + 4px);
   left: 0;
   right: 0;
+  min-width: 140px;
   max-height: 220px;
   background: #ffffff;
   border: 1px solid #cbd5e1;
@@ -1237,52 +826,46 @@ function syncCityFromStorage() {
 .item-name { font-size: 13px; }
 .item-check { font-size: 12px; color: #2563eb; }
 
-/* 险种切换 */
-.mode-switch-dock {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
+.type-capsule-group {
+  display: flex;
+  background: #f1f5f9;
+  padding: 3px;
+  border-radius: 8px;
+  gap: 2px;
 }
 
-.mode-switch-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  height: 40px;
-  border-radius: 8px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+.type-capsule-btn {
+  padding: 6px 12px;
+  border-radius: 6px;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.mode-switch-btn.active {
-  background: #eff6ff;
-  border-color: #2563eb;
-  color: #2563eb;
+.type-capsule-btn.active {
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-.mode-svg {
-  width: 16px;
-  height: 16px;
-  stroke: currentColor;
-}
-
-.mode-btn-txt {
-  font-size: 13px;
+.type-btn-txt {
+  font-size: 12px;
   font-weight: 600;
+  color: #64748b;
 }
 
-/* 业务维度 Pills */
-.dimension-chips-row {
+.type-capsule-btn.active .type-btn-txt {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+/* 纠错分类标签 */
+.category-pills-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
 }
 
-.dim-chip {
-  padding: 6px 12px;
+.cat-pill {
+  padding: 6px 14px;
   border-radius: 8px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -1290,334 +873,189 @@ function syncCityFromStorage() {
   transition: all 0.2s ease;
 }
 
-.dim-chip.active {
+.cat-pill.active {
   background: #0f172a;
   border-color: #0f172a;
 }
 
-.dim-chip-txt {
+.cat-pill-txt {
   font-size: 12px;
   font-weight: 600;
   color: #475569;
 }
 
-.dim-chip.active .dim-chip-txt {
+.cat-pill.active .cat-pill-txt {
   color: #ffffff;
 }
 
-/* 步骤2: 现行标准展示 */
-.highlight-card {
-  border-color: #cbd5e1;
+/* 现行参数轻提示条 */
+.live-param-banner {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 10px 14px;
 }
 
-.live-param-box {
+.live-banner-left {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
+  align-items: center;
+  gap: 8px;
 }
 
-.param-main-row {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr 1fr;
-  gap: 12px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 12px 14px;
+.live-bulb {
+  font-size: 14px;
 }
 
-.param-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.param-lbl {
-  font-size: 11px;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.param-val {
-  font-size: 13px;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.highlight-txt {
-  color: #2563eb;
-}
-
-.param-current-metric {
-  font-size: 15px;
-  font-weight: 800;
-  color: #0f172a;
-}
-
-.source-doc-banner {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  padding: 10px 12px;
-  background: #f1f5f9;
-  border-left: 3px solid #2563eb;
-  border-radius: 0 8px 8px 0;
-}
-
-.doc-icon-svg {
-  width: 16px;
-  height: 16px;
-  stroke: #2563eb;
-  margin-top: 2px;
-  flex-shrink: 0;
-}
-
-.doc-banner-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.doc-banner-title {
+.live-banner-txt {
   font-size: 12px;
-  font-weight: 700;
-  color: #1e293b;
+  color: #1e40af;
   line-height: 1.4;
 }
 
-.doc-banner-meta {
-  font-size: 11px;
-  color: #64748b;
-}
-
-/* 步骤3: 字段单选与差异输入 */
-.field-select-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.field-radio-pill {
-  padding: 6px 12px;
-  border-radius: 6px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.field-radio-pill.active {
-  background: #eff6ff;
-  border-color: #2563eb;
-}
-
-.field-radio-txt {
-  font-size: 12px;
-  font-weight: 600;
-  color: #475569;
-}
-
-.field-radio-pill.active .field-radio-txt {
-  color: #2563eb;
+.font-bold {
   font-weight: 700;
 }
 
-.diff-input-grid {
+/* 建议修正行 */
+.suggest-input-row {
   display: grid;
-  grid-template-columns: 1fr 40px 1.2fr;
-  align-items: center;
-  gap: 10px;
+  grid-template-columns: 200px 1fr;
+  gap: 12px;
 }
 
-.diff-box {
-  border-radius: 10px;
-  padding: 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.field-picker-wrap {
+  position: relative;
 }
 
-.current-box {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-}
-
-.suggestion-box {
-  background: #f0fdfa;
-  border: 1px solid #99f6e4;
-}
-
-.diff-title {
-  font-size: 11px;
-  font-weight: 600;
-  color: #64748b;
-}
-
-.highlight-cyan {
-  color: #0f766e;
-}
-
-.diff-metric-txt {
-  font-size: 18px;
-  font-weight: 800;
-  color: #0f172a;
-}
-
-.diff-sub-txt {
-  font-size: 10px;
-  color: #94a3b8;
-}
-
-.diff-arrow-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.diff-arrow-svg {
-  width: 20px;
-  height: 20px;
-  stroke: #94a3b8;
-}
-
-.input-unit-wrap {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  background: #ffffff;
-  border: 1px solid #2dd4bf;
-  border-radius: 6px;
-  padding: 2px 8px;
-}
-
-.cyber-input-metric {
-  flex: 1;
-  font-size: 16px;
-  font-weight: 700;
-  color: #0f766e;
-  height: 32px;
-}
-
-.unit-tail-txt {
-  font-size: 12px;
-  font-weight: 600;
-  color: #0f766e;
-}
-
-/* 实时推演 */
-.simulation-banner {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 12px 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.sim-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.sim-badge {
-  padding: 2px 6px;
-  border-radius: 4px;
-}
-
-.sim-badge-txt {
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.sim-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: #334155;
-}
-
-.sim-desc {
-  font-size: 12px;
-  color: #475569;
-  line-height: 1.5;
-}
-
-/* 步骤4: 表单公文溯源 */
-.form-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.form-field {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.label-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.field-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: #334155;
-}
-
-.required-star {
-  color: #ef4444;
-}
-
-.field-hint {
-  font-size: 11px;
-  color: #94a3b8;
-}
-
-.badge-verified {
-  font-size: 11px;
-  font-weight: 600;
-  color: #15803d;
-  background: #dcfce7;
-  padding: 1px 6px;
-  border-radius: 4px;
-}
-
-.badge-gov {
-  color: #0e7490;
-  background: #cffafe;
-}
-
-.cyber-input {
+.field-trigger {
   height: 40px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   padding: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.field-val {
   font-size: 13px;
+  font-weight: 600;
   color: #0f172a;
-  box-sizing: border-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.cyber-input:focus {
-  background: #ffffff;
-  border-color: #2563eb;
-}
-
-.cyber-textarea {
-  width: 100%;
-  height: 80px;
+.suggest-value-box {
+  display: flex;
+  align-items: center;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
-  padding: 10px 12px;
+  padding: 0 12px;
+  height: 40px;
+  box-sizing: border-box;
+}
+
+.suggest-value-box:focus-within {
+  border-color: #2563eb;
+  background: #ffffff;
+}
+
+.cyber-clean-input {
+  flex: 1;
+  height: 38px;
   font-size: 13px;
+  color: #0f172a;
+}
+
+.unit-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2563eb;
+  margin-left: 6px;
+}
+
+.diff-chip-hint {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 6px;
+  padding: 6px 10px;
+}
+
+.diff-hint-txt {
+  font-size: 11px;
+  color: #15803d;
+  font-weight: 600;
+}
+
+/* 公文输入 */
+.doc-input-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-with-badge {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.full-width {
+  width: 100%;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+.full-width:focus {
+  border-color: #2563eb;
+  background: #ffffff;
+}
+
+.mini-verified-badge {
+  position: absolute;
+  right: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #15803d;
+  background: #dcfce7;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.mini-gov-badge {
+  position: absolute;
+  right: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #0e7490;
+  background: #cffafe;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.cyber-clean-textarea {
+  width: 100%;
+  height: 64px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 12px;
   color: #0f172a;
   box-sizing: border-box;
   line-height: 1.4;
+}
+
+.cyber-clean-textarea:focus {
+  border-color: #2563eb;
+  background: #ffffff;
 }
 
 .placeholder-dim {
@@ -1625,69 +1063,45 @@ function syncCityFromStorage() {
   font-size: 12px;
 }
 
-.form-row-dual {
+/* 联系人与提交按钮 */
+.submit-row {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 180px;
   gap: 12px;
 }
 
-.quick-template-row {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
+.contact-input {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 0 12px;
+  height: 42px;
+  box-sizing: border-box;
 }
 
-.tmpl-label {
-  font-size: 11px;
-  color: #64748b;
+.contact-input:focus {
+  border-color: #2563eb;
+  background: #ffffff;
 }
 
-.tmpl-chip {
-  padding: 3px 8px;
-  background: #f1f5f9;
-  border: 1px dashed #cbd5e1;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.tmpl-chip:hover {
-  background: #e2e8f0;
-}
-
-.tmpl-txt {
-  font-size: 11px;
-  color: #2563eb;
-  font-weight: 500;
-}
-
-/* 提交按钮与免责 */
-.submit-action-bar {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.btn-primary-submit {
-  height: 44px;
-  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
-  border-radius: 10px;
+.btn-clean-submit {
+  height: 42px;
+  background: #2563eb;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
   transition: opacity 0.2s ease;
 }
 
-.btn-primary-submit:active {
-  opacity: 0.9;
-}
+.btn-clean-submit:hover { opacity: 0.95; }
+.btn-clean-submit:active { opacity: 0.85; }
 
 .btn-svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   stroke: #ffffff;
 }
 
@@ -1697,21 +1111,98 @@ function syncCityFromStorage() {
   color: #ffffff;
 }
 
-.submit-disclaimer {
-  font-size: 11px;
-  color: #94a3b8;
-  line-height: 1.4;
-  text-align: center;
+/* 提交成功提示条 */
+.submission-success-bar {
+  background: #f0fdf4;
+  border: 1px solid #86efac;
+  border-radius: 8px;
+  padding: 12px 14px;
 }
 
-/* 右侧：智库公示榜 */
-.bulletin-list {
+.success-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.success-icon {
+  width: 20px;
+  height: 20px;
+  background: #10b981;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.success-txts {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.success-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #166534;
+}
+
+.success-sub {
+  font-size: 11px;
+  color: #15803d;
+}
+
+/* 右侧栏卡片 */
+.sidebar-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.head-svg {
+  width: 16px;
+  height: 16px;
+  stroke: #2563eb;
+  flex-shrink: 0;
+}
+
+.card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03);
+}
+
+.head-chip {
+  font-size: 11px;
+  font-weight: 600;
+  color: #0e7490;
+  background: #ecfeff;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.head-chip-emerald {
+  font-size: 11px;
+  font-weight: 600;
+  color: #15803d;
+  background: #f0fdf4;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.recent-list {
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.bulletin-item {
+.recent-item {
   padding: 10px 12px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -1721,25 +1212,25 @@ function syncCityFromStorage() {
   gap: 4px;
 }
 
-.bulletin-top {
+.recent-item-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.bulletin-city-wrap {
+.recent-city-tag {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.bulletin-city {
+.r-city {
   font-size: 13px;
   font-weight: 700;
   color: #0f172a;
 }
 
-.bulletin-tag {
+.r-tag {
   font-size: 10px;
   font-weight: 600;
   color: #2563eb;
@@ -1748,180 +1239,114 @@ function syncCityFromStorage() {
   border-radius: 4px;
 }
 
-.bulletin-time {
+.r-date {
   font-size: 11px;
   color: #94a3b8;
 }
 
-.bulletin-desc {
+.recent-desc {
   font-size: 12px;
   color: #334155;
   line-height: 1.4;
 }
 
-.bulletin-doc-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 2px;
-}
-
-.bulletin-doc {
+.recent-doc {
   font-size: 10px;
   color: #64748b;
 }
 
-.bulletin-status {
-  font-size: 10px;
-  color: #15803d;
+.text-emerald {
+  color: #059669;
   font-weight: 600;
 }
 
 /* 我的提交 */
-.my-records-wrap {
+.my-rec-list {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
-.submission-card {
-  padding: 10px 12px;
+.my-rec-item {
+  padding: 8px 10px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.submission-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sub-track-id {
-  font-size: 11px;
-  font-weight: 700;
-  color: #2563eb;
-}
-
-.sub-status-pill {
-  font-size: 10px;
-  font-weight: 600;
-  color: #b45309;
-  background: #fef3c7;
-  padding: 1px 6px;
-  border-radius: 4px;
-}
-
-.sub-target-info {
-  font-size: 12px;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.sub-diff-preview {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 11px;
-}
-
-.sub-diff-old { color: #64748b; }
-.sub-diff-arrow { color: #94a3b8; }
-.sub-diff-new { color: #0e7490; font-weight: 700; }
-
-.sub-doc-title {
-  font-size: 10px;
-  color: #94a3b8;
-}
-
-.empty-submission-wrap {
-  padding: 24px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-
-.empty-svg {
-  width: 32px;
-  height: 32px;
-  stroke: #cbd5e1;
-}
-
-.empty-hint-txt {
-  font-size: 13px;
-  font-weight: 600;
-  color: #64748b;
-}
-
-.empty-sub-txt {
-  font-size: 11px;
-  color: #94a3b8;
-}
-
-/* 规范卡片 */
-.rule-card {
-  background: #f8fafc;
-}
-
-.rule-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.rule-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.rule-badge {
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #0f172a;
-  color: #ffffff;
-  font-size: 10px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 2px;
-}
-
-.rule-body {
+  border-radius: 6px;
   display: flex;
   flex-direction: column;
   gap: 2px;
 }
 
-.rule-strong {
+.my-rec-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.my-rec-city {
   font-size: 12px;
   font-weight: 700;
   color: #0f172a;
 }
 
-.rule-detail {
-  font-size: 11px;
-  color: #64748b;
-  line-height: 1.45;
+.my-rec-status {
+  font-size: 10px;
+  font-weight: 600;
+  color: #b45309;
+  background: #fef3c7;
+  padding: 1px 5px;
+  border-radius: 4px;
 }
 
-/* 响应式移动端适配 */
+.my-rec-diff {
+  font-size: 11px;
+  color: #0e7490;
+  font-weight: 600;
+}
+
+.my-rec-id {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+/* 极简说明小卡片 */
+.clean-tip-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tip-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.tip-body {
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* 移动端响应式 */
 @media (max-width: 860px) {
   .content-box {
     padding: 12px 14px calc(80px + env(safe-area-inset-bottom)) !important;
   }
 
-  .correction-layout-grid {
+  .correction-main-grid {
     grid-template-columns: 1fr;
     gap: 16px;
+  }
+
+  .card-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
   }
 
   .page-intro-bar {
@@ -1935,28 +1360,17 @@ function syncCityFromStorage() {
     align-self: flex-start;
   }
 
-  .param-main-row {
-    grid-template-columns: 1fr;
-    gap: 8px;
+  .region-row {
+    flex-direction: column;
+    align-items: stretch;
   }
 
-  .diff-input-grid {
+  .suggest-input-row {
     grid-template-columns: 1fr;
-    gap: 8px;
   }
 
-  .diff-arrow-wrap {
-    transform: rotate(90deg);
-  }
-
-  .form-row-dual {
+  .submit-row {
     grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .selector-row-dual {
-    grid-template-columns: 1fr;
-    gap: 10px;
   }
 }
 </style>
