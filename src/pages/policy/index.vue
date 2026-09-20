@@ -736,7 +736,7 @@ onShow(() => {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 18px;
-  padding: 0 4px;
+  padding: 0;
   flex-wrap: wrap;
   gap: 12px;
 }
@@ -1531,6 +1531,14 @@ onShow(() => {
 
 /* -------------------- 移动端响应式断点 (max-width: 768px) -------------------- */
 @media (max-width: 768px) {
+  .content-box {
+    padding: 12px 14px calc(80px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .page-intro-bar {
+    padding: 0 !important;
+  }
+
   .page {
     padding: 14px 12px 36px;
   }

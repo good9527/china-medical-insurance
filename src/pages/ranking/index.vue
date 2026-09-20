@@ -986,9 +986,13 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .content-box {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1160px;
   margin: 0 auto;
-  padding: 24px 20px;
+  padding: 16px 20px 40px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
 /* 顶部标头 */
@@ -2246,7 +2250,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 /* ------------------------------------------------------------- */
 @media (max-width: 768px) {
   .content-box {
-    padding: 12px 10px calc(80px + env(safe-area-inset-bottom));
+    padding: 12px 14px calc(80px + env(safe-area-inset-bottom)) !important;
   }
 
   .benchmark-header {

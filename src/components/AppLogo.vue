@@ -2,7 +2,7 @@
   <view class="app-logo-box" :class="[sizeClass]">
     <svg 
       class="logo-svg" 
-      viewBox="0 0 48 48" 
+      viewBox="6 2 36 42" 
       fill="none" 
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -83,17 +83,17 @@ const sizeClass = computed(() => `logo-${props.size}`);
 }
 
 .logo-sm {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 26px;
 }
 
 .logo-md {
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 35px;
 }
 
 .logo-lg {
-  width: 44px;
+  width: 38px;
   height: 44px;
 }
 
@@ -101,6 +101,7 @@ const sizeClass = computed(() => `logo-${props.size}`);
   width: 100%;
   height: 100%;
   display: block;
+  overflow: visible;
 }
 
 .app-logo-box:hover {
