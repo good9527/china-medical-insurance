@@ -128,15 +128,37 @@
         </view>
       </view>
     </view>
+
+    <!-- 悬浮回到顶部 FAB 按钮 -->
+    <view class="fab-back-top" :class="{ show: showBackTop }" @click="scrollToTop">
+      <svg class="fab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+      <text class="fab-txt">顶部</text>
+    </view>
   </view>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, reactive, onMounted } from 'vue';
-import { onShow } from '@dcloudio/uni-app';
+import { onShow, onPageScroll } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import { provinceList, getCitiesByProvinceCode } from '../../data/provinces';
 import { getCityDataByCode } from '../../data';
+
+// 悬浮回到顶部控制
+const showBackTop = ref(false);
+
+onPageScroll((e) => {
+  showBackTop.value = e.scrollTop > 350;
+});
+
+function scrollToTop() {
+  uni.pageScrollTo({
+    scrollTop: 0,
+    duration: 350
+  });
+}
 
 const openDropdown = ref<string | null>(null);
 
@@ -956,6 +978,67 @@ onShow(() => {
   .content-box {
     padding: 12px 12px calc(80px + env(safe-area-inset-bottom)) !important;
   }
+
+  .fab-back-top {
+    right: 16px;
+    bottom: calc(68px + env(safe-area-inset-bottom));
+    width: 42px;
+    height: 42px;
+  }
 }
 
+/* 全站通用悬浮回到顶部 FAB 按钮 */
+.fab-back-top {
+  position: fixed;
+  right: 24px;
+  bottom: calc(75px + env(safe-area-inset-bottom));
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: #2563eb;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  cursor: pointer;
+  z-index: 980;
+  opacity: 0;
+  transform: translateY(20px) scale(0.85);
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fab-back-top.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.fab-back-top:hover {
+  background: #ffffff;
+  color: #1d4ed8;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.2);
+}
+
+.fab-back-top:active {
+  transform: translateY(1px) scale(0.95);
+}
+
+.fab-svg {
+  width: 16px;
+  height: 16px;
+}
+
+.fab-txt {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
 </style>

@@ -530,8 +530,11 @@
         <!-- 双方战绩对决头牌看板 -->
         <view class="arena-board-card" v-if="battleResult">
           <!-- 蓝方选手 -->
-          <view class="combatant-box left-box">
-            <view class="box-tag blue-tag">蓝方统筹区</view>
+          <view class="combatant-box left-box" :class="{ 'is-winner': battleResult.city1WinCount > battleResult.city2WinCount }">
+            <view class="box-tag blue-tag">
+              蓝方统筹区
+              <text class="winner-tag-badge" v-if="battleResult.city1WinCount > battleResult.city2WinCount">👑 优势领先</text>
+            </view>
             
             <view class="picker-anchor mt-8">
               <view class="city-selector-trigger" @click.stop="toggleDropdown('battle1')">
@@ -583,8 +586,11 @@
           </view>
 
           <!-- 橙方选手 -->
-          <view class="combatant-box right-box">
-            <view class="box-tag orange-tag">橙方统筹区</view>
+          <view class="combatant-box right-box" :class="{ 'is-winner': battleResult.city2WinCount > battleResult.city1WinCount }">
+            <view class="box-tag orange-tag">
+              橙方统筹区
+              <text class="winner-tag-badge" v-if="battleResult.city2WinCount > battleResult.city1WinCount">👑 优势领先</text>
+            </view>
             
             <view class="picker-anchor mt-8">
               <view class="city-selector-trigger" @click.stop="toggleDropdown('battle2')">
@@ -693,11 +699,20 @@
       </view>
 
     </view>
+
+    <!-- 悬浮回到顶部 FAB 按钮 (全端通用，长列表轻松回弹) -->
+    <view class="fab-back-top" :class="{ show: showBackTop }" @click="scrollToTop">
+      <svg class="fab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="18 15 12 9 6 15"></polyline>
+      </svg>
+      <text class="fab-txt">顶部</text>
+    </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onMounted } from 'vue';
+import { onPageScroll, onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import { 
   getBenchmarkRankings, 
@@ -710,6 +725,31 @@ import {
 import { provinceList } from '../../data/provinces';
 import { allCities } from '../../data';
 
+// 悬浮回到顶部控制
+const showBackTop = ref(false);
+
+onPageScroll((e) => {
+  showBackTop.value = e.scrollTop > 350;
+});
+
+function scrollToTop() {
+  uni.pageScrollTo({
+    scrollTop: 0,
+    duration: 350
+  });
+}
+
+function triggerHaptic() {
+  try {
+    // #ifdef MP || APP-PLUS
+    uni.vibrateShort({ type: 'light' });
+    // #endif
+    if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
+      window.navigator.vibrate(8);
+    }
+  } catch {}
+}
+
 // 视图模式：'leaderboard' | 'battle'
 const viewMode = ref<'leaderboard' | 'battle'>('leaderboard');
 const showMethodology = ref(false);
@@ -718,6 +758,7 @@ const showMethodology = ref(false);
 const currentCategory = ref<BenchmarkCategory>('overall');
 
 function switchCategory(cat: BenchmarkCategory) {
+  triggerHaptic();
   currentCategory.value = cat;
   sortColumn.value = 'composite';
   sortAsc.value = false;
@@ -919,11 +960,13 @@ const radarDimensions = [
 ] as const;
 
 function loadPreset(c1: string, c2: string) {
+  triggerHaptic();
   cityCode1.value = c1;
   cityCode2.value = c2;
 }
 
 function quickBattle(targetCityCode: string) {
+  triggerHaptic();
   cityCode2.value = targetCityCode;
   viewMode.value = 'battle';
 }
@@ -1781,6 +1824,46 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 .combatant-box {
   display: flex;
   flex-direction: column;
+  padding: 12px;
+  border-radius: 12px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+}
+
+.combatant-box.is-winner {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(37, 99, 235, 0.3);
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.12), inset 0 0 0 1px rgba(37, 99, 235, 0.2);
+  animation: winnerPulse 3s infinite ease-in-out;
+}
+
+.combatant-box.right-box.is-winner {
+  border-color: rgba(234, 88, 12, 0.3);
+  box-shadow: 0 4px 20px rgba(234, 88, 12, 0.12), inset 0 0 0 1px rgba(234, 88, 12, 0.2);
+  animation: winnerPulseOrange 3s infinite ease-in-out;
+}
+
+@keyframes winnerPulse {
+  0%, 100% { box-shadow: 0 4px 16px rgba(37, 99, 235, 0.1), inset 0 0 0 1px rgba(37, 99, 235, 0.2); }
+  50% { box-shadow: 0 8px 24px rgba(37, 99, 235, 0.2), inset 0 0 0 1.5px rgba(37, 99, 235, 0.4); }
+}
+
+@keyframes winnerPulseOrange {
+  0%, 100% { box-shadow: 0 4px 16px rgba(234, 88, 12, 0.1), inset 0 0 0 1px rgba(234, 88, 12, 0.2); }
+  50% { box-shadow: 0 8px 24px rgba(234, 88, 12, 0.2), inset 0 0 0 1.5px rgba(234, 88, 12, 0.4); }
+}
+
+.winner-tag-badge {
+  margin-left: 6px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #d97706;
+  background: #fef3c7;
+  padding: 1px 6px;
+  border-radius: 9999rpx;
+  border: 1px solid #fde68a;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .combatant-box.left-box { align-items: flex-start; }
@@ -2639,5 +2722,67 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   .metric-exp {
     display: none; /* 移动端在对决列表中隐藏长解释，凸显数字比拼 */
   }
+
+  .fab-back-top {
+    right: 16px;
+    bottom: calc(68px + env(safe-area-inset-bottom));
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* 全站通用悬浮回到顶部 FAB 按钮 */
+.fab-back-top {
+  position: fixed;
+  right: 24px;
+  bottom: calc(75px + env(safe-area-inset-bottom));
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.94);
+  color: #2563eb;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  cursor: pointer;
+  z-index: 980;
+  opacity: 0;
+  transform: translateY(20px) scale(0.85);
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.fab-back-top.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.fab-back-top:hover {
+  background: #ffffff;
+  color: #1d4ed8;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 28px rgba(37, 99, 235, 0.2);
+}
+
+.fab-back-top:active {
+  transform: translateY(1px) scale(0.95);
+}
+
+.fab-svg {
+  width: 16px;
+  height: 16px;
+}
+
+.fab-txt {
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
 }
 </style>

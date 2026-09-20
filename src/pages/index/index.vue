@@ -141,21 +141,21 @@
               <view 
                 class="seg-btn" 
                 :class="{ active: form.insuranceType === 'employee' }"
-                @click="form.insuranceType = 'employee'; triggerCalculation()"
+                @click="switchInsuranceType('employee')"
               >
                 <text class="seg-title">城镇职工医保</text>
               </view>
               <view 
                 class="seg-btn" 
                 :class="{ active: form.insuranceType === 'resident' }"
-                @click="form.insuranceType = 'resident'; triggerCalculation()"
+                @click="switchInsuranceType('resident')"
               >
                 <text class="seg-title">城乡居民医保</text>
               </view>
             </view>
 
             <!-- 职工退休优待开关 -->
-            <view class="retiree-bar" v-if="form.insuranceType === 'employee'" @click="form.isRetiree = !form.isRetiree; triggerCalculation()">
+            <view class="retiree-bar" v-if="form.insuranceType === 'employee'" @click="toggleRetiree">
               <view class="retiree-bar-left">
                 <text class="retiree-label">退休人员待遇优待</text>
                 <text class="retiree-sub">（报销比例享受倾斜上浮）</text>
@@ -178,14 +178,14 @@
                   <view 
                     class="sub-seg-btn" 
                     :class="{ active: form.treatmentType === 'inpatient' }"
-                    @click="form.treatmentType = 'inpatient'; triggerCalculation()"
+                    @click="switchTreatmentType('inpatient')"
                   >
                     <text class="sub-seg-txt">住院治疗</text>
                   </view>
                   <view 
                     class="sub-seg-btn" 
                     :class="{ active: form.treatmentType === 'outpatient' }"
-                    @click="form.treatmentType = 'outpatient'; triggerCalculation()"
+                    @click="switchTreatmentType('outpatient')"
                   >
                     <text class="sub-seg-txt">普通门诊</text>
                   </view>
@@ -311,7 +311,7 @@
                 <text class="receipt-title">医保测算结果看板</text>
               </view>
               <view class="ratio-pill">
-                <text class="ratio-text">综合报销率 {{ result.breakdown.effectiveRatio }}%</text>
+                <text class="ratio-text">综合报销率 {{ displayRatio }}%</text>
               </view>
             </view>
 
@@ -320,7 +320,7 @@
               <text class="receipt-hero-label">医保预计综合报销</text>
               <view class="receipt-price-row">
                 <text class="price-symbol">¥</text>
-                <text class="price-number">{{ result.breakdown.totalReimbursed.toLocaleString() }}</text>
+                <text class="price-number">{{ displayReimbursed.toLocaleString() }}</text>
               </view>
               <text class="receipt-note" v-if="detailMode">由医保统筹基金直接抵扣结算，出院窗口免垫资</text>
             </view>
@@ -333,7 +333,7 @@
               </view>
               <view class="matrix-cell">
                 <text class="cell-label">个人预计自理</text>
-                <text class="cell-val text-amber">¥{{ result.breakdown.personalPayTotal.toLocaleString() }}</text>
+                <text class="cell-val text-amber">¥{{ displayPersonalPay.toLocaleString() }}</text>
               </view>
             </view>
 
@@ -426,9 +426,9 @@
           <text class="float-tag">预估报销</text>
           <view class="float-val-group">
             <text class="float-currency">¥</text>
-            <text class="float-amount">{{ result.breakdown.totalReimbursed.toLocaleString() }}</text>
+            <text class="float-amount">{{ displayReimbursed.toLocaleString() }}</text>
           </view>
-          <text class="float-ratio">({{ result.breakdown.effectiveRatio }}%)</text>
+          <text class="float-ratio">({{ displayRatio }}%)</text>
         </view>
         <view class="float-bar-right">
           <text class="float-cta">查看测算凭证 ↓</text>
@@ -565,7 +565,38 @@ function formatQuickPill(amt: number): string {
   return '¥' + amt;
 }
 
+function triggerHaptic() {
+  try {
+    // #ifdef MP || APP-PLUS
+    uni.vibrateShort({ type: 'light' });
+    // #endif
+    if (typeof window !== 'undefined' && window.navigator && window.navigator.vibrate) {
+      window.navigator.vibrate(8);
+    }
+  } catch {}
+}
+
+function switchInsuranceType(type: 'employee' | 'resident') {
+  triggerHaptic();
+  form.insuranceType = type;
+  persistCityChoice();
+  triggerCalculation();
+}
+
+function switchTreatmentType(type: 'inpatient' | 'outpatient') {
+  triggerHaptic();
+  form.treatmentType = type;
+  triggerCalculation();
+}
+
+function toggleRetiree() {
+  triggerHaptic();
+  form.isRetiree = !form.isRetiree;
+  triggerCalculation();
+}
+
 function setQuickCost(val: number) {
+  triggerHaptic();
   form.totalCost = String(val);
   triggerCalculation();
 }
@@ -592,10 +623,59 @@ const selectedRemoteIndex = ref(0);
 
 const result = ref<CalculateResult | null>(null);
 
+// 高精数字滚动动效状态
+const displayReimbursed = ref(0);
+const displayRatio = ref(0);
+const displayPersonalPay = ref(0);
+let animationFrameId: any = null;
+
+function animateNumbers(targetReimbursed: number, targetRatio: number, targetPersonal: number) {
+  const startReimbursed = displayReimbursed.value;
+  const startRatio = displayRatio.value;
+  const startPersonal = displayPersonalPay.value;
+  const startTime = typeof performance !== 'undefined' ? performance.now() : Date.now();
+  const duration = 380; // 380ms 黄金缓动周期
+
+  function step(currentTime: number) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    // Ease-out cubic 减速曲线
+    const ease = 1 - Math.pow(1 - progress, 3);
+
+    displayReimbursed.value = Math.round(startReimbursed + (targetReimbursed - startReimbursed) * ease);
+    displayRatio.value = parseFloat((startRatio + (targetRatio - startRatio) * ease).toFixed(1));
+    displayPersonalPay.value = Math.round(startPersonal + (targetPersonal - startPersonal) * ease);
+
+    if (progress < 1) {
+      if (typeof requestAnimationFrame !== 'undefined') {
+        animationFrameId = requestAnimationFrame(step);
+      }
+    } else {
+      displayReimbursed.value = targetReimbursed;
+      displayRatio.value = targetRatio;
+      displayPersonalPay.value = targetPersonal;
+    }
+  }
+
+  if (animationFrameId && typeof cancelAnimationFrame !== 'undefined') {
+    cancelAnimationFrame(animationFrameId);
+  }
+  if (typeof requestAnimationFrame !== 'undefined') {
+    animationFrameId = requestAnimationFrame(step);
+  } else {
+    displayReimbursed.value = targetReimbursed;
+    displayRatio.value = targetRatio;
+    displayPersonalPay.value = targetPersonal;
+  }
+}
+
 function triggerCalculation() {
   const cost = parseFloat(form.totalCost);
   if (isNaN(cost) || cost <= 0) {
     result.value = null;
+    displayReimbursed.value = 0;
+    displayRatio.value = 0;
+    displayPersonalPay.value = 0;
     return;
   }
 
@@ -613,7 +693,13 @@ function triggerCalculation() {
   };
 
   try {
-    result.value = calculateReimbursement(req);
+    const res = calculateReimbursement(req);
+    result.value = res;
+    animateNumbers(
+      res.breakdown.totalReimbursed,
+      res.breakdown.effectiveRatio,
+      res.breakdown.personalPayTotal
+    );
   } catch (err: any) {
     uni.showToast({ title: err.message || '计算出错', icon: 'none' });
   }
@@ -1510,7 +1596,26 @@ onShow(() => {
 }
 
 .bar-cyan { 
-  background: linear-gradient(90deg, #0284c7 0%, #059669 100%); 
+  background: linear-gradient(90deg, #2563eb 0%, #0284c7 60%, #059669 100%); 
+  position: relative;
+  overflow: hidden;
+}
+
+.bar-cyan::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0) 100%);
+  transform: translateX(-100%);
+  animation: barShimmer 2.8s infinite ease-in-out;
+}
+
+@keyframes barShimmer {
+  0% { transform: translateX(-100%); }
+  45%, 100% { transform: translateX(100%); }
 }
 .bar-dim { 
   background: #cbd5e1; 
