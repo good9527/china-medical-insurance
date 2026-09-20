@@ -81,7 +81,10 @@
         <view class="card-head">
           <view class="head-left">
             <view class="section-badge-dot dot-blue"></view>
-            <text class="card-head-title">{{ currentCity.cityName }} · 异地就医报销折算比例</text>
+            <text class="card-head-title">{{ currentCity.cityName }} · 异地就医报销折算标准</text>
+            <view class="city-benchmark-badge">
+              <text class="benchmark-txt">{{ currentType === 'employee' ? '职工三级基准' : '居民三级基准' }}: {{ Math.round(baseTier3Ratio * 100) }}% · {{ baseAnnualCapText }}</text>
+            </view>
           </view>
           <view class="segment-switch-sm">
             <view 
@@ -111,9 +114,10 @@
             </view>
             <text class="r-label">长期居住 / 异地安置</text>
             <view class="r-num-row">
-              <text class="r-val text-emerald">{{ Math.round(remotePolicy.longTermFiledRatio * 100) }}%</text>
+              <text class="r-val text-emerald">{{ actualLongTermRatio }}%</text>
+              <text class="r-coef-tag">折算系数 {{ Math.round(remotePolicy.longTermFiledRatio * 100) }}%</text>
             </view>
-            <text class="r-sub">已规范备案，享受参保地同等报销待遇</text>
+            <text class="r-sub">已规范备案，按参保地同等报销比例享受待遇</text>
           </view>
 
           <!-- 02 规范转诊 -->
@@ -124,9 +128,10 @@
             </view>
             <text class="r-label">按规定转诊转院</text>
             <view class="r-num-row">
-              <text class="r-val text-cyan">{{ Math.round(remotePolicy.transferFiledRatio * 100) }}%</text>
+              <text class="r-val text-cyan">{{ actualTransferRatio }}%</text>
+              <text class="r-coef-tag">折算系数 {{ Math.round(remotePolicy.transferFiledRatio * 100) }}%</text>
             </view>
-            <text class="r-sub">由定点医疗机构开具转诊证明并完成备案</text>
+            <text class="r-sub">定点医疗机构开具转诊证明并备案，统筹支付略有下浮</text>
           </view>
 
           <!-- 03 异地急诊 -->
@@ -137,9 +142,10 @@
             </view>
             <text class="r-label">异地急诊抢救</text>
             <view class="r-num-row">
-              <text class="r-val text-amber">{{ Math.round(remotePolicy.unfiledEmergencyRatio * 100) }}%</text>
+              <text class="r-val text-amber">{{ actualEmergencyRatio }}%</text>
+              <text class="r-coef-tag">折算系数 {{ Math.round(remotePolicy.unfiledEmergencyRatio * 100) }}%</text>
             </view>
-            <text class="r-sub">急诊抢救留观病历符合条件视同转诊待遇</text>
+            <text class="r-sub">急诊抢救留观病历符合条件视同转诊待遇结算</text>
           </view>
 
           <!-- 04 自行就医 -->
@@ -150,9 +156,10 @@
             </view>
             <text class="r-label">自行就医 (未备案)</text>
             <view class="r-num-row">
-              <text class="r-val text-rose">{{ Math.round(remotePolicy.unfiledNormalRatio * 100) }}%</text>
+              <text class="r-val text-rose">{{ actualUnfiledRatio }}%</text>
+              <text class="r-coef-tag">折算系数 {{ Math.round(remotePolicy.unfiledNormalRatio * 100) }}%</text>
             </view>
-            <text class="r-sub">未办理备案自行前往外地，比例受扣减惩罚</text>
+            <text class="r-sub">未办理转诊备案自行前往外地，执行惩罚性降点结算</text>
           </view>
         </view>
       </view>
@@ -365,7 +372,7 @@ import { ref, computed, onMounted } from 'vue';
 import { onPageScroll } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
-import { getCityDataByCode } from '../../data';
+import { getCityDataByCode, allCities } from '../../data';
 
 function goToCorrection() {
   uni.switchTab({ url: '/pages/correction/index' });
@@ -399,11 +406,55 @@ function toggleDropdown(type: string) {
 const currentProvince = computed(() => provinceList[selectedProvinceIndex.value] || provinceList[0]);
 const cityOptions = computed(() => getCitiesByProvinceCode(currentProvince.value.code));
 const currentCityOption = computed(() => cityOptions.value[selectedCityIndex.value] || cityOptions.value[0]);
-const currentCity = computed(() => getCityData(currentProvince.value.code, currentCityOption.value.cityCode));
+const currentCity = computed(() => {
+  return getCityData(currentCityOption.value.cityCode) || allCities[0];
+});
+
+const currentPackage = computed(() => {
+  const c = currentCity.value;
+  return currentType.value === 'employee' ? c.employee : c.resident;
+});
 
 const remotePolicy = computed(() => {
-  const c = currentCity.value;
-  return currentType.value === 'employee' ? c.employee.remoteSettlement : c.resident.remoteSettlement;
+  return currentPackage.value?.remoteMedical || {
+    sourceDocId: '',
+    filingChannels: [],
+    longTermFiledRatio: 1.0,
+    transferFiledRatio: 0.9,
+    unfiledEmergencyRatio: 0.9,
+    unfiledNormalRatio: 0.7,
+    specialNotes: []
+  };
+});
+
+// 本地参保地基准三级医院报销比例与封顶线
+const baseTier3Ratio = computed(() => {
+  const pkg = currentPackage.value;
+  return pkg?.inpatient?.tierBenefits?.tier3?.reimbursementRatio || (currentType.value === 'employee' ? 0.85 : 0.65);
+});
+
+const baseAnnualCapText = computed(() => {
+  const pkg = currentPackage.value;
+  const cap = pkg?.inpatient?.annualCap;
+  if (!cap) return '不设统筹限额';
+  return '封顶 ¥' + Math.round(cap / 10000) + '万';
+});
+
+// 折算后的四种实际参考报销比例
+const actualLongTermRatio = computed(() => {
+  return Math.round(baseTier3Ratio.value * remotePolicy.value.longTermFiledRatio * 100);
+});
+
+const actualTransferRatio = computed(() => {
+  return Math.round(baseTier3Ratio.value * remotePolicy.value.transferFiledRatio * 100);
+});
+
+const actualEmergencyRatio = computed(() => {
+  return Math.round(baseTier3Ratio.value * remotePolicy.value.unfiledEmergencyRatio * 100);
+});
+
+const actualUnfiledRatio = computed(() => {
+  return Math.round(baseTier3Ratio.value * remotePolicy.value.unfiledNormalRatio * 100);
 });
 
 function selectProvince(idx: number) {
@@ -757,6 +808,21 @@ onMounted(() => {
   color: #0f172a;
 }
 
+.city-benchmark-badge {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  display: inline-flex;
+  align-items: center;
+}
+
+.benchmark-txt {
+  font-size: 11px;
+  font-weight: 600;
+  color: #2563eb;
+}
+
 .segment-switch-sm {
   display: flex;
   align-items: center;
@@ -844,6 +910,16 @@ onMounted(() => {
   font-size: 26px;
   font-weight: 800;
   line-height: 1;
+}
+
+.r-coef-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  background: rgba(0, 0, 0, 0.05);
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
 }
 
 .text-emerald { color: #059669; }
