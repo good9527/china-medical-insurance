@@ -1,10 +1,32 @@
 import { defineConfig } from "vite";
 import uni from "@dcloudio/vite-plugin-uni";
+import fs from "fs";
+import path from "path";
+
+function copyRootFaviconPlugin() {
+  return {
+    name: "copy-root-favicon",
+    closeBundle() {
+      const distDir = path.resolve(__dirname, "dist/build/h5");
+      const staticDir = path.resolve(__dirname, "src/static");
+      if (fs.existsSync(distDir) && fs.existsSync(staticDir)) {
+        const filesToCopy = ["favicon.ico", "favicon.svg", "logo.svg", "logo.png"];
+        for (const file of filesToCopy) {
+          const srcFile = path.join(staticDir, file);
+          const destFile = path.join(distDir, file);
+          if (fs.existsSync(srcFile)) {
+            fs.copyFileSync(srcFile, destFile);
+          }
+        }
+      }
+    }
+  };
+}
 
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "./",
-  plugins: [uni()],
+  plugins: [uni(), copyRootFaviconPlugin()],
   build: {
     target: "es2020",
     minify: "esbuild",

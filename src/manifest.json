@@ -1,7 +1,7 @@
 {
-    "name" : "",
+    "name" : "全国医保待遇测算平台",
     "appid" : "",
-    "description" : "",
+    "description" : "全国医疗保险待遇测算与政策知识库平台，覆盖全国348个医保统筹区",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
@@ -69,6 +69,7 @@
         "enable": false
     },
     "h5" : {
+        "title" : "全国医保待遇测算平台",
         "router" : {
             "mode" : "hash",
             "base" : "./"

@@ -3,49 +3,49 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "报销算一算",
+        "navigationBarTitleText": "全国医保待遇测算平台",
         "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/policy/index",
       "style": {
-        "navigationBarTitleText": "各地报销待遇",
+        "navigationBarTitleText": "政策待遇库 - 全国医保待遇测算平台",
         "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/ranking/index",
       "style": {
-        "navigationBarTitleText": "政策对比与排行榜",
+        "navigationBarTitleText": "政策对比与排行榜 - 全国医保待遇测算平台",
         "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/service/index",
       "style": {
-        "navigationBarTitleText": "便民服务",
+        "navigationBarTitleText": "便民服务热线 - 全国医保待遇测算平台",
         "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/correction/index",
       "style": {
-        "navigationBarTitleText": "政策纠错中心",
+        "navigationBarTitleText": "政策纠错中心 - 全国医保待遇测算平台",
         "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/remote/index",
       "style": {
-        "navigationBarTitleText": "异地就医指南",
+        "navigationBarTitleText": "异地就医指南 - 全国医保待遇测算平台",
         "enablePullDownRefresh": false
       }
     }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "全国医保智能报销测算",
+    "navigationBarTitleText": "全国医保待遇测算平台",
     "navigationBarBackgroundColor": "#ffffff",
     "backgroundColor": "#f8fafc"
   },

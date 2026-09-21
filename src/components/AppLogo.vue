@@ -2,61 +2,49 @@
   <view class="app-logo-box" :class="[sizeClass]">
     <svg 
       class="logo-svg" 
-      viewBox="6 2 36 42" 
+      viewBox="0 0 128 128" 
       fill="none" 
       xmlns="http://www.w3.org/2000/svg"
     >
       <defs>
-        <!-- 盾牌外轮廓渐变：沉稳深蓝到科技青 -->
-        <linearGradient id="shieldGradLight" x1="6" y1="4" x2="42" y2="44" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#2563eb" />
+        <!-- 徽章底座渐变：医保科技深蓝到晴空青蓝 -->
+        <linearGradient id="appLogoBgGrad" x1="0" y1="0" x2="128" y2="128" gradientUnits="userSpaceOnUse">
+          <stop offset="0%" stop-color="#1d4ed8" />
+          <stop offset="50%" stop-color="#2563eb" />
           <stop offset="100%" stop-color="#0284c7" />
         </linearGradient>
 
-        <!-- 盾牌轻透背景渐变 -->
-        <linearGradient id="shieldBgLight" x1="12" y1="8" x2="36" y2="38" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stop-color="#eff6ff" />
-          <stop offset="100%" stop-color="#e0f2fe" />
-        </linearGradient>
-
-        <!-- 十字渐变：医保翡翠绿到天青蓝 -->
-        <linearGradient id="crossGradLight" x1="16" y1="14" x2="32" y2="34" gradientUnits="userSpaceOnUse">
+        <!-- 医疗十字渐变：翡翠绿到深林绿 -->
+        <linearGradient id="appLogoCrossGrad" x1="44" y1="40" x2="84" y2="88" gradientUnits="userSpaceOnUse">
           <stop offset="0%" stop-color="#10b981" />
-          <stop offset="100%" stop-color="#2563eb" />
+          <stop offset="100%" stop-color="#059669" />
         </linearGradient>
 
-        <!-- 浅色柔和弥散阴影 -->
-        <filter id="glowFilterLight" x="-15%" y="-15%" width="130%" height="130%">
-          <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#2563eb" flood-opacity="0.18" />
+        <!-- 柔和立体阴影 -->
+        <filter id="appLogoShadow" x="-10%" y="-10%" width="120%" height="120%">
+          <feDropShadow dx="0" dy="2.5" stdDeviation="2.5" flood-color="#0f172a" flood-opacity="0.25" />
         </filter>
       </defs>
 
-      <!-- 外层守护盾牌轮廓 -->
-      <path 
-        d="M24 4L9 9.8V21.6C9 30.5 15.4 38.8 24 41.5C32.6 38.8 39 30.5 39 21.6V9.8L24 4Z" 
-        fill="url(#shieldBgLight)" 
-        stroke="url(#shieldGradLight)" 
-        stroke-width="2.4" 
-        stroke-linejoin="round"
-        filter="url(#glowFilterLight)"
-      />
+      <!-- 徽章外壳底座 (平滑超椭圆 Squircle) -->
+      <rect x="4" y="4" width="120" height="120" rx="26" fill="url(#appLogoBgGrad)" />
+      <rect x="4" y="4" width="120" height="120" rx="26" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2" />
 
-      <!-- 内部白色护垫 -->
+      <!-- 医疗守护盾牌主体 (纯净玉白) -->
       <path 
-        d="M24 8.5L12.5 13V21C12.5 28 17.5 34.5 24 37C30.5 34.5 35.5 28 35.5 21V13L24 8.5Z" 
+        d="M64 22 L32 34 V60 C32 80 46 98 64 104 C82 98 96 80 96 60 V34 L64 22 Z" 
         fill="#ffffff" 
-        stroke="#dbeafe"
-        stroke-width="1"
+        filter="url(#appLogoShadow)" 
       />
 
-      <!-- 核心医疗十字 (救死扶伤与基本医疗保障) -->
+      <!-- 核心医疗十字 (翡翠绿健康基底) -->
       <path 
-        d="M21.5 15C21.5 14.17 22.17 13.5 23 13.5H25C25.83 13.5 26.5 14.17 26.5 15V20.5H32C32.83 20.5 33.5 21.17 33.5 22V24C33.5 24.83 32.83 25.5 32 25.5H26.5V31C26.5 31.83 25.83 32.5 25 32.5H23C22.17 32.5 21.5 31.83 21.5 31V25.5H16C15.17 25.5 14.5 24.83 14.5 24V22C14.5 21.17 15.17 20.5 16 20.5H21.5V15Z" 
-        fill="url(#crossGradLight)" 
+        d="M58 44 C58 41.8 59.8 40 62 40 H66 C68.2 40 70 41.8 70 44 V58 H84 C86.2 58 88 59.8 88 62 V66 C88 68.2 86.2 70 84 70 H70 V84 C70 86.2 68.2 88 66 88 H62 C59.8 88 58 86.2 58 84 V70 H44 C41.8 70 40 68.2 40 66 V62 C40 59.8 41.8 58 44 58 H58 V44 Z" 
+        fill="url(#appLogoCrossGrad)" 
       />
 
-      <!-- 跃动脉搏中心核点 -->
-      <circle cx="24" cy="23" r="2.2" fill="#ffffff" stroke="#2563eb" stroke-width="1.2" />
+      <!-- 十字中心科技脉搏白核 -->
+      <circle cx="64" cy="64" r="4.5" fill="#ffffff" />
     </svg>
   </view>
 </template>
@@ -83,18 +71,18 @@ const sizeClass = computed(() => `logo-${props.size}`);
 }
 
 .logo-sm {
-  width: 22px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
 }
 
 .logo-md {
-  width: 30px;
-  height: 35px;
+  width: 32px;
+  height: 32px;
 }
 
 .logo-lg {
-  width: 38px;
-  height: 44px;
+  width: 40px;
+  height: 40px;
 }
 
 .logo-svg {
@@ -105,7 +93,7 @@ const sizeClass = computed(() => `logo-${props.size}`);
 }
 
 .app-logo-box:hover {
-  transform: scale(1.04);
-  filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.45));
+  transform: scale(1.05);
+  filter: drop-shadow(0 4px 12px rgba(37, 99, 235, 0.35));
 }
 </style>

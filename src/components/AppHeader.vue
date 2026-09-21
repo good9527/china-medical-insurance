@@ -5,8 +5,11 @@
       <view class="header-brand" @click="navTo('/pages/index/index')">
         <AppLogo size="md" />
         <view class="brand-text-group">
-          <text class="brand-name">医保报销助手</text>
-          <text class="brand-sub">测算与政策参考工具</text>
+          <text class="brand-name">全国医保待遇测算平台</text>
+          <text class="brand-sub">
+            <text class="desktop-sub">覆盖全国 348 统筹区 · 权威政策红头溯源</text>
+            <text class="mobile-sub">全国 348 统筹区 · 官方政策精准溯源</text>
+          </text>
         </view>
       </view>
 
@@ -120,7 +123,7 @@ function navTo(url: string) {
 }
 
 .site-header-inner {
-  max-width: 1160px;
+  max-width: 1280px;
   margin: 0 auto;
   height: 60px;
   padding: 0 20px;
@@ -130,12 +133,12 @@ function navTo(url: string) {
   box-sizing: border-box;
 }
 
-/* 桌面端与平板端：经典对称 3 栏 Grid，确保中间 Tab 栏处于绝对几何正中心 */
 @media (min-width: 768px) {
   .site-header-inner {
-    display: grid;
-    grid-template-columns: minmax(200px, 240px) 1fr minmax(180px, 240px);
+    display: flex;
     align-items: center;
+    justify-content: space-between;
+    gap: 16px;
   }
 }
 
@@ -145,11 +148,13 @@ function navTo(url: string) {
   gap: 10px;
   cursor: pointer;
   user-select: none;
+  flex-shrink: 0;
 }
 
 .brand-text-group {
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 }
 
 .brand-name {
@@ -157,12 +162,28 @@ function navTo(url: string) {
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.2px;
+  white-space: nowrap !important;
+  word-break: keep-all;
 }
 
 .brand-sub {
   font-size: 11px;
   color: #64748b;
   margin-top: 1px;
+  white-space: nowrap !important;
+  word-break: keep-all;
+}
+
+.desktop-sub {
+  display: inline;
+  white-space: nowrap !important;
+  word-break: keep-all;
+}
+
+.mobile-sub {
+  display: none;
+  white-space: nowrap !important;
+  word-break: keep-all;
 }
 
 .header-nav {
@@ -174,19 +195,22 @@ function navTo(url: string) {
   border-radius: 9999rpx;
   padding: 3px;
   gap: 4px;
-  margin: 0 auto;
+  flex-shrink: 0;
 }
 
 .nav-tab {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 6px 16px;
+  padding: 6px 14px;
   border-radius: 9999rpx;
   cursor: pointer;
   user-select: none;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   color: #64748b;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  flex-shrink: 0;
 }
 
 .tab-svg {
@@ -212,12 +236,16 @@ function navTo(url: string) {
   font-size: 13px;
   font-weight: 600;
   color: inherit;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  line-height: 1;
 }
 
 .header-extra {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  flex-shrink: 0;
 }
 
 .status-pill {
@@ -245,6 +273,12 @@ function navTo(url: string) {
 }
 
 @media (max-width: 767px) {
+  .desktop-sub {
+    display: none !important;
+  }
+  .mobile-sub {
+    display: inline !important;
+  }
   .site-header-inner {
     height: 52px;
     padding: 0 14px;
