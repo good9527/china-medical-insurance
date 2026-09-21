@@ -111,6 +111,15 @@
               <text class="b-col-3 font-mono font-bold text-cyan text-lg">¥ {{ formatMoney(result?.breakdown.totalReimbursed || 0) }}</text>
             </view>
 
+            <view class="bill-row highlight-emerald" v-if="(result?.breakdown.catastrophicReimbursed || 0) > 0">
+              <view class="b-col-1">
+                <text class="font-bold text-emerald">大病互助二次报销</text>
+                <text class="badge-ratio ratio-emerald">大病阶梯减免</text>
+              </view>
+              <text class="b-col-2 text-emerald">合规自付突破大病起付线，大病互助基金二次递增补偿</text>
+              <text class="b-col-3 font-mono font-bold text-emerald text-lg">+ ¥ {{ formatMoney(result?.breakdown.catastrophicReimbursed || 0) }}</text>
+            </view>
+
             <view class="bill-row highlight-amber">
               <view class="b-col-1">
                 <text class="font-bold text-amber">个人预计自理支出</text>
@@ -193,11 +202,41 @@
         </view>
       </view>
     </view>
+
+    <!-- 高清凭证海报长按保存预览浮层 (微信/移动端完美适配) -->
+    <view class="poster-preview-mask" v-if="showPosterPreview" @click="showPosterPreview = false">
+      <view class="poster-preview-dialog" @click.stop>
+        <view class="poster-preview-header">
+          <view class="preview-title-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0284c7" stroke-width="2" class="preview-title-icon">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <circle cx="8.5" cy="8.5" r="1.5"></circle>
+              <polyline points="21 15 16 10 5 21"></polyline>
+            </svg>
+            <text class="poster-preview-title">凭据高清海报已生成</text>
+          </view>
+          <text class="poster-preview-close" @click="showPosterPreview = false">✕</text>
+        </view>
+
+        <view class="poster-preview-body">
+          <img :src="posterImageUrl" class="poster-preview-img" alt="全国医保待遇预估参考凭证" />
+          <view class="poster-save-tip">
+            <text class="tip-icon">💡</text>
+            <text class="tip-txt">长按上方图片即可“保存到手机相册”或直接转发给家人微信</text>
+          </view>
+        </view>
+
+        <view class="poster-preview-actions">
+          <button class="poster-btn-download" @click="downloadPosterDirect">下载图片</button>
+          <button class="poster-btn-close" @click="showPosterPreview = false">关闭预览</button>
+        </view>
+      </view>
+    </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { ref, computed, watch, onUnmounted } from 'vue';
 import type { CalculateResult } from '../data/types';
 
 const props = defineProps<{
@@ -217,6 +256,26 @@ const props = defineProps<{
 const emit = defineEmits<{
   (e: 'close'): void;
 }>();
+
+const showPosterPreview = ref(false);
+const posterImageUrl = ref('');
+
+// 响应式监听弹窗开启状态，自动挂载 body.modal-open 隐藏吸底 TabBar 并防穿透
+watch(() => props.visible, (val) => {
+  if (typeof document !== 'undefined') {
+    if (val) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }
+}, { immediate: true });
+
+onUnmounted(() => {
+  if (typeof document !== 'undefined') {
+    document.body.classList.remove('modal-open');
+  }
+});
 
 function close() {
   emit('close');
@@ -281,16 +340,29 @@ function handleCopyText() {
     `就医机构：${treatmentTypeLabel.value} · ${props.hospitalTierName}`,
     `备案类型：${props.remoteLabel}`,
     `--------------------------------`,
-    `预估医疗总花费：¥ ${formatMoney(r.breakdown.totalCost)}`,
-    `起付线门槛扣除：- ¥ ${formatMoney(r.breakdown.deductibleDeducted)}`,
-    `纳规报销入池额：¥ ${formatMoney(eligibleDeducted.value)}`,
-    `★ 医保预估统筹报销：¥ ${formatMoney(r.breakdown.totalReimbursed)} (报销率约 ${r.breakdown.effectiveRatio}%)`,
-    `★ 个人预计自理支出：¥ ${formatMoney(r.breakdown.personalPayTotal)}`,
-    `--------------------------------`,
-    `政策依据：${r.officialDocUsed?.title || '现行公开政策'} (${r.officialDocUsed?.docNumber || '规范公文'})`,
-    `声明：本测算基于地方公开政策规则估算，仅供预算参考；实际请以定点医疗机构出院医保结算单为准。`,
-    `来源：全国医保待遇估算与政策查询公益开源平台 (关注微信公众号：GIS民工)`
+    `预估医疗总花费：¥ ${formatMoney(r.breakdown.totalCost || props.totalCost)}`,
   ];
+
+  if ((r.breakdown.nonInsuranceCost || 0) > 0) {
+    lines.push(`全自费项目扣除：- ¥ ${formatMoney(r.breakdown.nonInsuranceCost)}`);
+  }
+  if ((r.breakdown.classBPriorPay || 0) > 0) {
+    lines.push(`乙类先行自付额：- ¥ ${formatMoney(r.breakdown.classBPriorPay)}`);
+  }
+
+  lines.push(`起付线门槛扣除：- ¥ ${formatMoney(r.breakdown.deductibleDeducted)}`);
+  lines.push(`纳规报销入池额：¥ ${formatMoney(eligibleDeducted.value)}`);
+  lines.push(`★ 医保预估统筹报销：¥ ${formatMoney(r.breakdown.totalReimbursed)} (综合报销率约 ${r.breakdown.effectiveRatio}%)`);
+
+  if ((r.breakdown.catastrophicReimbursed || 0) > 0) {
+    lines.push(`★ 大病互助二次报销：+ ¥ ${formatMoney(r.breakdown.catastrophicReimbursed)}`);
+  }
+
+  lines.push(`★ 个人预计自理支出：¥ ${formatMoney(r.breakdown.personalPayTotal)}`);
+  lines.push(`--------------------------------`);
+  lines.push(`政策依据：${r.officialDocUsed?.title || '现行公开政策'} (${r.officialDocUsed?.docNumber || '规范公文'})`);
+  lines.push(`声明：本数据基于地方公开政策规则估算，仅供预算参考；实际请以定点医疗机构出院医保结算单为准。`);
+  lines.push(`来源：全国医保待遇估算与政策查询公益开源平台 (关注微信公众号：GIS民工)`);
 
   const fullText = lines.join('\n');
   uni.setClipboardData({
@@ -299,6 +371,16 @@ function handleCopyText() {
       uni.showToast({ title: '已复制凭据文本', icon: 'success' });
     }
   });
+}
+
+// 直接下载海报图片
+function downloadPosterDirect() {
+  if (!posterImageUrl.value) return;
+  const link = document.createElement('a');
+  link.download = `医保待遇估算凭证_${props.cityName}_¥${props.totalCost}.png`;
+  link.href = posterImageUrl.value;
+  link.click();
+  uni.showToast({ title: '已触发图片下载', icon: 'success' });
 }
 
 // 打印
@@ -310,16 +392,109 @@ function handlePrint() {
   }
 }
 
-// 保存为高清凭据海报图片 (纯前端 Canvas 离屏高清渲染，无需外网)
+// 保存为高清凭据海报图片 (纯前端 Canvas 离屏 2x 高清渲染，带自适应高度、长文本截断与金额右对齐)
 function handleExportImage() {
   try {
     const r = props.result;
     if (!r) return;
 
-    // 建立 2x Canvas
-    const canvas = document.createElement('canvas');
+    // 辅助截断文本函数，防止长公文标题溢出 Canvas 卡片边界
+    function truncateText(ctx: CanvasRenderingContext2D, text: string, maxWidth: number): string {
+      if (ctx.measureText(text).width <= maxWidth) return text;
+      let str = text;
+      while (str.length > 0 && ctx.measureText(str + '...').width > maxWidth) {
+        str = str.slice(0, -1);
+      }
+      return str + '...';
+    }
+
+    // 动态构建水单明细行 (与实际发生项严格完全同步，无遗漏)
+    const rows: Array<{ name: string; rule: string; val: string; bold?: boolean; color: string; bg?: string }> = [
+      { name: '总医疗花费', rule: '患者就医就诊发生的全部合规与自费总额', val: `¥ ${formatMoney(r.breakdown.totalCost || props.totalCost)}`, bold: true, color: '#0f172a' },
+    ];
+
+    if ((r.breakdown.nonInsuranceCost || 0) > 0) {
+      rows.push({
+        name: '全自费项目 (丙类/特需)',
+        rule: '目录外不予报销项（全额个人负担）',
+        val: `- ¥ ${formatMoney(r.breakdown.nonInsuranceCost)}`,
+        color: '#64748b'
+      });
+    }
+
+    if ((r.breakdown.classBPriorPay || 0) > 0) {
+      rows.push({
+        name: '乙类药品/诊疗先行自付',
+        rule: '乙类目录政策规定先行自付比例部分',
+        val: `- ¥ ${formatMoney(r.breakdown.classBPriorPay)}`,
+        color: '#64748b'
+      });
+    }
+
+    rows.push({
+      name: '门槛起付线扣除',
+      rule: (r.breakdown.deductibleDeducted || 0) > 0 ? `扣减起付线门槛 ¥${formatMoney(r.breakdown.deductibleDeducted)}，起付线内不报销` : '符合当地政策免起付标准',
+      val: `- ¥ ${formatMoney(r.breakdown.deductibleDeducted)}`,
+      color: '#64748b'
+    });
+
+    rows.push({
+      name: '实际纳规报销基数',
+      rule: '进入医保统筹池按比例享受待遇的基数',
+      val: `¥ ${formatMoney(eligibleDeducted.value)}`,
+      bold: true,
+      color: '#0f172a'
+    });
+
+    rows.push({
+      name: '医保统筹基金预估报销',
+      rule: `符合地方公开政策报销 (综合报销率 ${r.breakdown.effectiveRatio}%)`,
+      val: `¥ ${formatMoney(r.breakdown.totalReimbursed)}`,
+      bold: true,
+      color: '#0284c7',
+      bg: '#f0f9ff'
+    });
+
+    if ((r.breakdown.catastrophicReimbursed || 0) > 0) {
+      rows.push({
+        name: '大病互助二次报销',
+        rule: '突破大病起付标准，大病保险二次梯次补偿减免',
+        val: `+ ¥ ${formatMoney(r.breakdown.catastrophicReimbursed)}`,
+        bold: true,
+        color: '#059669',
+        bg: '#ecfdf5'
+      });
+    }
+
+    rows.push({
+      name: '个人预计自理支出',
+      rule: '含起付线、按比例自负及全自费项目总额',
+      val: `¥ ${formatMoney(r.breakdown.personalPayTotal)}`,
+      bold: true,
+      color: '#d97706',
+      bg: '#fffbeb'
+    });
+
+    const hasDoc = !!r.officialDocUsed;
+    const memoNotes = (r.policyNotes || []).slice(0, 3);
+    const memoCount = memoNotes.length;
+
+    // 动态精确核算 Canvas 画布高度，杜绝写出边框与裁剪问题
     const w = 720;
-    const h = 980;
+    const headerHeight = 275;
+    const tableHeaderHeight = 32;
+    const tableRowsHeight = rows.length * 36;
+    const policyDocHeight = hasDoc ? 68 : 0;
+    const memoHeight = memoCount > 0 ? (memoCount * 22 + 16) : 0;
+    const disclaimerHeight = 88;
+    const footerHeight = 40;
+    const bottomPadding = 30;
+
+    const totalCalculatedHeight = headerHeight + tableHeaderHeight + tableRowsHeight + 20 + policyDocHeight + memoHeight + disclaimerHeight + footerHeight + bottomPadding;
+    const h = Math.max(940, totalCalculatedHeight);
+
+    // 建立 2x Canvas (Retina 高清)
+    const canvas = document.createElement('canvas');
     canvas.width = w * 2;
     canvas.height = h * 2;
     const ctx = canvas.getContext('2d');
@@ -380,9 +555,9 @@ function handleExportImage() {
     ctx.fillStyle = '#0f172a';
     ctx.font = 'bold 13px sans-serif';
     ctx.fillText(`${props.cityName} (${props.provinceName})`, 145, 175);
-    ctx.fillText(insuranceTypeLabel.value, 155, 208);
-    ctx.fillText(`${treatmentTypeLabel.value} · ${props.hospitalTierName}`, 475, 175);
-    ctx.fillText(props.remoteLabel, 475, 208);
+    ctx.fillText(truncateText(ctx, insuranceTypeLabel.value, 200), 155, 208);
+    ctx.fillText(truncateText(ctx, `${treatmentTypeLabel.value} · ${props.hospitalTierName}`, 190), 475, 175);
+    ctx.fillText(truncateText(ctx, props.remoteLabel, 190), 475, 208);
 
     // 5. 费用水单表格
     ctx.fillStyle = '#0f172a';
@@ -390,23 +565,17 @@ function handleExportImage() {
     ctx.fillText('结算核定明细清单', 45, 260);
 
     let curY = 275;
-    // 表头
+    // 表头 (金额右对齐)
     ctx.fillStyle = '#f1f5f9';
     ctx.fillRect(45, curY, w - 90, 32);
     ctx.fillStyle = '#475569';
     ctx.font = 'bold 12px sans-serif';
     ctx.fillText('结算项目', 60, curY + 20);
     ctx.fillText('政策规则说明', 220, curY + 20);
-    ctx.fillText('金额 (元)', w - 150, curY + 20);
+    ctx.textAlign = 'right';
+    ctx.fillText('金额 (元)', w - 65, curY + 20);
+    ctx.textAlign = 'left';
     curY += 32;
-
-    const rows = [
-      { name: '总医疗花费', rule: '患者就医就诊发生的全部合规与自费总额', val: `¥ ${formatMoney(r.breakdown.totalCost)}`, bold: true, color: '#0f172a' },
-      { name: '起付线扣除', rule: `扣减起付线门槛 ¥${formatMoney(r.breakdown.deductibleDeducted)}，起付线内不报销`, val: `- ¥ ${formatMoney(r.breakdown.deductibleDeducted)}`, color: '#64748b' },
-      { name: '纳规报销基数', rule: '进入医保统筹池按比例享受待遇的基数', val: `¥ ${formatMoney(eligibleDeducted.value)}`, bold: true, color: '#0f172a' },
-      { name: '统筹基金报销', rule: `预估直接减免报销额 (有效报销率约 ${r.breakdown.effectiveRatio}%)`, val: `¥ ${formatMoney(r.breakdown.totalReimbursed)}`, bold: true, color: '#0284c7', bg: '#f0f9ff' },
-      { name: '个人预计自理', rule: '含起付线、按比例自负及全自费项目总额', val: `¥ ${formatMoney(r.breakdown.personalPayTotal)}`, bold: true, color: '#d97706', bg: '#fffbeb' },
-    ];
 
     rows.forEach(row => {
       if (row.bg) {
@@ -422,37 +591,58 @@ function handleExportImage() {
 
       ctx.fillStyle = '#64748b';
       ctx.font = '11px sans-serif';
-      ctx.fillText(row.rule, 220, curY + 22);
+      ctx.fillText(truncateText(ctx, row.rule, 290), 220, curY + 22);
 
       ctx.fillStyle = row.color;
-      ctx.font = row.bold ? 'bold 14px monospace' : '13px monospace';
-      ctx.fillText(row.val, w - 160, curY + 22);
+      ctx.font = row.bold ? 'bold 13.5px monospace' : '13px monospace';
+      ctx.textAlign = 'right';
+      ctx.fillText(row.val, w - 65, curY + 22);
+      ctx.textAlign = 'left';
 
       curY += 36;
     });
 
-    curY += 24;
+    curY += 18;
+
     // 6. 政策依据
-    if (r.officialDocUsed) {
+    if (hasDoc && r.officialDocUsed) {
       ctx.fillStyle = '#f8fafc';
-      ctx.fillRect(45, curY, w - 90, 48);
+      ctx.fillRect(45, curY, w - 90, 52);
       ctx.strokeStyle = '#e2e8f0';
-      ctx.strokeRect(45, curY, w - 90, 48);
+      ctx.strokeRect(45, curY, w - 90, 52);
 
       ctx.fillStyle = '#0284c7';
       ctx.font = 'bold 11px sans-serif';
       ctx.fillText('公开政策依据：', 60, curY + 22);
 
-      ctx.fillStyle = '#334155';
+      ctx.fillStyle = '#1e293b';
       ctx.font = '12px sans-serif';
-      ctx.fillText(`${r.officialDocUsed.title} (${r.officialDocUsed.docNumber || '规范公文'})`, 150, curY + 22);
+      const docFull = `${r.officialDocUsed.title} (${r.officialDocUsed.docNumber || '现行规范公文'})`;
+      ctx.fillText(truncateText(ctx, docFull, 480), 150, curY + 22);
+
       ctx.fillStyle = '#64748b';
       ctx.font = '11px sans-serif';
-      ctx.fillText('地方政府及医保局公开发布现行有效标准', 150, curY + 38);
-      curY += 60;
+      ctx.fillText('地方政府及医保部门公开发布现行有效标准文件', 150, curY + 40);
+
+      curY += 64;
     }
 
-    // 7. 免责声明区
+    // 6.2 政策提示备忘
+    if (memoCount > 0) {
+      memoNotes.forEach(note => {
+        ctx.fillStyle = '#0284c7';
+        ctx.font = 'bold 12px sans-serif';
+        ctx.fillText('※', 48, curY + 14);
+
+        ctx.fillStyle = '#64748b';
+        ctx.font = '11px sans-serif';
+        ctx.fillText(truncateText(ctx, note, w - 120), 65, curY + 14);
+        curY += 22;
+      });
+      curY += 8;
+    }
+
+    // 7. 免责声明区与印章
     ctx.fillStyle = '#fffbeb';
     ctx.fillRect(45, curY, w - 90, 80);
     ctx.strokeStyle = '#fef3c7';
@@ -471,32 +661,41 @@ function handleExportImage() {
     ctx.strokeStyle = '#dc2626';
     ctx.lineWidth = 2;
     ctx.beginPath();
-    ctx.arc(w - 110, curY + 40, 36, 0, Math.PI * 2);
+    ctx.arc(w - 115, curY + 40, 34, 0, Math.PI * 2);
     ctx.stroke();
 
     ctx.fillStyle = '#dc2626';
-    ctx.font = 'bold 10px sans-serif';
+    ctx.font = 'bold 9.5px sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('医保估算参考', w - 110, curY + 32);
-    ctx.fillText('★ ★ ★', w - 110, curY + 43);
-    ctx.fillText('开源公益校验', w - 110, curY + 54);
+    ctx.fillText('医保估算参考', w - 115, curY + 32);
+    ctx.fillText('★ ★ ★', w - 115, curY + 43);
+    ctx.fillText('开源公益校验', w - 115, curY + 54);
     ctx.textAlign = 'left';
 
-    curY += 95;
+    curY += 92;
 
     // 8. 页脚版权
     ctx.fillStyle = '#94a3b8';
-    ctx.font = '11px sans-serif';
-    ctx.fillText('全国医保待遇估算与政策查询 · 公益开源 · 微信公众号：GIS民工 · keepkid0824@gmail.com', 45, curY);
+    ctx.font = '10.5px sans-serif';
+    ctx.fillText('全国医保待遇估算与政策查询 · 公益开源 · 微信公众号：GIS民工 · 邮箱：keepkid0824@gmail.com', 45, h - 35);
 
-    // 导出并下载
+    // 导出并弹出预览浮层 (微信与手机端长按保存最佳体验)
     const dataUrl = canvas.toDataURL('image/png');
-    const link = document.createElement('a');
-    link.download = `医保待遇估算凭证_${props.cityName}_¥${props.totalCost}.png`;
-    link.href = dataUrl;
-    link.click();
+    posterImageUrl.value = dataUrl;
+    showPosterPreview.value = true;
 
-    uni.showToast({ title: '已生成并下载图片', icon: 'success' });
+    // 桌面环境自动触发传统文件下载
+    try {
+      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      if (!isMobile) {
+        const link = document.createElement('a');
+        link.download = `医保待遇估算凭证_${props.cityName}_¥${props.totalCost}.png`;
+        link.href = dataUrl;
+        link.click();
+      }
+    } catch (_) {}
+
+    uni.showToast({ title: '已生成凭据海报', icon: 'success' });
   } catch (e: any) {
     uni.showToast({ title: '导出图片失败，可尝试一键复制', icon: 'none' });
   }
@@ -753,12 +952,26 @@ function handleExportImage() {
   border-left: 3px solid #f59e0b;
 }
 
+.highlight-emerald {
+  background: #ecfdf5;
+  border-left: 3px solid #059669;
+}
+
 .text-cyan {
   color: #0284c7;
 }
 
 .text-amber {
   color: #d97706;
+}
+
+.text-emerald {
+  color: #059669;
+}
+
+.ratio-emerald {
+  background: #d1fae5;
+  color: #047857;
 }
 
 .text-dim {
@@ -1005,10 +1218,12 @@ function handleExportImage() {
 
 @media (max-width: 640px) {
   .voucher-modal-dialog {
-    max-height: 95vh;
+    max-height: 92vh;
+    margin: 8px;
   }
   .voucher-scroll-area {
     padding: 12px;
+    -webkit-overflow-scrolling: touch;
   }
   .voucher-sheet {
     padding: 14px;
@@ -1060,7 +1275,7 @@ function handleExportImage() {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-    padding: 10px 12px;
+    padding: 10px 12px calc(12px + env(safe-area-inset-bottom));
   }
   .modal-actions-bar .action-btn {
     justify-content: center;
@@ -1075,5 +1290,154 @@ function handleExportImage() {
     text-align: center;
     padding: 6px;
   }
+}
+
+/* 高清海报长按保存预览浮层 (微信/移动端极致友好) */
+.poster-preview-mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.poster-preview-dialog {
+  background: #ffffff;
+  width: 100%;
+  max-width: 440px;
+  max-height: 90vh;
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.poster-preview-header {
+  padding: 12px 16px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.preview-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.preview-title-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.poster-preview-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.poster-preview-close {
+  color: #94a3b8;
+  font-size: 16px;
+  cursor: pointer;
+  padding: 2px 6px;
+}
+
+.poster-preview-close:hover {
+  color: #0f172a;
+}
+
+.poster-preview-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #f1f5f9;
+  -webkit-overflow-scrolling: touch;
+}
+
+.poster-preview-img {
+  width: 100%;
+  max-width: 380px;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e2e8f0;
+}
+
+.poster-save-tip {
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tip-icon {
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.tip-txt {
+  font-size: 11.5px;
+  color: #1d4ed8;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.poster-preview-actions {
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  display: flex;
+  gap: 10px;
+}
+
+.poster-btn-download {
+  flex: 1;
+  background: #0284c7;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 9px 0;
+  border: none;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+.poster-btn-download:hover {
+  background: #0369a1;
+}
+
+.poster-btn-close {
+  padding: 9px 16px;
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid #cbd5e1;
+  cursor: pointer;
+  line-height: 1.2;
+}
+
+.poster-btn-close:hover {
+  background: #e2e8f0;
 }
 </style>

@@ -125,7 +125,7 @@
         </view>
       </view>
 
-      <!-- 立即去测算 CTA 卡片 (高转换导流横幅) -->
+      <!-- 立即去估算 CTA 卡片 -->
       <view class="calc-shortcut-banner mb-20" @click="goToCalculator">
         <view class="banner-left">
           <view class="banner-icon-wrap">

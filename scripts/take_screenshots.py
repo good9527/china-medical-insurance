@@ -60,6 +60,11 @@ with sync_playwright() as p:
     desktop_page.wait_for_timeout(600)
     desktop_page.screenshot(path=os.path.join(SCREENSHOT_DIR, "desktop_voucher_modal.png"), full_page=False)
 
+    # Desktop poster preview capture
+    desktop_page.locator("text=保存为凭据图片").click()
+    desktop_page.wait_for_timeout(600)
+    desktop_page.screenshot(path=os.path.join(SCREENSHOT_DIR, "desktop_poster_preview.png"), full_page=False)
+
     desktop_context.close()
 
     # 2. Mobile screenshots
@@ -85,6 +90,25 @@ with sync_playwright() as p:
     mobile_page.locator("text=生成凭据单").first.click()
     mobile_page.wait_for_timeout(600)
     mobile_page.screenshot(path=os.path.join(SCREENSHOT_DIR, "mobile_voucher_modal.png"), full_page=False)
+
+    # Mobile poster preview capture
+    mobile_page.locator("text=保存为凭据图片").click()
+    mobile_page.wait_for_timeout(600)
+    mobile_page.screenshot(path=os.path.join(SCREENSHOT_DIR, "mobile_poster_preview.png"), full_page=False)
+
+    # Mobile tooltip capture
+    mobile_page.close()
+    mobile_page2 = mobile_context.new_page()
+    mobile_page2.goto(f"http://127.0.0.1:{PORT}/#/pages/index/index")
+    mobile_page2.wait_for_timeout(1000)
+    mobile_page2.locator("text=明细 ↓").first.click()
+    mobile_page2.wait_for_timeout(500)
+    tooltip_trigger = mobile_page2.locator(".info-trigger-badge").first
+    if tooltip_trigger.count() > 0:
+        tooltip_trigger.click()
+        mobile_page2.wait_for_timeout(400)
+        mobile_page2.screenshot(path=os.path.join(SCREENSHOT_DIR, "mobile_tooltip.png"), full_page=False)
+    mobile_page2.close()
 
     mobile_context.close()
     browser.close()

@@ -173,7 +173,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch, onUnmounted } from 'vue';
 import AppLogo from './AppLogo.vue';
 import { SITE_CONFIG } from '../config/site';
 
@@ -182,6 +182,22 @@ defineProps<{
 }>();
 
 const showContactModal = ref(false);
+
+watch(showContactModal, (val) => {
+  if (typeof document !== 'undefined') {
+    if (val) {
+      document.body.classList.add('modal-open');
+    } else {
+      document.body.classList.remove('modal-open');
+    }
+  }
+});
+
+onUnmounted(() => {
+  if (typeof document !== 'undefined') {
+    document.body.classList.remove('modal-open');
+  }
+});
 
 function navTo(url: string) {
   uni.switchTab({ url });

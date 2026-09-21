@@ -122,11 +122,11 @@ onUnmounted(() => {
 @keyframes popIn {
   from {
     opacity: 0;
-    transform: translate(-50%, 4px);
+    margin-bottom: -4px;
   }
   to {
     opacity: 1;
-    transform: translate(-50%, 0);
+    margin-bottom: 0;
   }
 }
 

@@ -369,8 +369,8 @@
               <view class="pipe-step-item">
                 <view class="step-num-badge">4</view>
                 <view class="step-content">
-                  <text class="step-title">6911 项自动化测算严密质检</text>
-                  <text class="step-desc">修改后运行 <text class="cmd-code">npm run test:calc</text>，全量覆盖 348 个统筹区全部 6911 项断言必须 100% 通过，杜绝误改与逻辑冲突。</text>
+                  <text class="step-title">6911 项自动化规则严密质检</text>
+                  <text class="step-desc">修改后运行 <text class="cmd-code">npm run test:calc</text>，全量覆盖 348 个统筹区全部 6911 项计算与政策断言必须 100% 通过，杜绝误改与逻辑冲突。</text>
                 </view>
               </view>
 

@@ -1,6 +1,6 @@
 {
   "name": "china-medical-insurance-platform",
-  "description": "全国医疗保险待遇测算与政策知识库平台 (覆盖全国348医保统筹区)",
+  "description": "全国医疗保险待遇估算与政策查询公益开源平台 (覆盖全国348医保统筹区)",
   "version": "1.0.0",
   "scripts": {
     "dev:custom": "uni -p",

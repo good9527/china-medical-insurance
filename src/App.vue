@@ -353,6 +353,22 @@ uni-page-head {
   }
 }
 
+/* 全局模态弹窗打开时隐藏底栏与浮动条，彻底解决层级遮挡与手势误触问题 */
+body.modal-open uni-tabbar,
+uni-app.modal-open uni-tabbar,
+.modal-open uni-tabbar,
+body.modal-open .uni-tabbar {
+  display: none !important;
+}
+
+body.modal-open .mobile-calc-float-bar {
+  display: none !important;
+}
+
+body.modal-open {
+  overflow: hidden !important;
+}
+
 /* 全局 QQ 弹弹交互基础类与按压反馈 */
 button, .elastic-btn, .interactive-item {
   position: relative;
