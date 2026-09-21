@@ -17,7 +17,7 @@ export class PolicyInspector {
   }
 
   /**
-   * 全量 344 个统筹区多维智能深度体检
+   * 全量 348 个统筹区多维智能深度体检
    */
   public inspectAll(): InspectionSummary {
     const items: DiagnosticItem[] = [];

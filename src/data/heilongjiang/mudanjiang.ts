@@ -40,8 +40,8 @@ export const mudanjiangCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'mdj-employee-outpatient-2022',
       annualDeductible: 400,
-      annualCap: 2000,
-      annualCapRetiree: 2000,
+      annualCap: 3000,
+      annualCapRetiree: 3000,
       tierBenefits: {
         community: { tierName: '基层及一级定点医疗机构', deductible: 400, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
@@ -49,7 +49,7 @@ export const mudanjiangCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '省属三级重点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '门诊年度起付线400元。在职报销50%~70%，退休人员各段提高5个百分点（55%~75%），年度封顶2000元。'
+      note: '门诊年度起付标准400元。起付线以上在职报销比例：一级及基层70%、二级60%、三级50%（退休人员各段提高5个百分点，即75%/65%/55%）。统筹基金年度最高支付限额3000元。'
     },
     inpatient: {
       sourceDocId: 'mdj-medical-insurance-policy-2023',

@@ -39,17 +39,17 @@ export const guilinCityData: CityInsuranceData = {
   employee: {
     outpatient: {
       sourceDocId: 'gl-employee-outpatient-2022',
-      annualDeductible: 300,
-      annualCap: 1800,
-      annualCapRetiree: 2400,
+      annualDeductible: 600,
+      annualCap: 1200,
+      annualCapRetiree: 1800,
       tierBenefits: {
-        community: { tierName: '基层及一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '自治区级三甲医院', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层及一级定点医疗机构', deductible: 600, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 600, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 600, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '自治区级三甲医院', deductible: 600, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '门诊起付线一级100元、二级200元、三级300元。在职报销50%~60%，退休人员各段提高5个百分点，在职封顶1800元，退休2400元。'
+      note: '门诊年度累计起付标准为600元。在职报销比例：一级60%、二级55%、三级50%（退休人员各项提高5%）。年度最高支付限额在职人员1200元，退休人员1800元。'
     },
     inpatient: {
       sourceDocId: 'gl-medical-treatment-policy-2023',

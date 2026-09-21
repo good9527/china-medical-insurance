@@ -43,13 +43,13 @@ export const zunyiCityData: CityInsuranceData = {
       annualCap: 2000,
       annualCapRetiree: 2000,
       tierBenefits: {
-        community: { tierName: '基层及一级定点医疗机构', deductible: 150, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 150, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 150, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 150, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 150, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层及一级定点医疗机构', deductible: 150, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 150, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 150, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 150, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 150, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '门诊年度起付线150元。在职报销60%~75%，退休人员各段提高5个百分点（65%~80%），年度封顶2000元。'
+      note: '门诊年度起付线150元。在职报销比例：一级及以下70%、二级60%、三级50%（退休人员各项提高5个百分点，即75%/65%/55%），年度最高支付限额2000元。'
     },
     inpatient: {
       sourceDocId: 'zy-medical-insurance-policy-2023',

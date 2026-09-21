@@ -99,13 +99,13 @@ export const yantaiCityData: CityInsuranceData = {
       sourceDocId: 'yt-medical-insurance-inpatient-2023',
       annualCap: 160000, // 烟台居民基本医保封顶线确为 16 万元
       tierBenefits: {
-        community: { tierName: '基层医疗机构(实施基药)', deductible: 300, reimbursementRatio: 0.90 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.70 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.58 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.45 },
-        tier3_top: { tierName: '重点三甲医院(如毓璜顶医院)', deductible: 800, reimbursementRatio: 0.45 }
+        community: { tierName: '基层医疗机构(实施基药/二档)', deductible: 300, reimbursementRatio: 0.90 },
+        tier1: { tierName: '一级定点医疗机构(二档标准)', deductible: 300, reimbursementRatio: 0.90 },
+        tier2: { tierName: '二级定点医疗机构(二档标准)', deductible: 500, reimbursementRatio: 0.72 },
+        tier3: { tierName: '三级定点医疗机构(二档标准)', deductible: 800, reimbursementRatio: 0.60 },
+        tier3_top: { tierName: '重点三甲医院(如毓璜顶医院/二档)', deductible: 800, reimbursementRatio: 0.60 }
       },
-      repeatedDeductibleRule: '第二次住院起付标准减半，第三次及以上住院统一降低为100元。'
+      repeatedDeductibleRule: '第二次住院起付标准减半，第三次及以上住院统一降低为100元。注：二档缴费及在校学生/儿童报销比例为一级90%、二级72%、三级60%；一档缴费对应比例为一级实施基药90%(未实施70%)、二级58%、三级45%。'
     },
     catastrophic: {
       sourceDocId: 'yt-medical-insurance-inpatient-2023',

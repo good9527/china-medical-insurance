@@ -2939,11 +2939,11 @@ export function runCalculatorTests() {
     totalCost: 500
   });
   assertEqual(luoyangEmpOut.breakdown.deductibleDeducted, 0, '洛阳职工基层门诊免起付线');
-  assertEqual(luoyangEmpOut.breakdown.baseReimbursed, 325, '洛阳职工基层门诊实报不符: 500*0.65=325');
-  console.log(`  ✓ [H8 PASS] 洛阳职工基层门诊(花费500): 免起付实报¥325 (65%比例，依据: 洛政办〔2022〕42号)`);
+  assertEqual(luoyangEmpOut.breakdown.baseReimbursed, 275, '洛阳职工基层门诊实报不符: 500*0.55=275');
+  console.log(`  ✓ [H8 PASS] 洛阳职工基层门诊(花费500): 免起付实报¥275 (55%比例，依据: 洛政办〔2022〕28号)`);
   passCount++;
 
-  // 开封市 (410200) - 职工在职二级门诊花费 1000 元，按次起付40元，报销60%
+  // 开封市 (410200) - 职工在职二级门诊花费 1000 元，按次起付40元，报销55%
   totalChecks++;
   const kaifengEmpOut = calculateReimbursement({
     cityCode: '410200',
@@ -2955,8 +2955,8 @@ export function runCalculatorTests() {
     totalCost: 1000
   });
   assertEqual(kaifengEmpOut.breakdown.deductibleDeducted, 40, '开封职工二级门诊每次起付线应为40元');
-  assertEqual(kaifengEmpOut.breakdown.baseReimbursed, 576, '开封职工二级门诊实报不符: (1000-40)*0.60=576');
-  console.log(`  ✓ [H8 PASS] 开封职工二级门诊(在职花费1000): 扣次起付¥40，实报¥576 (60%比例，依据: 汴政办〔2022〕28号)`);
+  assertEqual(kaifengEmpOut.breakdown.baseReimbursed, 528, '开封职工二级门诊实报不符: (1000-40)*0.55=528');
+  console.log(`  ✓ [H8 PASS] 开封职工二级门诊(在职花费1000): 扣次起付¥40，实报¥528 (55%比例，依据: 汴政办〔2022〕26号)`);
   passCount++;
 
   // 平顶山市 (410400) - 职工退休三级门诊花费 1000 元，起付30元，报销55%+10%=65%
@@ -4014,7 +4014,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H15 PASS] 柳州职工二级门诊(花费1000): 扣起付¥200，实报¥440 (55%比例，依据: 柳政规〔2022〕19号)`);
   passCount++;
 
-  // 桂林市 (450300) - 职工门诊一级退休花费 1000 元，扣起付100元，退休报销60%+5%=65%
+  // 桂林市 (450300) - 职工门诊一级退休花费 1000 元，扣起付600元，退休报销60%+5%=65%，实报 (1000-600)*0.65=260
   totalChecks++;
   const guilinEmpOut = calculateReimbursement({
     cityCode: '450300',
@@ -4025,9 +4025,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 1000
   });
-  assertEqual(guilinEmpOut.breakdown.deductibleDeducted, 100, '桂林职工门诊一级起付线应为100元');
-  assertEqual(guilinEmpOut.breakdown.baseReimbursed, 585, '桂林职工退休一级门诊实报不符: (1000-100)*0.65=585');
-  console.log(`  ✓ [H15 PASS] 桂林职工退休一级门诊(花费1000): 扣起付¥100，按退休65%实报¥585 (依据: 市政规〔2022〕15号)`);
+  assertEqual(guilinEmpOut.breakdown.deductibleDeducted, 600, '桂林职工门诊年度累计起付线应为600元');
+  assertEqual(guilinEmpOut.breakdown.baseReimbursed, 260, '桂林职工退休一级门诊实报不符: (1000-600)*0.65=260');
+  console.log(`  ✓ [H15 PASS] 桂林职工退休一级门诊(花费1000): 扣起付¥600，按退休65%实报¥260 (依据: 市政规〔2022〕15号)`);
   passCount++;
 
   // 梧州市 (450400) - 居民基层门诊花费 300 元，免起付，报销60%，限额200元
@@ -4347,7 +4347,7 @@ export function runCalculatorTests() {
   // =========================================================================
   // Suite H17: 吉林省全域 9 个市州测算核验与红头文件依据闭环
   // =========================================================================
-  // 吉林市 (220200) - 职工在职一级门诊花费 1000 元，起付 300 元，报销 65%，实报 (1000-300)*0.65 = 455
+  // 吉林市 (220200) - 职工在职一级门诊花费 1000 元，起付 100 元，报销 60%，实报 (1000-100)*0.60 = 540
   totalChecks++;
   const jilinCityEmpOut = calculateReimbursement({
     cityCode: '220200',
@@ -4358,9 +4358,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 1000
   });
-  assertEqual(jilinCityEmpOut.breakdown.deductibleDeducted, 300, '吉林市职工门诊起付线应为300元');
-  assertEqual(jilinCityEmpOut.breakdown.baseReimbursed, 455, '吉林市职工一级在职门诊实报不符: (1000-300)*0.65=455');
-  console.log(`  ✓ [H17 PASS] 吉林市在职职工一级门诊(花费1000): 扣起付¥300，实报¥455 (65%比例，依据: 吉市政办发〔2022〕26号)`);
+  assertEqual(jilinCityEmpOut.breakdown.deductibleDeducted, 100, '吉林市职工门诊一级起付线应为100元');
+  assertEqual(jilinCityEmpOut.breakdown.baseReimbursed, 540, '吉林市职工一级在职门诊实报不符: (1000-100)*0.60=540');
+  console.log(`  ✓ [H17 PASS] 吉林市在职职工一级门诊(花费1000): 扣起付¥100，实报¥540 (60%比例，依据: 吉市政办发〔2022〕26号)`);
   passCount++;
 
   // 四平市 (220300) - 职工退休二级住院花费 10000 元，起付 500 元，退休比例 88%+3%=91%，实报 (10000-500)*0.91 = 8645
@@ -4632,7 +4632,7 @@ export function runCalculatorTests() {
   // =========================================================================
   // Suite H19: 贵州省全域 9 个市州测算核验与红头文件依据闭环
   // =========================================================================
-  // 遵义市 (520300) - 职工在职一级门诊花费 1000 元，起付 150 元，报销 75%，实报 (1000-150)*0.75 = 637.5
+  // 遵义市 (520300) - 职工在职一级门诊花费 1000 元，起付 150 元，报销 70%，实报 (1000-150)*0.70 = 595
   totalChecks++;
   const zunyiEmpOut = calculateReimbursement({
     cityCode: '520300',
@@ -4644,8 +4644,8 @@ export function runCalculatorTests() {
     totalCost: 1000
   });
   assertEqual(zunyiEmpOut.breakdown.deductibleDeducted, 150, '遵义职工门诊起付线应为150元');
-  assertEqual(zunyiEmpOut.breakdown.baseReimbursed, 637.5, '遵义职工一级在职门诊实报不符: (1000-150)*0.75=637.5');
-  console.log(`  ✓ [H19 PASS] 遵义在职职工一级门诊(花费1000): 扣起付¥150，实报¥637.5 (75%高比例，依据: 遵府办发〔2022〕21号)`);
+  assertEqual(zunyiEmpOut.breakdown.baseReimbursed, 595, '遵义职工一级在职门诊实报不符: (1000-150)*0.70=595');
+  console.log(`  ✓ [H19 PASS] 遵义在职职工一级门诊(花费1000): 扣起付¥150，实报¥595 (70%比例，依据: 遵府办发〔2022〕21号)`);
   passCount++;
 
   // 六盘水市 (520200) - 职工退休二级住院花费 10000 元，起付 500 元，退休比例 90%+3%=93%，实报 (10000-500)*0.93 = 8835

@@ -60,6 +60,7 @@ export const checkResidentInpatientRatios: InspectionRule = (city) => {
   const verifiedLegalRatios: Record<string, { r2?: number[]; r3?: number[] }> = {
     '110100': { r2: [78] }, // 北京市居民医保法定二级 78%（京医保发文件规定）
     '510100': { r3: [68] }, // 成都市居民高档医保法定三级 68%（成医保发〔2023〕18号）
+    '370600': { r2: [72] }, // 烟台市居民二档医保法定二级 72%（烟医保规〔2023〕2号）
     '371400': { r2: [72] }, // 德州市居民医保现行法定二级 72%（德州市医疗保障局2026清单）
     '620200': { r3: [72] }  // 嘉峪关市居民医保市级统筹法定三级 72%（嘉医保发统筹实施细则）
   };
@@ -280,7 +281,10 @@ export const checkProvinceHomogeneity: InspectionRule = (city, allCities = []) =
     '西藏自治区',    // 西藏自治区统一城乡居民基本医疗保险办法
     '海南省',        // 海南省基本医疗保险全省统筹
     '宁夏回族自治区', // 宁夏五市执行全区统一基本医疗保险办法
-    '新疆维吾尔自治区'// 新疆维吾尔自治区推进全区统一规范
+    '新疆维吾尔自治区',// 新疆维吾尔自治区推进全区统一规范
+    '湖南省',        // 湖南省统一职工医保门诊共济与基本医保实施办法（湘政办发〔2022〕66号）
+    '云南省',        // 云南省建立健全职工门诊共济保障机制实施办法统一全省政策（云政办规〔2021〕1号）
+    '贵州省'         // 贵州省职工基本医疗保险门诊共济保障机制实施方案统一基准（黔府办发〔2021〕25号）
   ];
 
   if (provincialPoolingProvinces.includes(city.provinceName)) {
@@ -293,7 +297,7 @@ export const checkProvinceHomogeneity: InspectionRule = (city, allCities = []) =
     const ei = c.employee?.inpatient?.tierBenefits;
     const ro = c.resident?.outpatient;
     const ri = c.resident?.inpatient?.tierBenefits;
-    return `${eo?.annualCap}_${ei?.tier3?.reimbursementRatio}_${ro?.annualCap}_${ri?.tier2?.reimbursementRatio}_${ri?.tier3?.reimbursementRatio}`;
+    return `${eo?.annualCap}_${eo?.annualDeductible}_${ei?.tier3?.deductible}_${ei?.tier3?.reimbursementRatio}_${ro?.annualCap}_${ri?.tier2?.reimbursementRatio}_${ri?.tier3?.reimbursementRatio}`;
   };
 
   const currentSig = sig(city);

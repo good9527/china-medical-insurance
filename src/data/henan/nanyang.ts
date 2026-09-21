@@ -39,16 +39,16 @@ export const nanyangCityData: CityInsuranceData = {
       sourceDocId: 'ny-employee-outpatient-2022-38',
       annualDeductible: 30,
       deductibleType: 'per_visit',
-      annualCap: 1800,
-      annualCapRetiree: 2300,
+      annualCap: 1500,
+      annualCapRetiree: 2000,
       tierBenefits: {
-        community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.65, retireeRatioBonus: 0.10 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 30, reimbursementRatio: 0.65, retireeRatioBonus: 0.10 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 30, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 30, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 },
-        tier3_top: { tierName: '南阳市第一人民医院等三甲', deductible: 30, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 }
+        community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 30, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 50, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 },
+        tier3_top: { tierName: '南阳市第一人民医院等三甲', deductible: 50, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 }
       },
-      note: '门诊基层机构免起付线，二级及以上每次30元。基层报销65%（退休75%），二级60%（退休70%），三级55%（退休65%）。限额在职1800元，退休2300元。'
+      note: '门诊按次设起付线（基层免起付线、二级30元/次、三级50元/次）。在职报销比例：基层60%、二级55%、三级50%（退休人员各项提高10%）。年度最高支付限额在职职工1500元，退休人员2000元。'
     },
     inpatient: {
       sourceDocId: 'ny-medical-insurance-inpatient-2023',

@@ -39,7 +39,7 @@ if (mode === 'patrol') {
   });
   console.log(PolicyInspector.formatConsoleReport(summary));
 } else {
-  console.log(`\n🔍 启动全量 344 统筹区智能多维巡检模式...`);
+  console.log(`\n🔍 启动全量 348 统筹区智能多维巡检模式...`);
   const summary = inspector.inspectAll();
   console.log(PolicyInspector.formatConsoleReport(summary));
 }

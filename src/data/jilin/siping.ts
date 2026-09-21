@@ -39,17 +39,17 @@ export const sipingCityData: CityInsuranceData = {
   employee: {
     outpatient: {
       sourceDocId: 'sp-employee-outpatient-2022',
-      annualDeductible: 300,
-      annualCap: 2000,
-      annualCapRetiree: 2000,
+      annualDeductible: 100,
+      annualCap: 1000,
+      annualCapRetiree: 1000,
       tierBenefits: {
-        community: { tierName: '基层及一级定点医疗机构', deductible: 300, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层及一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.02 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.02 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.55, retireeRatioBonus: 0.02 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.02 },
+        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.02 }
       },
-      note: '门诊年度起付线300元。在职报销50%~65%，退休人员各段提高5个百分点（55%~70%），年度封顶2000元。'
+      note: '门诊年度起付线累计计算（一级100元、二级200元、三级300元）。达到起付线后在职报销比例：一级60%、二级55%、三级50%（退休人员各项提高2%，即62%/57%/52%）。普通门诊统筹年度最高支付限额1000元。'
     },
     inpatient: {
       sourceDocId: 'sp-medical-insurance-policy-2023',
