@@ -12,6 +12,7 @@ export const yongzhouCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0746-12393 / 0746-8323635',
   officialPortalUrl: 'http://ybj.yzcity.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

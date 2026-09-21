@@ -12,6 +12,7 @@ export const zhangjiajieCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0744-12393 / 0744-8290667',
   officialPortalUrl: 'http://ybj.zjj.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

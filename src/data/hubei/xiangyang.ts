@@ -12,6 +12,7 @@ export const xiangyangCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0710-12393 / 0710-3607811',
   officialPortalUrl: 'http://ybj.xiangyang.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

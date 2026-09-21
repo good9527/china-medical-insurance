@@ -15,6 +15,7 @@ export const xianyangCityData: CityInsuranceData = {
   provinceName: '陕西省',
   hotline: '029-12393',
   officialPortalUrl: 'https://ybj.xianyang.gov.cn/',
+  lastUpdated: '2026-03-01',
   
   sourceDocs: [
     {

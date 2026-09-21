@@ -55,9 +55,9 @@ export const abaCityData: CityInsuranceData = {
       tierBenefits: {
         community: { tierName: '一级及基层医疗机构', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 450, reimbursementRatio: 0.88, retireeRatioBonus: 0.03 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 750, reimbursementRatio: 0.84, retireeRatioBonus: 0.03 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 750, reimbursementRatio: 0.84, retireeRatioBonus: 0.03 }
+        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.88, retireeRatioBonus: 0.03 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 700, reimbursementRatio: 0.85, retireeRatioBonus: 0.03 },
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 700, reimbursementRatio: 0.85, retireeRatioBonus: 0.03 }
       },
       repeatedDeductibleRule: '参保人员自然年度内多次住院的，从第二次住院起，起付标准降低50%。'
     },
@@ -100,11 +100,11 @@ export const abaCityData: CityInsuranceData = {
       sourceDocId: 'ab-medical-insurance-inpatient-2023',
       annualCap: 250000,
       tierBenefits: {
-        community: { tierName: '州内乡镇卫生院/社区', deductible: 80, reimbursementRatio: 0.90 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.85 },
+        community: { tierName: '基层及一级机构', deductible: 100, reimbursementRatio: 0.88 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.88 },
         tier2: { tierName: '二级定点医疗机构', deductible: 250, reimbursementRatio: 0.80 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 500, reimbursementRatio: 0.70 },
-        tier3_top: { tierName: '州属重点医院', deductible: 500, reimbursementRatio: 0.70 }
+        tier3: { tierName: '三级定点医疗机构', deductible: 550, reimbursementRatio: 0.68 },
+        tier3_top: { tierName: '重点三甲综合医院', deductible: 550, reimbursementRatio: 0.68 }
       },
       repeatedDeductibleRule: '参保人员自然年度内多次住院的，从第二次住院起，起付标准降低50%。'
     },

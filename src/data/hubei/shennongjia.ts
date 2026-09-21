@@ -12,6 +12,7 @@ export const shennongjiaCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0719-12393 / 0719-3333988',
   officialPortalUrl: 'http://ybj.snj.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

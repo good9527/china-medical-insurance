@@ -39,16 +39,16 @@ export const luoyangCityData: CityInsuranceData = {
       sourceDocId: 'ly-employee-outpatient-2022-42',
       annualDeductible: 30,
       deductibleType: 'per_visit',
-      annualCap: 1500,
-      annualCapRetiree: 2000,
+      annualCap: 1800,
+      annualCapRetiree: 2300,
       tierBenefits: {
-        community: { tierName: '基层社区服务中心/卫生院', deductible: 0, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 },
-        tier2: { tierName: '二级及以下定点医疗机构', deductible: 20, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 40, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 },
-        tier3_top: { tierName: '河南科技大学一附院等三甲', deductible: 40, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 }
+        community: { tierName: '基层社区服务中心/卫生院', deductible: 0, reimbursementRatio: 0.65, retireeRatioBonus: 0.10 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65, retireeRatioBonus: 0.10 },
+        tier2: { tierName: '二级及以下定点医疗机构', deductible: 20, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 40, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 },
+        tier3_top: { tierName: '河南科技大学一附院等三甲', deductible: 40, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 }
       },
-      note: '门诊按次设起付线（基层免起付线、二级20元/次、三级40元/次）。在职报销比例：基层与二级55%、三级50%（退休人员各项提高10%）。年度最高支付限额在职职工1500元，退休人员2000元。'
+      note: '门诊按次设起付线（基层免起付线、二级20元/次、三级40元/次）。在职报销比例：基层65%、二级60%、三级55%（退休人员各项提高10%）。年度最高支付限额在职职工1800元，退休人员2300元。'
     },
     inpatient: {
       sourceDocId: 'ly-medical-insurance-inpatient-2023',

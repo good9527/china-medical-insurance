@@ -12,6 +12,7 @@ export const ezhouCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0711-12393 / 0711-3358556',
   officialPortalUrl: 'http://ybj.ezhou.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

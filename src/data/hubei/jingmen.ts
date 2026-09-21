@@ -12,6 +12,7 @@ export const jingmenCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0724-12393 / 0724-8885623',
   officialPortalUrl: 'http://ybj.jingmen.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

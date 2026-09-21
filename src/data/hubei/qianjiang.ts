@@ -12,6 +12,7 @@ export const qianjiangCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0728-12393 / 0728-6290506',
   officialPortalUrl: 'http://ybj.hbqj.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

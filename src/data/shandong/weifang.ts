@@ -99,18 +99,18 @@ export const weifangCityData: CityInsuranceData = {
       sourceDocId: 'wf-medical-insurance-inpatient-2023',
       annualCap: 150000, // 基本医保统筹封顶线确为 15 万元
       tierBenefits: {
-        community: { tierName: '基层卫生院/社区中心', deductible: 200, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.70 }, // 二档为80%
-        tier3: { tierName: '三级定点医疗机构', deductible: 900, reimbursementRatio: 0.55 }, // 二档为65%
-        tier3_top: { tierName: '重点三甲综合医院(如市人医)', deductible: 900, reimbursementRatio: 0.55 }
+        community: { tierName: '基层卫生院/社区中心', deductible: 150, reimbursementRatio: 0.85 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 150, reimbursementRatio: 0.85 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.75 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.65 },
+        tier3_top: { tierName: '重点三甲综合医院(如市人医)', deductible: 800, reimbursementRatio: 0.65 }
       },
       repeatedDeductibleRule: '一级机构第二次住院起付100元，第三次起免除；二级、三级机构住院起付标准不减免。'
     },
     catastrophic: {
       sourceDocId: 'wf-medical-insurance-inpatient-2023',
       name: '潍坊市城乡居民大病保险',
-      deductible: 10000,
+      deductible: 14000,
       annualCap: 400000,
       tiers: [
         { minAmount: 10000, maxAmount: 100000, ratio: 0.60 },

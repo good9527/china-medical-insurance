@@ -16,6 +16,7 @@ export const yananCityData: CityInsuranceData = {
   provinceName: '陕西省',
   hotline: '0911-12393',
   officialPortalUrl: 'http://www.yanan.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

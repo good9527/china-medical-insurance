@@ -25,7 +25,7 @@ export const jinanCityData: CityInsuranceData = {
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'https://ybj.jinan.gov.cn/art/2022/12/22/art_1234_189201.html',
-      summaryQuote: '在职职工普通门诊起付线为200元，退休人员为100元。一级及社区医疗机构在职报销80%（退休85%）、二级医疗机构在职报销70%（退休75%）、三级医疗机构在职报销60%（退休65%）。门诊统筹年度最高支付限额在职职工3000元，退休人员4000元。'
+      summaryQuote: '在职职工普通门诊起付线为200元，退休人员为100元。一级及社区医疗机构在职报销80%（退休85%）、二级医疗机构在职报销70%（退休75%）、三级医疗机构在职报销60%（退休65%）。门诊统筹现行年度最高支付限额在职职工6000元，退休人员7000元。'
     },
     {
       docId: 'jn-medical-insurance-inpatient-2025',

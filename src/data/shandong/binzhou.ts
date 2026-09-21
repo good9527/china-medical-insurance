@@ -100,10 +100,10 @@ export const binzhouCityData: CityInsuranceData = {
       annualCap: 200000,
       tierBenefits: {
         community: { tierName: '基层及一级医疗机构', deductible: 100, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.90 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.75 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 1000, reimbursementRatio: 0.50 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 1000, reimbursementRatio: 0.50 }
+        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.85 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 350, reimbursementRatio: 0.76 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 750, reimbursementRatio: 0.66 },
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 750, reimbursementRatio: 0.66 }
       },
       repeatedDeductibleRule: '参保人员自然年度内多次住院的，起付标准相应递减。'
     },

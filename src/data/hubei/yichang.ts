@@ -12,6 +12,7 @@ export const yichangCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0717-12393 / 0717-6551719',
   officialPortalUrl: 'http://ybj.yichang.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

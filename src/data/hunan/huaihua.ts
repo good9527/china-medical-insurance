@@ -12,6 +12,7 @@ export const huaihuaCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0745-12393 / 0745-2713099',
   officialPortalUrl: 'http://ybj.huaihua.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

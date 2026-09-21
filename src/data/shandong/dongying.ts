@@ -41,11 +41,11 @@ export const dongyingCityData: CityInsuranceData = {
       annualCap: 3000,
       annualCapRetiree: 3500,
       tierBenefits: {
-        community: { tierName: '基层定点医疗机构', deductible: 200, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 200, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 200, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层定点医疗机构', deductible: 200, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 }
       },
       note: '普通门诊统筹按年度设起付线200元。基层报销80%（退休85%），二级70%（退休75%），三级60%（退休65%）。限额在职3000元，退休3500元。'
     },
@@ -54,10 +54,10 @@ export const dongyingCityData: CityInsuranceData = {
       annualCap: 600000,
       tierBenefits: {
         community: { tierName: '基层社区及一级医疗机构', deductible: 200, reimbursementRatio: 0.95, retireeRatioBonus: 0.03 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.94, retireeRatioBonus: 0.03 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.95, retireeRatioBonus: 0.03 },
         tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 900, reimbursementRatio: 0.86, retireeRatioBonus: 0.03 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 900, reimbursementRatio: 0.86, retireeRatioBonus: 0.03 }
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.88, retireeRatioBonus: 0.03 },
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 800, reimbursementRatio: 0.88, retireeRatioBonus: 0.03 }
       },
       repeatedDeductibleRule: '参保人员自然年度内第二次及以上住院，起付标准递减50%。'
     },
@@ -99,11 +99,11 @@ export const dongyingCityData: CityInsuranceData = {
       sourceDocId: 'dy-medical-insurance-inpatient-2024',
       annualCap: 250000,
       tierBenefits: {
-        community: { tierName: '基层及一级医疗机构', deductible: 100, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.75 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 700, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 700, reimbursementRatio: 0.65 }
+        community: { tierName: '基层及一级医疗机构', deductible: 100, reimbursementRatio: 0.88 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.88 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.78 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 700, reimbursementRatio: 0.68 },
+        tier3_top: { tierName: '重点三甲综合医院', deductible: 700, reimbursementRatio: 0.68 }
       },
       repeatedDeductibleRule: '参保人员自然年度内多次住院的，起付标准相应递减。'
     },

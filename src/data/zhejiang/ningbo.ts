@@ -108,11 +108,11 @@ export const ningboCityData: CityInsuranceData = {
       annualCap: 300000,
       repeatedDeductibleRule: '年度内多次住院按最高等级医院计算一次起付线（上限1200元）',
       tierBenefits: {
-        community: { tierName: '基层社区卫生服务机构', deductible: 300, reimbursementRatio: 0.80 }, // 4万以上85%
-        tier1: { tierName: '一级定点机构', deductible: 300, reimbursementRatio: 0.70 }, // 4万以上75%
-        tier2: { tierName: '二级定点机构', deductible: 600, reimbursementRatio: 0.70 }, // 4万以上75%
-        tier3: { tierName: '三级定点机构', deductible: 1200, reimbursementRatio: 0.70 }, // 4万以上75%
-        tier3_top: { tierName: '重点三甲医疗机构', deductible: 1200, reimbursementRatio: 0.70 } // 4万以上75%
+        community: { tierName: '基层社区卫生服务机构', deductible: 300, reimbursementRatio: 0.85 },
+        tier1: { tierName: '一级定点机构', deductible: 300, reimbursementRatio: 0.85 },
+        tier2: { tierName: '二级定点机构', deductible: 600, reimbursementRatio: 0.75 },
+        tier3: { tierName: '三级定点机构', deductible: 1200, reimbursementRatio: 0.65 },
+        tier3_top: { tierName: '重点三甲医疗机构', deductible: 1200, reimbursementRatio: 0.65 }
       }
     },
     catastrophic: {

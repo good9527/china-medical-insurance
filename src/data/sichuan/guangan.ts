@@ -100,11 +100,11 @@ export const guanganCityData: CityInsuranceData = {
       sourceDocId: 'ga-medical-insurance-inpatient-2023',
       annualCap: 220000,
       tierBenefits: {
-        community: { tierName: '无等级及一级医疗机构', deductible: 200, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 350, reimbursementRatio: 0.75 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 550, reimbursementRatio: 0.70 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 550, reimbursementRatio: 0.70 }
+        community: { tierName: '基层卫生机构', deductible: 100, reimbursementRatio: 0.85 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.85 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 250, reimbursementRatio: 0.77 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 600, reimbursementRatio: 0.65 },
+        tier3_top: { tierName: '重点三甲综合医院', deductible: 600, reimbursementRatio: 0.65 }
       },
       repeatedDeductibleRule: '参保人员自然年度内多次住院的，从第二次住院起，起付标准降低50%。'
     },

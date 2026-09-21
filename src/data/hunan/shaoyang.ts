@@ -12,6 +12,7 @@ export const shaoyangCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0739-12393 / 0739-5322966',
   officialPortalUrl: 'http://ybj.shaoyang.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

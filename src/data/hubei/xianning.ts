@@ -12,6 +12,7 @@ export const xianningCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0715-12393 / 0715-8235912',
   officialPortalUrl: 'http://ybj.xianning.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

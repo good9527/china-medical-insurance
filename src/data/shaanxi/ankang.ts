@@ -11,6 +11,7 @@ export const ankangCityData: CityInsuranceData = {
   provinceName: '陕西省',
   hotline: '0915-12393',
   officialPortalUrl: 'https://www.ankang.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

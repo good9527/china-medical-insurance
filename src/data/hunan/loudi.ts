@@ -12,6 +12,7 @@ export const loudiCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0738-12393 / 0738-8262108',
   officialPortalUrl: 'http://ybj.hnloudi.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

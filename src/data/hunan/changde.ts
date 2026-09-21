@@ -12,6 +12,7 @@ export const changdeCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0736-12393 / 0736-7817000',
   officialPortalUrl: 'http://ybj.changde.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

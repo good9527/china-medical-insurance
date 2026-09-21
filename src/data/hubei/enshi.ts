@@ -12,6 +12,7 @@ export const enshiCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0718-12393 / 0718-8222923',
   officialPortalUrl: 'http://ybj.enshi.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

@@ -47,7 +47,7 @@ export const beijingCityData: CityInsuranceData = {
       effectiveDate: '2018-01-01',
       status: 'active',
       officialUrl: 'https://ybj.beijing.gov.cn/zwgk/zcfg/201801/t20180105_198425.html',
-      summaryQuote: '城乡居民在定点医疗机构门诊起付线：一级及以下100元（报销55%）、二级及三级550元（报销50%），年度最高支付限额为5000元。住院起付线：一级300元（报销80%）、二级800元（报销75%）、三级1300元（报销75%-78%），年度最高支付限额为25万元。'
+      summaryQuote: '城乡居民在定点医疗机构门诊起付线：一级及以下100元（报销55%）、二级及三级550元（报销50%），年度最高支付限额为5000元。住院起付线：一级300元（报销80%）、二级800元（报销78%）、三级1300元（报销75%），年度最高支付限额为25万元。'
     },
     {
       docId: 'bj-catastrophic-official',
@@ -148,7 +148,7 @@ export const beijingCityData: CityInsuranceData = {
         tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.80 },
         tier2: { tierName: '二级定点医疗机构', deductible: 800, reimbursementRatio: 0.78 },
         tier3: { tierName: '三级定点医疗机构', deductible: 1300, reimbursementRatio: 0.75 },
-        tier3_top: { tierName: '区属三级医疗机构', deductible: 1300, reimbursementRatio: 0.78 }
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 1300, reimbursementRatio: 0.75 }
       },
       repeatedDeductibleRule: '老年人和劳动年龄内居民一个年度内第二次及以后住院起付线减半；学生儿童住院起付线直接减半（一级150元、二级400元、三级650元）。'
     },

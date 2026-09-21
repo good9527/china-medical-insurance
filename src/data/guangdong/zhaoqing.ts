@@ -88,11 +88,11 @@ export const zhaoqingCityData: CityInsuranceData = {
       sourceDocId: 'zq-medical-insurance-inpatient-2024',
       annualCap: 1200,
       tierBenefits: {
-        community: { tierName: '基层定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.90 },
-        tier2: { tierName: '二级定点机构(选定)', deductible: 800, reimbursementRatio: 0.80 },
-        tier3: { tierName: '三级定点机构(选定)', deductible: 1200, reimbursementRatio: 0.70 },
-        tier3_top: { tierName: '市级三甲综合医院', deductible: 1200, reimbursementRatio: 0.70 }
+        community: { tierName: '基层社区及定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
+        tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
+        tier2: { tierName: '二级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '市级重点三甲医院(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
       note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
     },
@@ -100,11 +100,11 @@ export const zhaoqingCityData: CityInsuranceData = {
       sourceDocId: 'zq-medical-insurance-inpatient-2024',
       annualCap: 220000,
       tierBenefits: {
-        community: { tierName: '一级医疗机构/卫生院', deductible: 300, reimbursementRatio: 0.88 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.90 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 800, reimbursementRatio: 0.80 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 1200, reimbursementRatio: 0.70 },
-        tier3_top: { tierName: '市级三甲综合医院', deductible: 1200, reimbursementRatio: 0.70 }
+        community: { tierName: '一级医疗机构/卫生院', deductible: 200, reimbursementRatio: 0.88 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.88 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.80 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 1000, reimbursementRatio: 0.70 },
+        tier3_top: { tierName: '市级三甲综合医院', deductible: 1000, reimbursementRatio: 0.70 }
       }
     },
     catastrophic: {

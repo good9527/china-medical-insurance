@@ -100,18 +100,18 @@ export const weihaiCityData: CityInsuranceData = {
       sourceDocId: 'wh-medical-insurance-inpatient-2024',
       annualCap: 200000, // 一档20万，二档30万
       tierBenefits: {
-        community: { tierName: '基层社区卫生中心及卫生院', deductible: 300, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.80 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.60 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.50 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 800, reimbursementRatio: 0.50 }
+        community: { tierName: '基层社区卫生中心及卫生院', deductible: 100, reimbursementRatio: 0.88 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.88 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.78 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 700, reimbursementRatio: 0.68 },
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 700, reimbursementRatio: 0.68 }
       },
       repeatedDeductibleRule: '参保人员自然年度内第一、二次住院设起付标准，第三次住院起免除起付线。'
     },
     catastrophic: {
       sourceDocId: 'wh-medical-insurance-inpatient-2024',
       name: '威海市城乡居民大病保险',
-      deductible: 18000,
+      deductible: 14000,
       annualCap: 400000,
       tiers: [
         { minAmount: 18000, maxAmount: 100000, ratio: 0.60 },

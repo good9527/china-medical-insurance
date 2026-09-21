@@ -106,9 +106,9 @@ export const hefeiData: CityInsuranceData = {
       tierBenefits: {
         community: { tierName: '一级及以下医疗机构', deductible: 200, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.90 },
-        tier2: { tierName: '二级及县级医疗机构', deductible: 500, reimbursementRatio: 0.80 },
-        tier3: { tierName: '市属三级定点医院', deductible: 700, reimbursementRatio: 0.75 },
-        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 1000, reimbursementRatio: 0.70 }
+        tier2: { tierName: '二级及县级医疗机构', deductible: 500, reimbursementRatio: 0.85 },
+        tier3: { tierName: '市属三级定点医院', deductible: 700, reimbursementRatio: 0.80 },
+        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 1000, reimbursementRatio: 0.75 }
       }
     },
     catastrophic: {

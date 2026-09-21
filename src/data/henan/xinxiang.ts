@@ -39,16 +39,16 @@ export const xinxiangCityData: CityInsuranceData = {
       sourceDocId: 'xx-employee-outpatient-2022-36',
       annualDeductible: 30,
       deductibleType: 'per_visit',
-      annualCap: 1500,
-      annualCapRetiree: 2000,
+      annualCap: 1800,
+      annualCapRetiree: 2300,
       tierBenefits: {
-        community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 30, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 50, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 },
-        tier3_top: { tierName: '新乡医学院一附院等重点三甲', deductible: 50, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 }
+        community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.65, retireeRatioBonus: 0.10 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65, retireeRatioBonus: 0.10 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 30, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 50, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 },
+        tier3_top: { tierName: '新乡医学院一附院等重点三甲', deductible: 50, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 }
       },
-      note: '门诊按次设起付线（基层免起付线、二级30元/次、三级50元/次）。在职报销比例：基层60%、二级55%、三级50%（退休人员各项提高10%）。年度最高支付限额在职职工1500元，退休人员2000元（现已取消日支付限额）。'
+      note: '门诊按次设起付线（基层免起付线、二级30元/次、三级50元/次）。在职报销比例：基层65%、二级60%、三级55%（退休人员各项提高10%）。年度最高支付限额在职职工1800元，退休人员2300元（现已取消日支付限额）。'
     },
     inpatient: {
       sourceDocId: 'xx-medical-insurance-inpatient-2023',

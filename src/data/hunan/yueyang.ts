@@ -12,6 +12,7 @@ export const yueyangCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0730-12393 / 0730-8251500',
   officialPortalUrl: 'http://ybj.yueyang.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

@@ -12,6 +12,7 @@ export const xiaoganCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0712-12393 / 0712-2702660',
   officialPortalUrl: 'http://ybj.xiaogan.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

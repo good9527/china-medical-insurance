@@ -12,6 +12,7 @@ export const shiyanCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0719-12393 / 0719-8629000',
   officialPortalUrl: 'http://ybj.shiyan.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

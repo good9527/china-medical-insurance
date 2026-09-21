@@ -12,6 +12,7 @@ export const hengyangCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0734-12393 / 0734-8867068',
   officialPortalUrl: 'http://ybj.hengyang.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

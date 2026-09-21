@@ -39,11 +39,12 @@
     "audit:data": "tsx src/scripts/validate-cities.ts",
     "audit:smart": "tsx src/scripts/run-smart-inspection.ts --mode=full",
     "audit:patrol": "tsx src/scripts/run-smart-inspection.ts --mode=patrol",
+    "audit:deep": "tsx src/scripts/deep-nationwide-audit.ts",
     "monitor:policies": "tsx src/scripts/monitor-policies.ts",
     "update:pipeline": "tsx src/scripts/update-policy-pipeline.ts",
-    "test:calc": "tsx -e \"import { runCalculatorTests } from './src/engine/__tests__/calculator.test.ts'; runCalculatorTests();\"",
+    "test:calc": "tsx src/scripts/run-calculator-suite.ts",
     "feedback:list": "tsx scripts/fetch_feedback.ts",
-    "check:all": "npm run audit:data && npm run audit:smart && npm run monitor:policies && npm run update:pipeline && npm run test:calc && npm run build:h5"
+    "check:all": "npm run audit:data && npm run audit:smart && npm run audit:deep && npm run monitor:policies && npm run update:pipeline && npm run test:calc && npm run build:h5"
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-5020420260813003",

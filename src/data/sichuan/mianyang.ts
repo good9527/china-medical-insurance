@@ -100,11 +100,11 @@ export const mianyangCityData: CityInsuranceData = {
       sourceDocId: 'my-medical-insurance-inpatient-2024',
       annualCap: 300000,
       tierBenefits: {
-        community: { tierName: '一级医疗机构/卫生院', deductible: 150, reimbursementRatio: 0.85 },
+        community: { tierName: '基层及一级机构', deductible: 150, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 150, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 350, reimbursementRatio: 0.75 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 350, reimbursementRatio: 0.78 },
         tier3: { tierName: '三级定点医疗机构', deductible: 650, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '市级三甲综合医院', deductible: 650, reimbursementRatio: 0.65 }
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 650, reimbursementRatio: 0.65 }
       },
       repeatedDeductibleRule: '参保人员自然年度内第二次及以上住院，起付线降低50%。'
     },

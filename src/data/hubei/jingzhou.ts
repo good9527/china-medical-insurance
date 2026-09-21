@@ -12,6 +12,7 @@ export const jingzhouCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0716-12393 / 0716-8257869',
   officialPortalUrl: 'http://ybj.jingzhou.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

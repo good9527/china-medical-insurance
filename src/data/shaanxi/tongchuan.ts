@@ -11,6 +11,7 @@ export const tongchuanCityData: CityInsuranceData = {
   provinceName: '陕西省',
   hotline: '0919-12393',
   officialPortalUrl: 'https://www.tongchuan.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

@@ -12,6 +12,7 @@ export const huanggangCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0713-12393 / 0713-8386120',
   officialPortalUrl: 'http://ybj.hg.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

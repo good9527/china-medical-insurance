@@ -19,7 +19,7 @@ export const qingdaoCityData: CityInsuranceData = {
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.qingdao.gov.cn/zwgk/zcfg/202212/t20221225_210984.shtml',
-      summaryQuote: '职工普通门诊统筹起付线：一级及社区100元，二级及三级200元；报销比例：基层80%（退休85%），二级70%（退休75%），三级60%（退休65%）；年度统筹支付限额在职职工3000元，退休人员4000元。'
+      summaryQuote: '职工普通门诊统筹起付线：一级及社区100元，二级及三级200元；报销比例：基层80%（退休85%），二级70%（退休75%），三级60%（退休65%）；现行年度统筹支付限额在职职工6000元，退休人员7000元。'
     },
     {
       docId: 'qd-medical-insurance-inpatient-2024',
@@ -99,21 +99,21 @@ export const qingdaoCityData: CityInsuranceData = {
       sourceDocId: 'qd-medical-insurance-inpatient-2024',
       annualCap: 180000, // 基本统筹封顶线确为 18 万元
       tierBenefits: {
-        community: { tierName: '基层及社区医疗机构', deductible: 200, reimbursementRatio: 0.85 },
+        community: { tierName: '基层社区及乡镇卫生院', deductible: 200, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.80 },
-        tier3: { tierName: '普通三级定点医疗机构', deductible: 800, reimbursementRatio: 0.70 },
-        tier3_top: { tierName: '青大附院/市立等6家重点三甲', deductible: 1000, reimbursementRatio: 0.70 }
+        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.75 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.70 },
+        tier3_top: { tierName: '青医附院等重点三甲', deductible: 800, reimbursementRatio: 0.70 }
       },
       repeatedDeductibleRule: '第二次住院起付线减半，第三次及以上住院统一为100元。'
     },
     catastrophic: {
       sourceDocId: 'qd-medical-insurance-inpatient-2024',
       name: '青岛市城乡居民大病保险',
-      deductible: 20000,
+      deductible: 14000,
       annualCap: 400000,
       tiers: [
-        { minAmount: 20000, maxAmount: 100000, ratio: 0.60 },
+        { minAmount: 14000, maxAmount: 100000, ratio: 0.60 },
         { minAmount: 100000, maxAmount: 200000, ratio: 0.65 },
         { minAmount: 200000, maxAmount: 300000, ratio: 0.70 },
         { minAmount: 300000, ratio: 0.75 }

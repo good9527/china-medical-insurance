@@ -12,6 +12,7 @@ export const suizhouCityData: CityInsuranceData = {
   provinceName: '湖北省',
   hotline: '0722-12393 / 0722-3596001',
   officialPortalUrl: 'http://ybj.suizhou.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

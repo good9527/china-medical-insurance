@@ -12,6 +12,7 @@ export const yiyangCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0737-12393 / 0737-6501199',
   officialPortalUrl: 'http://ybj.yiyang.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

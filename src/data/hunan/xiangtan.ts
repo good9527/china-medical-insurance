@@ -12,6 +12,7 @@ export const xiangtanCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0731-12393 / 0731-58265000',
   officialPortalUrl: 'http://ybj.xiangtan.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

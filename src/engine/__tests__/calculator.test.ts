@@ -1027,8 +1027,8 @@ export function runCalculatorTests() {
     totalCost: 10000
   });
   assertEqual(njResIn.breakdown.deductibleDeducted, 1000, '南京居民三级住院起付线应为1000元');
-  assertEqual(njResIn.breakdown.baseReimbursed, 7200, '南京居民三级住院报销不符: (10000-1000)*0.80=7200');
-  console.log(`  ✓ [H3 PASS] 南京居民三级住院(花费10000): 扣起付¥1000，统筹实报¥7200 (80%高比例，依据宁政规字〔2021〕6号)`);
+  assertEqual(njResIn.breakdown.baseReimbursed, 5850, '南京居民三级住院报销不符: (10000-1000)*0.65=5850');
+  console.log(`  ✓ [H3 PASS] 南京居民三级住院(花费10000): 扣起付¥1000，统筹实报¥5850 (65%法定比例，依据宁政规字〔2021〕6号)`);
   passCount++;
 
   // 14. 武汉市职工门诊(0起付/65%)与居民住院(800起付/65%)实测断言
@@ -1237,8 +1237,8 @@ export function runCalculatorTests() {
     totalCost: 10000
   });
   assertEqual(hfResIn.breakdown.deductibleDeducted, 700, '合肥居民三级住院起付线应为700元');
-  assertEqual(hfResIn.breakdown.baseReimbursed, 6975, '合肥居民三级住院报销不符: (10000-700)*0.75=6975');
-  console.log(`  ✓ [H3 PASS] 合肥居民三级住院(花费10000): 扣起付¥700，统筹实报¥6975 (安徽统一75%比例)`);
+  assertEqual(hfResIn.breakdown.baseReimbursed, 7440, '合肥居民三级住院报销不符: (10000-700)*0.80=7440');
+  console.log(`  ✓ [H3 PASS] 合肥居民三级住院(花费10000): 扣起付¥700，统筹实报¥7440 (合肥市属三级80%比例，依据合医保发〔2024〕19号)`);
   passCount++;
 
   // 21. 福州市职工门诊(600起付/83%)与居民住院(800起付/60%)实测断言
@@ -2559,7 +2559,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H5 PASS] 汕尾职工二级住院(花费10000): 扣起付¥600，实报¥8460 (90%比例，依据: 汕府规〔2023〕11号)`);
   passCount++;
 
-  // 潮州市 (445100) - 居民二级住院花费 6000 元，起付500元，报销85%
+  // 潮州市 (445100) - 居民二级住院花费 6000 元，起付500元，报销78%
   totalChecks++;
   const chaozhouResInp = calculateReimbursement({
     cityCode: '445100',
@@ -2570,8 +2570,8 @@ export function runCalculatorTests() {
     totalCost: 6000
   });
   assertEqual(chaozhouResInp.breakdown.deductibleDeducted, 500, '潮州居民二级住院起付线应为500元');
-  assertEqual(chaozhouResInp.breakdown.baseReimbursed, 4675, '潮州居民二级住院实报不符: (6000-500)*0.85=4675');
-  console.log(`  ✓ [H5 PASS] 潮州居民二级住院(花费6000): 扣起付¥500，实报¥4675 (85%比例，依据: 潮府办〔2023〕21号及现行标准)`);
+  assertEqual(chaozhouResInp.breakdown.baseReimbursed, 4290, '潮州居民二级住院实报不符: (6000-500)*0.78=4290');
+  console.log(`  ✓ [H5 PASS] 潮州居民二级住院(花费6000): 扣起付¥500，实报¥4290 (78%比例，依据: 潮府办〔2023〕21号及现行标准)`);
   passCount++;
 
   // 揭阳市 (445200) - 职工市内三级住院花费 10000 元，起付700元，报销90%
@@ -2687,7 +2687,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H6 PASS] 攀枝花职工三级住院(花费10000): 扣起付¥700，实报¥7905 (85%比例，依据: 攀医保规〔2024〕2号)`);
   passCount++;
 
-  // 泸州市 (510500) - 居民二级住院花费 6000 元，起付400元，报销80%
+  // 泸州市 (510500) - 居民二级住院花费 6000 元，起付250元，报销77%
   totalChecks++;
   const luzhouResInp = calculateReimbursement({
     cityCode: '510500',
@@ -2697,9 +2697,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 6000
   });
-  assertEqual(luzhouResInp.breakdown.deductibleDeducted, 400, '泸州居民二级住院起付线应为400元');
-  assertEqual(luzhouResInp.breakdown.baseReimbursed, 4480, '泸州居民二级住院实报不符: (6000-400)*0.80=4480');
-  console.log(`  ✓ [H6 PASS] 泸州居民二级住院(花费6000): 扣起付¥400，实报¥4480 (80%比例，依据: 泸医保发〔2023〕35号)`);
+  assertEqual(luzhouResInp.breakdown.deductibleDeducted, 250, '泸州居民二级住院起付线应为250元');
+  assertEqual(luzhouResInp.breakdown.baseReimbursed, 4427.5, '泸州居民二级住院实报不符: (6000-250)*0.77=4427.5');
+  console.log(`  ✓ [H6 PASS] 泸州居民二级住院(花费6000): 扣起付¥250，实报¥4427.5 (77%比例，依据: 泸医保发〔2023〕35号)`);
   passCount++;
 
   // 南充市 (511300) - 职工退休二级住院花费 10000 元，起付450元，报销88%+3%=91%
@@ -2718,7 +2718,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H6 PASS] 南充职工退休二级住院(花费10000): 扣起付¥450，按91%实报¥8690.5 (依据: 南医保发〔2023〕42号)`);
   passCount++;
 
-  // 甘孜州 (513300) - 居民三级住院花费 10000 元，起付500元，倾斜报销70%
+  // 甘孜州 (513300) - 居民三级住院花费 10000 元，起付550元，倾斜报销68%
   totalChecks++;
   const garzeResInp = calculateReimbursement({
     cityCode: '513300',
@@ -2728,9 +2728,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 10000
   });
-  assertEqual(garzeResInp.breakdown.deductibleDeducted, 500, '甘孜州居民三级住院起付线应为500元');
-  assertEqual(garzeResInp.breakdown.baseReimbursed, 6650, '甘孜州居民三级住院实报不符: (10000-500)*0.70=6650');
-  console.log(`  ✓ [H6 PASS] 甘孜州居民三级住院(花费10000): 扣起付¥500，高寒倾斜按70%实报¥6650 (依据: 甘医保规〔2024〕1号)`);
+  assertEqual(garzeResInp.breakdown.deductibleDeducted, 550, '甘孜州居民三级住院起付线应为550元');
+  assertEqual(garzeResInp.breakdown.baseReimbursed, 6426, '甘孜州居民三级住院实报不符: (10000-550)*0.68=6426');
+  console.log(`  ✓ [H6 PASS] 甘孜州居民三级住院(花费10000): 扣起付¥550，高寒倾斜按68%实报¥6426 (依据: 甘医保规〔2024〕1号)`);
   passCount++;
 
   // 阿坝州 (513200) - 居民二级住院花费 5000 元，起付250元，倾斜报销80%
@@ -2939,11 +2939,11 @@ export function runCalculatorTests() {
     totalCost: 500
   });
   assertEqual(luoyangEmpOut.breakdown.deductibleDeducted, 0, '洛阳职工基层门诊免起付线');
-  assertEqual(luoyangEmpOut.breakdown.baseReimbursed, 275, '洛阳职工基层门诊实报不符: 500*0.55=275');
-  console.log(`  ✓ [H8 PASS] 洛阳职工基层门诊(花费500): 免起付实报¥275 (55%比例，依据: 洛政办〔2022〕28号)`);
+  assertEqual(luoyangEmpOut.breakdown.baseReimbursed, 325, '洛阳职工基层门诊实报不符: 500*0.65=325');
+  console.log(`  ✓ [H8 PASS] 洛阳职工基层门诊(花费500): 免起付实报¥325 (65%比例，依据: 洛政办〔2022〕42号)`);
   passCount++;
 
-  // 开封市 (410200) - 职工在职二级门诊花费 1000 元，按次起付40元，报销55%
+  // 开封市 (410200) - 职工在职二级门诊花费 1000 元，按次起付40元，报销60%
   totalChecks++;
   const kaifengEmpOut = calculateReimbursement({
     cityCode: '410200',
@@ -2955,8 +2955,8 @@ export function runCalculatorTests() {
     totalCost: 1000
   });
   assertEqual(kaifengEmpOut.breakdown.deductibleDeducted, 40, '开封职工二级门诊每次起付线应为40元');
-  assertEqual(kaifengEmpOut.breakdown.baseReimbursed, 528, '开封职工二级门诊实报不符: (1000-40)*0.55=528');
-  console.log(`  ✓ [H8 PASS] 开封职工二级门诊(在职花费1000): 扣次起付¥40，实报¥528 (55%比例，依据: 汴政办〔2022〕26号)`);
+  assertEqual(kaifengEmpOut.breakdown.baseReimbursed, 576, '开封职工二级门诊实报不符: (1000-40)*0.60=576');
+  console.log(`  ✓ [H8 PASS] 开封职工二级门诊(在职花费1000): 扣次起付¥40，实报¥576 (60%比例，依据: 汴政办〔2022〕28号)`);
   passCount++;
 
   // 平顶山市 (410400) - 职工退休三级门诊花费 1000 元，起付30元，报销55%+10%=65%
@@ -4014,7 +4014,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H15 PASS] 柳州职工二级门诊(花费1000): 扣起付¥200，实报¥440 (55%比例，依据: 柳政规〔2022〕19号)`);
   passCount++;
 
-  // 桂林市 (450300) - 职工门诊一级退休花费 1000 元，扣起付600元，退休报销60%+5%=65%，实报 (1000-600)*0.65=260
+  // 桂林市 (450300) - 职工门诊一级退休花费 1000 元，扣起付100元，退休报销60%+5%=65%，实报 (1000-100)*0.65=585
   totalChecks++;
   const guilinEmpOut = calculateReimbursement({
     cityCode: '450300',
@@ -4025,9 +4025,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 1000
   });
-  assertEqual(guilinEmpOut.breakdown.deductibleDeducted, 600, '桂林职工门诊年度累计起付线应为600元');
-  assertEqual(guilinEmpOut.breakdown.baseReimbursed, 260, '桂林职工退休一级门诊实报不符: (1000-600)*0.65=260');
-  console.log(`  ✓ [H15 PASS] 桂林职工退休一级门诊(花费1000): 扣起付¥600，按退休65%实报¥260 (依据: 市政规〔2022〕15号)`);
+  assertEqual(guilinEmpOut.breakdown.deductibleDeducted, 100, '桂林职工门诊一级起付线应为100元');
+  assertEqual(guilinEmpOut.breakdown.baseReimbursed, 585, '桂林职工退休一级门诊实报不符: (1000-100)*0.65=585');
+  console.log(`  ✓ [H15 PASS] 桂林职工退休一级门诊(花费1000): 扣起付¥100，按退休65%实报¥585 (依据: 市政规〔2022〕15号)`);
   passCount++;
 
   // 梧州市 (450400) - 居民基层门诊花费 300 元，免起付，报销60%，限额200元

@@ -40,8 +40,8 @@ export const liuzhouCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'lz-employee-outpatient-2022',
       annualDeductible: 300,
-      annualCap: 2000,
-      annualCapRetiree: 2600,
+      annualCap: 1800,
+      annualCapRetiree: 2400,
       tierBenefits: {
         community: { tierName: '基层及一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
@@ -49,7 +49,7 @@ export const liuzhouCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '自治区级三甲医院', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '门诊按机构级别累计起付线（一级100元、二级200元、三级300元）。在职报销比例：一级60%、二级55%、三级50%（退休人员各段提高5个百分点）。年度最高支付限额在职人员2000元，退休人员2600元。'
+      note: '门诊按机构级别累计起付线（一级100元、二级200元、三级300元）。在职报销比例：一级60%、二级55%、三级50%（退休人员各段提高5个百分点）。年度最高支付限额在职人员1800元，退休人员2400元。'
     },
     inpatient: {
       sourceDocId: 'lz-medical-treatment-policy-2023',

@@ -15,6 +15,7 @@ export const yulinCityData: CityInsuranceData = {
   provinceName: '陕西省',
   hotline: '0912-12393',
   officialPortalUrl: 'http://ybj.yl.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

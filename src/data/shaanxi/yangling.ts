@@ -11,6 +11,7 @@ export const yanglingCityData: CityInsuranceData = {
   provinceName: '陕西省',
   hotline: '029-12393',
   officialPortalUrl: 'http://www.yangling.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

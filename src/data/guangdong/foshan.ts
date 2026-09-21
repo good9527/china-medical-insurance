@@ -100,11 +100,11 @@ export const foshanCityData: CityInsuranceData = {
       sourceDocId: 'fs-medical-insurance-inpatient-2023',
       annualCap: 350000,
       tierBenefits: {
-        community: { tierName: '一级医疗机构/卫生院', deductible: 300, reimbursementRatio: 0.95 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.95 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.90 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 1200, reimbursementRatio: 0.85 },
-        tier3_top: { tierName: '市级三甲综合医院', deductible: 1200, reimbursementRatio: 0.85 }
+        community: { tierName: '基层医疗机构', deductible: 250, reimbursementRatio: 0.90 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 250, reimbursementRatio: 0.90 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.85 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 1000, reimbursementRatio: 0.75 },
+        tier3_top: { tierName: '市属重点三甲医院', deductible: 1000, reimbursementRatio: 0.75 }
       },
       repeatedDeductibleRule: '参保人员每次住院支付一次起付标准；日间手术起付标准为500元/次；严重精神障碍住院不设起付标准。'
     },

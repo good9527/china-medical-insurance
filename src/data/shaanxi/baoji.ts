@@ -11,6 +11,7 @@ export const baojiCityData: CityInsuranceData = {
   provinceName: '陕西省',
   hotline: '0917-12393',
   officialPortalUrl: 'http://ybj.baoji.gov.cn/',
+  lastUpdated: '2026-03-01',
   
   sourceDocs: [
     {
@@ -33,7 +34,7 @@ export const baojiCityData: CityInsuranceData = {
       effectiveDate: '2022-09-01',
       status: 'active',
       officialUrl: 'http://ybj.baoji.gov.cn/',
-      summaryQuote: '调整宝鸡市城乡居民医保住院起付线与报销比例：一级定点医疗机构起付线400元（学生儿童100元），支付比例90%；二级医疗机构起付线由800元下调至600元（学生儿童400元），支付比例由78%上调至80%；三级医疗机构起付线由2000元下调至1500元（学生儿童1000元），支付比例由62%上调至65%。'
+      summaryQuote: '调整宝鸡市城乡居民医保住院起付线与报销比例：一级定点医疗机构起付线400元（学生儿童100元），支付比例90%；二级医疗机构起付线由800元下调至600元（学生儿童400元），支付比例调整为80%（原78%）；三级医疗机构起付线由2000元下调至1500元（学生儿童1000元），支付比例调整为65%（原62%）。'
     },
     {
       docId: 'bj-employee-inpatient-policy-2020',
@@ -110,11 +111,11 @@ export const baojiCityData: CityInsuranceData = {
       annualCap: 130000, // 宝鸡市城乡居民基本医疗保险统筹基金年度最高支付限额13万元
       repeatedDeductibleRule: '参保人在同级别定点医疗机构住院，按规定执行起付标准；分级诊疗转诊差额补齐起付线。',
       tierBenefits: {
-        community: { tierName: '定点镇卫生院/基层机构', deductible: 400, reimbursementRatio: 0.90 },
+        community: { tierName: '基层医疗机构及乡镇卫生院', deductible: 150, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.90 },
         tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.80 },
         tier3: { tierName: '三级定点医疗机构', deductible: 1500, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '三级重点公立医院', deductible: 1500, reimbursementRatio: 0.65 }
+        tier3_top: { tierName: '重点三甲综合医院', deductible: 1500, reimbursementRatio: 0.65 }
       }
     },
     catastrophic: {

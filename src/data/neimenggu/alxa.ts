@@ -20,7 +20,7 @@ export const alxaData: CityInsuranceData = {
       effectiveDate: '2024-01-01',
       status: 'active',
       officialUrl: 'http://ybj.als.gov.cn/art/2023/11/25/art_11221_1189912.html',
-      summaryQuote: '门诊年度起付标准按自然年度累计：一级200元、二级300元、三级500元（退休人员相应为50元、200元、300元）。统筹基金支付比例：一级80%、二级80%、三级60%（退休各加5%）。年度累计最高支付限额在职5000元，退休人员6000元。'
+      summaryQuote: '门诊年度起付标准按自然年度累计：一级200元、二级300元、三级500元（退休人员相应为50元、200元、300元）。门诊统筹基金支付比例：一级80%、二级80%、三级60%（退休各加5%）。年度累计最高支付限额在职5000元，退休人员6000元。'
     },
     {
       docId: 'als-medical-insurance-inpatient-2024',

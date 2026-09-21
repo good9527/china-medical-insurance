@@ -12,6 +12,7 @@ export const xiangxiCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0743-12393 / 0743-8222958',
   officialPortalUrl: 'http://ybj.xxz.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

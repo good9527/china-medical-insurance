@@ -15,6 +15,7 @@ export const weinanCityData: CityInsuranceData = {
   provinceName: '陕西省',
   hotline: '0913-12393',
   officialPortalUrl: 'https://www.weinan.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

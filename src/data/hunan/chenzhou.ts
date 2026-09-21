@@ -12,6 +12,7 @@ export const chenzhouCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0735-12393 / 0735-2268102',
   officialPortalUrl: 'http://ybj.czs.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

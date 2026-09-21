@@ -16,6 +16,7 @@ export const hanzhongCityData: CityInsuranceData = {
   provinceName: '陕西省',
   hotline: '0916-12393',
   officialPortalUrl: 'http://ybj.hanzhong.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

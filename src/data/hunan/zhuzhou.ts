@@ -12,6 +12,7 @@ export const zhuzhouCityData: CityInsuranceData = {
   provinceName: '湖南省',
   hotline: '0731-12393 / 0731-28681552',
   officialPortalUrl: 'http://ybj.zhuzhou.gov.cn/',
+  lastUpdated: '2026-03-01',
 
   // 官方依据文件库
   sourceDocs: [

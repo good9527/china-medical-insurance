@@ -99,21 +99,21 @@ export const ziboCityData: CityInsuranceData = {
       sourceDocId: 'zb-medical-insurance-inpatient-2023',
       annualCap: 200000, // 淄博基本医保封顶线确为 20 万元
       tierBenefits: {
-        community: { tierName: '基层卫生机构/社区中心', deductible: 100, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.70 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 700, reimbursementRatio: 0.60 },
-        tier3_top: { tierName: '市属重点三甲医院', deductible: 700, reimbursementRatio: 0.60 }
+        community: { tierName: '基层及一级医疗机构', deductible: 150, reimbursementRatio: 0.85 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 150, reimbursementRatio: 0.85 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.75 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.65 },
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 800, reimbursementRatio: 0.65 }
       },
       repeatedDeductibleRule: '本年度第二次住院起付标准减半，第三次及以上取消起付线。'
     },
     catastrophic: {
       sourceDocId: 'zb-medical-insurance-inpatient-2023',
       name: '淄博市城乡居民大病保险',
-      deductible: 18000,
+      deductible: 14000,
       annualCap: 400000,
       tiers: [
-        { minAmount: 18000, maxAmount: 100000, ratio: 0.60 },
+        { minAmount: 14000, maxAmount: 100000, ratio: 0.60 },
         { minAmount: 100000, maxAmount: 200000, ratio: 0.65 },
         { minAmount: 200000, maxAmount: 300000, ratio: 0.70 },
         { minAmount: 300000, ratio: 0.75 }
