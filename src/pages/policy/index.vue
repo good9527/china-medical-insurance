@@ -342,6 +342,9 @@
       </svg>
       <text class="fab-txt">顶部</text>
     </view>
+
+    <!-- 全站通用规范页脚 -->
+    <AppFooter />
   </view>
 </template>
 
@@ -349,6 +352,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { onShow, onPageScroll } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
+import AppFooter from '../../components/AppFooter.vue';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
 import { allCities } from '../../data';
 

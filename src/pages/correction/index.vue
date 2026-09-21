@@ -293,15 +293,54 @@
             <text class="tip-title">为什么需要官方公文？</text>
             <text class="tip-body">本站所有测算模型均与各统筹区红头文件严格对齐。提供官方公文或政务网链接能帮助研究员在 24 小时内以最快速度完成核实并发布生效。</text>
           </view>
+
+          <!-- 智库公文直投与作者直连卡片 -->
+          <view class="contact-direct-card mt-16">
+            <view class="card-head">
+              <view class="head-left">
+                <svg class="head-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <text class="card-head-title">公文原件直投 / 智库直连</text>
+              </view>
+              <text class="head-chip-blue">快速通道</text>
+            </view>
+            <text class="contact-direct-desc">
+              若手头有红头公文 PDF/扫描件或政策特例待交流，欢迎直接联系智库与开发者团队：
+            </text>
+            <view class="direct-list">
+              <view class="direct-item" @click="copyDirect(SITE_CONFIG.email, '邮箱')">
+                <text class="direct-k">官方邮箱</text>
+                <text class="direct-v monospace">{{ SITE_CONFIG.email }}</text>
+                <text class="direct-copy">复制</text>
+              </view>
+              <view class="direct-item" @click="copyDirect(SITE_CONFIG.wechat, '微信号')">
+                <text class="direct-k">个人微信</text>
+                <text class="direct-v">{{ SITE_CONFIG.wechat }}</text>
+                <text class="direct-copy">复制</text>
+              </view>
+              <view class="direct-item" @click="copyDirect(SITE_CONFIG.officialAccount, '公众号名称')">
+                <text class="direct-k">微信公众号</text>
+                <text class="direct-v">{{ SITE_CONFIG.officialAccount }}</text>
+                <text class="direct-copy">复制</text>
+              </view>
+            </view>
+          </view>
         </view>
       </view>
     </view>
+
+    <!-- 全站通用规范页脚 -->
+    <AppFooter />
   </view>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import AppHeader from '../../components/AppHeader.vue';
+import AppFooter from '../../components/AppFooter.vue';
+import { SITE_CONFIG } from '../../config/site';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
 import type { CityInsuranceData } from '../../data/types';
 
@@ -331,6 +370,27 @@ function selectProvince(idx: number) {
 function selectCity(idx: number) {
   selectedCityIndex.value = idx;
   openDropdown.value = null;
+}
+
+function copyDirect(text: string, label: string) {
+  if (typeof uni !== 'undefined' && uni.setClipboardData) {
+    uni.setClipboardData({
+      data: text,
+      showToast: false,
+      success: () => {
+        uni.showToast({ title: `${label}已复制`, icon: 'success' });
+      },
+      fail: () => {
+        if (typeof navigator !== 'undefined' && navigator.clipboard) {
+          navigator.clipboard.writeText(text);
+          uni.showToast({ title: `${label}已复制`, icon: 'success' });
+        }
+      }
+    });
+  } else if (typeof navigator !== 'undefined' && navigator.clipboard) {
+    navigator.clipboard.writeText(text);
+    uni.showToast({ title: `${label}已复制`, icon: 'success' });
+  }
 }
 
 // 纠错板块分类 (轻巧5大类)
@@ -1359,9 +1419,85 @@ onMounted(() => {
 }
 
 .tip-body {
-  font-size: 11px;
+  font-size: 11.5px;
   color: #64748b;
   line-height: 1.5;
+}
+
+/* 智库公文直投与作者直连卡片 */
+.contact-direct-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.head-chip-blue {
+  font-size: 11px;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 2px 8px;
+  border-radius: 9999px;
+}
+
+.contact-direct-desc {
+  font-size: 11.5px;
+  color: #64748b;
+  line-height: 1.5;
+  margin: 10px 0 12px;
+  display: block;
+}
+
+.direct-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.direct-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.direct-item:hover {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.direct-k {
+  font-size: 11.5px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.direct-v {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.direct-v.monospace {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.direct-copy {
+  font-size: 11px;
+  color: #2563eb;
+  background: #ffffff;
+  border: 1px solid #bfdbfe;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
 }
 
 /* 移动端响应式 */

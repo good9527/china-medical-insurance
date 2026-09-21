@@ -440,6 +440,9 @@
         </view>
       </view>
     </view>
+
+    <!-- 全站通用规范页脚 (含作者联系方式、微信公众号与开源仓库) -->
+    <AppFooter />
   </view>
 </template>
 
@@ -447,6 +450,7 @@
 import { ref, reactive, computed, onMounted } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
+import AppFooter from '../../components/AppFooter.vue';
 import type { HospitalTier, CalculateRequest, CalculateResult } from '../../data/types';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
 import { allCities } from '../../data';

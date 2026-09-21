@@ -238,6 +238,9 @@
         </view>
       </view>
     </view>
+
+    <!-- 全站通用规范页脚 -->
+    <AppFooter />
   </view>
 </template>
 
@@ -245,6 +248,7 @@
 import { ref, computed, onMounted } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
+import AppFooter from '../../components/AppFooter.vue';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
 
 onMounted(() => {
