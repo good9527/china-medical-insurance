@@ -32,17 +32,6 @@
           </view>
         </view>
 
-        <!-- 右侧：精简 / 详细模式切换 -->
-        <view class="intro-right">
-          <view class="mode-toggle-pill" @click="detailMode = !detailMode">
-            <view class="mode-option" :class="{ active: !detailMode }">
-              <text class="option-txt">精简</text>
-            </view>
-            <view class="mode-option" :class="{ active: detailMode }">
-              <text class="option-txt">详细</text>
-            </view>
-          </view>
-        </view>
       </view>
 
       <!-- 双栏 Bento 工作台 -->
@@ -213,8 +202,8 @@
               </view>
             </view>
 
-            <!-- 门诊规则即时通报 (详细模式展开) -->
-            <view class="policy-notice" v-if="detailMode && form.treatmentType === 'outpatient'">
+            <!-- 门诊政策规则即时通报 -->
+            <view class="policy-notice" v-if="form.treatmentType === 'outpatient'">
               <text class="notice-badge">门诊政策提醒</text>
               <text class="notice-content" v-if="form.insuranceType === 'employee'">
                 {{ currentCityData.cityName }}职工门诊共济：{{ currentCityData.employee.outpatient.annualDeductible > 0 ? ('年起付线 ¥' + currentCityData.employee.outpatient.annualDeductible + (currentCityData.employee.outpatient.annualDeductibleRetiree ? '（退休优待¥' + currentCityData.employee.outpatient.annualDeductibleRetiree + '）；' : '；')) : '0元起付直接报销；' }}{{ currentCityData.employee.outpatient.annualCap >= 9999999 ? '门诊不设最高封顶线（上不封顶）。' : ('在职年封顶 ¥' + currentCityData.employee.outpatient.annualCap + '，退休年封顶 ¥' + (currentCityData.employee.outpatient.annualCapRetiree || currentCityData.employee.outpatient.annualCap) + '。') }}
@@ -334,7 +323,7 @@
                 <text class="price-symbol">¥</text>
                 <text class="price-number">{{ displayReimbursed.toLocaleString() }}</text>
               </view>
-              <text class="receipt-note" v-if="detailMode">由医保统筹基金直接抵扣结算，出院窗口免垫资</text>
+              <text class="receipt-note">由医保统筹基金直接抵扣结算，出院窗口免垫资</text>
             </view>
 
             <!-- 基金支付与自理对比矩阵 -->
@@ -399,8 +388,8 @@
               </view>
             </view>
 
-            <!-- 经办政策备忘 (仅详细模式展示) -->
-            <view class="policy-memo" v-if="detailMode && result.policyNotes.length > 0">
+            <!-- 经办政策备忘提醒 -->
+            <view class="policy-memo" v-if="result.policyNotes.length > 0">
               <view v-for="(note, idx) in result.policyNotes" :key="idx" class="memo-row">
                 <text class="memo-dot">·</text>
                 <text class="memo-txt">{{ note }}</text>
@@ -463,7 +452,6 @@ import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/p
 import { allCities } from '../../data';
 import { calculateReimbursement } from '../../engine/calculator';
 
-const detailMode = ref(false);
 const openDropdown = ref<string | null>(null);
 
 function navToTab(url: string) {
@@ -943,44 +931,6 @@ onShow(() => {
   color: #64748b;
   margin-top: 4px;
   line-height: 1.5;
-}
-
-.intro-right {
-  display: flex;
-  align-items: center;
-}
-
-/* 简 / 详模式切换胶囊 */
-.mode-toggle-pill {
-  display: flex;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  border-radius: 9999rpx;
-  padding: 3px;
-  gap: 2px;
-}
-
-.mode-option {
-  padding: 5px 16px;
-  border-radius: 9999rpx;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.mode-option.active {
-  background: #ffffff;
-  border: 1px solid rgba(37, 99, 235, 0.25);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-}
-
-.option-txt {
-  font-size: 13px;
-  color: #64748b;
-  font-weight: 600;
-}
-
-.mode-option.active .option-txt {
-  color: #2563eb;
 }
 
 /* -------------------- 2. 主工作台 Bento 栅格 -------------------- */
@@ -2204,7 +2154,6 @@ onShow(() => {
 
 /* ==================== 微动效与微交互 ==================== */
 .nav-pill-item,
-.mode-option,
 .quick-search-trigger,
 .cyber-dropdown-trigger,
 .dropdown-item,
