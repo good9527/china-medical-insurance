@@ -22,12 +22,12 @@
             </view>
             <view class="page-title-stack">
               <view class="title-row">
-                <text class="page-main-title">医保报销测算</text>
+                <text class="page-main-title">医保报销估算</text>
                 <view class="city-indicator-chip">
                   <text class="city-indicator-txt">{{ currentCityOption.cityName }}</text>
                 </view>
               </view>
-              <text class="page-sub-title">输入就医花费及类型，快速估算医保统筹报销额度与个人自付明细</text>
+              <text class="page-sub-title">根据地方公开政策文件规则，估算统筹报销金额与自付明细（结果仅供参考）</text>
             </view>
           </view>
         </view>
@@ -298,32 +298,32 @@
               <view class="receipt-title-wrap">
                 <view class="status-indicator"></view>
                 <text class="receipt-title">
-                  <text class="desktop-title-txt">医保测算结果看板</text>
-                  <text class="mobile-title-txt">测算结果看板</text>
+                  <text class="desktop-title-txt">费用估算参考看板</text>
+                  <text class="mobile-title-txt">费用估算参考</text>
                 </text>
               </view>
               <view class="receipt-actions">
-                <view class="copy-voucher-btn" @click.stop="copyReceipt" title="一键复制测算凭据">
+                <view class="copy-voucher-btn" @click.stop="copyReceipt" title="一键复制估算凭据">
                   <svg class="copy-btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                   </svg>
-                  <text class="copy-btn-txt">复制凭据</text>
+                  <text class="copy-btn-txt">复制估算凭据</text>
                 </view>
                 <view class="ratio-pill">
-                  <text class="ratio-text">综合报销率 {{ displayRatio }}%</text>
+                  <text class="ratio-text">预估报销率 {{ displayRatio }}%</text>
                 </view>
               </view>
             </view>
 
             <!-- 核心主数值 -->
             <view class="receipt-hero-block">
-              <text class="receipt-hero-label">医保预计综合报销</text>
+              <text class="receipt-hero-label">医保预估统筹报销</text>
               <view class="receipt-price-row">
                 <text class="price-symbol">¥</text>
                 <text class="price-number">{{ displayReimbursed.toLocaleString() }}</text>
               </view>
-              <text class="receipt-note">由医保统筹基金直接抵扣结算，出院窗口免垫资</text>
+              <text class="receipt-note">以出院窗口实际结算为准，符合目录部分医保直接抵扣</text>
             </view>
 
             <!-- 基金支付与自理对比矩阵 -->
@@ -353,7 +353,7 @@
             <!-- 费用测算结构收据明细 (结构严整的清单) -->
             <view class="receipt-breakdown-card">
               <view class="breakdown-head" @click="showDetail = !showDetail">
-                <text class="b-head-title">费用分项测算明细</text>
+                <text class="b-head-title">费用分项估算明细</text>
                 <text class="b-head-action">{{ showDetail ? '收起 ▴' : '展开 ▾' }}</text>
               </view>
               <view class="breakdown-table" v-if="showDetail">
@@ -396,11 +396,11 @@
               </view>
             </view>
 
-            <!-- 官方权威文件依据卡片 (底部稳固收口) -->
+            <!-- 公开文件依据卡片 (底部稳固收口) -->
             <view class="official-statute-badge" @click="openDocUrl">
               <view class="statute-info">
                 <view class="statute-tag-row">
-                  <text class="statute-tag">法定政策依据</text>
+                  <text class="statute-tag">公开政策依据</text>
                   <text class="statute-doc-num">{{ result.officialDocUsed?.docNumber || '现行基本医保规范' }}</text>
                 </view>
                 <text class="statute-title">{{ result.officialDocUsed?.title || currentCityOption.cityName + '基本医疗保险政策' }}</text>
@@ -408,6 +408,11 @@
               <view class="statute-btn">
                 <text class="statute-btn-txt">查看公文 ↗</text>
               </view>
+            </view>
+
+            <!-- 极简免责与就医提示 -->
+            <view class="estimate-disclaimer-bar mt-12">
+              <text class="disclaimer-txt">⚠️ 结果基于地方公开政策测算逻辑，仅供参考；实际报销金额以就医定点医疗机构出院医保结算单为准。</text>
             </view>
           </view>
 
@@ -420,12 +425,12 @@
               </svg>
             </view>
             <text class="empty-title">等待输入费用金额</text>
-            <text class="empty-desc">在左侧输入医疗花费并选择就医参数，右侧将自动调取 {{ currentCityOption.cityName }} 现行医保政策测算报销明细</text>
+            <text class="empty-desc">在左侧输入医疗花费并选择就医参数，右侧将自动调取 {{ currentCityOption.cityName }} 公开医保政策规则估算自费与报销明细</text>
           </view>
         </view>
       </view>
 
-      <!-- 移动端底部悬浮结果快捷卡片 (仅手机视口展示，实时反馈测算结论) -->
+      <!-- 移动端底部悬浮结果快捷卡片 (仅手机视口展示，实时反馈估算结论) -->
       <view class="mobile-calc-float-bar" v-if="result" @click="scrollToReceipt">
         <view class="float-bar-left">
           <text class="float-tag">预估报销</text>
@@ -436,7 +441,7 @@
           <text class="float-ratio">({{ displayRatio }}%)</text>
         </view>
         <view class="float-bar-right">
-          <text class="float-cta">查看测算凭证 ↓</text>
+          <text class="float-cta">查看估算明细 ↓</text>
         </view>
       </view>
     </view>
@@ -748,31 +753,31 @@ function copyReceipt() {
   const eligible = b.eligibleCost.toLocaleString();
   const docTitle = res.officialDocUsed?.title || `${city}基本医疗保险政策`;
 
-  const voucher = `【医保报销测算凭据】
+  const voucher = `【医保报销估算凭据】
 统筹区域：${city}
 参保类型：${insType}
 就医方式：${treatType}（${hospTier} | ${remote}）
 医疗总费用：¥${totalCost}
 ------------------------
-★ 医保综合报销：¥${reimbursed} (报销率 ${b.effectiveRatio}%)
+★ 医保预估统筹报销：¥${reimbursed} (预估比例 ${b.effectiveRatio}%)
   - 统筹基金支付：¥${basePay}
   - 扣除起付线：¥${deductible}
-  - 进入报销基数：¥${eligible}
+  - 纳规报销基数：¥${eligible}
 ★ 个人预计自理：¥${personal}
 ------------------------
-测算政策依据：《${docTitle}》
-测算平台：全国医保报销精算引擎`;
+参考政策依据：《${docTitle}》
+注：本结果由公开政策规则估算，仅供参考，实际报销金额请以就医定点医院出院医保结算单为准。`;
 
   uni.setClipboardData({
     data: voucher,
     showToast: false,
     success: () => {
-      uni.showToast({ title: '测算凭据已复制', icon: 'success' });
+      uni.showToast({ title: '估算凭据已复制', icon: 'success' });
     },
     fail: () => {
       if (typeof navigator !== 'undefined' && navigator.clipboard) {
         navigator.clipboard.writeText(voucher).then(() => {
-          uni.showToast({ title: '测算凭据已复制', icon: 'success' });
+          uni.showToast({ title: '估算凭据已复制', icon: 'success' });
         }).catch(() => {
           uni.showToast({ title: '复制失败，请截图保存', icon: 'none' });
         });

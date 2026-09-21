@@ -3,49 +3,49 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "全国医保待遇测算平台",
+        "navigationBarTitleText": "全国医保报销估算与政策查询",
         "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/policy/index",
       "style": {
-        "navigationBarTitleText": "政策待遇库 - 全国医保待遇测算平台",
+        "navigationBarTitleText": "政策待遇库 - 全国医保待遇参考",
         "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/ranking/index",
       "style": {
-        "navigationBarTitleText": "政策对比与排行榜 - 全国医保待遇测算平台",
+        "navigationBarTitleText": "各统筹区政策对比 - 全国医保待遇参考",
         "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/service/index",
       "style": {
-        "navigationBarTitleText": "便民服务热线 - 全国医保待遇测算平台",
+        "navigationBarTitleText": "便民服务热线 - 全国医保待遇参考",
         "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/correction/index",
       "style": {
-        "navigationBarTitleText": "政策纠错中心 - 全国医保待遇测算平台",
+        "navigationBarTitleText": "政策纠错与公文提交 - 全国医保待遇参考",
         "enablePullDownRefresh": false
       }
     },
     {
       "path": "pages/remote/index",
       "style": {
-        "navigationBarTitleText": "异地就医指南 - 全国医保待遇测算平台",
+        "navigationBarTitleText": "异地就医备案指南 - 全国医保待遇参考",
         "enablePullDownRefresh": false
       }
     }
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "全国医保待遇测算平台",
+    "navigationBarTitleText": "全国医保报销估算与政策查询",
     "navigationBarBackgroundColor": "#ffffff",
     "backgroundColor": "#f8fafc"
   },
@@ -57,23 +57,33 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "报销测算"
+        "text": "报销估算",
+        "iconPath": "static/tabbar/calc.png",
+        "selectedIconPath": "static/tabbar/calc_active.png"
       },
       {
         "pagePath": "pages/policy/index",
-        "text": "政策待遇"
+        "text": "政策待遇",
+        "iconPath": "static/tabbar/policy.png",
+        "selectedIconPath": "static/tabbar/policy_active.png"
       },
       {
         "pagePath": "pages/ranking/index",
-        "text": "政策对比"
+        "text": "政策对比",
+        "iconPath": "static/tabbar/compare.png",
+        "selectedIconPath": "static/tabbar/compare_active.png"
       },
       {
         "pagePath": "pages/service/index",
-        "text": "便民服务"
+        "text": "便民服务",
+        "iconPath": "static/tabbar/service.png",
+        "selectedIconPath": "static/tabbar/service_active.png"
       },
       {
         "pagePath": "pages/correction/index",
-        "text": "政策纠错"
+        "text": "政策纠错",
+        "iconPath": "static/tabbar/correction.png",
+        "selectedIconPath": "static/tabbar/correction_active.png"
       }
     ]
   }

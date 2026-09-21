@@ -1,0 +1,54 @@
+name: "医保政策纠错与公文更新"
+description: "反馈某统筹区医保报销规则出入、政策变更或补充最新公文"
+title: "【政策纠错】<省份><城市> - <拟修正项>"
+labels: ["policy-correction", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您协助完善全国 348 统筹区公开医保政策数据库！
+        本工具为民间公益开源整理，您的每条有效反馈都将帮助更多参保人获得更准确的待遇估算。
+  - type: input
+    id: city
+    attributes:
+      label: 参保统筹区（省份 / 城市）
+      placeholder: "例如：陕西省 西安市"
+    validations:
+      required: true
+  - type: dropdown
+    id: category
+    attributes:
+      label: 拟纠错板块
+      options:
+        - "普通门诊统筹（起付线 / 报销比例 / 封顶线）"
+        - "住院医疗统筹（医院级别 / 起付线 / 报销比例 / 封顶线）"
+        - "大病保险 / 大额互助（起付线 / 分段比例 / 封顶线）"
+        - "异地就医结算（长期备案 / 转诊 / 未备案折算）"
+        - "规范性公文变动（新文件发布 / 旧文件废止）"
+        - "其他政策特例"
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: 修正建议与具体数值
+      placeholder: "例如：在职职工二级医院门诊报销比例由 60% 调整为 70%，起付线调整为 200 元"
+    validations:
+      required: true
+  - type: input
+    id: doc_number
+    attributes:
+      label: 官方发文全称与发文字号
+      placeholder: "例如：西医保发〔2024〕15号《关于调整职工基本医疗保险有关待遇的通知》"
+    validations:
+      required: true
+  - type: input
+    id: official_url
+    attributes:
+      label: 官方文件网址或政务网公开链接（选填）
+      placeholder: "https://ybj.xa.gov.cn/..."
+  - type: input
+    id: contact
+    attributes:
+      label: 您的称呼或联系邮箱（选填，用于核实后告知进度）
+      placeholder: "例如：张三 / user@example.com"

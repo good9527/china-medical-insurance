@@ -5,10 +5,10 @@
       <view class="header-brand" @click="navTo('/pages/index/index')">
         <AppLogo size="md" />
         <view class="brand-text-group">
-          <text class="brand-name">全国医保待遇测算平台</text>
+          <text class="brand-name">全国医保待遇估算与政策查询</text>
           <text class="brand-sub">
-            <text class="desktop-sub">覆盖全国 348 统筹区 · 权威政策红头溯源</text>
-            <text class="mobile-sub">全国 348 统筹区 · 官方政策精准溯源</text>
+            <text class="desktop-sub">覆盖全国 348 统筹区 · 公开政策整理与待遇估算参考</text>
+            <text class="mobile-sub">全国 348 统筹区 · 公开政策整理参考</text>
           </text>
         </view>
       </view>
@@ -30,7 +30,7 @@
             <line x1="12" y1="18" x2="12" y2="18.01"></line>
             <line x1="16" y1="18" x2="16" y2="18.01"></line>
           </svg>
-          <text class="nav-label">报销测算</text>
+          <text class="nav-label">报销估算</text>
         </view>
         <view 
           class="nav-tab" 
@@ -97,7 +97,7 @@
         </view>
         <view class="status-pill">
           <view class="status-dot"></view>
-          <text class="status-txt">348 统筹区在线</text>
+          <text class="status-txt">已收录 348 统筹区</text>
         </view>
       </view>
     </view>
@@ -108,14 +108,14 @@
         <view class="modal-head">
           <view class="head-brand">
             <AppLogo size="sm" />
-            <text class="modal-title">联系开发者 / 数据合作</text>
+            <text class="modal-title">联系作者 / 公文反馈与交流</text>
           </view>
           <text class="modal-close-btn" @click="showContactModal = false">✕</text>
         </view>
 
         <view class="modal-body">
           <text class="modal-desc">
-            欢迎就全国 348 统筹区政策公文勘误、精算模型或技术交流直接联系我们：
+            欢迎就全国 348 统筹区公开政策文件、待遇估算规则或公文勘误直接联系我们：
           </text>
 
           <view class="modal-contact-list">

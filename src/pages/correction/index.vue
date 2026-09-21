@@ -16,19 +16,19 @@
             </view>
             <view class="page-title-stack">
               <view class="title-row">
-                <text class="page-main-title">医保政策纠错与数据核验</text>
+                <text class="page-main-title">医保政策纠错与公文提报</text>
                 <view class="city-indicator-chip">
-                  <text class="city-indicator-txt">全国智库协同</text>
+                  <text class="city-indicator-txt">开源协同维护</text>
                 </view>
               </view>
-              <text class="page-sub-title">发现参保地政策变动、报销比例或官方公文有误？欢迎提交，智库将在 24 小时内完成核验并同步入库。</text>
+              <text class="page-sub-title">发现参保地公开政策变动、报销比例出入或有最新公文补充？欢迎提交，我们将在核实后及时更新本地数据。</text>
             </view>
           </view>
         </view>
 
         <view class="audit-status-badge">
           <view class="status-pulse-dot"></view>
-          <text class="audit-status-txt">全国 348 统筹区政策开放核对</text>
+          <text class="audit-status-txt">已收录 348 统筹区开放核对</text>
         </view>
       </view>
 
@@ -226,33 +226,69 @@
             </view>
           </view>
 
-          <!-- 提交成功提示 -->
+          <!-- 提交成功与直连投递选择面板 -->
           <view class="submission-success-bar mt-16" v-if="lastSubmittedId">
             <view class="success-left">
               <text class="success-icon">✓</text>
               <view class="success-txts">
-                <text class="success-title">纠错已受理！智库核验编号：{{ lastSubmittedId }}</text>
-                <text class="success-sub">感谢您对国家医保数据库的贡献，专职研究员将在 24 小时内核对公文并入库更新。</text>
+                <text class="success-title">纠错内容已就绪！核验编号：{{ lastSubmittedId }}</text>
+                <text class="success-sub">本工具为民间公益开源项目，为确保您的宝贵建议能被作者及时核实并入库更新，请选择下方通道一键投递：</text>
+              </view>
+            </view>
+
+            <view class="dispatch-channels-grid mt-12">
+              <view class="dispatch-btn btn-github" @click="dispatchToGithub">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dispatch-svg">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+                <view class="d-txts">
+                  <text class="d-primary">在 GitHub 提交 Issue (推荐)</text>
+                  <text class="d-sub">公开透明 · 永久留存 · GitHub 官方自动邮件提醒作者</text>
+                </view>
+                <text class="d-arrow">↗</text>
+              </view>
+
+              <view class="dispatch-btn btn-email" @click="dispatchToEmail">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dispatch-svg">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+                <view class="d-txts">
+                  <text class="d-primary">一键调起邮件发送作者</text>
+                  <text class="d-sub">直发 keepkid0824@gmail.com · 自动预填标题与公文参数</text>
+                </view>
+                <text class="d-arrow">✉️</text>
+              </view>
+
+              <view class="dispatch-btn btn-wechat" @click="copyDirect(SITE_CONFIG.wechat, '微信号')">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dispatch-svg">
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                </svg>
+                <view class="d-txts">
+                  <text class="d-primary">复制作者个人微信</text>
+                  <text class="d-sub">微信号: {{ SITE_CONFIG.wechat }} · 支持发送公文原件截图与交流</text>
+                </view>
+                <text class="d-arrow">📋</text>
               </view>
             </view>
           </view>
         </view>
 
-        <!-- 右侧：智库近期采纳与透明动态 (简洁展示，去除说教) -->
+        <!-- 右侧：近期采纳与透明动态 (简洁展示，去除说教) -->
         <view class="sidebar-column">
           <!-- 我的在审记录 (如果有) -->
           <view class="card mb-16" v-if="myRecords.length > 0">
             <view class="card-head">
               <view class="head-left">
-                <text class="card-head-title">我的纠错进度</text>
+                <text class="card-head-title">我的纠错记录</text>
               </view>
-              <text class="head-chip">{{ myRecords.length }} 项在审</text>
+              <text class="head-chip">{{ myRecords.length }} 项待核</text>
             </view>
             <view class="my-rec-list">
               <view class="my-rec-item" v-for="rec in myRecords" :key="rec.id">
                 <view class="my-rec-top">
                   <text class="my-rec-city">{{ rec.cityName }} · {{ rec.fieldName }}</text>
-                  <text class="my-rec-status">核验中</text>
+                  <text class="my-rec-status">已登记</text>
                 </view>
                 <text class="my-rec-diff">建议：{{ rec.suggestedValue }}</text>
                 <text class="my-rec-id">编号: {{ rec.id }}</text>
@@ -260,7 +296,7 @@
             </view>
           </view>
 
-          <!-- 智库最新已采纳动态 -->
+          <!-- 近期已采纳动态 -->
           <view class="card">
             <view class="card-head">
               <view class="head-left">
@@ -268,7 +304,7 @@
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 14 14"></polyline>
                 </svg>
-                <text class="card-head-title">智库近期采纳动态</text>
+                <text class="card-head-title">近期公开采纳与更新动态</text>
               </view>
               <text class="head-chip-emerald">实时公开</text>
             </view>
@@ -283,18 +319,18 @@
                   <text class="r-date">{{ item.date }}</text>
                 </view>
                 <text class="recent-desc">{{ item.desc }}</text>
-                <text class="recent-doc">依据：{{ item.doc }} · <text class="text-emerald">已合入生产库</text></text>
+                <text class="recent-doc">依据：{{ item.doc }} · <text class="text-emerald">已合入本地库</text></text>
               </view>
             </view>
           </view>
 
           <!-- 极简说明卡片 -->
           <view class="clean-tip-card mt-16">
-            <text class="tip-title">为什么需要官方公文？</text>
-            <text class="tip-body">本站所有测算模型均与各统筹区红头文件严格对齐。提供官方公文或政务网链接能帮助研究员在 24 小时内以最快速度完成核实并发布生效。</text>
+            <text class="tip-title">为什么需要提供官方文件依据？</text>
+            <text class="tip-body">本站数据均整理自各统筹区公开的规范性文件。提供官方公文全称、字号或政务网链接能帮助我们在核实后以最快速度完成本地数据更新并生效。</text>
           </view>
 
-          <!-- 智库公文直投与作者直连卡片 -->
+          <!-- 公文直投与作者直连卡片 -->
           <view class="contact-direct-card mt-16">
             <view class="card-head">
               <view class="head-left">
@@ -302,12 +338,12 @@
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
                   <polyline points="22,6 12,13 2,6"></polyline>
                 </svg>
-                <text class="card-head-title">公文原件直投 / 智库直连</text>
+                <text class="card-head-title">公文原件直投 / 联系作者</text>
               </view>
               <text class="head-chip-blue">快速通道</text>
             </view>
             <text class="contact-direct-desc">
-              若手头有红头公文 PDF/扫描件或政策特例待交流，欢迎直接联系智库与开发者团队：
+              若手头有红头公文 PDF/扫描件或地方政策变动，欢迎直接联系作者团队：
             </text>
             <view class="direct-list">
               <view class="direct-item" @click="copyDirect(SITE_CONFIG.email, '邮箱')">
@@ -571,10 +607,14 @@ function loadMyRecords() {
   }
 }
 
+const submittedDraft = ref<any>(null);
+
 function handleSubmitCorrection() {
   const val = suggestedValue.value.trim();
   const quote = reasonQuote.value.trim();
   const doc = docTitleOrNumber.value.trim();
+  const url = docUrl.value.trim();
+  const contact = submitterContact.value.trim();
 
   if (!val && !quote) {
     uni.showToast({ title: '请填写建议修改值或条款说明', icon: 'none' });
@@ -584,6 +624,19 @@ function handleSubmitCorrection() {
   const randomNum = Math.floor(1000 + Math.random() * 9000);
   const trackId = `CHK-2026-${currentCityOption.value.cityCode}-${randomNum}`;
   lastSubmittedId.value = trackId;
+
+  submittedDraft.value = {
+    city: currentCityOption.value.cityName,
+    province: currentProvince.value.name,
+    category: currentCategoryObj.value.name,
+    field: currentFieldObj.value.label,
+    suggestedVal: val || '条款勘误',
+    currentVal: currentFieldValue.value,
+    docNumber: doc || '未注明',
+    docUrl: url || '未注明',
+    quote: quote || '无额外补充说明',
+    contact: contact || '未留'
+  };
 
   const newRec: MyRecord = {
     id: trackId,
@@ -599,13 +652,99 @@ function handleSubmitCorrection() {
     console.error(e);
   }
 
-  uni.showToast({ title: '纠错已提交，感谢贡献！', icon: 'success' });
+  uni.showToast({ title: '草稿已就绪，请选择投递方式', icon: 'success' });
+}
 
-  // 重置输入
-  suggestedValue.value = '';
-  reasonQuote.value = '';
-  docTitleOrNumber.value = '';
-  docUrl.value = '';
+function dispatchToGithub() {
+  const d = submittedDraft.value || {
+    city: currentCityOption.value.cityName,
+    province: currentProvince.value.name,
+    category: currentCategoryObj.value.name,
+    field: currentFieldObj.value.label,
+    suggestedVal: suggestedValue.value || '请补充建议值',
+    currentVal: currentFieldValue.value,
+    docNumber: docTitleOrNumber.value || '未注明',
+    docUrl: docUrl.value || '未注明',
+    quote: reasonQuote.value || '无额外说明',
+    contact: submitterContact.value || '未留'
+  };
+
+  const title = encodeURIComponent(`【政策纠错】${d.province}${d.city} - ${d.field}`);
+  const body = encodeURIComponent(`### 政策纠错与公文提报
+
+- **统筹地区**: ${d.province} · ${d.city}
+- **拟纠错板块**: ${d.category}
+- **拟修正指标**: ${d.field}
+- **建议修正值**: ${d.suggestedVal}
+- **原库内参考值**: ${d.currentVal}
+- **官方公文与字号**: ${d.docNumber}
+- **官方网址/公开链接**: ${d.docUrl}
+- **条款说明与依据摘录**:
+${d.quote}
+- **反馈人与联系方式**: ${d.contact}
+
+---
+*由全国医保待遇估算与政策查询工具前台提交生成*`);
+
+  const ghUrl = `https://github.com/good9527/china-medical-insurance/issues/new?title=${title}&body=${body}`;
+
+  // #ifdef H5
+  if (typeof window !== 'undefined') {
+    window.open(ghUrl, '_blank');
+  }
+  // #endif
+  // #ifndef H5
+  uni.setClipboardData({
+    data: ghUrl,
+    success: () => {
+      uni.showToast({ title: 'GitHub Issue 链接已复制', icon: 'none' });
+    }
+  });
+  // #endif
+}
+
+function dispatchToEmail() {
+  const d = submittedDraft.value || {
+    city: currentCityOption.value.cityName,
+    province: currentProvince.value.name,
+    category: currentCategoryObj.value.name,
+    field: currentFieldObj.value.label,
+    suggestedVal: suggestedValue.value || '请补充建议值',
+    currentVal: currentFieldValue.value,
+    docNumber: docTitleOrNumber.value || '未注明',
+    docUrl: docUrl.value || '未注明',
+    quote: reasonQuote.value || '未注明',
+    contact: submitterContact.value || '未留'
+  };
+
+  const subject = encodeURIComponent(`【医保政策纠错】${d.province}${d.city} - ${d.field}`);
+  const body = encodeURIComponent(`作者您好：
+
+我在医保政策查询与估算工具中核对发现以下数据需要更新：
+
+【统筹区域】：${d.province} · ${d.city}
+【纠错板块】：${d.category}
+【修正指标】：${d.field}
+【建议修正值】：${d.suggestedVal}
+【原库内参数】：${d.currentVal}
+【官方公文与字号】：${d.docNumber}
+【公文链接】：${d.docUrl}
+【条款依据摘录】：
+${d.quote}
+【我的联系方式】：${d.contact}
+
+请在核实公开政策公文后予以更新，谢谢！`);
+
+  const mailtoUrl = `mailto:${SITE_CONFIG.email}?subject=${subject}&body=${body}`;
+
+  // #ifdef H5
+  if (typeof window !== 'undefined') {
+    window.location.href = mailtoUrl;
+  }
+  // #endif
+  // #ifndef H5
+  copyDirect(SITE_CONFIG.email, '作者邮箱');
+  // #endif
 }
 
 onMounted(() => {
@@ -1247,6 +1386,80 @@ onMounted(() => {
 .success-sub {
   font-size: 11px;
   color: #15803d;
+  line-height: 1.5;
+}
+
+/* 直连投递通道按钮组 */
+.dispatch-channels-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dispatch-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  border: 1px solid transparent;
+}
+
+.dispatch-svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.d-txts {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.d-primary {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.d-sub {
+  font-size: 11px;
+  opacity: 0.85;
+  margin-top: 2px;
+}
+
+.d-arrow {
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.btn-github {
+  background: #0f172a;
+  color: #ffffff;
+}
+.btn-github:hover {
+  background: #1e293b;
+}
+
+.btn-email {
+  background: #2563eb;
+  color: #ffffff;
+}
+.btn-email:hover {
+  background: #1d4ed8;
+}
+
+.btn-wechat {
+  background: #ffffff;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+.btn-wechat:hover {
+  background: #f1f5f9;
 }
 
 /* 右侧栏卡片 */

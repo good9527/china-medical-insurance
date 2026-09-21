@@ -282,26 +282,74 @@ uni-page-head {
   uni-page-body {
     padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
   }
-  uni-tabbar, .uni-tabbar {
-    background: rgba(255, 255, 255, 0.95) !important;
+  uni-tabbar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 998 !important;
+    display: block !important;
+    margin: 0 !important;
+  }
+  .uni-tabbar {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    height: 54px !important;
+    background: rgba(255, 255, 255, 0.96) !important;
     backdrop-filter: blur(20px) !important;
     -webkit-backdrop-filter: blur(20px) !important;
     border-top: 1px solid rgba(226, 232, 240, 0.9) !important;
-    box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.05) !important;
+    box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.06) !important;
     padding-bottom: env(safe-area-inset-bottom) !important;
+    display: flex !important;
+    align-items: center !important;
+    box-sizing: content-box !important;
   }
   .uni-tabbar .uni-tabbar__item {
-    padding: 6px 0 !important;
+    flex: 1 !important;
+    height: 54px !important;
+    padding: 4px 0 2px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
     transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1) !important;
   }
   .uni-tabbar .uni-tabbar__item:active {
-    transform: scale(0.94) !important;
+    transform: scale(0.92) !important;
+  }
+  .uni-tabbar .uni-tabbar__bd {
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .uni-tabbar .uni-tabbar__icon {
+    width: 22px !important;
+    height: 22px !important;
+    margin-top: 0 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .uni-tabbar .uni-tabbar__icon img {
+    width: 22px !important;
+    height: 22px !important;
+    object-fit: contain !important;
   }
   .uni-tabbar .uni-tabbar__label {
-    font-size: 11.5px !important;
+    font-size: 11px !important;
     font-weight: 600 !important;
-    letter-spacing: 0.2px !important;
+    letter-spacing: -0.2px !important;
     margin-top: 2px !important;
+    white-space: nowrap !important;
+    word-break: keep-all !important;
+    line-height: 1.2 !important;
   }
 }
 

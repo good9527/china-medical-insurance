@@ -141,12 +141,12 @@
             </svg>
           </view>
           <view class="banner-text">
-            <text class="banner-title">想了解在 {{ currentCity.cityName }} 能实际报销多少？</text>
-            <text class="banner-sub">一键带入当前 {{ currentType === 'employee' ? '职工' : '居民' }} 政策参数，快速模拟医疗花费与自付金额</text>
+            <text class="banner-title">想了解在 {{ currentCity.cityName }} 大致能报销多少？</text>
+            <text class="banner-sub">带入当前 {{ currentType === 'employee' ? '职工' : '居民' }} 政策规则，估算个人就医统筹报销与自费金额</text>
           </view>
         </view>
         <view class="banner-btn">
-          <view class="banner-btn-inner"><text class="banner-btn-txt">立即去测算</text><svg class="banner-btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></view>
+          <view class="banner-btn-inner"><text class="banner-btn-txt">立即去估算</text><svg class="banner-btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></view>
         </view>
       </view>
 
@@ -309,7 +309,7 @@
             </view>
 
             <view class="doc-quote-box">
-              <text class="quote-header">核心法定条款摘录：</text>
+              <text class="quote-header">政策核心条款摘录：</text>
               <text class="quote-content">“{{ doc.summaryQuote }}”</text>
             </view>
 

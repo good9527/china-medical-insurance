@@ -42,6 +42,7 @@
     "monitor:policies": "tsx src/scripts/monitor-policies.ts",
     "update:pipeline": "tsx src/scripts/update-policy-pipeline.ts",
     "test:calc": "tsx -e \"import { runCalculatorTests } from './src/engine/__tests__/calculator.test.ts'; runCalculatorTests();\"",
+    "feedback:list": "tsx scripts/fetch_feedback.ts",
     "check:all": "npm run audit:data && npm run audit:smart && npm run monitor:policies && npm run update:pipeline && npm run test:calc && npm run build:h5"
   },
   "dependencies": {

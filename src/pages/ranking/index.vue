@@ -9,20 +9,20 @@
           <view class="badge-row">
             <view class="benchmark-chip">
               <span class="chip-pulse"></span>
-              <text class="chip-txt">国家医保政策竞争力全样本天梯榜 · CMI-Index 2026</text>
+              <text class="chip-txt">各统筹区公开医保待遇多维参考对比</text>
             </view>
             <view class="meta-tag">
               <svg class="meta-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
               </svg>
-              <text class="meta-txt">348 统筹区多维量化核验</text>
+              <text class="meta-txt">已收录 348 个统筹区</text>
             </view>
           </view>
-          <text class="benchmark-title">全国各统筹区医保保障力排行与政策对决</text>
-          <text class="benchmark-sub">构建全域整体综合、城镇职工医保、城乡居民医保三大权威评价体系，支持多维即时重排与自选双城同台竞技</text>
+          <text class="benchmark-title">全国各统筹区医保政策待遇对比</text>
+          <text class="benchmark-sub">根据各地公开政策文件整理，支持职工与居民报销比例对比及自选双城条款对照（数据仅供参考，以官方结算为准）</text>
         </view>
 
-        <!-- 模式切换：天梯榜单 vs 双城竞技场 -->
+        <!-- 模式切换：对比榜单 vs 双城对照 -->
         <view class="arena-switch-bar">
           <view 
             class="switch-pill" 
@@ -34,7 +34,7 @@
               <line x1="12" y1="20" x2="12" y2="4"></line>
               <line x1="6" y1="20" x2="6" y2="14"></line>
             </svg>
-            <text class="pill-label">天梯排行榜</text>
+            <text class="pill-label">待遇对比榜</text>
           </view>
           <view 
             class="switch-pill" 
@@ -44,7 +44,7 @@
             <svg class="pill-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
             </svg>
-            <text class="pill-label">双城竞技场</text>
+            <text class="pill-label">双城政策对比</text>
           </view>
         </view>
       </view>

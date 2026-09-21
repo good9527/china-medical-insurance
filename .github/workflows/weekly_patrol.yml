@@ -1,0 +1,32 @@
+name: Weekly Policy Data Patrol
+
+on:
+  schedule:
+    # 每周一上午 8:00 (UTC 0:00) 自动巡检
+    - cron: '0 0 * * 1'
+  workflow_dispatch: # 支持在 GitHub 页面手动点击触发
+
+jobs:
+  patrol:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Full Policy Test Suite (6900+ Assertions)
+        run: npm run test:calc
+
+      - name: Run Smart Policy Audit
+        run: npm run audit:smart
+
+      - name: Build H5 Production
+        run: npm run build:h5
