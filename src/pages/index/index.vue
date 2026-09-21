@@ -308,7 +308,10 @@
             <view class="receipt-header">
               <view class="receipt-title-wrap">
                 <view class="status-indicator"></view>
-                <text class="receipt-title">医保测算结果看板</text>
+                <text class="receipt-title">
+                  <text class="desktop-title-txt">医保测算结果看板</text>
+                  <text class="mobile-title-txt">测算结果看板</text>
+                </text>
               </view>
               <view class="receipt-actions">
                 <view class="copy-voucher-btn" @click.stop="copyReceipt" title="一键复制测算凭据">
@@ -369,17 +372,21 @@
                   <text class="b-col-name">总医疗花费</text>
                   <text class="b-col-val">¥{{ (parseFloat(form.totalCost) || 0).toLocaleString() }}</text>
                 </view>
+                <view class="b-row" v-if="result.breakdown.nonInsuranceDeducted > 0">
+                  <text class="b-col-name">自费/乙类先行自付</text>
+                  <text class="b-col-val text-dim">- ¥{{ result.breakdown.nonInsuranceDeducted.toLocaleString() }}</text>
+                </view>
                 <view class="b-row">
                   <text class="b-col-name">扣除起付线门槛</text>
-                  <text class="b-col-val text-dim">- ¥{{ result.breakdown.deductibleDeducted }}</text>
+                  <text class="b-col-val text-dim">- ¥{{ result.breakdown.deductibleDeducted.toLocaleString() }}</text>
                 </view>
                 <view class="b-row">
-                  <text class="b-col-name">进入统筹池合规基数</text>
-                  <text class="b-col-val">¥{{ result.breakdown.eligibleCost }}</text>
+                  <text class="b-col-name">实际纳规报销基数</text>
+                  <text class="b-col-val">¥{{ Math.max(0, result.breakdown.eligibleCost - result.breakdown.deductibleDeducted).toLocaleString() }}</text>
                 </view>
                 <view class="b-row">
-                  <text class="b-col-name">基本统筹基金支付</text>
-                  <text class="b-col-val text-cyan font-bold">¥{{ result.breakdown.baseReimbursed }}</text>
+                  <text class="b-col-name">统筹基金报销</text>
+                  <text class="b-col-val text-cyan font-bold">¥{{ result.breakdown.baseReimbursed.toLocaleString() }}</text>
                 </view>
                 <view class="b-row" v-if="result.breakdown.catastrophicReimbursed > 0">
                   <text class="b-col-name">大病互助二次报销</text>
@@ -1543,12 +1550,18 @@ onShow(() => {
   font-size: 15px;
   color: #0f172a;
   font-weight: 700;
+  white-space: nowrap;
+  word-break: keep-all;
 }
+
+.desktop-title-txt { display: inline; }
+.mobile-title-txt { display: none; }
 
 .receipt-actions {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-shrink: 0;
 }
 
 .copy-voucher-btn {
@@ -1562,6 +1575,9 @@ onShow(() => {
   cursor: pointer;
   transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
+  white-space: nowrap;
+  word-break: keep-all;
+  flex-shrink: 0;
 }
 
 .copy-voucher-btn:hover {
@@ -1579,6 +1595,7 @@ onShow(() => {
   width: 12px;
   height: 12px;
   stroke: #475569;
+  flex-shrink: 0;
 }
 
 .copy-voucher-btn:hover .copy-btn-svg {
@@ -1590,6 +1607,8 @@ onShow(() => {
   color: #475569;
   font-weight: 600;
   line-height: 1;
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
 .copy-voucher-btn:hover .copy-btn-txt {
@@ -1601,12 +1620,17 @@ onShow(() => {
   border: 1px solid #bfdbfe;
   padding: 4px 10px;
   border-radius: 9999px;
+  white-space: nowrap;
+  word-break: keep-all;
+  flex-shrink: 0;
 }
 
 .ratio-text {
   font-size: 12px;
   color: #1d4ed8;
   font-weight: 700;
+  white-space: nowrap;
+  word-break: keep-all;
 }
 
 /* 主指标大金额 */
@@ -1940,6 +1964,41 @@ onShow(() => {
     z-index: 9999 !important;
     box-shadow: 0 16px 48px rgba(15, 23, 42, 0.18) !important;
     -webkit-overflow-scrolling: touch;
+  }
+
+  .desktop-title-txt { display: none !important; }
+  .mobile-title-txt { display: inline !important; }
+
+  .receipt-header {
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    padding-bottom: 10px;
+  }
+
+  .receipt-title {
+    font-size: 13.5px !important;
+  }
+
+  .receipt-actions {
+    margin-left: auto;
+    gap: 6px;
+  }
+
+  .copy-voucher-btn {
+    padding: 3px 8px !important;
+  }
+
+  .copy-btn-txt {
+    font-size: 11px !important;
+  }
+
+  .ratio-pill {
+    padding: 3px 8px !important;
+  }
+
+  .ratio-text {
+    font-size: 11px !important;
   }
 
   .page-intro-bar {

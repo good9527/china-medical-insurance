@@ -1450,6 +1450,31 @@ onMounted(() => {
     padding: 8px 0;
   }
 
+  .category-pills-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cat-pill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 4px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .cat-pill:nth-child(4) {
+    grid-column: span 1;
+  }
+
+  .cat-pill:nth-child(5) {
+    grid-column: span 2;
+  }
+
   .suggest-input-row {
     grid-template-columns: 1fr;
   }

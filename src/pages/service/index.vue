@@ -504,15 +504,15 @@ function parseHotlines(rawHotline: string, cityName: string): HotlineEntry[] {
     const clean = part.replace(/[^0-9]/g, '');
     if (!clean) continue;
 
-    let label = '医保便民专线';
+    let label = '医保专线';
     if (clean.endsWith('12393')) {
-      label = clean === '12393' ? '全国统一医保热线' : '医保热线 (异地加区号)';
+      label = clean === '12393' ? '本地直拨' : '异地加区号';
     } else if (clean.endsWith('12345')) {
-      label = '政务服务便民热线';
+      label = '便民热线';
     } else if (clean.endsWith('12333')) {
-      label = '人社与社保咨询专线';
+      label = '人社热线';
     } else {
-      label = `${cityName}经办业务座机`;
+      label = '经办座机';
     }
 
     entries.push({
@@ -1212,17 +1212,20 @@ onMounted(() => {
   align-items: center;
   justify-content: space-between;
   padding: 0 10px;
-  height: 38px;
+  min-height: 38px;
   border-radius: 6px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   box-sizing: border-box;
+  gap: 8px;
 }
 
 .phone-item-left {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   gap: 8px;
+  min-width: 0;
+  flex: 1;
 }
 
 .phone-tag-badge {
@@ -1237,6 +1240,9 @@ onMounted(() => {
   border-radius: 4px;
   line-height: 1;
   box-sizing: border-box;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  flex-shrink: 0 !important;
 }
 
 .phone-number-txt {
@@ -1245,6 +1251,9 @@ onMounted(() => {
   color: #0f172a;
   line-height: 1;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  flex-shrink: 0 !important;
 }
 
 .btn-micro-dial {
@@ -1258,6 +1267,9 @@ onMounted(() => {
   border: 1px solid #bfdbfe;
   cursor: pointer;
   box-sizing: border-box;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  flex-shrink: 0 !important;
 }
 
 .micro-dial-txt {
@@ -1265,6 +1277,8 @@ onMounted(() => {
   font-weight: 700;
   color: #2563eb;
   line-height: 1;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
 }
 
 .hotline-card-foot {

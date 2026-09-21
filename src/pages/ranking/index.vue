@@ -226,7 +226,10 @@
                   <line x1="8" y1="2" x2="8" y2="18"></line>
                   <line x1="16" y1="6" x2="16" y2="22"></line>
                 </svg>
-                <text class="dropdown-label">{{ selectedProvince === 'all' ? '全国 348 统筹区' : selectedProvince }}</text>
+                <text class="dropdown-label">
+                  <text class="desktop-text">{{ selectedProvince === 'all' ? '全国 348 统筹区' : selectedProvince }}</text>
+                  <text class="mobile-text">{{ selectedProvince === 'all' ? '全国 348 区' : selectedProvince }}</text>
+                </text>
                 <text class="dropdown-caret">▾</text>
               </view>
               <view class="dropdown-menu" v-if="openDropdown === 'province'" @click.stop>
@@ -1665,6 +1668,14 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.desktop-text { display: inline; }
+.mobile-text { display: none; }
+
+@media (max-width: 767px) {
+  .desktop-text { display: none !important; }
+  .mobile-text { display: inline !important; }
 }
 
 .dropdown-caret {

@@ -186,7 +186,10 @@
             <view class="t-row" v-for="(tier, key) in displayOutpatientTiers" :key="key">
               <view class="t-cell f-2 tier-cell">
                 <view class="tier-tag" :class="getTierTagClass(key)">{{ getTierTag(key) }}</view>
-                <text class="tier-title">{{ getTierCleanName(key, tier.tierName) }}</text>
+                <text class="tier-title">
+                  <text class="desktop-text">{{ getTierCleanName(key, tier.tierName) }}</text>
+                  <text class="mobile-text">{{ getTierMobileName(key) }}</text>
+                </text>
               </view>
               <text class="t-cell f-1 text-center font-bold" :class="tier.deductible === 0 ? 'text-emerald' : 'text-slate-light'">
                 {{ tier.deductible === 0 ? '0 元 (免)' : '¥' + tier.deductible }}
@@ -237,7 +240,10 @@
             <view class="t-row" v-for="(tier, key) in currentPkg.inpatient.tierBenefits" :key="key">
               <view class="t-cell f-2 tier-cell">
                 <view class="tier-tag" :class="getTierTagClass(key)">{{ getTierTag(key) }}</view>
-                <text class="tier-title">{{ getTierCleanName(key, tier.tierName) }}</text>
+                <text class="tier-title">
+                  <text class="desktop-text">{{ getTierCleanName(key, tier.tierName) }}</text>
+                  <text class="mobile-text">{{ getTierMobileName(key) }}</text>
+                </text>
               </view>
               <text class="t-cell f-1 text-center font-bold text-white">¥{{ tier.deductible }}</text>
               <text class="t-cell f-1 text-center font-bold text-cyan">{{ Math.round(tier.reimbursementRatio * 100) }}%</text>
@@ -652,6 +658,17 @@ function getTierCleanName(key: string | number, rawName: string) {
     case 'tier3': return '三级定点医院';
     case 'tier3_top': return '三甲重点医院';
     default: return rawName;
+  }
+}
+
+function getTierMobileName(key: string | number) {
+  switch (key) {
+    case 'community': return '社区/卫生室';
+    case 'tier1': return '一级医院';
+    case 'tier2': return '二级医院';
+    case 'tier3': return '普通三级';
+    case 'tier3_top': return '三甲医院';
+    default: return String(key);
   }
 }
 
@@ -1370,6 +1387,14 @@ onShow(() => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.desktop-text { display: inline; }
+.mobile-text { display: none; }
+
+@media (max-width: 767px) {
+  .desktop-text { display: none !important; }
+  .mobile-text { display: inline !important; }
 }
 
 .table-footnote {
