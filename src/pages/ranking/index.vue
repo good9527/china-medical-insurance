@@ -3150,9 +3150,9 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 /* ------------------------------------------------------------- */
 /* 移动端深度优化与极速适配 (< 768px & < 520px)                   */
 /* ------------------------------------------------------------- */
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .content-box {
-    padding: 12px 14px calc(80px + env(safe-area-inset-bottom)) !important;
+    padding: 12px 14px calc(84px + env(safe-area-inset-bottom)) !important;
   }
 
   .benchmark-header {
@@ -3242,6 +3242,17 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
     box-sizing: border-box;
     min-width: unset;
     padding: 8px 10px;
+  }
+
+  .dropdown-menu {
+    left: 0;
+    right: 0;
+    min-width: 100%;
+    width: 100%;
+    max-height: 46vh !important;
+    z-index: 9999 !important;
+    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.18) !important;
+    -webkit-overflow-scrolling: touch;
   }
 
   .layout-toggle-dock {

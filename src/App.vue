@@ -279,6 +279,9 @@ uni-page-head {
 
 /* 移动端沉浸式磨砂微光 TabBar 与安全区适配 */
 @media (max-width: 767px) {
+  uni-page-body {
+    padding-bottom: calc(76px + env(safe-area-inset-bottom)) !important;
+  }
   uni-tabbar, .uni-tabbar {
     background: rgba(255, 255, 255, 0.95) !important;
     backdrop-filter: blur(20px) !important;

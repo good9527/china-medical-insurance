@@ -741,7 +741,7 @@ onMounted(() => {
   top: calc(100% + 4px);
   left: 0;
   min-width: 140px;
-  max-height: 240px;
+  max-height: 320px;
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
@@ -1389,7 +1389,7 @@ onMounted(() => {
 .fab-back-top {
   position: fixed;
   right: 24px;
-  bottom: calc(40px + env(safe-area-inset-bottom));
+  bottom: calc(75px + env(safe-area-inset-bottom));
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -1427,9 +1427,27 @@ onMounted(() => {
 }
 
 /* 响应式移动端适配 */
-@media (max-width: 860px) {
+@media (max-width: 767px) {
   .content-box {
-    padding: 12px 14px calc(80px + env(safe-area-inset-bottom)) !important;
+    padding: 12px 14px calc(84px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .fab-back-top {
+    right: 16px;
+    bottom: calc(68px + env(safe-area-inset-bottom)) !important;
+    width: 42px;
+    height: 42px;
+  }
+
+  .cyber-dropdown-menu {
+    left: 0;
+    right: 0;
+    min-width: 100%;
+    width: 100%;
+    max-height: 46vh !important;
+    z-index: 9999 !important;
+    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.18) !important;
+    -webkit-overflow-scrolling: touch;
   }
 
   .page-intro-bar {

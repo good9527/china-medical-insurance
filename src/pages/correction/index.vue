@@ -818,7 +818,7 @@ onMounted(() => {
   left: 0;
   right: 0;
   min-width: 140px;
-  max-height: 220px;
+  max-height: 320px;
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
@@ -1365,9 +1365,16 @@ onMounted(() => {
 }
 
 /* 移动端响应式 */
-@media (max-width: 860px) {
+@media (max-width: 767px) {
   .content-box {
-    padding: 12px 14px calc(80px + env(safe-area-inset-bottom)) !important;
+    padding: 12px 14px calc(84px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .cyber-dropdown-menu {
+    max-height: 46vh !important;
+    z-index: 9999 !important;
+    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.18) !important;
+    -webkit-overflow-scrolling: touch;
   }
 
   .correction-main-grid {

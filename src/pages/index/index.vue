@@ -310,8 +310,17 @@
                 <view class="status-indicator"></view>
                 <text class="receipt-title">医保测算结果看板</text>
               </view>
-              <view class="ratio-pill">
-                <text class="ratio-text">综合报销率 {{ displayRatio }}%</text>
+              <view class="receipt-actions">
+                <view class="copy-voucher-btn" @click.stop="copyReceipt" title="一键复制测算凭据">
+                  <svg class="copy-btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <text class="copy-btn-txt">复制凭据</text>
+                </view>
+                <view class="ratio-pill">
+                  <text class="ratio-text">综合报销率 {{ displayRatio }}%</text>
+                </view>
               </view>
             </view>
 
@@ -720,6 +729,61 @@ function openDocUrl() {
   }
 }
 
+function copyReceipt() {
+  if (!result.value) {
+    uni.showToast({ title: '暂无测算结果', icon: 'none' });
+    return;
+  }
+  const res = result.value;
+  const b = res.breakdown;
+  const city = currentCityOption.value?.cityName || '参保地';
+  const insType = form.insuranceType === 'employee' ? (form.isRetiree ? '职工医保 (退休)' : '职工医保 (在职)') : '城乡居民医保';
+  const treatType = form.treatmentType === 'inpatient' ? '住院就医' : '普通门诊';
+  const hospTier = hospitalTiers[selectedHospitalIndex.value]?.shortName || '三级医院';
+  const remote = remoteOptions[selectedRemoteIndex.value]?.label || '本地就医';
+  const totalCost = (parseFloat(form.totalCost) || 0).toLocaleString();
+  const reimbursed = b.totalReimbursed.toLocaleString();
+  const personal = b.personalPayTotal.toLocaleString();
+  const basePay = (b.baseReimbursed + b.catastrophicReimbursed).toLocaleString();
+  const deductible = b.deductibleDeducted.toLocaleString();
+  const eligible = b.eligibleCost.toLocaleString();
+  const docTitle = res.officialDocUsed?.title || `${city}基本医疗保险政策`;
+
+  const voucher = `【医保报销测算凭据】
+统筹区域：${city}
+参保类型：${insType}
+就医方式：${treatType}（${hospTier} | ${remote}）
+医疗总费用：¥${totalCost}
+------------------------
+★ 医保综合报销：¥${reimbursed} (报销率 ${b.effectiveRatio}%)
+  - 统筹基金支付：¥${basePay}
+  - 扣除起付线：¥${deductible}
+  - 进入报销基数：¥${eligible}
+★ 个人预计自理：¥${personal}
+------------------------
+测算政策依据：《${docTitle}》
+测算平台：全国医保报销精算引擎`;
+
+  uni.setClipboardData({
+    data: voucher,
+    showToast: false,
+    success: () => {
+      uni.showToast({ title: '测算凭据已复制', icon: 'success' });
+    },
+    fail: () => {
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        navigator.clipboard.writeText(voucher).then(() => {
+          uni.showToast({ title: '测算凭据已复制', icon: 'success' });
+        }).catch(() => {
+          uni.showToast({ title: '复制失败，请截图保存', icon: 'none' });
+        });
+      } else {
+        uni.showToast({ title: '复制失败，请截图保存', icon: 'none' });
+      }
+    }
+  });
+}
+
 function scrollToReceipt() {
   uni.pageScrollTo({
     selector: '.receipt-card',
@@ -1091,7 +1155,7 @@ onShow(() => {
   top: calc(100% + 6rpx);
   left: 0;
   width: 100%;
-  max-height: 360rpx;
+  max-height: 320px;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 12rpx;
@@ -1481,6 +1545,57 @@ onShow(() => {
   font-weight: 700;
 }
 
+.receipt-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.copy-voucher-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  padding: 4px 10px;
+  border-radius: 9999rpx;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.copy-voucher-btn:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
+  transform: translateY(-1px);
+}
+
+.copy-voucher-btn:active {
+  background: #dbeafe;
+  transform: scale(0.95);
+}
+
+.copy-btn-svg {
+  width: 12px;
+  height: 12px;
+  stroke: #475569;
+}
+
+.copy-voucher-btn:hover .copy-btn-svg {
+  stroke: #2563eb;
+}
+
+.copy-btn-txt {
+  font-size: 11.5px;
+  color: #475569;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.copy-voucher-btn:hover .copy-btn-txt {
+  color: #2563eb;
+}
+
 .ratio-pill {
   background: #eff6ff;
   border: 1px solid #bfdbfe;
@@ -1799,13 +1914,13 @@ onShow(() => {
 .empty-desc { font-size: 12.5px; color: #64748b; margin-top: 8px; line-height: 1.5; max-width: 320px; }
 
 /* -------------------- 3. 响应式布局：移动端自适应 -------------------- */
-@media (min-width: 860px) {
+@media (min-width: 768px) {
   .page {
     padding: clamp(12px, 1.8vh, 24px) clamp(16px, 2vw, 32px);
   }
 }
 
-@media (min-width: 860px) and (max-height: 780px) {
+@media (min-width: 768px) and (max-height: 780px) {
   .page {
     padding: 10px 18px;
   }
@@ -1814,10 +1929,17 @@ onShow(() => {
   }
 }
 
-/* -------------------- 移动端响应式断点 (max-width: 768px) -------------------- */
-@media (max-width: 768px) {
+/* -------------------- 移动端响应式断点 (max-width: 767px) -------------------- */
+@media (max-width: 767px) {
   .content-box {
-    padding: 12px 14px calc(80px + env(safe-area-inset-bottom)) !important;
+    padding: 12px 14px calc(84px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .cyber-dropdown-menu {
+    max-height: 46vh !important;
+    z-index: 9999 !important;
+    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.18) !important;
+    -webkit-overflow-scrolling: touch;
   }
 
   .page-intro-bar {

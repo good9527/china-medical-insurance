@@ -807,7 +807,7 @@ onShow(() => {
 
 .desktop-omni-nav { display: none; }
 
-@media (min-width: 860px) {
+@media (min-width: 768px) {
   .page {
     padding: 18px 28px 40px;
   }
@@ -842,13 +842,13 @@ onShow(() => {
 }
 
 
-@media (min-width: 860px) {
+@media (min-width: 768px) {
   .page {
     padding: clamp(12px, 1.8vh, 24px) clamp(16px, 2vw, 32px);
   }
 }
 
-@media (min-width: 860px) and (max-height: 780px) {
+@media (min-width: 768px) and (max-height: 780px) {
   .page {
     padding: 10px 18px;
   }
@@ -857,10 +857,10 @@ onShow(() => {
   }
 }
 
-/* -------------------- 移动端响应式断点 (max-width: 768px) -------------------- */
-@media (max-width: 768px) {
+/* -------------------- 移动端响应式断点 (max-width: 767px) -------------------- */
+@media (max-width: 767px) {
   .content-box {
-    padding: 12px 14px calc(80px + env(safe-area-inset-bottom)) !important;
+    padding: 12px 14px calc(84px + env(safe-area-inset-bottom)) !important;
   }
 
   .page-intro-bar {

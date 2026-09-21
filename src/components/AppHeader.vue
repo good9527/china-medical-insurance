@@ -130,11 +130,11 @@ function navTo(url: string) {
   box-sizing: border-box;
 }
 
-/* 桌面端：经典对称 3 栏 Grid，左右均为 240px，确保中间 Tab 栏处于绝对几何正中心 */
-@media (min-width: 860px) {
+/* 桌面端与平板端：经典对称 3 栏 Grid，确保中间 Tab 栏处于绝对几何正中心 */
+@media (min-width: 768px) {
   .site-header-inner {
     display: grid;
-    grid-template-columns: 240px 1fr 240px;
+    grid-template-columns: minmax(200px, 240px) 1fr minmax(180px, 240px);
     align-items: center;
   }
 }
@@ -244,7 +244,7 @@ function navTo(url: string) {
   font-weight: 500;
 }
 
-@media (max-width: 859px) {
+@media (max-width: 767px) {
   .site-header-inner {
     height: 52px;
     padding: 0 14px;
