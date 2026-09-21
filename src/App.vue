@@ -425,4 +425,83 @@ button:active, .elastic-btn:active, .interactive-item:active {
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
+/* ==================== 专属打印输出友好适配 (@media print) ==================== */
+@media print {
+  /* 隐藏非凭据单据与交互UI元素 */
+  #antigravity-bg-canvas,
+  .site-header,
+  .site-footer,
+  .mobile-tabbar,
+  .page-intro-bar,
+  .bento-card.config-card,
+  .mobile-calc-float-bar,
+  .quick-search-trigger,
+  .search-panel,
+  .cyber-dropdown-menu,
+  .copy-voucher-btn,
+  .statute-btn,
+  .modal-actions-bar,
+  .modal-close-btn,
+  .action-btn,
+  .policy-tooltip-anchor,
+  .arena-switch-bar,
+  .category-segmented-bar,
+  .toolbar-pickers-row,
+  .identity-switch-bar,
+  .calc-shortcut-banner,
+  .contact-pill {
+    display: none !important;
+  }
+
+  body, page, uni-page-body, .page-wrapper {
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .content-box {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .bento-grid {
+    display: block !important;
+  }
+
+  .bento-card.receipt-card {
+    border: 1px solid #333333 !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    border-radius: 0 !important;
+    break-inside: avoid;
+  }
+
+  .receipt-hero-block {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: none !important;
+  }
+
+  /* 如果打开了医保报销预估凭据单弹窗，完全只打印凭据单正文卡片 */
+  .voucher-modal-mask {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    backdrop-filter: none !important;
+  }
+  .voucher-modal-dialog {
+    max-width: 100% !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  .voucher-sheet {
+    border: 1px solid #333333 !important;
+    box-shadow: none !important;
+    padding: 10mm !important;
+    page-break-inside: avoid;
+  }
+}
 </style>

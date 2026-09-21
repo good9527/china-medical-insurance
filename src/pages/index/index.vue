@@ -148,6 +148,7 @@
               <view class="retiree-bar-left">
                 <text class="retiree-label">退休人员待遇优待</text>
                 <text class="retiree-sub">（报销比例享受倾斜上浮）</text>
+                <PolicyTooltip title="什么是退休人员待遇倾斜？" text="各地医保政策对退休参保人员给予法定倾斜优待，报销比例通常比在职人员高 3%~5%，部分城市门诊起付线更低或封顶线更高。" example="以西安三级医院住院为例，在职职工报销80%，退休职工报销85%。" />
               </view>
               <view class="custom-switch" :class="{ checked: form.isRetiree }">
                 <view class="switch-handle"></view>
@@ -249,7 +250,10 @@
           <!-- 模块 5: 异地与自费折叠面板 (干净微光卡片，非虚线) -->
           <view class="advanced-collapse-card mt-16">
             <view class="collapse-trigger" @click="showExtra = !showExtra">
-              <text class="trigger-label">异地就医与全自费项目</text>
+              <view class="trigger-label-group">
+                <text class="trigger-label">异地就医与全自费项目</text>
+                <PolicyTooltip title="什么是异地就医与全自费？" text="异地就医未备案直接结算通常会按政策下调比例（惩罚性降点10%~20%）；丙类自费药品与特需服务不属于基本医保目录，需个人全额自理。" />
+              </view>
               <text class="trigger-arrow">{{ showExtra ? '收起 ▴' : '展开 ▾' }}</text>
             </view>
 
@@ -303,12 +307,22 @@
                 </text>
               </view>
               <view class="receipt-actions">
+                <view class="voucher-gen-btn" @click.stop="showVoucherModal = true" title="生成结算凭据单海报">
+                  <svg class="voucher-btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <polyline points="10 9 9 9 8 9"></polyline>
+                  </svg>
+                  <text class="voucher-btn-txt">生成凭据单</text>
+                </view>
                 <view class="copy-voucher-btn" @click.stop="copyReceipt" title="一键复制估算凭据">
                   <svg class="copy-btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                     <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
                   </svg>
-                  <text class="copy-btn-txt">复制估算凭据</text>
+                  <text class="copy-btn-txt">复制凭据</text>
                 </view>
                 <view class="ratio-pill">
                   <text class="ratio-text">预估报销率 {{ displayRatio }}%</text>
@@ -329,11 +343,17 @@
             <!-- 基金支付与自理对比矩阵 -->
             <view class="compare-matrix">
               <view class="matrix-cell">
-                <text class="cell-label">统筹基金支付</text>
+                <view class="cell-label-wrap">
+                  <text class="cell-label">统筹基金支付</text>
+                  <PolicyTooltip title="什么是统筹基金支付？" text="基本医疗保险统筹基金直接承担的公费报销金额。参保人在定点机构办理出院联网结算时，医保系统直接抵扣此项，无需个人垫付。" />
+                </view>
                 <text class="cell-val text-cyan">¥{{ (result.breakdown.baseReimbursed + result.breakdown.catastrophicReimbursed).toLocaleString() }}</text>
               </view>
               <view class="matrix-cell">
-                <text class="cell-label">个人预计自理</text>
+                <view class="cell-label-wrap">
+                  <text class="cell-label">个人预计自理</text>
+                  <PolicyTooltip title="什么是个人预计自理？" text="参保人本次就医预计需自行承担的总额，包含起付线门槛以下部分、政策报销后个人按比例自负部分，以及医保目录外全自费的药品及特需耗材。" />
+                </view>
                 <text class="cell-val text-amber">¥{{ displayPersonalPay.toLocaleString() }}</text>
               </view>
             </view>
@@ -366,19 +386,31 @@
                   <text class="b-col-val text-dim">- ¥{{ result.breakdown.nonInsuranceDeducted.toLocaleString() }}</text>
                 </view>
                 <view class="b-row">
-                  <text class="b-col-name">扣除起付线门槛</text>
+                  <view class="b-col-name-wrap">
+                    <text class="b-col-name">扣除起付线门槛</text>
+                    <PolicyTooltip title="什么是起付线门槛？" text="医保统筹基金支付的最低起跑门槛（门槛费）。低于起付线的合规费用由个人自理；超过起付线且属于政策范围内的合规费用，医保才开始按比例报销。" example="如起付线为1200元，医疗总花费1万元，则前1200元自付，剩余8800元按规定比例报销。" />
+                  </view>
                   <text class="b-col-val text-dim">- ¥{{ result.breakdown.deductibleDeducted.toLocaleString() }}</text>
                 </view>
                 <view class="b-row">
-                  <text class="b-col-name">实际纳规报销基数</text>
+                  <view class="b-col-name-wrap">
+                    <text class="b-col-name">实际纳规报销基数</text>
+                    <PolicyTooltip title="什么是实际纳规报销基数？" text="总医疗花费扣减目录外全自费项目及起付线门槛后，符合当地医保报销目录、真正进入统筹报销池的基准金额。" />
+                  </view>
                   <text class="b-col-val">¥{{ Math.max(0, result.breakdown.eligibleCost - result.breakdown.deductibleDeducted).toLocaleString() }}</text>
                 </view>
                 <view class="b-row">
-                  <text class="b-col-name">统筹基金报销</text>
+                  <view class="b-col-name-wrap">
+                    <text class="b-col-name">统筹基金报销</text>
+                    <PolicyTooltip title="什么是统筹基金报销？" text="经起付线扣除、乙类自付折算后，由基本医疗保险统筹基金按地方公文规定比例直接承担的减免金额。" />
+                  </view>
                   <text class="b-col-val text-cyan font-bold">¥{{ result.breakdown.baseReimbursed.toLocaleString() }}</text>
                 </view>
                 <view class="b-row" v-if="result.breakdown.catastrophicReimbursed > 0">
-                  <text class="b-col-name">大病互助二次报销</text>
+                  <view class="b-col-name-wrap">
+                    <text class="b-col-name">大病互助二次报销</text>
+                    <PolicyTooltip title="什么是大病互助二次报销？" text="基本医保统筹结算后，合规自付费用累计突破大病保险起付线时，系统自动无缝启动大病二次报销，梯级递增补偿。" />
+                  </view>
                   <text class="b-col-val text-emerald font-bold">+ ¥{{ result.breakdown.catastrophicReimbursed }}</text>
                 </view>
                 <view class="b-row" v-if="result.breakdown.nonInsuranceCost > 0">
@@ -431,8 +463,8 @@
       </view>
 
       <!-- 移动端底部悬浮结果快捷卡片 (仅手机视口展示，实时反馈估算结论) -->
-      <view class="mobile-calc-float-bar" v-if="result" @click="scrollToReceipt">
-        <view class="float-bar-left">
+      <view class="mobile-calc-float-bar" v-if="result">
+        <view class="float-bar-left" @click="scrollToReceipt">
           <text class="float-tag">预估报销</text>
           <view class="float-val-group">
             <text class="float-currency">¥</text>
@@ -441,10 +473,29 @@
           <text class="float-ratio">({{ displayRatio }}%)</text>
         </view>
         <view class="float-bar-right">
-          <text class="float-cta">查看估算明细 ↓</text>
+          <view class="float-voucher-tag" @click.stop="showVoucherModal = true">
+            <text class="tag-txt">生成凭据单</text>
+          </view>
+          <text class="float-cta" @click="scrollToReceipt">明细 ↓</text>
         </view>
       </view>
     </view>
+
+    <!-- 医保报销预估凭据单/海报弹窗 -->
+    <EstimateVoucherModal
+      :visible="showVoucherModal"
+      :cityName="currentCityOption.cityName"
+      :provinceName="currentProvince.name"
+      :cityCode="currentCityOption.cityCode"
+      :insuranceType="form.insuranceType"
+      :isRetiree="form.isRetiree"
+      :treatmentType="form.treatmentType"
+      :hospitalTierName="hospitalTiers[selectedHospitalIndex].name"
+      :remoteLabel="remoteOptions[selectedRemoteIndex].label"
+      :totalCost="form.totalCost"
+      :result="result"
+      @close="showVoucherModal = false"
+    />
 
     <!-- 全站通用规范页脚 (含作者联系方式、微信公众号与开源仓库) -->
     <AppFooter />
@@ -456,11 +507,14 @@ import { ref, reactive, computed, onMounted } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import AppFooter from '../../components/AppFooter.vue';
+import EstimateVoucherModal from '../../components/EstimateVoucherModal.vue';
+import PolicyTooltip from '../../components/PolicyTooltip.vue';
 import type { HospitalTier, CalculateRequest, CalculateResult } from '../../data/types';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
 import { allCities } from '../../data';
 import { calculateReimbursement } from '../../engine/calculator';
 
+const showVoucherModal = ref(false);
 const openDropdown = ref<string | null>(null);
 
 function navToTab(url: string) {
@@ -1525,6 +1579,66 @@ onShow(() => {
   flex-shrink: 0;
 }
 
+.voucher-gen-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #0284c7;
+  border: 1px solid #0284c7;
+  padding: 4px 10px;
+  border-radius: 9999rpx;
+  cursor: pointer;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  white-space: nowrap;
+  word-break: keep-all;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(2, 132, 199, 0.25);
+
+  &:hover {
+    background: #0369a1;
+    border-color: #0369a1;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    background: #075985;
+    transform: scale(0.95);
+  }
+}
+
+.voucher-btn-svg {
+  width: 12px;
+  height: 12px;
+  stroke: #ffffff;
+  flex-shrink: 0;
+}
+
+.voucher-btn-txt {
+  font-size: 11.5px;
+  color: #ffffff;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+  word-break: keep-all;
+}
+
+.trigger-label-group {
+  display: flex;
+  align-items: center;
+}
+
+.cell-label-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.b-col-name-wrap {
+  display: flex;
+  align-items: center;
+}
+
 .copy-voucher-btn {
   display: inline-flex;
   align-items: center;
@@ -2012,6 +2126,10 @@ onShow(() => {
   }
 }
 
+.mobile-calc-float-bar {
+  display: none;
+}
+
 /* -------------------- 手机端及超窄视口 (max-width: 520px) -------------------- */
 @media (max-width: 520px) {
   .page {
@@ -2128,6 +2246,24 @@ onShow(() => {
     flex-shrink: 0;
   }
 
+  .float-voucher-tag {
+    background: #0284c7;
+    color: #ffffff;
+    padding: 4px 9px;
+    border-radius: 9999rpx;
+    font-size: 11px;
+    font-weight: 700;
+    margin-right: 6px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4);
+    white-space: nowrap;
+
+    &:active {
+      transform: scale(0.95);
+    }
+  }
+
   .float-cta {
     font-size: 11px;
     font-weight: 700;
@@ -2138,10 +2274,6 @@ onShow(() => {
     white-space: nowrap;
     box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
   }
-}
-
-.mobile-calc-float-bar {
-  display: none;
 }
 
 @media (max-width: 380px) {

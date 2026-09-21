@@ -328,6 +328,67 @@
             </view>
           </view>
 
+          <!-- 0 成本开源协同更新闭环流程透明看板 -->
+          <view class="card pipeline-flow-card mt-16">
+            <view class="card-head">
+              <view class="head-left">
+                <svg class="head-svg text-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                <text class="card-head-title">纠错机制如何闭环？信息去哪了？</text>
+              </view>
+              <text class="head-chip-cyan">透明开源管道</text>
+            </view>
+
+            <view class="pipeline-steps-list">
+              <view class="pipe-step-item">
+                <view class="step-num-badge">1</view>
+                <view class="step-content">
+                  <text class="step-title">用户提交工单草稿</text>
+                  <text class="step-desc">系统校验统筹区、险种、字段与建议值，自动生成带公文溯源的标准化 GitHub Issue 或直投邮件草稿。</text>
+                </view>
+              </view>
+
+              <view class="pipe-step-item">
+                <view class="step-num-badge">2</view>
+                <view class="step-content">
+                  <text class="step-title">零延迟免费邮件提醒作者</text>
+                  <text class="step-desc">GitHub Issue 自动秒级推送提醒至维护者邮箱（keepkid0824@gmail.com），作者手机即时收到通知，全程零服务器费用与零 API 成本。</text>
+                </view>
+              </view>
+
+              <view class="pipe-step-item">
+                <view class="step-num-badge">3</view>
+                <view class="step-content">
+                  <text class="step-title">本地一键拉取与 AI 协同修改</text>
+                  <text class="step-desc">作者在本地电脑运行 <text class="cmd-code">npm run feedback:list</text>，命令行秒级调取待核实工单，由 Antigravity 本地读取公文原文核对修改数据。</text>
+                </view>
+              </view>
+
+              <view class="pipe-step-item">
+                <view class="step-num-badge">4</view>
+                <view class="step-content">
+                  <text class="step-title">6911 项自动化测算严密质检</text>
+                  <text class="step-desc">修改后运行 <text class="cmd-code">npm run test:calc</text>，全量覆盖 348 个统筹区全部 6911 项断言必须 100% 通过，杜绝误改与逻辑冲突。</text>
+                </view>
+              </view>
+
+              <view class="pipe-step-item">
+                <view class="step-num-badge">5</view>
+                <view class="step-content">
+                  <text class="step-title">Git 自动部署与给用户闭环反馈</text>
+                  <text class="step-desc">代码 push 到 GitHub 后，GitHub Actions 自动构建部署最新版；同时在 GitHub Issue 回复并关闭工单，原提交者自动收到邮件提醒“已核验并生效发布”！</text>
+                </view>
+              </view>
+            </view>
+
+            <view class="patrol-notice-box mt-12">
+              <text class="patrol-icon">🛡️</text>
+              <text class="patrol-txt">云端每周一定期自动巡检：配置了 GitHub Actions 自动化 Cron 巡检工作流，每周一自动核验全国 348 统筹区规则，异常自动向邮箱发信告警。</text>
+            </view>
+          </view>
+
           <!-- 极简说明卡片 -->
           <view class="clean-tip-card mt-16">
             <text class="tip-title">为什么需要提供官方文件依据？</text>
@@ -1632,6 +1693,95 @@ onMounted(() => {
 .my-rec-id {
   font-size: 11px;
   color: #94a3b8;
+}
+
+/* 零成本开源协同反馈闭环看板 */
+.head-chip-cyan {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0284c7;
+  background: #e0f2fe;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.pipeline-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.pipe-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.step-num-badge {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #0284c7;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.step-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.step-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.step-desc {
+  font-size: 11.5px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.cmd-code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  color: #0369a1;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.patrol-notice-box {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.patrol-icon {
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.patrol-txt {
+  font-size: 11px;
+  color: #0369a1;
+  line-height: 1.45;
 }
 
 /* 极简说明小卡片 */
