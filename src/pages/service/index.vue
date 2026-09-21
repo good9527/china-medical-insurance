@@ -218,7 +218,7 @@
           <view class="rule-card">
             <view class="rule-seq-tag text-cyan">法则一</view>
             <text class="rule-headline">“就医地目录，参保地政策”</text>
-            <text class="rule-paragraph">哪些药品、耗材和诊疗服务项目能纳入报销？严格按【就医所在省市】的医保目录执行；起付标准是多少、报销比例多高、统筹封顶限额多大？严格按【参保统筹区（{{ currentCity.cityName }}）】的医保政策测算执行。</text>
+            <text class="rule-paragraph">哪些药品、耗材和诊疗服务项目能纳入报销？严格按【就医所在省市】的医保目录执行；起付标准是多少、报销比例多高、统筹封顶限额多大？严格按【参保统筹区（{{ currentCity.cityName }}）】的医保政策规定执行。</text>
           </view>
 
           <view class="rule-card mt-16">
@@ -278,14 +278,22 @@
       <view class="card mt-16">
         <view class="card-head">
           <view class="head-left">
-            <text class="card-head-title">{{ currentProvince.name }} 全部统筹区热线与官网名录 (向下翻阅)</text>
+            <text class="card-head-title">{{ currentProvince.name }} 全部统筹区热线与官网名录</text>
+          </view>
+          <view class="hotline-search-wrap" v-if="provinceCityHotlines.length > 2">
+            <input 
+              class="hotline-search-input" 
+              v-model="citySearchFilter" 
+              :placeholder="'快速检索城市...'"
+              placeholder-class="placeholder-dim"
+            />
           </view>
         </view>
 
         <view class="hotline-grid">
           <view 
             class="hotline-card" 
-            v-for="item in provinceCityHotlines" 
+            v-for="item in displayCityHotlines" 
             :key="item.cityCode"
             :class="{ 'is-current-city': item.cityCode === currentCityOption.cityCode }"
           >
@@ -347,7 +355,7 @@
           </view>
           <view class="guide-text-stack">
             <text class="guide-main-txt">发现参保地政策变动或红头公文更新？</text>
-            <text class="guide-sub-txt">进入【政策纠错中心】，快速提交修改建议与官方发文，智库将核验入库</text>
+            <text class="guide-sub-txt">进入【政策纠错中心】，快速提交修改建议与官方发文，我们将在核实后及时更新本地数据</text>
           </view>
         </view>
         <view class="guide-btn">
@@ -547,6 +555,16 @@ const provinceCityHotlines = computed<CityHotlineDisplay[]>(() => {
       phoneList: parseHotlines(rawHotline, c.cityName)
     };
   });
+});
+
+// 统筹区快速搜索筛选
+const citySearchFilter = ref('');
+const displayCityHotlines = computed(() => {
+  const q = citySearchFilter.value.trim().toLowerCase();
+  if (!q) return provinceCityHotlines.value;
+  return provinceCityHotlines.value.filter(item => 
+    item.cityName.toLowerCase().includes(q) || item.cityCode.includes(q)
+  );
 });
 
 // 当前所选统筹区专属热线
@@ -1121,7 +1139,28 @@ onMounted(() => {
   color: #ffffff;
 }
 
-/* 全省热线网格 */
+/* 全省热线网格与检索栏 */
+.hotline-search-wrap {
+  min-width: 160px;
+}
+
+.hotline-search-input {
+  height: 30px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 0 10px;
+  font-size: 12px;
+  color: #0f172a;
+  transition: all 0.2s ease;
+}
+
+.hotline-search-input:focus {
+  border-color: #2563eb;
+  background: #ffffff;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
+}
+
 .hotline-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -1136,12 +1175,13 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  transition: all 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .hotline-card:hover {
-  border-color: #cbd5e1;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.04);
+  transform: translateY(-2px);
+  border-color: #94a3b8;
+  box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.08);
 }
 
 .hotline-card.is-current-city {

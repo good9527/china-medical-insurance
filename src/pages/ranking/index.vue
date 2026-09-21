@@ -767,7 +767,7 @@
 
             <view class="combatant-actions mt-8">
               <text class="combat-act-btn btn-policy" @click="goToCityPolicy(battleResult.city1.cityCode)">政策详情 ↗</text>
-              <view class="combat-act-btn btn-calc" @click="goToCityCalc(battleResult.city1.cityCode)"><text>测算报销</text><svg class="inline-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></view>
+              <view class="combat-act-btn btn-calc" @click="goToCityCalc(battleResult.city1.cityCode)"><text>估算报销</text><svg class="inline-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></view>
             </view>
           </view>
 
@@ -823,7 +823,7 @@
 
             <view class="combatant-actions mt-8">
               <text class="combat-act-btn btn-policy" @click="goToCityPolicy(battleResult.city2.cityCode)">政策详情 ↗</text>
-              <view class="combat-act-btn btn-calc" @click="goToCityCalc(battleResult.city2.cityCode)"><text>测算报销</text><svg class="inline-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></view>
+              <view class="combat-act-btn btn-calc" @click="goToCityCalc(battleResult.city2.cityCode)"><text>估算报销</text><svg class="inline-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></view>
             </view>
           </view>
         </view>
@@ -2639,6 +2639,18 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
   align-items: center;
   margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+}
+
+.arena-board-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 45%, #e2e8f0 50%, #fb923c 55%, #ea580c 100%);
 }
 
 .combatant-box {
@@ -2801,10 +2813,19 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .vs-emblem {
-  font-size: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  font-size: 13px;
   font-weight: 900;
-  color: #94a3b8;
-  letter-spacing: 2px;
+  color: #64748b;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 .vs-score-title {
@@ -3549,14 +3570,58 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   }
 
   .battle-item-row {
-    grid-template-columns: 1fr;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "info info"
+      "left right";
+    gap: 10px 10px;
+    padding: 14px 12px;
+    margin: 8px 10px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
     text-align: center;
   }
 
-  .left-val, .right-val {
-    align-items: center;
+  .info-col {
+    grid-area: info;
     text-align: center;
+    padding-bottom: 2px;
+  }
+
+  .left-val {
+    grid-area: left;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .left-val.val-win {
+    border-color: #93c5fd;
+    background: #eff6ff;
+  }
+
+  .right-val {
+    grid-area: right;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .right-val.val-win {
+    border-color: #fed7aa;
+    background: #fff7ed;
   }
 }
 

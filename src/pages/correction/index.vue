@@ -224,6 +224,10 @@
                 <text class="btn-submit-txt">提交政策纠错</text>
               </view>
             </view>
+
+            <view class="submit-note-hint mt-8">
+              <text class="hint-text">💡 填写并提交后将自动生成标准化 Issue 草稿，支持一键投递至 GitHub 或唤起邮件直接发送作者团队。</text>
+            </view>
           </view>
 
           <!-- 提交成功与直连投递选择面板 -->
@@ -1340,6 +1344,22 @@ onMounted(() => {
   font-size: 14px;
   font-weight: 700;
   color: #ffffff;
+}
+
+.submit-note-hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.hint-text {
+  font-size: 11.5px;
+  color: #64748b;
+  line-height: 1.45;
 }
 
 /* 提交成功提示条 */

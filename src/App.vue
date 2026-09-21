@@ -371,6 +371,46 @@ button:active, .elastic-btn:active, .interactive-item:active {
   transition-duration: 0.08s !important;
 }
 
+/* 全局页面载入轻平滑动画 */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.page-wrapper {
+  animation: pageFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+/* 优雅卡片悬浮与按压反馈 */
+.card-hover-lift {
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease !important;
+}
+.card-hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -4px rgba(15, 23, 42, 0.07), 0 4px 8px -2px rgba(15, 23, 42, 0.03) !important;
+}
+
+/* 状态绿点轻呼吸动效 */
+@keyframes liveDotPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+  }
+}
+.status-pulse-dot, .status-dot {
+  animation: liveDotPulse 2.2s infinite ease-out !important;
+}
+
 ::-webkit-scrollbar {
   width: 5px;
   height: 5px;

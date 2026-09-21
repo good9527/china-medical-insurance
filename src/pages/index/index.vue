@@ -342,7 +342,7 @@
             <view class="progress-bar-wrap">
               <view class="progress-labels">
                 <text class="prog-txt text-cyan">统筹基金 ({{ result.breakdown.effectiveRatio }}%)</text>
-                <text class="prog-txt text-dim">个人负担 ({{ (100 - result.breakdown.effectiveRatio).toFixed(1) }}%)</text>
+                <text class="prog-txt text-amber-txt">个人自负 ({{ (100 - result.breakdown.effectiveRatio).toFixed(1) }}%)</text>
               </view>
               <view class="progress-track">
                 <view class="progress-bar bar-cyan" :style="{ width: result.breakdown.effectiveRatio + '%' }"></view>
@@ -412,7 +412,7 @@
 
             <!-- 极简免责与就医提示 -->
             <view class="estimate-disclaimer-bar mt-12">
-              <text class="disclaimer-txt">⚠️ 结果基于地方公开政策测算逻辑，仅供参考；实际报销金额以就医定点医疗机构出院医保结算单为准。</text>
+              <text class="disclaimer-txt">⚠️ 结果基于地方公开政策估算逻辑，仅供参考；实际报销金额以就医定点医疗机构出院医保结算单为准。</text>
             </view>
           </view>
 
@@ -735,7 +735,7 @@ function openDocUrl() {
 
 function copyReceipt() {
   if (!result.value) {
-    uni.showToast({ title: '暂无测算结果', icon: 'none' });
+    uni.showToast({ title: '暂无估算结果', icon: 'none' });
     return;
   }
   const res = result.value;
@@ -1399,6 +1399,7 @@ onShow(() => {
 .preset-pill.active {
   background: #eff6ff;
   border-color: #2563eb;
+  box-shadow: 0 0 0 1px #2563eb, 0 1px 4px rgba(37, 99, 235, 0.15);
 }
 
 .pill-text {
@@ -1411,7 +1412,8 @@ onShow(() => {
 }
 
 .preset-pill.active .pill-text {
-  color: #2563eb;
+  color: #1d4ed8;
+  font-weight: 700;
 }
 
 /* 高级折叠面板 */
@@ -1595,11 +1597,12 @@ onShow(() => {
 /* 主指标大金额 */
 .receipt-hero-block {
   text-align: center;
-  padding: 16px 0 14px;
-  background: linear-gradient(180deg, #f0fdf4 0%, #f8fafc 100%);
-  border: 1px solid #dcfce7;
-  border-radius: 12rpx;
+  padding: 18px 16px 14px;
+  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f0f9ff 100%);
+  border: 1px solid #bbf7d0;
+  border-radius: 14px;
   margin-top: 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 8px -2px rgba(16, 185, 129, 0.08);
 }
 
 .receipt-hero-label {
@@ -1730,7 +1733,11 @@ onShow(() => {
   45%, 100% { transform: translateX(100%); }
 }
 .bar-dim { 
-  background: #cbd5e1; 
+  background: linear-gradient(90deg, #fcd34d 0%, #f59e0b 100%); 
+}
+
+.text-amber-txt { 
+  color: #b45309; 
 }
 
 /* 费用测算结构清单 */

@@ -1351,6 +1351,11 @@ onShow(() => {
   padding: 10px 14px;
   align-items: center;
   border-bottom: 1px solid #f1f5f9;
+  transition: background-color 0.15s ease;
+}
+
+.t-row:not(.t-head):hover {
+  background-color: #f8fafc;
 }
 
 .t-row:last-child { border-bottom: none; }
@@ -1534,16 +1539,16 @@ onShow(() => {
 
 .doc-quote-box {
   background: #f8fafc;
-  border-left: 3px solid #cbd5e1;
-  padding: 10px 12px;
+  border-left: 3px solid #3b82f6;
+  padding: 10px 14px;
   border-radius: 6px;
   margin-top: 12px;
 }
 
 .quote-header {
   font-size: 11px;
-  color: #64748b;
-  font-weight: 600;
+  color: #2563eb;
+  font-weight: 700;
   display: block;
   margin-bottom: 4px;
 }
@@ -1551,7 +1556,7 @@ onShow(() => {
 .quote-content {
   font-size: 12px;
   color: #334155;
-  line-height: 1.55;
+  line-height: 1.6;
   display: block;
 }
 
@@ -1590,6 +1595,11 @@ onShow(() => {
   cursor: pointer;
   box-sizing: border-box;
   padding: 0 8px;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.doc-btn:active {
+  transform: scale(0.96);
 }
 
 .btn-view { background: #eff6ff; border: 1px solid #bfdbfe; }

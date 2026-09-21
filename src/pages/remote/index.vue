@@ -227,7 +227,7 @@
           <view class="rule-card">
             <view class="rule-seq-tag text-cyan">法则一</view>
             <text class="rule-headline">“就医地目录，参保地政策”</text>
-            <text class="rule-paragraph">哪些药品、耗材和诊疗服务项目能纳入报销？严格按【就医所在省市】的医保目录执行；起付标准是多少、报销比例多高、统筹封顶限额多大？严格按【参保统筹区（{{ currentCity.cityName }}）】的医保政策测算执行。</text>
+            <text class="rule-paragraph">哪些药品、耗材和诊疗服务项目能纳入报销？严格按【就医所在省市】的医保目录执行；起付标准是多少、报销比例多高、统筹封顶限额多大？严格按【参保统筹区（{{ currentCity.cityName }}）】的医保政策规定执行。</text>
           </view>
 
           <view class="rule-card mt-16">
