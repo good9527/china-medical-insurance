@@ -278,7 +278,7 @@
           </view>
         </view>
 
-        <!-- 右侧：近期采纳与透明动态 (紧凑对称设计，高度与左侧表单完美平齐) -->
+        <!-- 右侧：Tab一体化对称工作台 (与左侧表单等高，彻底消除底部长卡片拉扯) -->
         <view class="sidebar-column">
           <!-- 我的在审记录 (如果有) -->
           <view class="card mb-12" v-if="myRecords.length > 0">
@@ -300,138 +300,134 @@
             </view>
           </view>
 
-          <!-- 近期已采纳动态卡片 (带内滚动，高度与左侧表单平齐) -->
-          <view class="card dynamic-scroll-card">
-            <view class="card-head">
-              <view class="head-left">
-                <svg class="head-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 14 14"></polyline>
-                </svg>
-                <text class="card-head-title">近期公开采纳与更新动态</text>
-              </view>
-              <text class="head-chip-emerald">穿透核准发布</text>
-            </view>
-
-            <view class="dynamic-summary-bar">
-              <text class="summary-badge">🛡️ 全域台账</text>
-              <text class="summary-txt">已合入 150+ 项公文纠偏 · {{ SITE_CONFIG.totalAssertions }} 项断言守护</text>
-            </view>
-
-            <view class="recent-scroll-body">
-              <view class="recent-item" v-for="item in displayedUpdates" :key="item.id">
-                <view class="recent-item-top">
-                  <view class="recent-city-tag">
-                    <text class="r-city">{{ item.city }}</text>
-                    <text class="r-tag">{{ item.type }}</text>
-                  </view>
-                  <text class="r-date">{{ item.date }}</text>
+          <!-- 统一综合面板：动态台账 vs 流转闭环机制 -->
+          <view class="card sidebar-unified-card">
+            <!-- 头部 Tab 切换 -->
+            <view class="sidebar-tab-bar">
+              <view class="tab-pill-group">
+                <view 
+                  class="tab-pill" 
+                  :class="{ active: rightActiveTab === 'updates' }"
+                  @click="rightActiveTab = 'updates'"
+                >
+                  <text class="tab-pill-txt">📋 官方已采纳台账</text>
+                  <text class="tab-pill-count">{{ CORRECTION_UPDATES_LOG.length }}</text>
                 </view>
-                <text class="recent-desc">{{ item.desc }}</text>
-                <text class="recent-doc">依据：{{ item.doc }} · <text class="text-emerald">已合入本地库</text></text>
+                <view 
+                  class="tab-pill" 
+                  :class="{ active: rightActiveTab === 'pipeline' }"
+                  @click="rightActiveTab = 'pipeline'"
+                >
+                  <text class="tab-pill-txt">🔄 透明流转闭环</text>
+                </view>
+              </view>
+              <text class="head-chip-emerald" v-if="rightActiveTab === 'updates'">穿透核准</text>
+              <text class="head-chip-cyan" v-else>零成本运营</text>
+            </view>
+
+            <!-- 视图 1：已采纳公文变更动态 -->
+            <view class="tab-content-pane" v-if="rightActiveTab === 'updates'">
+              <view class="dynamic-summary-bar">
+                <text class="summary-badge">🛡️ 全域台账</text>
+                <text class="summary-txt">已合入 150+ 项公文纠偏 · {{ SITE_CONFIG.totalAssertions }} 项断言守护</text>
+              </view>
+
+              <view class="recent-scroll-body">
+                <view class="recent-item" v-for="item in displayedUpdates" :key="item.id">
+                  <view class="recent-item-top">
+                    <view class="recent-city-tag">
+                      <text class="r-city">{{ item.city }}</text>
+                      <text class="r-tag">{{ item.type }}</text>
+                    </view>
+                    <text class="r-date">{{ item.date }}</text>
+                  </view>
+                  <text class="recent-desc">{{ item.desc }}</text>
+                  <text class="recent-doc">依据：{{ item.doc }} · <text class="text-emerald">已合入本地库</text></text>
+                </view>
+              </view>
+
+              <view class="expand-more-wrap" v-if="CORRECTION_UPDATES_LOG.length > 5">
+                <button class="expand-more-btn" @click="toggleShowAllUpdates">
+                  {{ showAllUpdates ? '收起部分动态' : `查看更多官方更新记录 (共 ${CORRECTION_UPDATES_LOG.length} 条) ↓` }}
+                </button>
               </view>
             </view>
 
-            <view class="expand-more-wrap" v-if="CORRECTION_UPDATES_LOG.length > 5">
-              <button class="expand-more-btn" @click="toggleShowAllUpdates">
-                {{ showAllUpdates ? '收起部分动态' : `查看更多官方更新记录 (共 ${CORRECTION_UPDATES_LOG.length} 条) ↓` }}
-              </button>
-            </view>
-          </view>
-
-          <!-- 紧凑联系作者轻量条 -->
-          <view class="contact-compact-bar mt-12">
-            <view class="compact-bar-head">
-              <text class="compact-bar-title">📮 公文直投 / 联系作者团队</text>
-            </view>
-            <view class="compact-pills-row">
-              <view class="compact-pill-btn" @click="copyDirect(SITE_CONFIG.email, '邮箱')">
-                <text class="pill-k">邮箱</text>
-                <text class="pill-v monospace">{{ SITE_CONFIG.email }}</text>
-                <text class="pill-act">复制</text>
+            <!-- 视图 2：透明流转闭环机制说明 -->
+            <view class="tab-content-pane pipeline-pane" v-else>
+              <view class="pipeline-intro-header">
+                <text class="p-intro-title">纠错机制如何透明闭环？信息去哪了？</text>
+                <text class="p-intro-desc">提报的每一条政策建议均公开留痕，经公文穿透比对后直接入库。</text>
               </view>
-              <view class="compact-pill-btn" @click="copyDirect(SITE_CONFIG.wechat, '微信号')">
-                <text class="pill-k">微信</text>
-                <text class="pill-v">{{ SITE_CONFIG.wechat }}</text>
-                <text class="pill-act">复制</text>
+
+              <view class="pipeline-flow-list">
+                <view class="p-flow-item">
+                  <text class="p-flow-badge">1</text>
+                  <view class="p-flow-info">
+                    <text class="p-flow-t">提交工单草稿</text>
+                    <text class="p-flow-d">自动生成带统筹区与公文溯源的 GitHub Issue 或直投邮件。</text>
+                  </view>
+                </view>
+                <view class="p-flow-item">
+                  <text class="p-flow-badge">2</text>
+                  <view class="p-flow-info">
+                    <text class="p-flow-t">秒级邮件提醒作者</text>
+                    <text class="p-flow-d">Issue 秒级推送至作者邮箱（{{ SITE_CONFIG.email }}），手机即时收到通知。</text>
+                  </view>
+                </view>
+                <view class="p-flow-item">
+                  <text class="p-flow-badge">3</text>
+                  <view class="p-flow-info">
+                    <text class="p-flow-t">本地公文核对</text>
+                    <text class="p-flow-d">作者通过命令行调取工单，穿透比对各地政府/医保局红头条款。</text>
+                  </view>
+                </view>
+                <view class="p-flow-item">
+                  <text class="p-flow-badge">4</text>
+                  <view class="p-flow-info">
+                    <text class="p-flow-t">{{ SITE_CONFIG.totalAssertions }}项全通质检</text>
+                    <text class="p-flow-d">运行 <text class="cmd-code">npm run test:calc</text>，全量覆盖 348 统筹区，杜绝逻辑冲突。</text>
+                  </view>
+                </view>
+                <view class="p-flow-item">
+                  <text class="p-flow-badge">5</text>
+                  <view class="p-flow-info">
+                    <text class="p-flow-t">自动部署与反馈</text>
+                    <text class="p-flow-d">代码 push 后 Actions 自动构建发布，Issue 自动回复并关闭生效。</text>
+                  </view>
+                </view>
               </view>
-              <view class="compact-pill-btn" @click="copyDirect(SITE_CONFIG.officialAccount, '公众号名称')">
-                <text class="pill-k">公众号</text>
-                <text class="pill-v">{{ SITE_CONFIG.officialAccount }}</text>
-                <text class="pill-act">复制</text>
+
+              <view class="patrol-notice-mini mt-10">
+                <text class="patrol-icon">🛡️</text>
+                <text class="patrol-txt">云端长效自动巡查：配置 GitHub Actions 每周一自动巡检全量统筹区官网连通性。</text>
+              </view>
+            </view>
+
+            <!-- 底部常驻：紧凑联系作者轻量条 -->
+            <view class="contact-compact-bar">
+              <view class="compact-bar-head">
+                <text class="compact-bar-title">📮 公文直投 / 联络作者</text>
+              </view>
+              <view class="compact-pills-row">
+                <view class="compact-pill-btn" @click="copyDirect(SITE_CONFIG.email, '邮箱')">
+                  <text class="pill-k">邮箱</text>
+                  <text class="pill-v monospace">{{ SITE_CONFIG.email }}</text>
+                  <text class="pill-act">复制</text>
+                </view>
+                <view class="compact-pill-btn" @click="copyDirect(SITE_CONFIG.wechat, '微信号')">
+                  <text class="pill-k">微信</text>
+                  <text class="pill-v">{{ SITE_CONFIG.wechat }}</text>
+                  <text class="pill-act">复制</text>
+                </view>
+                <view class="compact-pill-btn" @click="copyDirect(SITE_CONFIG.officialAccount, '公众号名称')">
+                  <text class="pill-k">公众号</text>
+                  <text class="pill-v">{{ SITE_CONFIG.officialAccount }}</text>
+                  <text class="pill-act">复制</text>
+                </view>
               </view>
             </view>
           </view>
-        </view>
-      </view>
-
-      <!-- 底部通栏横向流程看板：纠错机制如何闭环？信息去哪了？ -->
-      <view class="card pipeline-fullwidth-card mt-16">
-        <view class="card-head">
-          <view class="head-left">
-            <svg class="head-svg text-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-              <polyline points="22 4 12 14.01 9 11.01"></polyline>
-            </svg>
-            <text class="card-head-title">纠错机制如何透明闭环？信息去哪了？</text>
-          </view>
-          <text class="head-chip-cyan">透明开源流转 · 零成本运营</text>
-        </view>
-
-        <!-- 横向 5 步专业流程步骤条 -->
-        <view class="stepper-horizontal-grid">
-          <view class="step-card-box">
-            <view class="step-head-row">
-              <text class="step-badge">1</text>
-              <text class="step-name">提交工单草稿</text>
-            </view>
-            <text class="step-detail">系统自动生成带统筹区与公文溯源的标准化 GitHub Issue 或直投邮件。</text>
-          </view>
-
-          <view class="step-arrow-divider">➔</view>
-
-          <view class="step-card-box">
-            <view class="step-head-row">
-              <text class="step-badge">2</text>
-              <text class="step-name">秒级邮件提醒</text>
-            </view>
-            <text class="step-detail">Issue 秒级推送至作者邮箱（{{ SITE_CONFIG.email }}），手机即时收到通知。</text>
-          </view>
-
-          <view class="step-arrow-divider">➔</view>
-
-          <view class="step-card-box">
-            <view class="step-head-row">
-              <text class="step-badge">3</text>
-              <text class="step-name">本地公文核对</text>
-            </view>
-            <text class="step-detail">作者运行 <text class="cmd-code">npm run feedback:list</text> 调取工单，穿透公文条款修订数据。</text>
-          </view>
-
-          <view class="step-arrow-divider">➔</view>
-
-          <view class="step-card-box">
-            <view class="step-head-row">
-              <text class="step-badge">4</text>
-              <text class="step-name">{{ SITE_CONFIG.totalAssertions }}项全通质检</text>
-            </view>
-            <text class="step-detail">运行 <text class="cmd-code">npm run test:calc</text>，全量覆盖 348 统筹区全通断言，杜绝误改与偶发逻辑冲突。</text>
-          </view>
-
-          <view class="step-arrow-divider">➔</view>
-
-          <view class="step-card-box">
-            <view class="step-head-row">
-              <text class="step-badge">5</text>
-              <text class="step-name">自动部署与反馈</text>
-            </view>
-            <text class="step-detail">代码 push 后 GitHub Actions 自动构建发布；并在 Issue 回复关闭，提交者自动获知生效。</text>
-          </view>
-        </view>
-
-        <view class="patrol-notice-mini mt-10">
-          <text class="patrol-icon">🛡️</text>
-          <text class="patrol-txt">云端长效自动巡查：配置 GitHub Actions 定期 Cron 工作流，每周一自动核验全国 348 统筹区规则与官网连通性，全周期守卫政策真实性。</text>
         </view>
       </view>
     </view>
@@ -456,6 +452,9 @@ function closeAllDropdowns() { openDropdown.value = null; }
 function toggleDropdown(type: string) {
   openDropdown.value = openDropdown.value === type ? null : type;
 }
+
+// 右侧工作台 Tab 切换 (动态台账 vs 流转闭环)
+const rightActiveTab = ref<'updates' | 'pipeline'>('updates');
 
 // 省市与险种
 const selectedProvinceIndex = ref(0);
@@ -1850,75 +1849,148 @@ onMounted(() => {
   border-radius: 3px;
 }
 
-/* 底部通栏横向流程看板 */
-.pipeline-fullwidth-card {
+/* 统一综合右侧卡片 (与左侧表单完美等高、彻底消除页面长尾) */
+.sidebar-unified-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 14px;
-  padding: 16px 20px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03);
-}
-
-.stepper-horizontal-grid {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
-  align-items: center;
-  gap: 8px;
-  margin-top: 14px;
-}
-
-.step-card-box {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 10px 12px;
+  padding: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  min-width: 0;
+  height: 100%;
   box-sizing: border-box;
 }
 
-.step-head-row {
+/* 头部 Tab 栏 */
+.sidebar-tab-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+}
+
+.tab-pill-group {
+  display: flex;
+  background: #f1f5f9;
+  padding: 3px;
+  border-radius: 8px;
+  gap: 4px;
+}
+
+.tab-pill {
   display: flex;
   align-items: center;
   gap: 6px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
 }
 
-.step-badge {
-  width: 18px;
-  height: 18px;
+.tab-pill.active {
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+.tab-pill-txt {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.tab-pill.active .tab-pill-txt {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.tab-pill-count {
+  font-size: 10px;
+  font-weight: 700;
+  background: #e0f2fe;
+  color: #0369a1;
+  padding: 1px 5px;
+  border-radius: 999px;
+}
+
+.tab-content-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+/* 视图2：流转闭环 */
+.pipeline-intro-header {
+  margin-bottom: 10px;
+}
+
+.p-intro-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.p-intro-desc {
+  font-size: 11px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.pipeline-flow-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.p-flow-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 8px;
+  padding: 7px 10px;
+}
+
+.p-flow-badge {
+  width: 17px;
+  height: 17px;
   border-radius: 50%;
   background: #0284c7;
   color: #ffffff;
-  font-size: 10.5px;
+  font-size: 10px;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  margin-top: 1px;
 }
 
-.step-name {
-  font-size: 12px;
+.p-flow-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.p-flow-t {
+  font-size: 11.5px;
   font-weight: 700;
-  color: #0f172a;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: #1e293b;
 }
 
-.step-detail {
-  font-size: 11px;
+.p-flow-d {
+  font-size: 10.5px;
   color: #64748b;
-  line-height: 1.45;
-}
-
-.step-arrow-divider {
-  font-size: 13px;
-  font-weight: 700;
-  color: #94a3b8;
-  user-select: none;
+  line-height: 1.4;
 }
 
 .cmd-code {
@@ -1940,18 +2012,23 @@ onMounted(() => {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-top: 12px;
 }
 
 .patrol-icon {
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.2;
 }
 
 .patrol-txt {
-  font-size: 11px;
+  font-size: 10.5px;
   color: #0369a1;
   line-height: 1.45;
+}
+
+.contact-compact-bar {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #f1f5f9;
 }
 
 /* 移动端响应式 */
@@ -2073,26 +2150,30 @@ onMounted(() => {
     grid-template-columns: 1fr;
   }
 
-  /* 移动端步骤流程自适应为纵向清晰步骤条 */
-  .stepper-horizontal-grid {
-    display: flex;
+  /* 移动端右侧卡片与 Tab 优化 */
+  .sidebar-unified-card {
+    padding: 12px;
+  }
+
+  .sidebar-tab-bar {
     flex-direction: column;
+    align-items: stretch;
     gap: 8px;
-    margin-top: 12px;
   }
 
-  .step-card-box {
-    padding: 10px 12px;
+  .tab-pill-group {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
   }
 
-  .step-arrow-divider {
-    display: flex;
-    align-items: center;
+  .tab-pill {
     justify-content: center;
-    transform: rotate(90deg);
-    height: 14px;
-    margin: -2px 0;
-    opacity: 0.7;
+    padding: 6px 4px;
+  }
+
+  .recent-scroll-body {
+    max-height: 380px;
   }
 
   .compact-pills-row {
