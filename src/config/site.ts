@@ -8,5 +8,9 @@ export const SITE_CONFIG = {
   officialAccount: 'GIS民工',
   githubRepo: 'https://github.com/good9527/china-medical-insurance',
   version: '1.0.0',
+  totalCities: 348,
+  totalAssertions: 7184,
+  totalSourceDocs: 727,
+  lastAuditDate: '2026-09-23',
   disclaimer: '本工具整理自全国 348 个统筹区地方政府及医保局公开发布的公开政策文件，仅供就医待遇估算参考。实际报销比例与自付金额受药品及诊疗目录、乙类先行自付比例及定点医院结算规则影响，请以就医定点医疗机构出院医保结算单为准。'
 };

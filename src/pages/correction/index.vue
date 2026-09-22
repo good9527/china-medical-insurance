@@ -310,11 +310,16 @@
                 </svg>
                 <text class="card-head-title">近期公开采纳与更新动态</text>
               </view>
-              <text class="head-chip-emerald">实时公开</text>
+              <text class="head-chip-emerald">穿透核准发布</text>
+            </view>
+
+            <view class="dynamic-summary-bar">
+              <text class="summary-badge">🛡️ 全域台账</text>
+              <text class="summary-txt">已合入 150+ 项统筹区公文核准 · {{ SITE_CONFIG.totalAssertions }} 项断言全绿守护</text>
             </view>
 
             <view class="recent-list">
-              <view class="recent-item" v-for="item in recentUpdates" :key="item.id">
+              <view class="recent-item" v-for="item in displayedUpdates" :key="item.id">
                 <view class="recent-item-top">
                   <view class="recent-city-tag">
                     <text class="r-city">{{ item.city }}</text>
@@ -325,6 +330,12 @@
                 <text class="recent-desc">{{ item.desc }}</text>
                 <text class="recent-doc">依据：{{ item.doc }} · <text class="text-emerald">已合入本地库</text></text>
               </view>
+            </view>
+
+            <view class="expand-more-wrap" v-if="CORRECTION_UPDATES_LOG.length > 5">
+              <button class="expand-more-btn" @click="toggleShowAllUpdates">
+                {{ showAllUpdates ? '收起部分动态' : `查看更多官方更新记录 (共 ${CORRECTION_UPDATES_LOG.length} 条) ↓` }}
+              </button>
             </view>
           </view>
 
@@ -369,8 +380,8 @@
               <view class="pipe-step-item">
                 <view class="step-num-badge">4</view>
                 <view class="step-content">
-                  <text class="step-title">6911 项自动化规则严密质检</text>
-                  <text class="step-desc">修改后运行 <text class="cmd-code">npm run test:calc</text>，全量覆盖 348 个统筹区全部 6911 项计算与政策断言必须 100% 通过，杜绝误改与逻辑冲突。</text>
+                  <text class="step-title">{{ SITE_CONFIG.totalAssertions }} 项自动化规则严密质检</text>
+                  <text class="step-desc">修改后运行 <text class="cmd-code">npm run test:calc</text>，全量覆盖 {{ SITE_CONFIG.totalCities }} 个统筹区全部 {{ SITE_CONFIG.totalAssertions }} 项计算与政策断言必须 100% 通过，杜绝误改与逻辑冲突。</text>
                 </view>
               </view>
 
@@ -444,6 +455,7 @@ import AppFooter from '../../components/AppFooter.vue';
 import { SITE_CONFIG } from '../../config/site';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
 import type { CityInsuranceData } from '../../data/types';
+import { CORRECTION_UPDATES_LOG } from '../../data/correctionUpdates';
 
 // 下拉菜单控制
 const openDropdown = ref<string | null>(null);
@@ -644,13 +656,17 @@ const diffHintText = computed(() => {
   return `💡 已录入建议修改为：“${val}${currentFieldObj.value.unit}” (原现行标准为：${currentFieldValue.value})`;
 });
 
-// 历史采纳动态
-const recentUpdates = [
-  { id: 'u1', city: '上海市', type: '门诊自负段', date: '03-18', desc: '门急诊在职职工自负段起付调整为1500元已完成更新', doc: '沪医保规〔2024〕1号' },
-  { id: 'u2', city: '深圳市', type: '大病综合限额', date: '03-12', desc: '居民大额医疗综合封顶线动态上浮至65.5万已合入', doc: '深府规〔2023〕7号' },
-  { id: 'u3', city: '成都市', type: '门诊起付优待', date: '02-28', desc: '退休人员普通门诊年度起付标准150元核准', doc: '成医保发〔2022〕28号' },
-  { id: 'u4', city: '广州市', type: '一类门特扩展', date: '02-15', desc: '高血压等一类门特病种目录与统筹支付扩增更新', doc: '穗府规〔2022〕2号' }
-];
+// 官方采纳与更新动态（动态读取自 CORRECTION_UPDATES_LOG）
+const showAllUpdates = ref(false);
+const displayedUpdates = computed(() => {
+  if (showAllUpdates.value) {
+    return CORRECTION_UPDATES_LOG;
+  }
+  return CORRECTION_UPDATES_LOG.slice(0, 5);
+});
+function toggleShowAllUpdates() {
+  showAllUpdates.value = !showAllUpdates.value;
+}
 
 interface MyRecord {
   id: string;
@@ -1582,6 +1598,34 @@ onMounted(() => {
   border-radius: 6px;
 }
 
+.dynamic-summary-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+}
+
+.summary-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #166534;
+  background: #dcfce7;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.summary-txt {
+  font-size: 11.5px;
+  color: #15803d;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
 .recent-list {
   display: flex;
   flex-direction: column;
@@ -1644,6 +1688,29 @@ onMounted(() => {
 .text-emerald {
   color: #059669;
   font-weight: 600;
+}
+
+.expand-more-wrap {
+  margin-top: 10px;
+}
+
+.expand-more-btn {
+  width: 100%;
+  height: 34px;
+  line-height: 34px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2563eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.expand-more-btn:hover {
+  background: #eff6ff;
+  border-color: #93c5fd;
 }
 
 /* 我的提交 */
