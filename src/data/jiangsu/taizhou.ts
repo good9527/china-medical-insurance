@@ -37,6 +37,17 @@ export const taizhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.taizhou.gov.cn/art/2022/11/25/art_57392_3429871.html',
       summaryQuote: '职工住院起付线：三级800元、二级500元、一级200元（当年第二次减半，第三次及以上免除）。统筹支付比例三级87%、二级91%、一级95%（退休提高3%-5%）。居民住院起付线三级800元、二级500元、一级200元，比例一级85%、二级75%、三级65%。大病保险起付线1.5万元。'
+    },
+    {
+      docId: 'tz-resident-outpatient-2019',
+      title: '泰州市基本医疗保险和生育保险市级统筹实施意见',
+      docNumber: '泰政办发〔2019〕105号',
+      issuingDept: ['泰州市人民政府办公室', '泰州市医疗保障局'],
+      publishDate: '2019-12-30',
+      effectiveDate: '2021-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.taizhou.gov.cn/',
+      summaryQuote: '泰政办发〔2019〕105号明确：城乡居民医保门诊统筹起付标准每次30元（基层卫生服务站/村卫生室免起付），政策范围内支付比例为50%，个人年度内累计最高报销限额为500元。'
     }
   ],
 
@@ -89,16 +100,16 @@ export const taizhouCityData: CityInsuranceData = {
   // 城乡居民医保待遇 (泰州标准)
   resident: {
     outpatient: {
-      sourceDocId: 'tz-employee-outpatient-reform-2022',
-      annualCap: 800,
+      sourceDocId: 'tz-resident-outpatient-2019',
+      annualCap: 500,
       tierBenefits: {
-        community: { tierName: '基层社区服务机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier2: { tierName: '二级医疗机构', deductible: 200, reimbursementRatio: 0.50 },
-        tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.40 },
-        tier3_top: { tierName: '重点三甲医院', deductible: 200, reimbursementRatio: 0.40 }
+        community: { tierName: '基层社区站/村卫生室', deductible: 0, reimbursementRatio: 0.50 },
+        tier1: { tierName: '一级定点医疗机构/卫生院', deductible: 30, reimbursementRatio: 0.50 },
+        tier2: { tierName: '二级医疗机构', deductible: 30, reimbursementRatio: 0.50 },
+        tier3: { tierName: '三级医疗机构', deductible: 30, reimbursementRatio: 0.40 },
+        tier3_top: { tierName: '重点三甲医院', deductible: 30, reimbursementRatio: 0.40 }
       },
-      note: '居民基层门诊免起付线报销60%，限额800元。'
+      note: '居民门诊统筹在基层社区站免起付线报销50%，其他定点医疗机构起付线30元，年度限额500元。'
     },
     inpatient: {
       sourceDocId: 'tz-medical-insurance-inpatient-2023',

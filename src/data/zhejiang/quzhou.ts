@@ -25,7 +25,7 @@ export const quzhouCityData: CityInsuranceData = {
       effectiveDate: '2021-01-01',
       status: 'active',
       officialUrl: 'https://ybj.qz.gov.cn/art/2020/11/25/art_1229091632_58931234.html',
-      summaryQuote: '在职职工门诊起付标准为300元，退休人员为150元。普通门诊统筹年度最高支付限额为3000元。统筹支付比例：一级及基层定点医疗机构70%（退休75%）、二级医疗机构60%（退休65%）、三级医疗机构50%（退休55%）。'
+      summaryQuote: '衢政发〔2020〕26号明确：职工门诊起付标准在职300元、退休150元，限额3000元，支付比例一级70%、二级60%、三级50%（退休提高5%）。居民门诊起付线100元，最高限额1800元。住院起付线：二级及以上800元，二级以下400元（年度内累计不超过1400元）。统筹基金最高支付限额职工35万元，居民15万元。城乡居民大病保险起付线为1.8万元。'
     },
     {
       docId: 'qz-medical-insurance-inpatient-2023',
@@ -36,7 +36,7 @@ export const quzhouCityData: CityInsuranceData = {
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'https://ybj.qz.gov.cn/art/2022/12/15/art_1229091632_58941235.html',
-      summaryQuote: '职工住院起付线：三级800元、二级及以下400元（年度内住院起付线累计不超过1400元）。统筹支付比例二级及以下87%、二级以上84%（退休人员提高5%）。最高支付限额35万元。居民住院起付线三级800元、二级400元、一级200元，比例一级85%、二级75%、三级65%。大病保险起付线2万元。'
+      summaryQuote: '职工住院起付线：三级800元、二级及以下400元（年度内住院起付线累计不超过1400元）。统筹支付比例二级及以下87%、二级及以上84%（退休人员提高5%）。最高支付限额35万元。居民住院起付线三级800元、二级及以下400元，比例一级85%、二级75%、三级65%。居民基本医保限额15万元，大病保险起付线1.8万元。'
     }
   ],
 
@@ -93,23 +93,23 @@ export const quzhouCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'qz-medical-insurance-measures-2020',
-      annualCap: 800,
+      annualCap: 1800,
       tierBenefits: {
-        community: { tierName: '基层社区服务机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier2: { tierName: '二级医疗机构', deductible: 200, reimbursementRatio: 0.40 },
-        tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.30 },
-        tier3_top: { tierName: '重点三甲医院', deductible: 200, reimbursementRatio: 0.30 }
+        community: { tierName: '基层社区服务机构', deductible: 100, reimbursementRatio: 0.50 },
+        tier1: { tierName: '一级医疗机构', deductible: 100, reimbursementRatio: 0.50 },
+        tier2: { tierName: '二级医疗机构', deductible: 100, reimbursementRatio: 0.40 },
+        tier3: { tierName: '三级医疗机构', deductible: 100, reimbursementRatio: 0.30 },
+        tier3_top: { tierName: '重点三甲医院', deductible: 100, reimbursementRatio: 0.30 }
       },
-      note: '居民基层门诊免起付线报销50%，限额800元。'
+      note: '居民门诊起付线100元，基层报销50%，二级40%，三级30%，年度最高支付限额1800元。'
     },
     inpatient: {
       sourceDocId: 'qz-medical-insurance-inpatient-2023',
-      annualCap: 300000,
-      repeatedDeductibleRule: '二次及多次住院起付线依次递减',
+      annualCap: 150000,
+      repeatedDeductibleRule: '年度内多次住院起付线累计封顶不超过1400元',
       tierBenefits: {
-        community: { tierName: '基层卫生机构', deductible: 200, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
+        community: { tierName: '基层卫生机构', deductible: 400, reimbursementRatio: 0.85 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.85 },
         tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.75 },
         tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.65 },
         tier3_top: { tierName: '重点三级医院', deductible: 800, reimbursementRatio: 0.65 }
@@ -118,10 +118,10 @@ export const quzhouCityData: CityInsuranceData = {
     catastrophic: {
       sourceDocId: 'qz-medical-insurance-inpatient-2023',
       name: '衢州市城乡居民大病保险',
-      deductible: 20000,
+      deductible: 18000,
       annualCap: 400000,
       tiers: [
-        { minAmount: 20000, maxAmount: 50000, ratio: 0.60 },
+        { minAmount: 18000, maxAmount: 50000, ratio: 0.60 },
         { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
         { minAmount: 100000, ratio: 0.80 }
       ]

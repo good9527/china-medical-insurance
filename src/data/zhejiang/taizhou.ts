@@ -94,26 +94,26 @@ export const taizhouZjCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'tz-zj-medical-insurance-measures-2021',
-      annualCap: 1000,
+      annualCap: 900,
       tierBenefits: {
-        community: { tierName: '基层社区服务机构', deductible: 0, reimbursementRatio: 0.50 },
+        community: { tierName: '基层社区服务机构/医改机构', deductible: 0, reimbursementRatio: 0.60 },
         tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier2: { tierName: '二级医疗机构', deductible: 200, reimbursementRatio: 0.40 },
-        tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.30 },
-        tier3_top: { tierName: '重点三甲医院', deductible: 200, reimbursementRatio: 0.30 }
+        tier2: { tierName: '二级医疗机构', deductible: 0, reimbursementRatio: 0.20 },
+        tier3: { tierName: '三级医疗机构', deductible: 0, reimbursementRatio: 0.10 },
+        tier3_top: { tierName: '重点三甲医院', deductible: 0, reimbursementRatio: 0.10 }
       },
-      note: '居民基层门诊免起付线报销50%，限额1000元。'
+      note: '居民在参保地普通门诊：一级50%（医改机构60%）、二级20%、三级10%，年度最高支付限额900元（签约家庭医生1200元）。'
     },
     inpatient: {
       sourceDocId: 'tz-zj-medical-insurance-inpatient-2023',
       annualCap: 300000,
       repeatedDeductibleRule: '二次及多次住院起付线依次递减',
       tierBenefits: {
-        community: { tierName: '基层卫生机构', deductible: 200, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
+        community: { tierName: '基层卫生机构', deductible: 200, reimbursementRatio: 0.80 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.80 },
         tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.75 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '重点三级医院', deductible: 800, reimbursementRatio: 0.65 }
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.70 },
+        tier3_top: { tierName: '重点三级医院', deductible: 800, reimbursementRatio: 0.70 }
       }
     },
     catastrophic: {

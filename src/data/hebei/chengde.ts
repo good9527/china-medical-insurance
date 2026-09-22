@@ -13,14 +13,14 @@ export const chengdeData: CityInsuranceData = {
   sourceDocs: [
     {
       docId: 'cd-employee-outpatient-2021',
-      title: '承德市关于建立健全职工基本医疗保险门诊共济保障机制的实施细则',
+      title: '承德市关于建立健全职工基本医疗保险门诊共济保障机制的实施细则及2024年待遇提升通知',
       docNumber: '承政办规〔2021〕6号',
       issuingDept: ['承德市人民政府办公室', '承德市医疗保障局'],
       publishDate: '2021-12-26',
       effectiveDate: '2022-01-01',
       status: 'active',
       officialUrl: 'http://ybj.chengde.gov.cn/art/2021/12/30/art_1120_17421.html',
-      summaryQuote: '参保职工门诊统筹年度起付标准为100元；起付标准以上政策范围内费用，在职职工支付比例为50%，退休人员支付比例为60%。年度统筹基金最高支付限额在职职工为1500元，退休人员为2000元。个人账户资金可用于配偶、父母、子女在定点医药机构共济结算。'
+      summaryQuote: '参保职工门诊统筹年度起付标准为100元；起付标准以上政策范围内费用，在职职工支付比例为50%，退休人员支付比例为60%。根据承德市2024年度医疗保障提升工程政策，职工医保门诊统筹年度最高支付限额已由原1200元提高至2000元。个人账户资金可用于配偶、父母、子女在定点医药机构共济结算。'
     },
     {
       docId: 'cd-resident-employee-inpatient-2022',
@@ -40,7 +40,7 @@ export const chengdeData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'cd-employee-outpatient-2021',
       annualDeductible: 100, // 门诊年度起付线 100 元
-      annualCap: 1500,       // 在职限额 1500 元
+      annualCap: 2000,       // 2024年提升工程调整：职工门诊统筹年度限额提高至 2000 元
       annualCapRetiree: 2000, // 退休限额 2000 元
       tierBenefits: {
         community: { tierName: '基层医疗机构/门诊部', deductible: 100, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 },
@@ -49,7 +49,7 @@ export const chengdeData: CityInsuranceData = {
         tier3: { tierName: '市属三级医疗机构', deductible: 100, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 },
         tier3_top: { tierName: '省属三级重点医院', deductible: 100, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 }
       },
-      note: '门诊年度起付线100元，在职报销50%，退休报销60%。限额在职1500元，退休2000元。'
+      note: '门诊年度起付线100元，在职报销50%，退休报销60%。2024年医疗保障提升工程将统筹限额提高至2000元。'
     },
     inpatient: {
       sourceDocId: 'cd-resident-employee-inpatient-2022',

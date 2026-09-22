@@ -28,15 +28,26 @@ export const enshiCityData: CityInsuranceData = {
       summaryQuote: '恩施州政办发〔2022〕41号明确：普通门诊统筹年度起付标准在职职工400元、退休人员300元。普通门诊统筹年度最高支付限额在职职工2000元、退休人员2400元。统筹基金支付比例：一级医疗机构70%、二级医疗机构60%、三级医疗机构50%，退休人员在上述比例基础上各提高10个百分点（一级80%、二级70%、三级60%）。'
     },
     {
-      docId: 'es-resident-insurance-2023',
-      title: '恩施土家族苗族自治州城乡居民基本医疗保险实施办法',
-      docNumber: '恩施州政发〔2023〕12号',
+      docId: 'es-employee-insurance-2023',
+      title: '关于印发恩施土家族苗族自治州职工基本医疗保险和职工大额医疗费用补助实施办法的通知',
+      docNumber: '恩施州政规〔2023〕5号',
       issuingDept: ['恩施州人民政府', '恩施州医疗保障局'],
-      publishDate: '2023-08-15',
+      publishDate: '2023-07-24',
       effectiveDate: '2023-09-01',
       status: 'active',
-      officialUrl: 'http://ybj.enshi.gov.cn/zwgk/zcjd/202308/t20230825_1120934.html',
-      summaryQuote: '恩施州实行医保州级统筹：州内住院起付标准一级医疗机构300元、二级医疗机构500元、三级医疗机构1000元。居民医保住院政策范围内支付比例一级85%、二级75%、三级60%；职工医保住院支付比例一级92%、二级88%、三级85%（退休人员增加2%）。转州外起付标准相应提高至800元、1000元、1500元。'
+      officialUrl: 'http://ybj.enshi.gov.cn/',
+      summaryQuote: '恩施州政规〔2023〕5号规定：参保人员在一个自然年度内，职工基本医疗保险统筹基金的年度最高支付限额为25万元；大额医疗费用补助年度最高支付限额为50万元。住院起付标准：县市级医院一级300元、二级500元、三级800元；州级医院二级500元、三级1000元。在职职工报销比例一级92%、二级88%、三级85%（退休人员提高2%）。'
+    },
+    {
+      docId: 'es-resident-insurance-2023',
+      title: '关于印发恩施土家族苗族自治州城乡居民基本医疗保险实施办法的通知',
+      docNumber: '恩施州政规〔2023〕2号',
+      issuingDept: ['恩施州人民政府', '恩施州医疗保障局'],
+      publishDate: '2023-07-24',
+      effectiveDate: '2023-09-01',
+      status: 'active',
+      officialUrl: 'http://ybj.enshi.gov.cn/',
+      summaryQuote: '恩施州政规〔2023〕2号明确：城乡居民医保门诊统筹年度最高支付限额调整为350元，在基层医疗卫生机构按50%比例报销。住院起付标准一级医疗机构300元、二级医疗机构500元、三级医疗机构1000元；政策范围内支付比例一级85%、二级75%、三级60%。居民医保统筹基金年度最高支付限额为15万元。'
     }
   ],
 
@@ -57,8 +68,8 @@ export const enshiCityData: CityInsuranceData = {
       note: '恩施州职工门诊年起付线在职400元、退休300元；一级70%（退休80%）、二级60%（退休70%）、三级50%（退休60%）；在职限额2000元，退休限额2400元。'
     },
     inpatient: {
-      sourceDocId: 'es-resident-insurance-2023',
-      annualCap: 150000,
+      sourceDocId: 'es-employee-insurance-2023',
+      annualCap: 250000,
       tierBenefits: {
         community: { tierName: '社区卫生服务中心', deductible: 300, reimbursementRatio: 0.92, retireeRatioBonus: 0.02 },
         tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.92, retireeRatioBonus: 0.02 },
@@ -69,16 +80,16 @@ export const enshiCityData: CityInsuranceData = {
       repeatedDeductibleRule: '按分级诊疗要求向上转诊的，只计算起付标准差额。'
     },
     catastrophic: {
-      sourceDocId: 'es-resident-insurance-2023',
-      name: '恩施州职工大额医疗保险',
-      deductible: 150000,
-      annualCap: 350000,
+      sourceDocId: 'es-employee-insurance-2023',
+      name: '恩施州职工大额医疗费用补助',
+      deductible: 250000,
+      annualCap: 500000,
       tiers: [
-        { minAmount: 150000, maxAmount: 500000, ratio: 0.85 }
+        { minAmount: 250000, maxAmount: 750000, ratio: 0.80 }
       ]
     },
     remoteMedical: {
-      sourceDocId: 'es-resident-insurance-2023',
+      sourceDocId: 'es-employee-insurance-2023',
       filingChannels: ['国家医保服务平台APP', '湖北医疗保障小程序', '恩施医保公众号'],
       longTermFiledRatio: 1.0,
       transferFiledRatio: 0.90,
@@ -95,12 +106,12 @@ export const enshiCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'es-resident-insurance-2023',
       annualDeductible: 0,
-      annualCap: 400,
+      annualCap: 350,
       tierBenefits: {
         community: { tierName: '基层社区中心/卫生院', deductible: 0, reimbursementRatio: 0.50 },
         tier1: { tierName: '一级定点医疗机构', deductible: 50, reimbursementRatio: 0.50 }
       },
-      note: '居民门诊统筹在基层医疗卫生机构免起付线报销50%，年度限额400元。'
+      note: '居民门诊统筹在基层医疗卫生机构免起付线报销50%，年度限额350元。'
     },
     inpatient: {
       sourceDocId: 'es-resident-insurance-2023',

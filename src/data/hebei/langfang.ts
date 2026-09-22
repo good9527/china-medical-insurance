@@ -13,14 +13,14 @@ export const langfangData: CityInsuranceData = {
   sourceDocs: [
     {
       docId: 'lf-employee-outpatient-2021',
-      title: '廊坊市职工基本医疗保险门诊共济保障机制实施细则及2026年限额调整通知',
+      title: '廊坊市职工基本医疗保险门诊共济保障机制实施细则',
       docNumber: '廊医保规〔2021〕2号',
       issuingDept: ['廊坊市医疗保障局', '廊坊市财政局'],
       publishDate: '2021-12-28',
       effectiveDate: '2022-01-01',
       status: 'active',
       officialUrl: 'http://ybj.lf.gov.cn/art/2021/12/31/art_1420_17921.html',
-      summaryQuote: '自2026年1月1日起，职工门诊年度起付标准为100元，在职报销比例为60%，退休人员为70%。年度最高支付限额：45岁以下在职3000元，45岁（含）以上在职4000元，退休人员调整至5000元。参保人需在定点医疗机构持码结算。'
+      summaryQuote: '廊医保规〔2021〕2号规定：职工门诊年度起付标准为100元，在职报销比例为60%，退休人员为70%。年度统筹基金支付限额：45岁以下在职职工为2000元，45岁（含）以上在职职工为3000元，退休人员为4000元。'
     },
     {
       docId: 'lf-resident-employee-inpatient-2023',
@@ -40,8 +40,8 @@ export const langfangData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'lf-employee-outpatient-2021',
       annualDeductible: 100, // 门诊年度起付线 100 元
-      annualCap: 3000,       // 45岁以下在职限额 3000 元 (45岁以上4000元)
-      annualCapRetiree: 5000, // 退休限额 5000 元
+      annualCap: 2000,       // 45岁以下在职限额 2000 元 (45岁以上3000元)
+      annualCapRetiree: 4000, // 退休限额 4000 元
       tierBenefits: {
         community: { tierName: '基层医疗机构/门诊部', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
         tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
@@ -49,7 +49,7 @@ export const langfangData: CityInsuranceData = {
         tier3: { tierName: '市属三级医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
         tier3_top: { tierName: '省属三级重点医院', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 }
       },
-      note: '门诊年度起付线100元，在职报销60%，退休报销70%。限额45岁以下在职3000元，45岁及以上4000元，退休5000元。'
+      note: '门诊年度起付线100元，在职报销60%，退休报销70%。限额45岁以下在职2000元，45岁及以上3000元，退休4000元。'
     },
     inpatient: {
       sourceDocId: 'lf-resident-employee-inpatient-2023',

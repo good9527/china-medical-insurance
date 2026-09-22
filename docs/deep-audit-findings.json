@@ -1,10 +1,44 @@
 {
   "totalCities": 348,
   "freshnessStats": {
-    "2024": 201,
+    "2024": 202,
     "2025-2026": 85,
-    "2022-2023": 62,
+    "2022-2023": 61,
     "pre-2022": 0
   },
-  "issues": []
+  "issues": [
+    {
+      "cityCode": "331000",
+      "cityName": "台州市",
+      "provinceName": "浙江省",
+      "severity": "CRITICAL",
+      "dimension": "QUOTE_MISMATCH",
+      "title": "居民三级住院比例与官方公文摘录不符",
+      "detail": "公文 [台医保发〔2022〕42号] 明确为 65%，但代码配置为 70%",
+      "expected": 0.65,
+      "actual": 0.7
+    },
+    {
+      "cityCode": "320300",
+      "cityName": "徐州市",
+      "provinceName": "江苏省",
+      "severity": "CRITICAL",
+      "dimension": "QUOTE_MISMATCH",
+      "title": "居民二级住院起付线与官方公文摘录不符",
+      "detail": "公文 [徐政规〔2023〕7号] 明确为 100元，但代码配置为 700元",
+      "expected": 100,
+      "actual": 700
+    },
+    {
+      "cityCode": "320300",
+      "cityName": "徐州市",
+      "provinceName": "江苏省",
+      "severity": "CRITICAL",
+      "dimension": "QUOTE_MISMATCH",
+      "title": "居民三级住院起付线与官方公文摘录不符",
+      "detail": "公文 [徐政规〔2023〕7号] 明确为 1100元，但代码配置为 1500元",
+      "expected": 1100,
+      "actual": 1500
+    }
+  ]
 }

@@ -37,6 +37,17 @@ export const zhenjiangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.zhenjiang.gov.cn/ybj/zcfg/202211/6a89432b.shtml',
       summaryQuote: '职工住院起付线：三级800元、二级500元、一级及基层200元（第二次减半，第三次及以上免除）。在职统筹支付比例三级87%、二级91%、一级95%（退休提高3%-5%）。居民住院起付线三级800元、二级500元、一级200元，比例一级85%、二级75%、三级65%。大病保险起付线1.5万元。'
+    },
+    {
+      docId: 'zj-resident-outpatient-2020',
+      title: '关于完善全市城乡居民医疗保险相关政策待遇的通知',
+      docNumber: '镇医保〔2020〕89号',
+      issuingDept: ['镇江市医疗保障局'],
+      publishDate: '2020-12-15',
+      effectiveDate: '2021-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.zhenjiang.gov.cn/',
+      summaryQuote: '镇医保〔2020〕89号明确：参保人员在本人定点的社区卫生服务机构（含中心及其下属站）或乡镇卫生院（含村卫生室）发生的医保制度内普通门急诊医疗费用，医保基金支付比例为50%，年度内基金支付最高限额为1000元。'
     }
   ],
 
@@ -89,16 +100,16 @@ export const zhenjiangCityData: CityInsuranceData = {
   // 城乡居民医保待遇 (镇江标准)
   resident: {
     outpatient: {
-      sourceDocId: 'zj-employee-outpatient-reform-2022',
-      annualCap: 800,
+      sourceDocId: 'zj-resident-outpatient-2020',
+      annualCap: 1000,
       tierBenefits: {
-        community: { tierName: '基层卫生服务机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.60 },
+        community: { tierName: '基层卫生服务机构/乡镇卫生院', deductible: 0, reimbursementRatio: 0.50 },
+        tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
         tier2: { tierName: '二级医疗机构', deductible: 200, reimbursementRatio: 0.50 },
         tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.40 },
         tier3_top: { tierName: '重点三甲医院', deductible: 200, reimbursementRatio: 0.40 }
       },
-      note: '居民基层门诊免起付线报销60%，限额800元。'
+      note: '居民在定点基层卫生院/社区卫生服务中心门诊免起付线报销50%，年度统筹限额1000元。'
     },
     inpatient: {
       sourceDocId: 'zj-medical-insurance-inpatient-2023',
