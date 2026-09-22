@@ -20,7 +20,7 @@ export const mudanjiangCityData: CityInsuranceData = {
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.mdj.gov.cn/zwgk/zcfg/202212/t20221221_1189234.html',
-      summaryQuote: '在职职工门诊年度起付标准400元。一级及以下机构统筹支付70%、二级定点医疗机构60%、三级定点医疗机构50%；退休人员支付比例分别提高5个百分点（一级75%、二级65%、三级55%）。门诊统筹年度最高支付限额在职及退休职工均为2000元。'
+      summaryQuote: '在职职工普通门诊统筹年度累计起付标准为600元。一级及以下机构统筹支付70%、二级定点医疗机构60%、三级定点医疗机构50%；退休人员支付比例分别提高5个百分点（一级75%、二级65%、三级55%）。门诊统筹年度最高支付限额在职及退休职工均为2000元。'
     },
     {
       docId: 'mdj-medical-insurance-policy-2023',
@@ -39,17 +39,17 @@ export const mudanjiangCityData: CityInsuranceData = {
   employee: {
     outpatient: {
       sourceDocId: 'mdj-employee-outpatient-2022',
-      annualDeductible: 400,
-      annualCap: 3000,
-      annualCapRetiree: 3000,
+      annualDeductible: 600,
+      annualCap: 2000,
+      annualCapRetiree: 2000,
       tierBenefits: {
-        community: { tierName: '基层及一级定点医疗机构', deductible: 400, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层及一级定点医疗机构', deductible: 600, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 600, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 600, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 600, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '门诊年度起付标准400元。起付线以上在职报销比例：一级及基层70%、二级60%、三级50%（退休人员各段提高5个百分点，即75%/65%/55%）。统筹基金年度最高支付限额3000元。'
+      note: '门诊年度起付标准600元。起付线以上在职报销比例：一级及基层70%、二级60%、三级50%（退休人员各段提高5个百分点，即75%/65%/55%）。统筹基金年度最高支付限额2000元。'
     },
     inpatient: {
       sourceDocId: 'mdj-medical-insurance-policy-2023',

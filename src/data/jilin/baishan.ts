@@ -20,7 +20,7 @@ export const baishanCityData: CityInsuranceData = {
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.cbs.gov.cn/zwgk/zcfg/202212/t20221223_1089234.html',
-      summaryQuote: '在职职工门诊年度起付标准300元。一级及以下机构统筹支付65%、二级机构60%、三级机构50%；退休人员支付比例分别提高5个百分点（一级70%、二级65%、三级55%）。门诊统筹年度最高支付限额在职及退休职工均为2000元。'
+      summaryQuote: '职工门诊起付标准按自然年度累计计算：一级及以下100元、二级200元、三级300元。政策范围内报销比例：在职职工一级及以下60%、二级55%、三级50%（退休人员各项提高5个百分点，达65%/60%/55%）。普通门诊统筹年度最高支付限额在职及退休人员均为1000元。'
     },
     {
       docId: 'bs-medical-insurance-policy-2023',
@@ -40,16 +40,16 @@ export const baishanCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'bs-employee-outpatient-2022',
       annualDeductible: 300,
-      annualCap: 2000,
-      annualCapRetiree: 2000,
+      annualCap: 1000,
+      annualCapRetiree: 1000,
       tierBenefits: {
-        community: { tierName: '基层及一级定点医疗机构', deductible: 300, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        community: { tierName: '基层及一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
         tier3: { tierName: '三级定点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '省属三级重点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '门诊年度起付线300元。在职报销50%~65%，退休人员各段提高5个百分点（55%~70%），年度封顶2000元。'
+      note: '门诊年度起付线一级100元、二级200元、三级300元。在职报销50%~60%，退休人员各段提高5个百分点（55%~65%），年度最高支付限额1000元。'
     },
     inpatient: {
       sourceDocId: 'bs-medical-insurance-policy-2023',

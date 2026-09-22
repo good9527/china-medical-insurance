@@ -12,15 +12,15 @@ export const panjinCityData: CityInsuranceData = {
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
     {
-      docId: 'pj-employee-outpatient-2022',
-      title: '盘锦市人民政府办公室关于印发盘锦市建立健全职工基本医疗保险门诊共济保障机制实施方案的通知',
-      docNumber: '盘政办发〔2022〕18号',
-      issuingDept: ['盘锦市人民政府办公室', '盘锦市医疗保障局'],
-      publishDate: '2022-12-18',
-      effectiveDate: '2023-01-01',
+      docId: 'pj-employee-outpatient-2025',
+      title: '盘锦市医疗保障局关于调整职工基本医疗保险门诊统筹年度最高支付限额等有关政策的通知',
+      docNumber: '盘医保发〔2024〕30号',
+      issuingDept: ['盘锦市医疗保障局', '盘锦市财政局'],
+      publishDate: '2024-12-10',
+      effectiveDate: '2025-01-01',
       status: 'active',
-      officialUrl: 'http://ybj.panjin.gov.cn/zwgk/zcfg/202212/t20221222_1294812.html',
-      summaryQuote: '职工门诊统筹年度起付标准调整为300元。起付标准以上统筹基金支付比例：一级及以下定点医疗机构65%、二级定点医疗机构60%、三级定点医疗机构50%；退休人员支付比例分别提高5个百分点（一级70%、二级65%、三级55%）。门诊统筹年度最高支付限额在职及退休职工均为3000元。'
+      officialUrl: 'http://ybj.panjin.gov.cn/zwgk/zcfg/202412/t20241215_1452109.html',
+      summaryQuote: '自2025年1月1日起，盘锦市职工基本医疗保险门诊统筹年度最高支付限额由3000元提高至4000元/年。在职职工门诊起付线300元，一级定点65%（退休70%）、二级60%（退休65%）、三级50%（退休55%）。'
     },
     {
       docId: 'pj-medical-treatment-policy-2023',
@@ -38,10 +38,10 @@ export const panjinCityData: CityInsuranceData = {
   // 城镇职工医保待遇 (盘锦标准)
   employee: {
     outpatient: {
-      sourceDocId: 'pj-employee-outpatient-2022',
+      sourceDocId: 'pj-employee-outpatient-2025',
       annualDeductible: 300,
-      annualCap: 3000,
-      annualCapRetiree: 3000,
+      annualCap: 4000,
+      annualCapRetiree: 4000,
       tierBenefits: {
         community: { tierName: '基层及一级定点医疗机构', deductible: 300, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
@@ -49,7 +49,7 @@ export const panjinCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '省属三级重点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '门诊年度起付线300元。在职报销50%~65%，退休人员各段提高5个百分点（55%~70%），年度封顶3000元。'
+      note: '门诊年度起付线300元。在职报销50%~65%，退休人员各段提高5个百分点（55%~70%），自2025年起年度最高支付限额提升至4000元。'
     },
     inpatient: {
       sourceDocId: 'pj-medical-treatment-policy-2023',

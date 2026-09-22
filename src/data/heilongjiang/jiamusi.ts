@@ -20,7 +20,7 @@ export const jiamusiCityData: CityInsuranceData = {
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.jms.gov.cn/zwgk/zcfg/202212/t20221223_1189234.html',
-      summaryQuote: '在职职工门诊年度起付标准400元。一级及以下机构统筹支付70%、二级机构60%、三级机构50%；退休人员支付比例分别提高5个百分点（一级75%、二级65%、三级55%）。门诊统筹年度最高支付限额在职及退休职工均为2000元。'
+      summaryQuote: '参保职工在定点医疗机构发生的政策范围内普通门诊费用，年度累计起付标准为500元。起付标准以上统筹基金支付比例：一级及以下机构70%、二级机构60%、三级机构50%（退休人员支付比例分别提高5个百分点，达75%/65%/55%）。门诊统筹年度最高支付限额在职及退休职工均为2000元。'
     },
     {
       docId: 'jms-medical-insurance-policy-2023',
@@ -39,17 +39,17 @@ export const jiamusiCityData: CityInsuranceData = {
   employee: {
     outpatient: {
       sourceDocId: 'jms-employee-outpatient-2022',
-      annualDeductible: 400,
+      annualDeductible: 500,
       annualCap: 2000,
       annualCapRetiree: 2000,
       tierBenefits: {
-        community: { tierName: '基层及一级定点医疗机构', deductible: 400, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层及一级定点医疗机构', deductible: 500, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 500, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 500, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 500, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '门诊年度起付线400元。在职报销50%~70%，退休人员各段提高5个百分点（55%~75%），年度封顶2000元。'
+      note: '门诊年度起付线500元。在职报销50%~70%，退休人员各段提高5个百分点（55%~75%），年度封顶2000元。'
     },
     inpatient: {
       sourceDocId: 'jms-medical-insurance-policy-2023',

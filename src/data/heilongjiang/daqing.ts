@@ -13,14 +13,14 @@ export const daqingCityData: CityInsuranceData = {
   sourceDocs: [
     {
       docId: 'dq-employee-outpatient-2022',
-      title: '大庆市人民政府办公室关于印发大庆市建立健全职工基本医疗保险门诊共济保障机制实施细则的通知',
-      docNumber: '庆政办规〔2022〕14号',
+      title: '大庆市人民政府办公室关于印发大庆市职工基本医疗保险门诊共济保障实施办法的通知',
+      docNumber: '庆政办规〔2022〕6号',
       issuingDept: ['大庆市人民政府办公室', '大庆市医疗保障局'],
       publishDate: '2022-12-15',
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.daqing.gov.cn/zwgk/zcfg/202212/t20221220_1189234.html',
-      summaryQuote: '在职职工门诊年度起付标准300元。一级及以下机构统筹支付70%、二级机构60%、三级机构50%；退休人员支付比例分别提高5个百分点（一级75%、二级65%、三级55%）。门诊统筹年度最高支付限额在职及退休职工均为3000元。'
+      summaryQuote: '参保职工在定点医疗机构发生的政策范围内普通门诊医疗费用，年度累计起付标准为500元。一级及以下基层机构统筹支付70%、二级机构60%、三级机构50%（退休人员支付比例分别提高5个百分点，达75%/65%/55%）。医保基金年度最高支付限额在职及退休人员均为2000元。'
     },
     {
       docId: 'dq-medical-insurance-policy-2023',
@@ -39,17 +39,17 @@ export const daqingCityData: CityInsuranceData = {
   employee: {
     outpatient: {
       sourceDocId: 'dq-employee-outpatient-2022',
-      annualDeductible: 300,
-      annualCap: 3000,
-      annualCapRetiree: 3000,
+      annualDeductible: 500,
+      annualCap: 2000,
+      annualCapRetiree: 2000,
       tierBenefits: {
-        community: { tierName: '基层及一级定点医疗机构', deductible: 300, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层及一级定点医疗机构', deductible: 500, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 500, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 500, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 500, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '门诊年度起付线300元。在职报销50%~70%，退休人员各段提高5个百分点（55%~75%），年度封顶3000元。'
+      note: '门诊年度起付线500元。在职报销50%~70%，退休人员各段提高5个百分点（55%~75%），年度最高支付限额2000元。'
     },
     inpatient: {
       sourceDocId: 'dq-medical-insurance-policy-2023',

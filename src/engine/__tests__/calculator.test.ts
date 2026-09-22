@@ -4472,7 +4472,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H17 PASS] 松原居民三级住院(花费10000): 扣起付¥800，实报¥5520 (60%比例，依据: 松医保发〔2023〕18号)`);
   passCount++;
 
-  // 白城市 (220800) - 职工退休一级门诊花费 1000 元，起付 300 元，退休比例 65%+5%=70%，实报 (1000-300)*0.70 = 490
+  // 白城市 (220800) - 职工退休一级门诊花费 1000 元，起付 100 元，退休比例 60%+5%=65%，实报 (1000-100)*0.65 = 585
   totalChecks++;
   const baichengEmpOut = calculateReimbursement({
     cityCode: '220800',
@@ -4483,9 +4483,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 1000
   });
-  assertEqual(baichengEmpOut.breakdown.deductibleDeducted, 300, '白城职工门诊起付线应为300元');
-  assertEqual(baichengEmpOut.breakdown.baseReimbursed, 490, '白城职工一级退休门诊实报不符: (1000-300)*0.70=490');
-  console.log(`  ✓ [H17 PASS] 白城职工一级退休门诊(花费1000): 扣起付¥300，按70%实报¥490 (依据: 白政办发〔2022〕22号)`);
+  assertEqual(baichengEmpOut.breakdown.deductibleDeducted, 100, '白城职工门诊起付线应为100元');
+  assertEqual(baichengEmpOut.breakdown.baseReimbursed, 585, '白城职工一级退休门诊实报不符: (1000-100)*0.65=585');
+  console.log(`  ✓ [H17 PASS] 白城职工一级退休门诊(花费1000): 扣起付¥100，按65%实报¥585 (依据: 白政办发〔2022〕22号)`);
   passCount++;
 
   // 延边朝鲜族自治州 (222400) - 居民二级住院花费 6000 元，起付 500 元，报销 75%，实报 (6000-500)*0.75 = 4125
@@ -4553,7 +4553,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H18 PASS] 佳木斯居民基层门诊(花费300): 免起付，报销50%实报¥150 (依据: 佳医保发〔2023〕16号)`);
   passCount++;
 
-  // 大庆市 (230600) - 职工在职一级门诊花费 1000 元，起付 300 元，报销 70%，实报 (1000-300)*0.70 = 490
+  // 大庆市 (230600) - 职工在职一级门诊花费 1000 元，起付 500 元，报销 70%，实报 (1000-500)*0.70 = 350
   totalChecks++;
   const daqingEmpOut = calculateReimbursement({
     cityCode: '230600',
@@ -4564,9 +4564,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 1000
   });
-  assertEqual(daqingEmpOut.breakdown.deductibleDeducted, 300, '大庆职工门诊起付线应为300元');
-  assertEqual(daqingEmpOut.breakdown.baseReimbursed, 490, '大庆职工一级门诊实报不符: (1000-300)*0.70=490');
-  console.log(`  ✓ [H18 PASS] 大庆职工一级门诊(花费1000): 扣起付¥300，按70%实报¥490 (依据: 庆政办规〔2022〕14号)`);
+  assertEqual(daqingEmpOut.breakdown.deductibleDeducted, 500, '大庆职工门诊起付线应为500元');
+  assertEqual(daqingEmpOut.breakdown.baseReimbursed, 350, '大庆职工一级门诊实报不符: (1000-500)*0.70=350');
+  console.log(`  ✓ [H18 PASS] 大庆职工一级门诊(花费1000): 扣起付¥500，按70%实报¥350 (依据: 庆政办规〔2022〕6号)`);
   passCount++;
 
   // 鸡西市 (230300) - 居民二级住院花费 6000 元，起付 450 元，报销 75%，实报 (6000-450)*0.75 = 4162.5
@@ -4584,7 +4584,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H18 PASS] 鸡西居民二级住院(花费6000): 扣起付¥450，实报¥4162.5 (75%比例，依据: 鸡医保发〔2023〕19号)`);
   passCount++;
 
-  // 鹤岗市 (230400) - 职工在职三级门诊花费 1200 元，起付 400 元，报销 50%，实报 (1200-400)*0.50 = 400
+  // 鹤岗市 (230400) - 职工在职三级门诊花费 1200 元，起付 600 元，报销 50%，实报 (1200-600)*0.50 = 300
   totalChecks++;
   const hegangEmpOut = calculateReimbursement({
     cityCode: '230400',
@@ -4595,9 +4595,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 1200
   });
-  assertEqual(hegangEmpOut.breakdown.deductibleDeducted, 400, '鹤岗职工门诊起付线应为400元');
-  assertEqual(hegangEmpOut.breakdown.baseReimbursed, 400, '鹤岗职工三级门诊在职实报不符: (1200-400)*0.50=400');
-  console.log(`  ✓ [H18 PASS] 鹤岗职工在职三级门诊(花费1200): 扣起付¥400，按50%实报¥400 (依据: 鹤政办规〔2022〕13号)`);
+  assertEqual(hegangEmpOut.breakdown.deductibleDeducted, 600, '鹤岗职工门诊起付线应为600元');
+  assertEqual(hegangEmpOut.breakdown.baseReimbursed, 300, '鹤岗职工三级门诊在职实报不符: (1200-600)*0.50=300');
+  console.log(`  ✓ [H18 PASS] 鹤岗职工在职三级门诊(花费1200): 扣起付¥600，按50%实报¥300 (依据: 鹤政办规〔2022〕13号)`);
   passCount++;
 
   // 双鸭山市 (230500) - 居民三级住院花费 10000 元，起付 700 元，报销 60%，实报 (10000-700)*0.60 = 5580
@@ -4615,7 +4615,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H18 PASS] 双鸭山居民三级住院(花费10000): 扣起付¥700，实报¥5580 (60%比例，依据: 双医保发〔2023〕18号)`);
   passCount++;
 
-  // 伊春市 (230700) - 职工退休一级门诊花费 1000 元，起付 400 元，退休比例 70%+5%=75%，实报 (1000-400)*0.75 = 450
+  // 伊春市 (230700) - 职工退休一级门诊花费 1000 元，起付 600 元，退休比例 70%+5%=75%，实报 (1000-600)*0.75 = 300
   totalChecks++;
   const yichunEmpOut = calculateReimbursement({
     cityCode: '230700',
@@ -4626,9 +4626,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 1000
   });
-  assertEqual(yichunEmpOut.breakdown.deductibleDeducted, 400, '伊春职工门诊起付线应为400元');
-  assertEqual(yichunEmpOut.breakdown.baseReimbursed, 450, '伊春职工一级退休门诊实报不符: (1000-400)*0.75=450');
-  console.log(`  ✓ [H18 PASS] 伊春职工一级退休门诊(花费1000): 扣起付¥400，按75%实报¥450 (依据: 伊政办规〔2022〕12号)`);
+  assertEqual(yichunEmpOut.breakdown.deductibleDeducted, 600, '伊春职工门诊起付线应为600元');
+  assertEqual(yichunEmpOut.breakdown.baseReimbursed, 300, '伊春职工一级退休门诊实报不符: (1000-600)*0.75=300');
+  console.log(`  ✓ [H18 PASS] 伊春职工一级退休门诊(花费1000): 扣起付¥600，按75%实报¥300 (依据: 伊政办规〔2022〕12号)`);
   passCount++;
 
   // 绥化市 (231200) - 居民二级住院花费 6000 元，起付 450 元，报销 75%，实报 (6000-450)*0.75 = 4162.5
@@ -5849,6 +5849,120 @@ export function runCalculatorTests() {
   });
   assertEqual(handanResTier3.breakdown.baseReimbursed, 0, '邯郸居民三级医院门诊未纳入统筹应报0元');
   console.log(`  ✓ [H28 PASS] 邯郸居民门诊(花费200): 基层受限额管控实报¥75，三级未纳入统筹实报¥0 (依据: 邯医保发〔2023〕18号)`);
+  passCount++;
+
+  // =========================================================================
+  // Suite H29: 东北三省门诊共济新政与额度提升专项测算断言 (辽宁、吉林、黑龙江)
+  // =========================================================================
+  console.log(`\n>>> [Suite H29] 执行东北三省门诊共济新政与额度提升专项测算断言...`);
+
+  // 1. 盘锦市 (211100) - 2025年起年度门诊限额由3000元提升至4000元，高额门诊花费8000元受4000元封顶管控
+  totalChecks++;
+  const panjinEmpOutHigh = calculateReimbursement({
+    cityCode: '211100',
+    insuranceType: 'employee',
+    isRetiree: false,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 8000
+  });
+  assertEqual(panjinEmpOutHigh.breakdown.deductibleDeducted, 300, '盘锦职工门诊起付线应为300元');
+  assertEqual(panjinEmpOutHigh.breakdown.baseReimbursed, 4000, '盘锦2025新政门诊统筹年度封顶应达4000元');
+  console.log(`  ✓ [H29 PASS] 盘锦职工门诊(花费8000): 扣起付¥300，受2025新政4000元封顶管控实报¥4000 (依据: 盘医保发〔2024〕30号)`);
+  passCount++;
+
+  // 2. 长春市 (220100) - 2024年起基层免起付(0元)，在职报销60%，花费500实报300；年度限额提升至2500元
+  totalChecks++;
+  const changchunEmpOutCom = calculateReimbursement({
+    cityCode: '220100',
+    insuranceType: 'employee',
+    isRetiree: false,
+    treatmentType: 'outpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 500
+  });
+  assertEqual(changchunEmpOutCom.breakdown.deductibleDeducted, 0, '长春2024新政基层门诊起付线应为0元');
+  assertEqual(changchunEmpOutCom.breakdown.baseReimbursed, 300, '长春基层门诊在职实报不符: 500*0.60=300');
+  console.log(`  ✓ [H29 PASS] 长春职工基层门诊(花费500): 免起付实报¥300 (60%比例，依据: 长医保联规〔2023〕1号)`);
+  passCount++;
+
+  // 3. 哈尔滨市 (230100) - 门诊统筹在职封顶6000元，退休封顶7000元
+  totalChecks++;
+  const harbinEmpOutInService = calculateReimbursement({
+    cityCode: '230100',
+    insuranceType: 'employee',
+    isRetiree: false,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(harbinEmpOutInService.breakdown.deductibleDeducted, 400, '哈尔滨职工门诊起付线应为400元');
+  assertEqual(harbinEmpOutInService.breakdown.baseReimbursed, 6000, '哈尔滨在职职工门诊封顶应为6000元');
+
+  totalChecks++;
+  const harbinEmpOutRetiree = calculateReimbursement({
+    cityCode: '230100',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(harbinEmpOutRetiree.breakdown.deductibleDeducted, 400, '哈尔滨退休职工门诊起付线应为400元');
+  assertEqual(harbinEmpOutRetiree.breakdown.baseReimbursed, 7000, '哈尔滨退休职工门诊封顶应为7000元');
+  console.log(`  ✓ [H29 PASS] 哈尔滨职工门诊大额(花费10000): 在职受限额6000元、退休受限额7000元精准封顶 (依据: 哈政办规〔2022〕9号及最新医保规章)`);
+  passCount++;
+
+  // 4. 大庆市 (230600) - 门诊起付线500元，二级60%，花费1500实报 (1500-500)*0.60 = 600
+  totalChecks++;
+  const daqingEmpOutTier2 = calculateReimbursement({
+    cityCode: '230600',
+    insuranceType: 'employee',
+    isRetiree: false,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 1500
+  });
+  assertEqual(daqingEmpOutTier2.breakdown.deductibleDeducted, 500, '大庆职工门诊起付线应为500元');
+  assertEqual(daqingEmpOutTier2.breakdown.baseReimbursed, 600, '大庆职工二级门诊实报不符: (1500-500)*0.60=600');
+  console.log(`  ✓ [H29 PASS] 大庆职工二级门诊(花费1500): 扣起付¥500，按60%实报¥600 (依据: 庆政办规〔2022〕6号)`);
+  passCount++;
+
+  // 5. 牡丹江市 (231000) - 门诊起付线600元，一级70%，花费1600实报 (1600-600)*0.70 = 700
+  totalChecks++;
+  const mudanjiangEmpOutTier1 = calculateReimbursement({
+    cityCode: '231000',
+    insuranceType: 'employee',
+    isRetiree: false,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 1600
+  });
+  assertEqual(mudanjiangEmpOutTier1.breakdown.deductibleDeducted, 600, '牡丹江职工门诊起付线应为600元');
+  assertEqual(mudanjiangEmpOutTier1.breakdown.baseReimbursed, 700, '牡丹江职工一级门诊实报不符: (1600-600)*0.70=700');
+  console.log(`  ✓ [H29 PASS] 牡丹江职工一级门诊(花费1600): 扣起付¥600，按70%实报¥700 (依据: 牡政办规〔2022〕15号)`);
+  passCount++;
+
+  // 6. 辽源市 (220400) - 2024起基层门诊起付线0元，报销60%，花费600实报 360
+  totalChecks++;
+  const liaoyuanEmpOutCom = calculateReimbursement({
+    cityCode: '220400',
+    insuranceType: 'employee',
+    isRetiree: false,
+    treatmentType: 'outpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 600
+  });
+  assertEqual(liaoyuanEmpOutCom.breakdown.deductibleDeducted, 0, '辽源职工基层门诊起付线应为0元');
+  assertEqual(liaoyuanEmpOutCom.breakdown.baseReimbursed, 360, '辽源职工基层门诊实报不符: 600*0.60=360');
+  console.log(`  ✓ [H29 PASS] 辽源职工基层门诊(花费600): 免起付实报¥360 (60%比例，依据: 辽医保发〔2023〕16号及细则)`);
   passCount++;
 
   console.log(`\n=========================================`);

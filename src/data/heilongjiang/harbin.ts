@@ -20,7 +20,7 @@ export const harbinCityData: CityInsuranceData = {
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.harbin.gov.cn/art/2022/11/20/art_11982_1294812.html',
-      summaryQuote: '门诊统筹年度起付标准为400元。一级及以下机构在职报销70%（退休75%），二级机构在职报销60%（退休65%），三级机构在职报销50%（退休55%）。年度统筹基金最高支付限额为3000元。'
+      summaryQuote: '门诊统筹年度起付标准为400元。一级及以下机构在职报销70%（退休75%），二级机构在职报销60%（退休65%），三级机构在职报销50%（退休55%）。年度统筹基金最高支付限额在职职工提高至6000元、退休人员提高至7000元。'
     },
     {
       docId: 'hrb-medical-insurance-inpatient-2024',
@@ -40,8 +40,8 @@ export const harbinCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'hrb-employee-outpatient-2022-9',
       annualDeductible: 400, // 门诊年度起付线 400 元
-      annualCap: 3000,       // 门诊统筹年度最高限额 3000 元
-      annualCapRetiree: 3000,
+      annualCap: 6000,       // 门诊统筹年度最高限额 6000 元 (在职)
+      annualCapRetiree: 7000, // 退休人员年度限额 7000 元
       tierBenefits: {
         community: { tierName: '一级及基层定点医疗机构', deductible: 400, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
@@ -49,7 +49,7 @@ export const harbinCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '省级三甲综合医院', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '门诊年度起付线400元。一级报销70%（退休75%），二级报销60%（退休65%），三级报销50%（退休55%）。年度限额3000元。'
+      note: '门诊年度起付线400元。一级报销70%（退休75%），二级报销60%（退休65%），三级报销50%（退休55%）。年度限额在职6000元、退休7000元。'
     },
     inpatient: {
       sourceDocId: 'hrb-medical-insurance-inpatient-2024',

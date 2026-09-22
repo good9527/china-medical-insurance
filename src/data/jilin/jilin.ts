@@ -20,7 +20,7 @@ export const jilinCityData: CityInsuranceData = {
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.jlcity.gov.cn/zwgk/zcfg/202212/t20221226_1128392.html',
-      summaryQuote: '在职职工门诊年度起付标准为300元。一级及以下定点医疗机构支付65%、二级定点医疗机构60%、三级定点医疗机构50%；退休人员支付比例分别提高5个百分点（一级70%、二级65%、三级55%）。门诊统筹年度最高支付限额在职及退休职工均为2000元。'
+      summaryQuote: '职工门诊起付标准按自然年度累计计算：一级及以下100元、二级200元、三级300元。政策范围内报销比例：在职职工一级及以下60%、二级55%、三级50%（退休人员各项提高5个百分点，达65%/60%/55%）。普通门诊统筹年度最高支付限额在职及退休人员均为1000元。'
     },
     {
       docId: 'jl-medical-insurance-policy-2023',

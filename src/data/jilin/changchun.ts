@@ -12,15 +12,15 @@ export const changchunCityData: CityInsuranceData = {
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
     {
-      docId: 'cc-employee-outpatient-2022-16',
-      title: '关于建立健全职工基本医疗保险门诊共济保障机制的通知',
-      docNumber: '长医保联〔2022〕16号',
+      docId: 'cc-employee-outpatient-2023-1',
+      title: '关于调整职工医保普通门诊统筹政策的通知',
+      docNumber: '长医保联规〔2023〕1号',
       issuingDept: ['长春市医疗保障局', '长春市财政局'],
-      publishDate: '2022-11-18',
-      effectiveDate: '2023-01-01',
+      publishDate: '2023-12-15',
+      effectiveDate: '2024-01-01',
       status: 'active',
-      officialUrl: 'http://ccyb.changchun.gov.cn/zcfg/202211/t20221125_3098124.html',
-      summaryQuote: '门诊统筹次均起付标准一级100元、二级200元、三级300元。在职职工支付比例一级及以下60%、二级55%、三级50%（退休人员各提高2个百分点）。年度门诊统筹基金最高支付限额为2000元。'
+      officialUrl: 'http://ccyb.changchun.gov.cn/zcfg/202312/t20231220_3214561.html',
+      summaryQuote: '自2024年1月1日起，取消一级及以下定点医疗机构普通门诊统筹起付标准；职工医保普通门诊统筹年度最高支付限额从2000元提高至2500元。二级医疗机构起付线200元、三级300元；在职职工支付比例一级及以下60%、二级55%、三级50%（退休人员各项提高2个百分点，达62%/57%/52%）。'
     },
     {
       docId: 'cc-medical-insurance-inpatient-2024',
@@ -38,18 +38,18 @@ export const changchunCityData: CityInsuranceData = {
   // 城镇职工医保待遇 (长春标准)
   employee: {
     outpatient: {
-      sourceDocId: 'cc-employee-outpatient-2022-16',
+      sourceDocId: 'cc-employee-outpatient-2023-1',
       annualDeductible: 300, // 门诊基准起付线
-      annualCap: 2000,       // 门诊统筹年度最高限额 2000 元
-      annualCapRetiree: 2000,
+      annualCap: 2500,       // 门诊统筹年度最高限额 2500 元
+      annualCapRetiree: 2500,
       tierBenefits: {
-        community: { tierName: '基层及一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.02 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.02 },
+        community: { tierName: '基层及一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.02 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.02 },
         tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.55, retireeRatioBonus: 0.02 },
         tier3: { tierName: '市属三级定点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.02 },
         tier3_top: { tierName: '省级三级医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.02 }
       },
-      note: '门诊次均起付线一级100元、二级200元、三级300元。在职报销50%-60%，退休人员报销52%-62%，年度最高支付限额2000元。'
+      note: '自2024年起取消基层及一级定点医疗机构门诊统筹起付线（0元），二级200元、三级300元。在职报销50%-60%，退休人员报销52%-62%，年度统筹最高支付限额提升至2500元。'
     },
     inpatient: {
       sourceDocId: 'cc-medical-insurance-inpatient-2024',
