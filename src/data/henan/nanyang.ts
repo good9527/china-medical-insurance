@@ -86,15 +86,15 @@ export const nanyangCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'ny-medical-insurance-inpatient-2023',
-      annualCap: 200,
+      annualCap: 300,
       tierBenefits: {
         community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.60 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier2: { tierName: '二级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 50, reimbursementRatio: 0.50 },
         tier3: { tierName: '三级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '市级重点三甲(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊在基层定点机构免起付线报销60%，年度限额200元。'
+      note: '居民门诊在基层定点机构免起付报销60%，县级二级机构每次起付50元报销50%，年度限额300元。'
     },
     inpatient: {
       sourceDocId: 'ny-medical-insurance-inpatient-2023',

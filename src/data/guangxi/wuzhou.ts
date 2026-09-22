@@ -31,7 +31,7 @@ export const wuzhouCityData: CityInsuranceData = {
       effectiveDate: '2024-01-01',
       status: 'active',
       officialUrl: 'http://ybj.wuzhou.gov.cn/zwgk/zcfg/202311/t20231130_2314582.html',
-      summaryQuote: '城乡居民普通门诊统筹在基层定点机构免起付线，报销比例60%，年度限额200元。城乡居民住院起付线一级100元、二级300元、三级600元，政策范围内报销比例对应90%、75%、60%，统筹年度限额15万元。职工住院起付线一级200元、二级400元、三级800元，在职报销92%、90%、85%，退休提高3个百分点，统筹加大额补助限额50万元。'
+      summaryQuote: '城乡居民普通门诊统筹在基层定点机构免起付线，报销比例60%，年度限额300元。城乡居民住院起付线一级100元、二级300元、三级600元，政策范围内报销比例对应90%、75%、60%，统筹年度限额15万元。职工住院起付线一级200元、二级400元、三级800元，在职报销92%、90%、85%，退休提高3个百分点，统筹加大额补助限额50万元。'
     }
   ],
 
@@ -89,7 +89,7 @@ export const wuzhouCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'wz-medical-treatment-policy-2023',
-      annualCap: 200,
+      annualCap: 300,
       tierBenefits: {
         community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
@@ -97,7 +97,7 @@ export const wuzhouCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0 },
         tier3_top: { tierName: '三级甲等医疗机构', deductible: 0, reimbursementRatio: 0 }
       },
-      note: '居民门诊统筹仅在基层机构免起付享受，报销60%，年度限额200元。'
+      note: '居民门诊统筹仅在基层机构免起付享受，报销60%，年度限额300元。'
     },
     inpatient: {
       sourceDocId: 'wz-medical-treatment-policy-2023',

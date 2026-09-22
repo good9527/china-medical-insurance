@@ -86,15 +86,15 @@ export const luoyangCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'ly-medical-insurance-inpatient-2023',
-      annualCap: 200,
+      annualCap: 350,
       tierBenefits: {
-        community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.60 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
+        community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.50 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
         tier2: { tierName: '二级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3: { tierName: '三级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '重点三甲综合医院(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊在基层定点机构免起付线报销60%，年度限额200元。'
+      note: '居民门诊在基层定点机构免起付线报销50%（村卫生室每次限额50元），年度最高支付限额提高至350元。'
     },
     inpatient: {
       sourceDocId: 'ly-medical-insurance-inpatient-2023',

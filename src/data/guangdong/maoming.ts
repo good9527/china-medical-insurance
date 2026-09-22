@@ -11,15 +11,15 @@ export const maomingCityData: CityInsuranceData = {
 
   sourceDocs: [
     {
-      docId: 'mm-employee-outpatient-2022-22',
-      title: '茂名市医疗保障局关于印发茂名市建立健全职工基本医疗保险门诊共济保障机制实施细则的通知',
-      docNumber: '茂医保〔2022〕22号',
-      issuingDept: ['茂名市医疗保障局', '茂名市财政局'],
-      publishDate: '2022-11-20',
-      effectiveDate: '2022-12-01',
+      docId: 'mm-medical-insurance-2025-02',
+      title: '茂名市人民政府关于印发茂名市基本医疗保险管理办法的通知',
+      docNumber: '茂府规〔2025〕2号',
+      issuingDept: ['茂名市人民政府', '茂名市医疗保障局'],
+      publishDate: '2025-01-15',
+      effectiveDate: '2025-02-01',
       status: 'active',
-      officialUrl: 'http://www.maoming.gov.cn/gdmmybj/zwgk/zcfg/202211/t20221124_219084.shtml',
-      summaryQuote: '职工普通门诊不设起付线。选定基层医疗机构普通门诊报销比例为75%（退休人员80%），二级医疗机构报销60%（退休65%），三级医疗机构报销50%（退休55%）。职工门诊年度统筹支付限额在职约为2200元，退休约为2600元。'
+      officialUrl: 'http://www.maoming.gov.cn/gdmmybj/zwgk/zcfg/202501/t20250115_239108.shtml',
+      summaryQuote: '职工普通门诊不设起付线。选定乡镇卫生院及村卫生站80%、一级70%、二级60%、三级50%（退休人员各项提高5个百分点）。2026年度职工门诊统筹最高支付限额为2088元/年。居民普通门诊统筹最高支付限额为263元/年，基层报销比例70%。'
     },
     {
       docId: 'mm-medical-insurance-inpatient-2024',
@@ -36,18 +36,18 @@ export const maomingCityData: CityInsuranceData = {
 
   employee: {
     outpatient: {
-      sourceDocId: 'mm-employee-outpatient-2022-22',
+      sourceDocId: 'mm-medical-insurance-2025-02',
       annualDeductible: 0,
-      annualCap: 2200,
-      annualCapRetiree: 2600,
+      annualCap: 2088,
+      annualCapRetiree: 2088,
       tierBenefits: {
-        community: { tierName: '乡镇卫生院及基层门诊', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
+        community: { tierName: '乡镇卫生院及村卫生站', deductible: 0, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
         tier2: { tierName: '二级选定医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
         tier3: { tierName: '三级选定医疗机构', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '市级重点三甲医院', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '普通门诊免设起付线。选点就医基层报销75%（退休80%），二级报销60%（退休65%），三级报销50%（退休55%）。在职限额2200元，退休2600元。'
+      note: '普通门诊免设起付线。选点就医乡镇基层报销80%（退休85%），一级报销70%（退休75%），二级报销60%（退休65%），三级报销50%（退休55%）。2026年度最高支付限额为2088元/年。'
     },
     inpatient: {
       sourceDocId: 'mm-medical-insurance-inpatient-2024',
@@ -85,16 +85,16 @@ export const maomingCityData: CityInsuranceData = {
 
   resident: {
     outpatient: {
-      sourceDocId: 'mm-medical-insurance-inpatient-2024',
-      annualCap: 1200,
+      sourceDocId: 'mm-medical-insurance-2025-02',
+      annualCap: 263,
       tierBenefits: {
-        community: { tierName: '基层定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier2: { tierName: '二级定点机构(选定)', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '三级定点机构(选定)', deductible: 0, reimbursementRatio: 0.40 },
-        tier3_top: { tierName: '市级三甲综合医院', deductible: 0, reimbursementRatio: 0.40 }
+        community: { tierName: '基层选定卫生院/村站', deductible: 0, reimbursementRatio: 0.70 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.70 },
+        tier2: { tierName: '二级定点机构(仅定额门诊查费3元)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级定点机构(仅定额门诊查费3元)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '市级三甲综合医院(仅定额门诊查费3元)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
+      note: '居民普通门诊免设起付线，基层选点一般诊疗费报销70%，年度最高支付限额263元/年。二级及以上公立医院门诊仅享受每人每次3元诊查费定额报销。'
     },
     inpatient: {
       sourceDocId: 'mm-medical-insurance-inpatient-2024',

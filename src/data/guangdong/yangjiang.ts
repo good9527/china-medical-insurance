@@ -11,15 +11,15 @@ export const yangjiangCityData: CityInsuranceData = {
 
   sourceDocs: [
     {
-      docId: 'yj-employee-outpatient-2022-30',
-      title: '阳江市医疗保障局关于印发阳江市职工基本医疗保险门诊共济保障机制实施细则的通知',
-      docNumber: '阳医保〔2022〕30号',
+      docId: 'yj-medical-benefits-2025',
+      title: '阳江市医疗保障局关于印发阳江市医疗保障待遇清单（2025年版）的通知',
+      docNumber: '阳医保发〔2024〕28号',
       issuingDept: ['阳江市医疗保障局', '阳江市财政局'],
-      publishDate: '2022-11-26',
-      effectiveDate: '2022-12-01',
+      publishDate: '2024-12-20',
+      effectiveDate: '2025-01-01',
       status: 'active',
-      officialUrl: 'http://www.yangjiang.gov.cn/yjybj/zwgk/zcfg/202211/t20221129_219084.shtml',
-      summaryQuote: '职工普通门诊不设起付线。选定基层医疗机构普通门诊报销比例为75%（退休人员80%），二级医疗机构报销60%（退休65%），三级医疗机构报销50%（退休55%）。年度统筹支付限额在职约为2200元，退休约为2600元。'
+      officialUrl: 'http://www.yangjiang.gov.cn/yjybj/zwgk/zcfg/202412/t20241225_241908.shtml',
+      summaryQuote: '职工普通门诊按月度限额管理，职工普通门诊限额165.5元/月（折算年限额约1986元）。实行一大一小选点，基层报销70%（退休75%），一级报销60%（退休65%），二级报销55%（退休60%），三级未纳统筹。居民普通门诊月度限额132.4元/月（年限额折算约1588元），基层报销60%。居民统筹年度限额15万元。'
     },
     {
       docId: 'yj-medical-insurance-inpatient-2024',
@@ -36,18 +36,18 @@ export const yangjiangCityData: CityInsuranceData = {
 
   employee: {
     outpatient: {
-      sourceDocId: 'yj-employee-outpatient-2022-30',
+      sourceDocId: 'yj-medical-benefits-2025',
       annualDeductible: 0,
-      annualCap: 2200,
-      annualCapRetiree: 2600,
+      annualCap: 1986,
+      annualCapRetiree: 1986,
       tierBenefits: {
-        community: { tierName: '基层及一级选定医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级选定医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级选定医疗机构', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层社区/卫生院(小点)', deductible: 0, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级选定医疗机构(大点)', deductible: 0, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '三甲综合医院(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '普通门诊免设起付线。选点就医基层报销75%（退休80%），二级报销60%（退休65%），三级报销50%（退休55%）。在职限额2200元，退休2600元。'
+      note: '实行一大一小双定点就医，免起付线。月度限额165.5元/月（年折算约1986元）。基层在职70%（退休75%），一级在职60%（退休65%），二级在职55%（退休60%），三级未纳普通门诊统筹。'
     },
     inpatient: {
       sourceDocId: 'yj-medical-insurance-inpatient-2024',
@@ -85,20 +85,20 @@ export const yangjiangCityData: CityInsuranceData = {
 
   resident: {
     outpatient: {
-      sourceDocId: 'yj-medical-insurance-inpatient-2024',
-      annualCap: 1200,
+      sourceDocId: 'yj-medical-benefits-2025',
+      annualCap: 1588,
       tierBenefits: {
-        community: { tierName: '基层定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier2: { tierName: '二级定点机构(选定)', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '三级定点机构(选定)', deductible: 0, reimbursementRatio: 0.40 },
-        tier3_top: { tierName: '市级三甲综合医院', deductible: 0, reimbursementRatio: 0.40 }
+        community: { tierName: '基层定点门诊机构', deductible: 0, reimbursementRatio: 0.60 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
+        tier2: { tierName: '二级定点机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级定点机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '市级三甲综合医院(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
+      note: '居民普通门诊免设起付线，选定基层机构报销60%，月度限额132.4元/月（年累计折算约1588元）。二级及以上不设普通门诊统筹。'
     },
     inpatient: {
       sourceDocId: 'yj-medical-insurance-inpatient-2024',
-      annualCap: 300000,
+      annualCap: 150000,
       tierBenefits: {
         community: { tierName: '一级医疗机构/卫生院', deductible: 200, reimbursementRatio: 0.88 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.88 },

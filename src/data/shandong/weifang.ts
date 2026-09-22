@@ -37,17 +37,17 @@ export const weifangCityData: CityInsuranceData = {
   employee: {
     outpatient: {
       sourceDocId: 'wf-employee-outpatient-2022-16',
-      annualDeductible: 200,
-      annualCap: 2500,
-      annualCapRetiree: 3000,
+      annualDeductible: 100,
+      annualCap: 4500,
+      annualCapRetiree: 5500,
       tierBenefits: {
-        community: { tierName: '基层社区及乡镇卫生院', deductible: 200, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 200, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '潍坊市人民医院等重点三甲', deductible: 200, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层社区及乡镇卫生院', deductible: 100, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 600, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '潍坊市人民医院等重点三甲', deductible: 600, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 }
       },
-      note: '普通门诊统筹按年度设起付线200元。基层报销75%（退休80%），二级65%（退休70%），三级55%（退休60%）。限额在职2500元，退休3000元。'
+      note: '门诊统筹起付线一级100元、二级300元、三级600元（累计补差）。报销比例在职一级80%、二级70%、三级60%（退休人员各项提高5%）。最高支付限额在职4500元、退休5500元。'
     },
     inpatient: {
       sourceDocId: 'wf-medical-insurance-inpatient-2023',
@@ -85,7 +85,7 @@ export const weifangCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'wf-medical-insurance-inpatient-2023',
-      annualCap: 400,
+      annualCap: 450,
       tierBenefits: {
         community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.60 },
         tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
@@ -93,7 +93,7 @@ export const weifangCityData: CityInsuranceData = {
         tier3: { tierName: '三级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '重点三甲医院(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民普通门诊在基层定点机构免起付线报销60%，年度限额400元。'
+      note: '居民普通门诊在签约基层定点机构免起付线报销60%（常规50%-60%），年度最高支付限额450元。'
     },
     inpatient: {
       sourceDocId: 'wf-medical-insurance-inpatient-2023',

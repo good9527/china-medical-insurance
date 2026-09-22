@@ -85,15 +85,15 @@ export const yantaiCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'yt-medical-insurance-inpatient-2023',
-      annualCap: 200, // 一档200元，二档350元
+      annualCap: 230, // 2026年起一档230元，二档350元
       tierBenefits: {
-        community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.60 },
+        community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.65 },
         tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
         tier2: { tierName: '二级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3: { tierName: '三级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '重点三甲医院(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民普通门诊在基层定点机构免起付线报销60%，一档年度限额200元。'
+      note: '居民普通门诊在基层定点机构免起付线报销65%，2026年起一档年度限额提升至230元（二档350元）。'
     },
     inpatient: {
       sourceDocId: 'yt-medical-insurance-inpatient-2023',

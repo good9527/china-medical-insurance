@@ -86,7 +86,7 @@ export const zhoukouCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'zk-medical-insurance-inpatient-2023',
-      annualCap: 200,
+      annualCap: 800,
       tierBenefits: {
         community: { tierName: '基层社区及乡镇卫生院', deductible: 0, reimbursementRatio: 0.60 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
@@ -94,7 +94,7 @@ export const zhoukouCityData: CityInsuranceData = {
         tier3: { tierName: '三级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '市级重点三甲(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊在基层定点机构免起付线报销60%，年度限额200元。'
+      note: '居民门诊统筹在县域基层定点机构免起付报销60%，年度最高支付限额为个人缴费标准的2倍（800元/年）。'
     },
     inpatient: {
       sourceDocId: 'zk-medical-insurance-inpatient-2023',

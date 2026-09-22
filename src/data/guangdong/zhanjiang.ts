@@ -11,15 +11,15 @@ export const zhanjiangCityData: CityInsuranceData = {
 
   sourceDocs: [
     {
-      docId: 'zj-employee-outpatient-2022-28',
-      title: '湛江市医疗保障局关于印发湛江市职工基本医疗保险门诊共济保障实施细则的通知',
-      docNumber: '湛医保〔2022〕28号',
-      issuingDept: ['湛江市医疗保障局', '湛江市财政局'],
+      docId: 'zj-employee-outpatient-2022-12',
+      title: '湛江市人民政府关于印发湛江市职工基本医疗保险门诊共济保障实施细则的通知',
+      docNumber: '湛府规〔2022〕12号',
+      issuingDept: ['湛江市人民政府', '湛江市医疗保障局'],
       publishDate: '2022-11-25',
       effectiveDate: '2022-12-01',
       status: 'active',
       officialUrl: 'http://www.zhanjiang.gov.cn/gdzjylbzj/zwgk/zcfg/202211/t20221128_219084.shtml',
-      summaryQuote: '职工普通门诊不设起付线。参保人在选定定点医疗机构就医，在职职工在一级及以下、二级、三级医疗机构支付比例分别为60%、55%、50%（退休人员对应为63%、58%、53%）。年度最高支付限额在职及退休约为2152元至2500元。'
+      summaryQuote: '职工普通门诊不设起付线。参保人在选定定点医疗机构就医，在职职工在一级及以下、二级、三级医疗机构支付比例分别为60%、55%、50%（退休人员对应为63%、58%、53%）。年度最高支付限额按上上年度城镇在岗职工年平均工资的2%确定（约2152元）。'
     },
     {
       docId: 'zj-medical-insurance-inpatient-2024',
@@ -36,10 +36,10 @@ export const zhanjiangCityData: CityInsuranceData = {
 
   employee: {
     outpatient: {
-      sourceDocId: 'zj-employee-outpatient-2022-28',
+      sourceDocId: 'zj-employee-outpatient-2022-12',
       annualDeductible: 0,
       annualCap: 2152,
-      annualCapRetiree: 2500,
+      annualCapRetiree: 2152,
       tierBenefits: {
         community: { tierName: '基层及一级选定医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.03 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.03 },
@@ -47,7 +47,7 @@ export const zhanjiangCityData: CityInsuranceData = {
         tier3: { tierName: '三级选定医疗机构', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.03 },
         tier3_top: { tierName: '市级重点三甲医院', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.03 }
       },
-      note: '普通门诊免设起付线。选点就医一级及以下报销60%（退休63%），二级报销55%（退休58%），三级报销50%（退休53%）。在职限额2152元，退休2500元。'
+      note: '普通门诊免设起付线。选点就医一级及以下报销60%（退休63%），二级报销55%（退休58%），三级报销50%（退休53%）。在职及退休统一按上上年度在岗职工年平均工资2%执行（约2152元/年）。'
     },
     inpatient: {
       sourceDocId: 'zj-medical-insurance-inpatient-2024',
@@ -86,15 +86,15 @@ export const zhanjiangCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'zj-medical-insurance-inpatient-2024',
-      annualCap: 1200,
+      annualCap: 300,
       tierBenefits: {
-        community: { tierName: '基层社区及定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
+        community: { tierName: '基层社区及签约乡镇卫生院', deductible: 20, reimbursementRatio: 0.60 },
         tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
         tier2: { tierName: '二级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3: { tierName: '三级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '市级重点三甲医院(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
+      note: '居民门诊在签约基层定点机构就医，起付线每次20元，政策范围内报销比例60%，年度最高支付限额300元。'
     },
     inpatient: {
       sourceDocId: 'zj-medical-insurance-inpatient-2024',

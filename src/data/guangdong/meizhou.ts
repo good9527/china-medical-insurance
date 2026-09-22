@@ -11,15 +11,15 @@ export const meizhouCityData: CityInsuranceData = {
 
   sourceDocs: [
     {
-      docId: 'mz-employee-outpatient-2022-29',
-      title: '梅州市医疗保障局关于印发梅州市职工基本医疗保险门诊共济保障机制实施方案的通知',
-      docNumber: '梅医保〔2022〕29号',
-      issuingDept: ['梅州市医疗保障局', '梅州市财政局'],
+      docId: 'mz-employee-outpatient-2022-13',
+      title: '梅州市人民政府办公室关于印发梅州市职工基本医疗保险门诊共济保障机制实施方案的通知',
+      docNumber: '梅市府办〔2022〕13号',
+      issuingDept: ['梅州市人民政府办公室', '梅州市医疗保障局'],
       publishDate: '2022-11-22',
       effectiveDate: '2022-12-01',
       status: 'active',
       officialUrl: 'http://www.meizhou.gov.cn/sylbzj/zwgk/zcfg/202211/t20221125_219084.shtml',
-      summaryQuote: '职工普通门诊不设起付线。实行选点就医，选定基层医疗机构报销比例为75%（退休人员80%），二级医疗机构报销60%（退休65%），三级医疗机构报销50%（退休55%）。2025-2026年度门诊年度最高支付限额在职及退休约为1885元至2200元。'
+      summaryQuote: '职工普通门诊不设起付线。实行选点就医，基层报销75%（退休80%），二级60%（退休65%），三级50%（退休55%）。年度限额按在岗职工年平均工资2%执行（2026年限额为2002元，在职退休一致）。居民门诊限额月度50元、年度300元，基层报销60%。'
     },
     {
       docId: 'mz-medical-insurance-inpatient-2024',
@@ -36,10 +36,10 @@ export const meizhouCityData: CityInsuranceData = {
 
   employee: {
     outpatient: {
-      sourceDocId: 'mz-employee-outpatient-2022-29',
+      sourceDocId: 'mz-employee-outpatient-2022-13',
       annualDeductible: 0,
-      annualCap: 1885,
-      annualCapRetiree: 2200,
+      annualCap: 2002,
+      annualCapRetiree: 2002,
       tierBenefits: {
         community: { tierName: '基层及一级选定机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
@@ -47,7 +47,7 @@ export const meizhouCityData: CityInsuranceData = {
         tier3: { tierName: '三级选定医疗机构', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '市级重点三甲医院', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '普通门诊免设起付线。选点就医基层报销75%（退休80%），二级报销60%（退休65%），三级报销50%（退休55%）。年度限额在职1885元，退休2200元。'
+      note: '普通门诊免设起付线。选点就医基层报销75%（退休80%），二级报销60%（退休65%），三级报销50%（退休55%）。2026年度最高支付限额在职与退休统一为2002元/年。'
     },
     inpatient: {
       sourceDocId: 'mz-medical-insurance-inpatient-2024',
@@ -86,7 +86,7 @@ export const meizhouCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'mz-medical-insurance-inpatient-2024',
-      annualCap: 1200,
+      annualCap: 300,
       tierBenefits: {
         community: { tierName: '基层社区及定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
         tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
@@ -94,7 +94,7 @@ export const meizhouCityData: CityInsuranceData = {
         tier3: { tierName: '三级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '市级重点三甲医院(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
+      note: '居民门诊免设起付线，选定基层机构政策范围内报销60%-65%，每月限额50元，年度累计最高支付限额300元。二级及以上未纳门诊统筹。'
     },
     inpatient: {
       sourceDocId: 'mz-medical-insurance-inpatient-2024',
