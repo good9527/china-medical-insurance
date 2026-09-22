@@ -20,7 +20,7 @@ export const jingdezhenData: CityInsuranceData = {
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.jdz.gov.cn/zwgk/zcfg/202207/t20220705_5129301.html',
-      summaryQuote: '普通门诊统筹年度起付标准为一级及以下200元、二级及以上300元（全省统筹优化调整）。起付线以上统筹基金支付比例：一级及以下60%（退休65%）、二级55%（退休60%）、三级50%（退休55%）。门诊统筹年度最高支付限额在职职工1800元，退休人员2000元。'
+      summaryQuote: '普通门诊统筹年度起付标准为300元（全省统筹优化调整）。起付线以上统筹基金支付比例：一级及以下65%（退休70%）、二级60%（退休65%）、三级55%（退休60%）。门诊统筹年度最高支付限额在职职工2000元，退休人员3000元。'
     },
     {
       docId: 'jdz-resident-employee-inpatient-2023',
@@ -31,7 +31,7 @@ export const jingdezhenData: CityInsuranceData = {
       effectiveDate: '2023-06-01',
       status: 'active',
       officialUrl: 'http://ybj.jdz.gov.cn/zwgk/zcfg/202305/t20230522_5184920.html',
-      summaryQuote: '居民基层普通门诊免起付线，报销65%，限额150元。居民住院起付线一级100元、二级400元、三级600元，支付比例对应90%、80%、65%，限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销95%、90%、85%，退休提高3个百分点，职工医保限额15万元，大病救助最高支付50万元。'
+      summaryQuote: '居民基层普通门诊免起付线，报销65%，限额150元。居民住院起付线一级100元、二级400元、三级600元，支付比例对应90%、80%、65%，限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销95%、90%、85%,退休提高3个百分点，职工医保限额15万元，大病救助最高支付50万元。'
     }
   ],
 
@@ -40,16 +40,16 @@ export const jingdezhenData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'jdz-employee-outpatient-2022',
       annualDeductible: 300, // 门诊年度起付线 300 元
-      annualCap: 1800,       // 在职限额 1800 元
-      annualCapRetiree: 2000, // 退休限额 2000 元
+      annualCap: 2000,       // 在职限额 2000 元
+      annualCapRetiree: 3000, // 退休限额 3000 元
       tierBenefits: {
-        community: { tierName: '基层及一级定点机构', deductible: 300, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '省级重点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层及一级定点机构', deductible: 300, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 300, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '省级重点医疗机构', deductible: 300, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 }
       },
-      note: '门诊年度起付线300元。一级报销60%（退休65%），二级报销55%（退休60%），三级报销50%（退休55%）。在职限额1800元，退休2000元。'
+      note: '门诊年度起付线300元。一级报销65%（退休70%），二级报销60%（退休65%），三级报销55%（退休60%）。在职限额2000元，退休3000元。'
     },
     inpatient: {
       sourceDocId: 'jdz-resident-employee-inpatient-2023',
@@ -58,10 +58,10 @@ export const jingdezhenData: CityInsuranceData = {
         community: { tierName: '一级基层定点机构', deductible: 200, reimbursementRatio: 0.95, retireeRatioBonus: 0.03 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.95, retireeRatioBonus: 0.03 },
         tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.90, retireeRatioBonus: 0.03 },
-        tier3: { tierName: '市属三级定点医院', deductible: 800, reimbursementRatio: 0.85, retireeRatioBonus: 0.03 },
-        tier3_top: { tierName: '省级重点医院', deductible: 1000, reimbursementRatio: 0.82, retireeRatioBonus: 0.03 }
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.85, retireeRatioBonus: 0.03 },
+        tier3_top: { tierName: '省级重点医疗机构', deductible: 800, reimbursementRatio: 0.85, retireeRatioBonus: 0.03 }
       },
-      repeatedDeductibleRule: '同自然年度内多次住院，起付线每次递减100元，最低降至200元。'
+      repeatedDeductibleRule: '恶性肿瘤放化疗等特殊病种门诊治疗可享受特定医疗补助。'
     },
     catastrophic: {
       sourceDocId: 'jdz-resident-employee-inpatient-2023',
@@ -74,13 +74,13 @@ export const jingdezhenData: CityInsuranceData = {
     },
     remoteMedical: {
       sourceDocId: 'jdz-resident-employee-inpatient-2023',
-      filingChannels: ['国家医保服务平台APP', '江西医保公共服务小程序', '赣服通'],
+      filingChannels: ['国家医保服务平台APP', '江西医保公共服务小程序'],
       longTermFiledRatio: 1.0,
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
       specialNotes: [
-        '跨省异地就医直接联网结算，长期异地备案享受与景德镇本地同等报销待遇。'
+        '跨省及省内异地就医规范备案人员享受参保地同等级别医疗机构报销待遇。'
       ]
     }
   },
@@ -93,11 +93,11 @@ export const jingdezhenData: CityInsuranceData = {
       tierBenefits: {
         community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '市属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3_top: { tierName: '省级医疗机构', deductible: 0, reimbursementRatio: 0.50 }
+        tier2: { tierName: '二级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '市属三级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '基层定点普通门诊免起付线，政策范围内报销比例65%，不设单项封顶线（合并年度统筹限额15万元）。'
+      note: '基层定点普通门诊免起付线，政策范围内报销比例65%，不设单项封顶线（合并年度统筹限额15万元）。二级及以上医疗机构普通门诊未纳入统筹。'
     },
     inpatient: {
       sourceDocId: 'jdz-resident-employee-inpatient-2023',

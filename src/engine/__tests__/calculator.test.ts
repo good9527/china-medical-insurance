@@ -3236,6 +3236,38 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H9 PASS] 天门职工基层门诊(花费1000): 扣起付¥600，实报¥320 (80%比例，依据: 天政办发〔2022〕39号)`);
   passCount++;
 
+  // 荆州市 (421000) - 职工退休一级门诊花费 1000 元，起付优待400元，退休报销70%+5%=75%
+  totalChecks++;
+  const jingzhouEmpRetOut = calculateReimbursement({
+    cityCode: '421000',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(jingzhouEmpRetOut.breakdown.deductibleDeducted, 400, '荆州职工退休门诊起付线应享受400元优待');
+  assertEqual(jingzhouEmpRetOut.breakdown.baseReimbursed, 450, '荆州职工退休一级门诊实报不符: (1000-400)*0.75=450');
+  console.log(`  ✓ [H9 PASS] 荆州职工退休一级门诊(花费1000): 扣退休优待起付¥400，按75%实报¥450 (依据: 荆政办发〔2022〕)`);
+  passCount++;
+
+  // 襄阳市 (420600) - 职工退休二级门诊花费 1000 元，起付优待400元，退休报销60%+10%=70%
+  totalChecks++;
+  const xiangyangEmpRetOut = calculateReimbursement({
+    cityCode: '420600',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(xiangyangEmpRetOut.breakdown.deductibleDeducted, 400, '襄阳职工退休门诊起付线应享受400元优待');
+  assertEqual(xiangyangEmpRetOut.breakdown.baseReimbursed, 420, '襄阳职工退休二级门诊实报不符: (1000-400)*0.70=420');
+  console.log(`  ✓ [H9 PASS] 襄阳职工退休二级门诊(花费1000): 扣退休优待起付¥400，按70%实报¥420 (依据: 襄政办发〔2022〕46号)`);
+  passCount++;
+
   // --------------------------------------------------------------------------
   // Suite H10: 湖南省全域统筹区专项测算断言
   // --------------------------------------------------------------------------
@@ -3743,7 +3775,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H13 PASS] 九江职工二级门诊(花费1000): 扣起付¥300，实报¥420 (60%比例，依据: 九府办发〔2022〕21号)`);
   passCount++;
 
-  // 景德镇市 (360200) - 职工门诊退休一级花费 1000 元，起付300元，退休报销60%+5%=65%
+  // 景德镇市 (360200) - 职工门诊退休一级花费 1000 元，起付300元，退休报销65%+5%=70%
   totalChecks++;
   const jingdezhenEmpOut = calculateReimbursement({
     cityCode: '360200',
@@ -3755,8 +3787,8 @@ export function runCalculatorTests() {
     totalCost: 1000
   });
   assertEqual(jingdezhenEmpOut.breakdown.deductibleDeducted, 300, '景德镇职工门诊起付线应为300元');
-  assertEqual(jingdezhenEmpOut.breakdown.baseReimbursed, 455, '景德镇职工退休一级门诊实报不符: (1000-300)*0.65=455');
-  console.log(`  ✓ [H13 PASS] 景德镇职工退休一级门诊(花费1000): 扣起付¥300，按退休65%实报¥455 (依据: 景府办字〔2022〕46号)`);
+  assertEqual(jingdezhenEmpOut.breakdown.baseReimbursed, 490, '景德镇职工退休一级门诊实报不符: (1000-300)*0.70=490');
+  console.log(`  ✓ [H13 PASS] 景德镇职工退休一级门诊(花费1000): 扣起付¥300，按全省统筹优化后退休70%实报¥490 (依据: 赣府厅发〔2021〕47号及现行优化政策)`);
   passCount++;
 
   // 萍乡市 (360300) - 居民基层门诊花费 300 元，免起付，报销65%，限额150元

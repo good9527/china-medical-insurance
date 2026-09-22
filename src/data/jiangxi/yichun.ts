@@ -93,11 +93,11 @@ export const yichunData: CityInsuranceData = {
       tierBenefits: {
         community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3_top: { tierName: '三级甲等医疗机构', deductible: 0, reimbursementRatio: 0.50 }
+        tier2: { tierName: '二级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '三级甲等医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民普通门诊统筹在基层定点机构免起付线，政策范围内报销比例65%，不设单项封顶线（合并年度统筹限额15万元）。'
+      note: '居民普通门诊统筹在基层定点机构免起付线，政策范围内报销比例65%，不设单项封顶线（合并年度统筹限额15万元）。二级及以上医疗机构普通门诊未纳入统筹。'
     },
     inpatient: {
       sourceDocId: 'yc-medical-treatment-policy-2023',

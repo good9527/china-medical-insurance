@@ -20,7 +20,7 @@ export const xinyuData: CityInsuranceData = {
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.xinyu.gov.cn/zwgk/zcfg/202207/t20220712_5129301.html',
-      summaryQuote: '普通门诊统筹年度起付标准调整为300元（全省统筹优化联动）。起付线以上统筹基金支付比例：一级及以下60%（退休65%）、二级55%（退休60%）、三级50%（退休55%）。年度最高支付限额在职职工1800元，退休人员2000元。'
+      summaryQuote: '普通门诊统筹年度起付标准为300元（全省统筹优化联动）。起付线以上统筹基金支付比例：一级及以下65%（退休70%）、二级60%（退休65%）、三级55%（退休60%）。门诊统筹年度最高支付限额在职职工2000元，退休人员3000元。'
     },
     {
       docId: 'xy-resident-employee-inpatient-2023',
@@ -40,16 +40,16 @@ export const xinyuData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'xy-employee-outpatient-2022',
       annualDeductible: 300, // 门诊年度起付线 300 元
-      annualCap: 1800,       // 在职限额 1800 元
-      annualCapRetiree: 2000, // 退休限额 2000 元
+      annualCap: 2000,       // 在职限额 2000 元
+      annualCapRetiree: 3000, // 退休限额 3000 元
       tierBenefits: {
-        community: { tierName: '基层及一级定点机构', deductible: 300, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '省级重点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层及一级定点机构', deductible: 300, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 300, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '省级重点医疗机构', deductible: 300, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 }
       },
-      note: '门诊年度起付线300元。一级报销60%（退休65%），二级报销55%（退休60%），三级报销50%（退休55%）。在职限额1800元，退休2000元。'
+      note: '门诊年度起付线300元。一级报销65%（退休70%），二级报销60%（退休65%），三级报销55%（退休60%）。在职限额2000元，退休3000元。'
     },
     inpatient: {
       sourceDocId: 'xy-resident-employee-inpatient-2023',
@@ -93,11 +93,11 @@ export const xinyuData: CityInsuranceData = {
       tierBenefits: {
         community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '市属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3_top: { tierName: '省级医疗机构', deductible: 0, reimbursementRatio: 0.50 }
+        tier2: { tierName: '二级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '市属三级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '基层定点普通门诊免起付线，政策范围内报销比例65%，不设单项封顶线（合并年度统筹限额15万元）。'
+      note: '基层定点普通门诊免起付线，政策范围内报销比例65%，不设单项封顶线（合并年度统筹限额15万元）。二级及以上医疗机构普通门诊未纳入统筹。'
     },
     inpatient: {
       sourceDocId: 'xy-resident-employee-inpatient-2023',

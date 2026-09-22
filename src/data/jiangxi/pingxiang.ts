@@ -93,11 +93,11 @@ export const pingxiangData: CityInsuranceData = {
       tierBenefits: {
         community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '市属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3_top: { tierName: '省级医疗机构', deductible: 0, reimbursementRatio: 0.50 }
+        tier2: { tierName: '二级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '市属三级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '基层定点普通门诊免起付线，政策范围内报销比例65%，年度最高支付限额150元（依据: 萍医保发〔2023〕14号）。'
+      note: '基层定点普通门诊免起付线，政策范围内报销比例65%，年度最高支付限额150元（依据: 萍医保发〔2023〕14号）。二级及以上医疗机构普通门诊未纳入统筹。'
     },
     inpatient: {
       sourceDocId: 'px-resident-employee-inpatient-2023',
