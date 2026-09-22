@@ -45,6 +45,7 @@ export const suqianCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'sq-employee-outpatient-reform-2022',
       annualDeductible: 650,   // 在职门诊起付线 650 元，退休 500 元
+      annualDeductibleRetiree: 500, // 退休人员门诊起付线 500 元
       annualCap: 6000,         // 门诊年限额 6000 元
       tierBenefits: {
         community: { tierName: '基层社区服务机构/卫生院', deductible: 650, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },

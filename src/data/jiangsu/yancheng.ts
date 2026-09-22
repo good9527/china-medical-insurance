@@ -45,6 +45,7 @@ export const yanchengCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'yc-employee-outpatient-reform-2022',
       annualDeductible: 700,   // 在职门诊起付线 700 元，退休 300 元
+      annualDeductibleRetiree: 300, // 退休人员门诊起付线 300 元
       annualCap: 6000,         // 在职门诊限额 6000 元
       annualCapRetiree: 7000,  // 退休门诊限额 7000 元
       tierBenefits: {

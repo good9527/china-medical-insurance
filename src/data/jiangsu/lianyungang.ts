@@ -45,6 +45,7 @@ export const lianyungangCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'lyg-employee-outpatient-reform-2022',
       annualDeductible: 750,   // 在职门诊起付线 750 元，退休 600 元
+      annualDeductibleRetiree: 600, // 退休人员门诊起付线 600 元
       annualCap: 6000,         // 门诊年限额 6000 元
       tierBenefits: {
         community: { tierName: '基层社区卫生服务中心/乡镇卫生院', deductible: 750, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },

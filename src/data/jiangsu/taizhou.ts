@@ -56,6 +56,7 @@ export const taizhouCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'tz-employee-outpatient-reform-2022',
       annualDeductible: 800,   // 在职门诊起付线 800 元，退休 500 元
+      annualDeductibleRetiree: 500, // 退休人员门诊起付线 500 元
       annualCap: 9000,         // 门诊年限额 9000 元
       tierBenefits: {
         community: { tierName: '一级及以下定点医疗机构/卫生院', deductible: 800, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },

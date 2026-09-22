@@ -45,6 +45,7 @@ export const wuxiCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'wx-employee-outpatient-reform-2022',
       annualDeductible: 500,   // 在职门诊起付线 500 元，退休 300 元
+      annualDeductibleRetiree: 300, // 退休人员门诊起付线 300 元
       annualCap: 12000,        // 门诊年限额 1.2 万元
       tierBenefits: {
         community: { tierName: '基层社区卫生服务中心', deductible: 500, reimbursementRatio: 0.80, retireeRatioBonus: 0.10 },

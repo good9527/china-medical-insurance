@@ -45,6 +45,7 @@ export const changzhouCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'cz-employee-outpatient-reform-2022',
       annualDeductible: 600,   // 在职门诊起付线 600 元，退休 400 元
+      annualDeductibleRetiree: 400, // 退休人员门诊起付线 400 元
       annualCap: 10000,        // 门诊年限额 1 万元
       annualCapRetiree: 12000, // 退休门诊年限额 1.2 万元
       tierBenefits: {

@@ -5725,6 +5725,132 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H27 PASS] 双城竞技场成功输出 12 项法定条款纵深比拼矩阵 (北京 vs 上海)`);
   passCount++;
 
+  // --------------------------------------------------------------------------
+  // Suite H28: 江苏与河北统筹区退休门诊起付线与居民门诊范围专项断言
+  // --------------------------------------------------------------------------
+  console.log(`\n>>> [Suite H28] 执行江苏省与河北省统筹区门诊新政与退休优待测算断言...`);
+
+  // 常州市 (320400) - 退休职工门诊一级(花费1000): 扣退休起付¥400 (在职为600)，报销 80%+5%=85%，实报 (1000-400)*0.85 = 510元
+  totalChecks++;
+  const changzhouRetOut = calculateReimbursement({
+    cityCode: '320400',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(changzhouRetOut.breakdown.deductibleDeducted, 400, '常州退休职工门诊起付线应为400元');
+  assertEqual(changzhouRetOut.breakdown.baseReimbursed, 510, '常州退休职工一级门诊实报不符: (1000-400)*0.85=510');
+  console.log(`  ✓ [H28 PASS] 常州退休职工一级门诊(花费1000): 扣起付¥400，按85%实报¥510 (依据: 常政办发〔2022〕91号)`);
+  passCount++;
+
+  // 无锡市 (320200) - 退休职工门诊社区(花费1000): 扣退休起付¥300 (在职为500)，报销 80%+10%=90%，实报 (1000-300)*0.90 = 630元
+  totalChecks++;
+  const wuxiRetOut = calculateReimbursement({
+    cityCode: '320200',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(wuxiRetOut.breakdown.deductibleDeducted, 300, '无锡退休职工门诊起付线应为300元');
+  assertEqual(wuxiRetOut.breakdown.baseReimbursed, 630, '无锡退休职工社区门诊实报不符: (1000-300)*0.90=630');
+  console.log(`  ✓ [H28 PASS] 无锡退休职工社区门诊(花费1000): 扣起付¥300，按90%高比例实报¥630 (依据: 锡政办发〔2022〕97号)`);
+  passCount++;
+
+  // 徐州市 (320300) - 退休职工门诊一级(花费1000): 扣退休起付¥350 (在职为700)，报销 75%+10%=85%，实报 (1000-350)*0.85 = 552.5元
+  totalChecks++;
+  const xuzhouRetOut = calculateReimbursement({
+    cityCode: '320300',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(xuzhouRetOut.breakdown.deductibleDeducted, 350, '徐州退休职工门诊起付线应为350元');
+  assertEqual(xuzhouRetOut.breakdown.baseReimbursed, 552.5, '徐州退休职工一级门诊实报不符: (1000-350)*0.85=552.5');
+  console.log(`  ✓ [H28 PASS] 徐州退休职工一级门诊(花费1000): 扣起付¥350，按85%实报¥552.5 (依据: 徐政办发〔2022〕115号)`);
+  passCount++;
+
+  // 南通市 (320600) - 居民基层门诊报销 50%，二级未覆盖报销 0
+  totalChecks++;
+  const nantongResCom = calculateReimbursement({
+    cityCode: '320600',
+    insuranceType: 'resident',
+    treatmentType: 'outpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 500
+  });
+  assertEqual(nantongResCom.breakdown.deductibleDeducted, 0, '南通居民基层门诊免起付');
+  assertEqual(nantongResCom.breakdown.baseReimbursed, 250, '南通居民基层门诊实报不符: 500*0.50=250');
+  
+  const nantongResTier2 = calculateReimbursement({
+    cityCode: '320600',
+    insuranceType: 'resident',
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 500
+  });
+  assertEqual(nantongResTier2.breakdown.baseReimbursed, 0, '南通居民二级医院门诊未纳入统筹应报0元');
+  console.log(`  ✓ [H28 PASS] 南通居民门诊(花费500): 基层实报¥250(50%)，二级未纳入统筹实报¥0 (依据: 通政规〔2024〕3号)`);
+  passCount++;
+
+  // 唐山市 (130200) - 居民基层门诊报销 50%，二级未覆盖报销 0
+  totalChecks++;
+  const tangshanResCom = calculateReimbursement({
+    cityCode: '130200',
+    insuranceType: 'resident',
+    treatmentType: 'outpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 200
+  });
+  assertEqual(tangshanResCom.breakdown.baseReimbursed, 100, '唐山居民基层门诊实报不符: 200*0.50=100');
+  
+  const tangshanResTier2 = calculateReimbursement({
+    cityCode: '130200',
+    insuranceType: 'resident',
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 200
+  });
+  assertEqual(tangshanResTier2.breakdown.baseReimbursed, 0, '唐山居民二级医院门诊未纳入统筹应报0元');
+  console.log(`  ✓ [H28 PASS] 唐山居民门诊(花费200): 基层实报¥100(50%)，二级未纳入统筹实报¥0 (依据: 唐政发〔2023〕1号)`);
+  passCount++;
+
+  // 邯郸市 (130400) - 居民基层门诊报销 50% 受 75 元封顶管控，三级未覆盖报销 0
+  totalChecks++;
+  const handanResCom = calculateReimbursement({
+    cityCode: '130400',
+    insuranceType: 'resident',
+    treatmentType: 'outpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 200
+  });
+  assertEqual(handanResCom.breakdown.baseReimbursed, 75, '邯郸居民基层门诊受75元限额管控实报75');
+  
+  const handanResTier3 = calculateReimbursement({
+    cityCode: '130400',
+    insuranceType: 'resident',
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 500
+  });
+  assertEqual(handanResTier3.breakdown.baseReimbursed, 0, '邯郸居民三级医院门诊未纳入统筹应报0元');
+  console.log(`  ✓ [H28 PASS] 邯郸居民门诊(花费200): 基层受限额管控实报¥75，三级未纳入统筹实报¥0 (依据: 邯医保发〔2023〕18号)`);
+  passCount++;
+
   console.log(`\n=========================================`);
   console.log(`🎉 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);

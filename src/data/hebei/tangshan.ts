@@ -93,11 +93,11 @@ export const tangshanData: CityInsuranceData = {
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区卫生服务中心', deductible: 0, reimbursementRatio: 0.50 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '市属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 }
+        tier2: { tierName: '二级定点医疗机构（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '市属三级医疗机构（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省属三级医疗机构（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民在基层定点医疗机构门诊就医不设起付线，按50%比例支付，年度统筹基金最高支付200元。'
+      note: '居民在基层定点医疗机构门诊就医不设起付线，按50%比例支付，年度统筹基金最高支付200元；二级及三级医疗机构普通门诊未纳入统筹。'
     },
     inpatient: {
       sourceDocId: 'ts-employee-resident-inpatient-2023',

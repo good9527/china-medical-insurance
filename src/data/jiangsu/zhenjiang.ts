@@ -56,6 +56,7 @@ export const zhenjiangCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'zj-employee-outpatient-reform-2022',
       annualDeductible: 800,   // 在职门诊起付线 800 元，退休 500 元
+      annualDeductibleRetiree: 500, // 退休人员门诊起付线 500 元
       annualCap: 10000,        // 门诊年限额 1 万元
       tierBenefits: {
         community: { tierName: '基层医疗机构/社区卫生站', deductible: 800, reimbursementRatio: 0.90, retireeRatioBonus: 0.00 },

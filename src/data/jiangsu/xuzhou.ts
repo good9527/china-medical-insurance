@@ -36,7 +36,7 @@ export const xuzhouCityData: CityInsuranceData = {
       effectiveDate: '2024-01-01',
       status: 'active',
       officialUrl: 'https://ybj.xz.gov.cn/zwgk/002002/20231125/8921345.html',
-      summaryQuote: '居民门诊年度政策范围内医疗费用最高支付限额提高至1200元（签约家庭医生1800元）。居民住院起付线：三级医疗机构1500元、二级700元、一级及社区300元；报销比例一级85%、二级75%、三级65%。年度内多次住院起付线依次递减100元，但各级别设有最低限额（三级1100元、二级300元、一级100元）。基本医保年度最高支付限额25万元。'
+      summaryQuote: '居民门诊年度政策范围内医疗费用最高支付限额提高至1200元（签约家庭医生1800元）。居民住院起付线：一级及社区300元、二级700元、三级医疗机构1500元；报销比例一级85%、二级75%、三级65%。年度内多次住院起付线依次递减100元，各级别最低限额为一级100元、二级300元、三级1100元。基本医保年度最高支付限额25万元。'
     }
   ],
 
@@ -45,6 +45,7 @@ export const xuzhouCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'xz-employee-outpatient-reform-2022',
       annualDeductible: 700,   // 在职门诊起付线 700 元，退休 350 元
+      annualDeductibleRetiree: 350, // 退休人员门诊起付线 350 元
       annualCap: 7000,         // 门诊年限额 7000 元
       tierBenefits: {
         community: { tierName: '基层社区卫生服务中心', deductible: 700, reimbursementRatio: 0.75, retireeRatioBonus: 0.10 },

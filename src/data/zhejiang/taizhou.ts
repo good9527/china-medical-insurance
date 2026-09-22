@@ -109,11 +109,11 @@ export const taizhouZjCityData: CityInsuranceData = {
       annualCap: 300000,
       repeatedDeductibleRule: '二次及多次住院起付线依次递减',
       tierBenefits: {
-        community: { tierName: '基层卫生机构', deductible: 200, reimbursementRatio: 0.80 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.80 },
+        community: { tierName: '基层卫生机构', deductible: 200, reimbursementRatio: 0.85 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
         tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.75 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.70 },
-        tier3_top: { tierName: '重点三级医院', deductible: 800, reimbursementRatio: 0.70 }
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.65 },
+        tier3_top: { tierName: '重点三级医院', deductible: 800, reimbursementRatio: 0.65 }
       }
     },
     catastrophic: {

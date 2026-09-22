@@ -93,11 +93,11 @@ export const chengdeData: CityInsuranceData = {
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区服务中心', deductible: 0, reimbursementRatio: 0.50 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '市属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 }
+        tier2: { tierName: '二级定点医疗机构（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '市属三级医疗机构（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省属三级医疗机构（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '普通门诊统筹基层定点报销50%，年度统筹限额200元。'
+      note: '普通门诊统筹基层定点报销50%，年度统筹限额200元；二级及三级医疗机构普通门诊未纳入统筹。'
     },
     inpatient: {
       sourceDocId: 'cd-resident-employee-inpatient-2022',

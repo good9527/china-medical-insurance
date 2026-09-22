@@ -45,6 +45,7 @@ export const nantongCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'nt-employee-outpatient-reform-2022',
       annualDeductible: 800,   // 在职门诊起付线 800 元，退休 500 元
+      annualDeductibleRetiree: 500, // 退休人员门诊起付线 500 元
       annualCap: 10000,        // 门诊年限额 1 万元
       tierBenefits: {
         community: { tierName: '基层社区卫生服务机构', deductible: 800, reimbursementRatio: 0.75, retireeRatioBonus: 0.10 },
@@ -89,16 +90,16 @@ export const nantongCityData: CityInsuranceData = {
   // 城乡居民医保待遇 (南通标准)
   resident: {
     outpatient: {
-      sourceDocId: 'nt-employee-outpatient-reform-2022',
-      annualCap: 1000,
+      sourceDocId: 'nt-medical-insurance-inpatient-2024',
+      annualCap: 800,
       tierBenefits: {
-        community: { tierName: '基层卫生服务机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier2: { tierName: '二级医疗机构', deductible: 200, reimbursementRatio: 0.50 },
-        tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.40 },
-        tier3_top: { tierName: '重点三甲医院', deductible: 200, reimbursementRatio: 0.40 }
+        community: { tierName: '签约社区卫生服务中心/乡镇卫生院', deductible: 0, reimbursementRatio: 0.50 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
+        tier2: { tierName: '二级医疗机构（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级医疗机构（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '重点三甲医院（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民基层门诊免起付线报销60%，限额1000元。'
+      note: '居民普通门诊统筹定点在基层社区卫生服务机构/乡镇卫生院，免起付线报销50%，年度限额800元；二级及三级医疗机构普通门诊不设统筹报销。'
     },
     inpatient: {
       sourceDocId: 'nt-medical-insurance-inpatient-2024',
