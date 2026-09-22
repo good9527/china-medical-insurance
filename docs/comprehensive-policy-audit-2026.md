@@ -207,7 +207,7 @@
 | `npm run audit:smart` | 348 统筹区单调性、起付梯度、报销比例倒挂、非标档位排查 | 检出 CRITICAL 0, WARNING 0 | ✅ PASS |
 | `npm run audit:patrol` | 35 个随机统筹区深度抽检巡查 | 抽检通过率 100.0% | ✅ PASS |
 | `npx tsx src/scripts/deep-nationwide-audit.ts` | 348 统筹区公文摘录条款严格对齐与时效性穿透 | **检出 CRITICAL 0, WARNING 0, NOTICE 0** | ✅ PASS |
-| `npm run test:calc` | 涵盖门诊、住院、异地、大病及双城PK全量用例 | **共 7,178 项断言，成功率 100%** | ✅ PASS |
+| `npm run test:calc` | 涵盖门诊、住院、异地、大病及双城PK全量用例 | **共 7,184 项断言，成功率 100%** | ✅ PASS |
 | `npm run build:h5` | 全平台 H5 生产包打包编译 | 0 errors, DONE Build complete | ✅ PASS |
 
 ---
@@ -226,4 +226,4 @@
 
 本次深度核验彻底消除了此前模板覆写与历史复制残留带来的潜在数据偏差，全国 348 个医保统筹区的所有起付线、报销比例、封顶线和大病待遇已 **100% 严格对齐** 各自官方正式公文条款。
 
-项目已建立 `npm run check:all` 级联门禁，未来任何统筹区的数据变更均需同时通过 `audit:data`、`audit:smart`、`deep-nationwide-audit` 以及 7,178 项自动化测算断言，确保全国医保报销公益平台的数据准确性与权威性长久稳固。
+项目已建立 `npm run check:all` 级联门禁，未来任何统筹区的数据变更均需同时通过 `audit:data`、`audit:smart`、`deep-nationwide-audit` 以及 7,184 项自动化测算断言，确保全国医保报销公益平台的数据准确性与权威性长久稳固。
