@@ -31,7 +31,7 @@ export const quanzhouCityData: CityInsuranceData = {
       effectiveDate: '2024-01-01',
       status: 'active',
       officialUrl: 'http://ybj.quanzhou.gov.cn/zwgk/zfxxgk/zfxxgkml/zcfg/202312/t20231205_2958172.htm',
-      summaryQuote: '城乡居民普通门诊免起付线，在基层定点机构报销50%，年度封顶500元。城乡居民住院起付线基层150元、一级300元、二级600元、三级1000元，政策范围内报销比例对应90%、85%、75%、60%，基本统筹年度封顶10万元。职工住院起付线基层300元、一级500元、二级700元、三级1000元，在职报销95%、93%、88%、85%，退休提高3个百分点，职工医保统筹加大额补助最高支付50万元。'
+      summaryQuote: '城乡居民普通门诊免起付线，在基层定点机构报销70%（村级50%），年度封顶420元。城乡居民住院起付线基层150元、一级300元、二级600元、三级1000元，政策范围内报销比例对应90%、85%、75%、60%，基本统筹年度限额15万元（大病25万，年度合并封顶40万元）。职工住院起付线基层300元、一级500元、二级700元、三级1000元，在职报销95%、93%、88%、85%，退休提高3个百分点，职工医保统筹加大额补助最高支付50万元。'
     }
   ],
 
@@ -89,19 +89,19 @@ export const quanzhouCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'qz-medical-treatment-policy-2023',
-      annualCap: 500,
+      annualCap: 420,
       tierBenefits: {
-        community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.40 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.35 },
-        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.35 }
+        community: { tierName: '基层公立定点医疗机构', deductible: 0, reimbursementRatio: 0.70 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.70 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民医保普通门诊在基层免起付线，报销50%，年度限额500元。'
+      note: '居民医保普通门诊在基层免起付线，报销70%（村级卫生所50%），年度累计限额420元（二级及以上机构未纳普通门诊统筹）。'
     },
     inpatient: {
       sourceDocId: 'qz-medical-treatment-policy-2023',
-      annualCap: 100000,
+      annualCap: 150000,
       tierBenefits: {
         community: { tierName: '基层医疗卫生机构', deductible: 150, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.85 },
@@ -114,7 +114,7 @@ export const quanzhouCityData: CityInsuranceData = {
       sourceDocId: 'qz-medical-treatment-policy-2023',
       name: '城乡居民大病保险',
       deductible: 15000,
-      annualCap: 350000,
+      annualCap: 250000,
       tiers: [
         { minAmount: 0, maxAmount: 50000, ratio: 0.60 },
         { minAmount: 50000, maxAmount: 100000, ratio: 0.65 },

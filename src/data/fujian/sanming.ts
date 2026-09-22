@@ -89,15 +89,15 @@ export const sanmingCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'sm-medical-reform-policy-2023',
-      annualCap: 400,
+      annualCap: 200,
       tierBenefits: {
-        community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.40 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.35 },
-        tier3_top: { tierName: '省属重点医疗机构', deductible: 0, reimbursementRatio: 0.35 }
+        community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省属重点医疗机构', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊统筹基层免起付线，报销50%，年度限额400元。'
+      note: '居民门诊统筹在基层及一级医疗机构免起付线，政策范围内报销60%，次均封顶40元/日人，年度限额200元（二级及以上未纳普通门诊统筹）。'
     },
     inpatient: {
       sourceDocId: 'sm-medical-reform-policy-2023',

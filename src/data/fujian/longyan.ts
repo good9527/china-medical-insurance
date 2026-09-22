@@ -91,13 +91,13 @@ export const longyanCityData: CityInsuranceData = {
       sourceDocId: 'ly-medical-treatment-policy-2023',
       annualCap: 400,
       tierBenefits: {
-        community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.40 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.35 },
-        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.35 }
+        community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊统筹基层免起付线，报销50%，年度限额400元。'
+      note: '龙岩居民门诊统筹基层医疗卫生机构免起付线，报销60%（村所30%），次均封顶30元，年度限额400元（二级及以上未纳普通门诊统筹）。'
     },
     inpatient: {
       sourceDocId: 'ly-medical-treatment-policy-2023',

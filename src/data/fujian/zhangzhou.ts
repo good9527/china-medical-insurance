@@ -31,7 +31,7 @@ export const zhangzhouCityData: CityInsuranceData = {
       effectiveDate: '2024-01-01',
       status: 'active',
       officialUrl: 'http://ybj.zhangzhou.gov.cn/cms/html/zzsylbzj/2023-11-20/1789452310.html',
-      summaryQuote: '居民医保普通门诊免起付线，基层医疗卫生机构报销50%，年度封顶400元。城乡居民住院起付线基层100元、一级300元、二级500元、三级800元，报销比例90%、85%、75%、60%，统筹限额10万元。职工住院起付线基层200元、一级400元、二级600元、三级800元，在职报销95%、92%、88%、85%，退休提高3个百分点，职工医保统筹加大额互助限额50万元。'
+      summaryQuote: '居民医保普通门诊在基层公立机构报销75%，每次起付10元（基药免起付），年度封顶300元。城乡居民住院起付线基层100元、一级300元、二级500元、三级800元，报销比例90%、85%、75%、60%，统筹限额10万元。职工住院起付线基层200元、一级400元、二级600元、三级800元，在职报销95%、92%、88%、85%，退休提高3个百分点，职工医保统筹加大额互助限额50万元。'
     }
   ],
 
@@ -89,15 +89,15 @@ export const zhangzhouCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'zz-medical-treatment-policy-2023',
-      annualCap: 400,
+      annualCap: 300,
       tierBenefits: {
-        community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.40 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.35 },
-        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.35 }
+        community: { tierName: '基层定点医疗机构', deductible: 10, reimbursementRatio: 0.75 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 10, reimbursementRatio: 0.75 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊统筹仅在基层及一级机构免起付享受，报销50%，年度限额400元。'
+      note: '依据漳政综规〔2022〕10号，城乡居民普通门诊在基层公立机构报销75%，每次起付10元（基本药物免起付），单次封顶50元，年度限额300元。二级及以上机构未纳普通门诊统筹。'
     },
     inpatient: {
       sourceDocId: 'zz-medical-treatment-policy-2023',

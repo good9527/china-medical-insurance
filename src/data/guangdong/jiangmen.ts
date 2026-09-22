@@ -19,7 +19,7 @@ export const jiangmenCityData: CityInsuranceData = {
       effectiveDate: '2022-12-01',
       status: 'active',
       officialUrl: 'http://www.jiangmen.gov.cn/bmpd/jmsylbzj/zwgk/zcfg/202211/t20221118_273901.shtml',
-      summaryQuote: '职工普通门诊不设起付线。选定基层定点医疗机构就医报销比例为75%（退休人员80%），二级或三级医疗机构就医报销比例为60%（退休人员65%）。年度门诊统筹最高支付限额在职约为2800元，退休约为3200元。'
+      summaryQuote: '职工普通门诊按月度限额管理：一级及以下90元/月，二级三级80元/月。选定一级及以下医疗机构在职75%（退休80%），二级三级在职60%（退休65%），单独支付药品费用纳入大病保险。居民普通门诊年度限额350元，选定一级及以下定点医疗机构报销75%。'
     },
     {
       docId: 'jm-medical-insurance-inpatient-2024',
@@ -41,13 +41,13 @@ export const jiangmenCityData: CityInsuranceData = {
       annualCap: 2800,
       annualCapRetiree: 3200,
       tierBenefits: {
-        community: { tierName: '基层定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier2: { tierName: '二级定点机构(选定)', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '三级定点机构(选定)', deductible: 0, reimbursementRatio: 0.40 },
-        tier3_top: { tierName: '市级三甲综合医院', deductible: 0, reimbursementRatio: 0.40 }
+        community: { tierName: '基层定点门诊机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点机构(选定)', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级定点机构(选定)', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '市级三甲综合医院', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 }
       },
-      note: '普通门诊免设起付线。选点就医基层报销75%（退休80%），二级及三级报销60%（退休65%）。年度限额在职2800元，退休3200元。'
+      note: '依据2026年最新标准，普通门诊免设起付线。月度限额一级及以下90元/月、二级三级80元/月；选点基层报销75%（退休80%），二级及三级报销60%（退休65%）。普通门诊单独支付药品纳入大病保险。'
     },
     inpatient: {
       sourceDocId: 'jm-medical-insurance-inpatient-2024',
@@ -86,15 +86,15 @@ export const jiangmenCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'jm-medical-insurance-inpatient-2024',
-      annualCap: 1200,
+      annualCap: 350,
       tierBenefits: {
-        community: { tierName: '基层定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier2: { tierName: '二级定点机构(选定)', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '三级定点机构(选定)', deductible: 0, reimbursementRatio: 0.40 },
-        tier3_top: { tierName: '市级三甲综合医院', deductible: 0, reimbursementRatio: 0.40 }
+        community: { tierName: '基层定点门诊机构', deductible: 0, reimbursementRatio: 0.75 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75 },
+        tier2: { tierName: '二级定点机构(转诊)', deductible: 0, reimbursementRatio: 0.50 },
+        tier3: { tierName: '三级定点机构(转诊)', deductible: 0, reimbursementRatio: 0.50 },
+        tier3_top: { tierName: '市级三甲综合医院(转诊)', deductible: 0, reimbursementRatio: 0.50 }
       },
-      note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
+      note: '依据2026年最新标准，居民门诊免设起付线，选定一级及以下报销75%，转诊至非选定机构报销50%，年度最高支付限额350元。'
     },
     inpatient: {
       sourceDocId: 'jm-medical-insurance-inpatient-2024',

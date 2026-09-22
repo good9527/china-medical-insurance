@@ -91,13 +91,13 @@ export const putianCityData: CityInsuranceData = {
       sourceDocId: 'pt-medical-treatment-policy-2023',
       annualCap: 400,
       tierBenefits: {
-        community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.40 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.35 },
-        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.35 }
+        community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊统筹仅在基层机构免起付享受，报销50%，年度限额400元。'
+      note: '居民门诊统筹在乡镇卫生院/社区卫生服务中心免起付线报销60%（次均封顶35元），村级50%（次均封顶30元），年度累计限额400元（二级及以上未纳普通门诊统筹）。'
     },
     inpatient: {
       sourceDocId: 'pt-medical-treatment-policy-2023',

@@ -38,16 +38,16 @@ export const zhaoqingCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'zq-employee-outpatient-2022-21',
       annualDeductible: 0,
-      annualCap: 2400,
-      annualCapRetiree: 2800,
+      annualCap: 2127,
+      annualCapRetiree: 2127,
       tierBenefits: {
-        community: { tierName: '基层及一级选定医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
+        community: { tierName: '基层及一级选定医疗机构', deductible: 0, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
         tier2: { tierName: '二级选定医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级选定医疗机构', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        tier3: { tierName: '三级选定医疗机构', deductible: 0, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 0, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 }
       },
-      note: '普通门诊免设起付线。选点就医基层报销75%（退休80%），二级报销60%（退休65%），三级报销50%（退休55%）。在职限额2400元，退休2800元。'
+      note: '自2026年起，职工门诊年度最高支付限额调整为2127元。一级及以下在职65%（退休70%）、二级在职60%（退休65%）、三级在职55%（退休60%）。'
     },
     inpatient: {
       sourceDocId: 'zq-medical-insurance-inpatient-2024',
@@ -86,15 +86,15 @@ export const zhaoqingCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'zq-medical-insurance-inpatient-2024',
-      annualCap: 1200,
+      annualCap: 230,
       tierBenefits: {
-        community: { tierName: '基层社区及定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
-        tier2: { tierName: '二级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
-        tier3: { tierName: '三级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
-        tier3_top: { tierName: '市级重点三甲医院(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 }
+        community: { tierName: '基层社区及定点门诊机构', deductible: 0, reimbursementRatio: 0.60 },
+        tier1: { tierName: '一级医疗机构(选定)', deductible: 0, reimbursementRatio: 0.60 },
+        tier2: { tierName: '二级医疗机构(选定)', deductible: 0, reimbursementRatio: 0.55 },
+        tier3: { tierName: '三级医疗机构(选定)', deductible: 0, reimbursementRatio: 0.50 },
+        tier3_top: { tierName: '市级重点三甲医院(选定)', deductible: 0, reimbursementRatio: 0.50 }
       },
-      note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
+      note: '肇庆居民医保普通门诊免设起付线，选点医疗机构报销比例一级60%、二级55%、三级50%，年度最高支付限额为230元/年。'
     },
     inpatient: {
       sourceDocId: 'zq-medical-insurance-inpatient-2024',

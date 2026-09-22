@@ -86,15 +86,15 @@ export const shaoguanCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'sg-medical-insurance-inpatient-2024',
-      annualCap: 1200,
+      annualCap: 300,
       tierBenefits: {
-        community: { tierName: '基层社区及定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
+        community: { tierName: '基层社区及定点门诊机构', deductible: 0, reimbursementRatio: 0.70 },
         tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
         tier2: { tierName: '二级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3: { tierName: '三级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '市级重点三甲医院(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
+      note: '韶关居民医保普通门诊免设起付线，定点医疗机构报销比例为70%，年度最高支付限额300元/年。'
     },
     inpatient: {
       sourceDocId: 'sg-medical-insurance-inpatient-2024',

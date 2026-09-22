@@ -43,11 +43,11 @@ export const qingyuanCityData: CityInsuranceData = {
       tierBenefits: {
         community: { tierName: '基层及一级选定医疗机构', deductible: 0, reimbursementRatio: 0.85, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.85, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级选定医疗机构', deductible: 0, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级选定医疗机构', deductible: 0, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
         tier3: { tierName: '三级选定医疗机构', deductible: 0, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '市级重点三甲医院', deductible: 0, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 }
       },
-      note: '普通门诊免设起付线。选点就医一级及以下报销85%（退休90%），二级报销65%（退休70%），三级报销55%（退休60%）。在职限额2400元，退休2800元。'
+      note: '普通门诊免设起付线。选点就医一级及以下报销85%（退休90%），备选二级报销70%（退休75%，限额400元），三级报销55%（退休60%）。选定基层医疗机构不设年度限额。'
     },
     inpatient: {
       sourceDocId: 'qy-medical-insurance-inpatient-2024',
@@ -88,13 +88,13 @@ export const qingyuanCityData: CityInsuranceData = {
       sourceDocId: 'qy-medical-insurance-inpatient-2024',
       annualCap: 1200,
       tierBenefits: {
-        community: { tierName: '基层社区及定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
+        community: { tierName: '基层社区及定点门诊机构', deductible: 0, reimbursementRatio: 0.55 },
+        tier1: { tierName: '一级医疗机构(选定定点)', deductible: 0, reimbursementRatio: 0.55 },
         tier2: { tierName: '二级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3: { tierName: '三级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '市级重点三甲医院(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
+      note: '清远居民普通门诊在选定定点医疗机构政策范围内支付比例为55%，不设起付线，单价超过120元药品耗材自费。'
     },
     inpatient: {
       sourceDocId: 'qy-medical-insurance-inpatient-2024',

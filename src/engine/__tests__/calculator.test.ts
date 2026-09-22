@@ -2409,7 +2409,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H5 PASS] 江门职工退休二级住院(花费10000): 扣起付¥600，按93%实报¥8742 (依据: 江医保发〔2024〕12号)`);
   passCount++;
 
-  // 肇庆市 (441200) - 居民基层门诊花费 400 元，免起付，报销65%
+  // 肇庆市 (441200) - 居民基层门诊花费 400 元，免起付，报销60%，受年度最高限额230元管控
   totalChecks++;
   const zhaoqingResOut = calculateReimbursement({
     cityCode: '441200',
@@ -2420,8 +2420,8 @@ export function runCalculatorTests() {
     totalCost: 400
   });
   assertEqual(zhaoqingResOut.breakdown.deductibleDeducted, 0, '肇庆居民基层门诊免起付线');
-  assertEqual(zhaoqingResOut.breakdown.baseReimbursed, 260, '肇庆居民基层门诊实报不符: 400*0.65=260');
-  console.log(`  ✓ [H5 PASS] 肇庆居民基层门诊(花费400): 免起付实报¥260 (65%比例，依据: 肇医保〔2022〕21号)`);
+  assertEqual(zhaoqingResOut.breakdown.baseReimbursed, 230, '肇庆居民基层门诊实报不符: 400*0.60=240受230元年度封顶管控截断为230');
+  console.log(`  ✓ [H5 PASS] 肇庆居民基层门诊(花费400): 免起付，受230元年度限额管控实报¥230 (依据: 肇庆市医保最新规定)`);
   passCount++;
 
   // 汕头市 (440500) - 居民二级住院花费 6000 元，起付400元，报销80%
@@ -3918,7 +3918,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H14 PASS] 漳州职工退休一级门诊(花费2000): 扣起付¥600，按退休90%实报¥1260 (依据: 漳政办规〔2022〕6号)`);
   passCount++;
 
-  // 莆田市 (350300) - 居民基层门诊花费 300 元，免起付，报销50%
+  // 莆田市 (350300) - 居民基层门诊花费 300 元，免起付，基层卫生院报销60%
   totalChecks++;
   const putianResOut = calculateReimbursement({
     cityCode: '350300',
@@ -3929,8 +3929,8 @@ export function runCalculatorTests() {
     totalCost: 300
   });
   assertEqual(putianResOut.breakdown.deductibleDeducted, 0, '莆田居民基层门诊免起付线');
-  assertEqual(putianResOut.breakdown.baseReimbursed, 150, '莆田居民基层门诊实报不符: 300*0.50=150');
-  console.log(`  ✓ [H14 PASS] 莆田居民基层门诊(花费300): 免起付实报¥150 (50%比例，依据: 莆医保〔2023〕18号)`);
+  assertEqual(putianResOut.breakdown.baseReimbursed, 180, '莆田居民基层门诊实报不符: 300*0.60=180');
+  console.log(`  ✓ [H14 PASS] 莆田居民基层门诊(花费300): 免起付实报¥180 (60%比例，依据: 莆田市医保最新政策)`);
   passCount++;
 
   // 三明市 (350400) - 职工二级住院在职花费 10000 元，扣起付600元，报销88%
