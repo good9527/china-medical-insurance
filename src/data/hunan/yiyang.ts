@@ -95,12 +95,15 @@ export const yiyangCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'yy-inpatient-regulations-2023',
       annualDeductible: 0,
-      annualCap: 400,
+      annualCap: 420,
       tierBenefits: {
         community: { tierName: '基层社区中心/乡镇卫生院', deductible: 0, reimbursementRatio: 0.70 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.70 }
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.70 },
+        tier2: { tierName: '二级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省部属医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊统筹在基层医疗卫生机构免起付线报销70%，年度限额400元。'
+      note: '依据湖南省门诊统筹政策，居民门诊在定点基层医疗机构免起付线报销70%，年度最高支付限额420元。二级及以上医疗机构普通门诊未纳入统筹。'
     },
     inpatient: {
       sourceDocId: 'yy-inpatient-regulations-2023',
