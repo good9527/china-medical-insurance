@@ -302,7 +302,7 @@
 
           <!-- 统一综合面板：动态台账 vs 流转闭环机制 -->
           <view class="card sidebar-unified-card">
-            <!-- 头部 Tab 切换 -->
+            <!-- 头部 Tab 切换 (极简两项，绝不折行) -->
             <view class="sidebar-tab-bar">
               <view class="tab-pill-group">
                 <view 
@@ -310,7 +310,7 @@
                   :class="{ active: rightActiveTab === 'updates' }"
                   @click="rightActiveTab = 'updates'"
                 >
-                  <text class="tab-pill-txt">📋 官方已采纳台账</text>
+                  <text class="tab-pill-txt">已采纳台账</text>
                   <text class="tab-pill-count">{{ CORRECTION_UPDATES_LOG.length }}</text>
                 </view>
                 <view 
@@ -318,17 +318,15 @@
                   :class="{ active: rightActiveTab === 'pipeline' }"
                   @click="rightActiveTab = 'pipeline'"
                 >
-                  <text class="tab-pill-txt">🔄 透明流转闭环</text>
+                  <text class="tab-pill-txt">流转闭环</text>
                 </view>
               </view>
-              <text class="head-chip-emerald" v-if="rightActiveTab === 'updates'">穿透核准</text>
-              <text class="head-chip-cyan" v-else>零成本运营</text>
             </view>
 
             <!-- 视图 1：已采纳公文变更动态 -->
             <view class="tab-content-pane" v-if="rightActiveTab === 'updates'">
               <view class="dynamic-summary-bar">
-                <text class="summary-badge">🛡️ 全域台账</text>
+                <text class="summary-badge">🛡️ 全域台账 · 穿透核准</text>
                 <text class="summary-txt">已合入 150+ 项公文纠偏 · {{ SITE_CONFIG.totalAssertions }} 项断言守护</text>
               </view>
 
@@ -404,27 +402,23 @@
               </view>
             </view>
 
-            <!-- 底部常驻：紧凑联系作者轻量条 -->
-            <view class="contact-compact-bar">
-              <view class="compact-bar-head">
-                <text class="compact-bar-title">📮 公文直投 / 联络作者</text>
+            <!-- 底部常驻：清晰垂直单行直投栏 (彻底杜绝横向挤压与重叠) -->
+            <view class="contact-direct-strip">
+              <view class="strip-item" @click="copyDirect(SITE_CONFIG.email, '邮箱')">
+                <view class="strip-left">
+                  <text class="strip-icon">✉️</text>
+                  <text class="strip-label">作者邮箱</text>
+                  <text class="strip-val monospace">{{ SITE_CONFIG.email }}</text>
+                </view>
+                <text class="strip-btn">复制</text>
               </view>
-              <view class="compact-pills-row">
-                <view class="compact-pill-btn" @click="copyDirect(SITE_CONFIG.email, '邮箱')">
-                  <text class="pill-k">邮箱</text>
-                  <text class="pill-v monospace">{{ SITE_CONFIG.email }}</text>
-                  <text class="pill-act">复制</text>
+              <view class="strip-item" @click="copyDirect(SITE_CONFIG.wechat, '微信号')">
+                <view class="strip-left">
+                  <text class="strip-icon">💬</text>
+                  <text class="strip-label">个人微信</text>
+                  <text class="strip-val">{{ SITE_CONFIG.wechat }}</text>
                 </view>
-                <view class="compact-pill-btn" @click="copyDirect(SITE_CONFIG.wechat, '微信号')">
-                  <text class="pill-k">微信</text>
-                  <text class="pill-v">{{ SITE_CONFIG.wechat }}</text>
-                  <text class="pill-act">复制</text>
-                </view>
-                <view class="compact-pill-btn" @click="copyDirect(SITE_CONFIG.officialAccount, '公众号名称')">
-                  <text class="pill-k">公众号</text>
-                  <text class="pill-v">{{ SITE_CONFIG.officialAccount }}</text>
-                  <text class="pill-act">复制</text>
-                </view>
+                <text class="strip-btn">复制</text>
               </view>
             </view>
           </view>
@@ -968,10 +962,10 @@ onMounted(() => {
   color: #166534;
 }
 
-/* 主布局：左右黄金对称 1.08 : 1，告别右侧狭窄挤压 */
+/* 主布局：强制左右 1:1 绝对对等，minmax(0, 1fr) 彻底杜绝挤压变形 */
 .correction-main-grid {
   display: grid;
-  grid-template-columns: 1.08fr 1fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 20px;
   align-items: stretch;
 }
@@ -985,6 +979,9 @@ onMounted(() => {
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .card-head {
@@ -1801,87 +1798,28 @@ onMounted(() => {
   justify-content: space-between;
 }
 
-.compact-bar-title {
-  font-size: 11.5px;
-  font-weight: 700;
-  color: #475569;
-}
-
-.compact-pills-row {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-
-.compact-pill-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 6px 8px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  min-width: 0;
-}
-
-.compact-pill-btn:hover {
-  background: #eff6ff;
-  border-color: #bfdbfe;
-}
-
-.pill-k {
-  font-size: 11px;
-  font-weight: 700;
-  color: #334155;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.pill-v {
-  font-size: 11px;
-  color: #2563eb;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  flex: 1;
-  min-width: 0;
-  margin: 0 4px;
-}
-
-.pill-act {
-  font-size: 10px;
-  color: #64748b;
-  background: #e2e8f0;
-  padding: 2px 5px;
-  border-radius: 3px;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
 /* 统一综合右侧卡片 (与左侧表单完美等高、彻底消除页面长尾) */
 .sidebar-unified-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 14px;
-  padding: 16px 18px;
+  padding: 18px 20px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
   height: 100%;
   box-sizing: border-box;
+  min-width: 0;
+  overflow: hidden;
 }
 
-/* 头部 Tab 栏 */
+/* 头部 Tab 栏 (极简对齐，绝不换行) */
 .sidebar-tab-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   border-bottom: 1px solid #f1f5f9;
   padding-bottom: 12px;
   margin-bottom: 12px;
-  gap: 8px;
 }
 
 .tab-pill-group {
@@ -1890,14 +1828,13 @@ onMounted(() => {
   padding: 3px;
   border-radius: 8px;
   gap: 4px;
-  flex-shrink: 0;
 }
 
 .tab-pill {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 12px;
+  padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -1908,11 +1845,11 @@ onMounted(() => {
 
 .tab-pill.active {
   background: #ffffff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
 .tab-pill-txt {
-  font-size: 12px;
+  font-size: 12.5px;
   font-weight: 600;
   color: #64748b;
   white-space: nowrap;
@@ -1924,11 +1861,11 @@ onMounted(() => {
 }
 
 .tab-pill-count {
-  font-size: 10px;
-  font-weight: 700;
+  font-size: 10.5px;
+  font-weight: 800;
   background: #e0f2fe;
   color: #0369a1;
-  padding: 1px 5px;
+  padding: 1px 6px;
   border-radius: 999px;
   white-space: nowrap;
   flex-shrink: 0;
@@ -2043,10 +1980,80 @@ onMounted(() => {
   line-height: 1.45;
 }
 
-.contact-compact-bar {
-  margin-top: 12px;
-  padding-top: 10px;
+/* 底部常驻直投通道：清晰单行条目，绝无挤压重叠 */
+.contact-direct-strip {
+  margin-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.strip-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  min-width: 0;
+}
+
+.strip-item:hover {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.strip-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.strip-icon {
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.strip-label {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #334155;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.strip-val {
+  font-size: 11.5px;
+  color: #2563eb;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;
+  min-width: 0;
+}
+
+.strip-btn {
+  font-size: 11px;
+  font-weight: 600;
+  color: #0284c7;
+  background: #e0f2fe;
+  padding: 2px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.strip-item:hover .strip-btn {
+  background: #0284c7;
+  color: #ffffff;
 }
 
 /* 平板与窄屏响应式 */
@@ -2195,11 +2202,6 @@ onMounted(() => {
 
   .recent-scroll-body {
     max-height: 380px;
-  }
-
-  .compact-pills-row {
-    grid-template-columns: 1fr;
-    gap: 6px;
   }
 }
 </style>
