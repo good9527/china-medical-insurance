@@ -89,15 +89,15 @@ export const maanshanData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'mas-resident-employee-inpatient-2023',
-      annualCap: 150, // 普通门诊统筹年度最高限额 150 元
+      annualCap: 150, // 依据皖医保发〔2024〕9号，普通门诊统筹年度限额150元
       tierBenefits: {
-        community: { tierName: '基层卫生院/社区服务中心', deductible: 0, reimbursementRatio: 0.55 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.55 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '市属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 }
+        community: { tierName: '基层卫生院/社区服务中心', deductible: 0, reimbursementRatio: 0.60 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '市属三级医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '普通门诊统筹免起付线，基层报销55%，年度限额150元。'
+      note: '依据皖医保发〔2024〕9号，居民普通门诊统筹在基层及一级定点医疗机构免起付线报销60%，年度限额150元。二级及以上医疗机构未纳普通门诊统筹。'
     },
     inpatient: {
       sourceDocId: 'mas-resident-employee-inpatient-2023',

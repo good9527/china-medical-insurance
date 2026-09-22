@@ -3601,7 +3601,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H12 PASS] 铜陵职工退休一级门诊(花费1000): 扣起付¥200，按退休70%实报¥560 (依据: 铜医保发〔2022〕15号)`);
   passCount++;
 
-  // 安庆市 (340800) - 居民基层门诊花费 300 元，免起付，报销50%
+  // 安庆市 (340800) - 居民基层门诊花费 300 元，免起付，报销60%，受150元年度限额管控
   totalChecks++;
   const anqingResOut = calculateReimbursement({
     cityCode: '340800',
@@ -3612,8 +3612,8 @@ export function runCalculatorTests() {
     totalCost: 300
   });
   assertEqual(anqingResOut.breakdown.deductibleDeducted, 0, '安庆居民基层门诊免起付线');
-  assertEqual(anqingResOut.breakdown.baseReimbursed, 150, '安庆居民基层门诊实报不符: 300*0.50=150');
-  console.log(`  ✓ [H12 PASS] 安庆居民基层门诊(花费300): 免起付实报¥150 (50%比例，依据: 宜医保发〔2023〕15号)`);
+  assertEqual(anqingResOut.breakdown.baseReimbursed, 150, '安庆居民基层门诊实报不符: 300*0.60=180受150元封顶截断为150');
+  console.log(`  ✓ [H12 PASS] 安庆居民基层门诊(花费300): 免起付，受150元年度限额管控实报¥150 (依据: 皖医保发〔2024〕9号)`);
   passCount++;
 
   // 蚌埠市 (340300) - 职工二级住院在职花费 10000 元，扣起付400元，报销92%
@@ -3710,7 +3710,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H12 PASS] 淮北职工退休二级门诊(花费1000): 扣起付¥400，按退休60%实报¥360 (依据: 淮医保发〔2022〕14号)`);
   passCount++;
 
-  // 阜阳市 (341200) - 居民基层门诊花费 400 元，免起付，报销55%
+  // 阜阳市 (341200) - 居民基层门诊花费 400 元，免起付，报销60%
   totalChecks++;
   const fuyangResOut = calculateReimbursement({
     cityCode: '341200',
@@ -3721,8 +3721,8 @@ export function runCalculatorTests() {
     totalCost: 400
   });
   assertEqual(fuyangResOut.breakdown.deductibleDeducted, 0, '阜阳居民基层门诊免起付线');
-  assertEqual(fuyangResOut.breakdown.baseReimbursed, 220, '阜阳居民基层门诊实报不符: 400*0.55=220');
-  console.log(`  ✓ [H12 PASS] 阜阳居民基层门诊(花费400): 免起付实报¥220 (55%比例，依据: 阜医保发〔2023〕16号)`);
+  assertEqual(fuyangResOut.breakdown.baseReimbursed, 240, '阜阳居民基层门诊实报不符: 400*0.60=240');
+  console.log(`  ✓ [H12 PASS] 阜阳居民基层门诊(花费400): 免起付实报¥240 (60%比例，依据: 皖医保发〔2024〕9号及阜阳现行规定)`);
   passCount++;
 
   console.log(`\n>>> [Suite H13] 执行江西省地级市专项医保测算断言...`);

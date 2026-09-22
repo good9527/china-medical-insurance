@@ -20,7 +20,7 @@ export const wuhuData: CityInsuranceData = {
       effectiveDate: '2022-07-01',
       status: 'active',
       officialUrl: 'http://ybj.wuhu.gov.cn/zcfg/zcjd/8394121.html',
-      summaryQuote: '普通门诊统筹起付标准：一级及以下医疗机构200元，二级及三级医疗机构400元。起付线以上支付比例：在职职工一级60%、二级及三级50%；退休人员提高5个百分点（一级65%、二级及三级55%）。年度最高支付限额在职职工2000元，退休人员3000元。'
+      summaryQuote: '普通门诊统筹起付标准：一级及以下医疗机构200元，二级及三级医疗机构400元。起付线以上支付比例：在职职工一级60%、二级及三级50%；退休人员提高10个百分点（一级70%、二级及三级60%）。年度最高支付限额在职职工2000元，退休人员3000元。'
     },
     {
       docId: 'wh-resident-employee-inpatient-2023',
@@ -89,15 +89,15 @@ export const wuhuData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'wh-resident-employee-inpatient-2023',
-      annualCap: 150, // 普通门诊统筹年度最高限额 150 元
+      annualCap: 150, // 依据皖医保发〔2024〕9号，普通门诊统筹年度限额150元
       tierBenefits: {
         community: { tierName: '基层卫生院/社区服务中心', deductible: 0, reimbursementRatio: 0.60 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '市属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 }
+        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '市属三级医疗机构', deductible: 0, reimbursementRatio: 0.00 },
+        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '普通门诊统筹免起付线，基层报销60%，年度限额150元。'
+      note: '依据皖医保发〔2024〕9号，居民普通门诊统筹在基层及一级定点医疗机构免起付线报销60%，年度限额150元。二级及以上医疗机构未纳普通门诊统筹。'
     },
     inpatient: {
       sourceDocId: 'wh-resident-employee-inpatient-2023',
