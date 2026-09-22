@@ -42,6 +42,17 @@ export const weinanCityData: CityInsuranceData = {
       summaryQuote: '普通门诊统筹不设起付线。参保居民在定点村卫生室和社区卫生服务站门诊就诊发生的合规医疗费用，统筹基金支付70%，个人自付30%；在定点乡镇卫生院和社区卫生服务中心门诊就诊发生的合规医疗费用，统筹基金支付60%，个人自付40%。每人每年普通门诊统筹基金最高支付限额为150元。居民住院起付线：一级200元报销90%，二级500元报销80%，三级1000元报销65%。年度最高限额13万元。大病保险起付线10000元，1-3万报销60%，3-10万报销70%，10万以上报销80%，最高支付限额30万元。'
     },
     {
+      docId: 'wn-inpatient-adjust-2024',
+      title: '渭南市医疗保障局关于调整医疗保障待遇政策的通知',
+      docNumber: '渭医保发〔2024〕50号',
+      issuingDept: ['渭南市医疗保障局'],
+      publishDate: '2024-03-25',
+      effectiveDate: '2024-04-01',
+      status: 'active',
+      officialUrl: 'https://www.weinan.gov.cn/czzq/zcwj/1627926401384480769.html',
+      summaryQuote: '调整渭南市城镇职工基本医疗保险统筹区内住院起付标准：一级医疗机构150元、二级医疗机构400元、三级医疗机构550元。在职职工住院支付比例为一级90%、二级88%、三级86%，退休人员相应提高2个百分点（一级92%、二级90%、三级88%）。统筹基金最高支付限额35万元。'
+    },
+    {
       docId: 'wn-remote-medical-2022',
       title: '渭南市医疗保障局关于参保职工、居民跨省临时外出就医异地转诊和异地急诊抢救报销标准的公告',
       docNumber: '市医保发〔2022〕45号',
@@ -96,37 +107,37 @@ export const weinanCityData: CityInsuranceData = {
       note: '自然年度内门诊费用累计满200元起付线后启动报销，退休人员按医疗机构级别相应提高2个百分点（一级67%、二级57%、三级52%）。在职年限额1000元，退休年限额1200元。'
     },
     inpatient: {
-      sourceDocId: 'wn-employee-outpatient-2022-55',
+      sourceDocId: 'wn-inpatient-adjust-2024',
       annualCap: 350000, // 职工基本医保统筹基金年度最高支付限额35万元
       repeatedDeductibleRule: '参保职工在一个自然年度内多次住院，起付标准按定点医疗机构级别分别执行。',
       tierBenefits: {
         community: {
           tierName: '一级医疗机构(含社区/卫生院)',
-          deductible: 200,
+          deductible: 150,
           reimbursementRatio: 0.90,
           retireeRatioBonus: 0.02
         },
         tier1: {
           tierName: '一级医疗机构',
-          deductible: 200,
+          deductible: 150,
           reimbursementRatio: 0.90,
           retireeRatioBonus: 0.02
         },
         tier2: {
           tierName: '二级医疗机构',
-          deductible: 500,
+          deductible: 400,
           reimbursementRatio: 0.88,
           retireeRatioBonus: 0.02
         },
         tier3: {
           tierName: '三级医疗机构',
-          deductible: 1000,
+          deductible: 550,
           reimbursementRatio: 0.86,
           retireeRatioBonus: 0.02
         },
         tier3_top: {
           tierName: '三级甲等综合医院',
-          deductible: 1000,
+          deductible: 550,
           reimbursementRatio: 0.86,
           retireeRatioBonus: 0.02
         }
