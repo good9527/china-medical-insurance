@@ -968,12 +968,12 @@ onMounted(() => {
   color: #166534;
 }
 
-/* 主布局 */
+/* 主布局：左右黄金对称 1.08 : 1，告别右侧狭窄挤压 */
 .correction-main-grid {
   display: grid;
-  grid-template-columns: 1fr 360px;
+  grid-template-columns: 1.08fr 1fr;
   gap: 20px;
-  align-items: start;
+  align-items: stretch;
 }
 
 /* 单卡片一体化纠错表单 */
@@ -1588,6 +1588,8 @@ onMounted(() => {
   background: #f0fdf4;
   padding: 2px 8px;
   border-radius: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .dynamic-summary-bar {
@@ -1762,6 +1764,8 @@ onMounted(() => {
   background: #e0f2fe;
   padding: 2px 8px;
   border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* 右侧采纳动态内滚动容器 (高度与左侧对齐) */
@@ -1816,9 +1820,10 @@ onMounted(() => {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 6px;
-  padding: 5px 8px;
+  padding: 6px 8px;
   cursor: pointer;
   transition: all 0.15s ease;
+  min-width: 0;
 }
 
 .compact-pill-btn:hover {
@@ -1830,23 +1835,29 @@ onMounted(() => {
   font-size: 11px;
   font-weight: 700;
   color: #334155;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .pill-v {
   font-size: 11px;
   color: #2563eb;
-  max-width: 90px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  flex: 1;
+  min-width: 0;
+  margin: 0 4px;
 }
 
 .pill-act {
   font-size: 10px;
   color: #64748b;
   background: #e2e8f0;
-  padding: 1px 4px;
+  padding: 2px 5px;
   border-radius: 3px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 /* 统一综合右侧卡片 (与左侧表单完美等高、彻底消除页面长尾) */
@@ -1854,7 +1865,7 @@ onMounted(() => {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 14px;
-  padding: 16px;
+  padding: 16px 18px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
   display: flex;
   flex-direction: column;
@@ -1870,6 +1881,7 @@ onMounted(() => {
   border-bottom: 1px solid #f1f5f9;
   padding-bottom: 12px;
   margin-bottom: 12px;
+  gap: 8px;
 }
 
 .tab-pill-group {
@@ -1878,6 +1890,7 @@ onMounted(() => {
   padding: 3px;
   border-radius: 8px;
   gap: 4px;
+  flex-shrink: 0;
 }
 
 .tab-pill {
@@ -1889,6 +1902,8 @@ onMounted(() => {
   cursor: pointer;
   transition: all 0.15s ease;
   user-select: none;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .tab-pill.active {
@@ -1900,6 +1915,7 @@ onMounted(() => {
   font-size: 12px;
   font-weight: 600;
   color: #64748b;
+  white-space: nowrap;
 }
 
 .tab-pill.active .tab-pill-txt {
@@ -1914,6 +1930,8 @@ onMounted(() => {
   color: #0369a1;
   padding: 1px 5px;
   border-radius: 999px;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .tab-content-pane {
@@ -2031,6 +2049,14 @@ onMounted(() => {
   border-top: 1px solid #f1f5f9;
 }
 
+/* 平板与窄屏响应式 */
+@media (max-width: 960px) {
+  .correction-main-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
 /* 移动端响应式 */
 @media (max-width: 767px) {
   .content-box {
@@ -2042,11 +2068,6 @@ onMounted(() => {
     z-index: 9999 !important;
     box-shadow: 0 16px 48px rgba(15, 23, 42, 0.18) !important;
     -webkit-overflow-scrolling: touch;
-  }
-
-  .correction-main-grid {
-    grid-template-columns: 1fr;
-    gap: 16px;
   }
 
   .card-head {
