@@ -28,15 +28,15 @@ export const xuzhouCityData: CityInsuranceData = {
       summaryQuote: '在职职工门诊起付标准为700元，退休人员按50%执行（即350元）。统筹基金最高支付限额为7000元。支付比例：一级及以下医疗机构在职75%、二级医疗机构在职65%、三级医疗机构在职60%。退休人员在上述比例基础上再提高10个百分点（分别达85%、75%、70%）。'
     },
     {
-      docId: 'xz-medical-insurance-inpatient-2023',
-      title: '徐州市医疗保障局关于进一步明确基本医疗保险住院报销政策的通知',
-      docNumber: '徐医保发〔2022〕42号',
-      issuingDept: ['徐州市医疗保障局', '徐州市财政局'],
-      publishDate: '2022-11-15',
-      effectiveDate: '2023-01-01',
+      docId: 'xz-resident-medical-2023',
+      title: '徐州市人民政府关于印发徐州市城乡居民医疗保险办法的通知',
+      docNumber: '徐政规〔2023〕7号',
+      issuingDept: ['徐州市人民政府', '徐州市医疗保障局'],
+      publishDate: '2023-11-20',
+      effectiveDate: '2024-01-01',
       status: 'active',
-      officialUrl: 'https://ybj.xz.gov.cn/zwgk/002002/20221120/6541234.html',
-      summaryQuote: '职工住院起付线：三级800元、二级500元、一级及基层200元（第二次减半，第三次及以上免除）。职工报销比例三级87%、二级91%、一级95%（退休提高3%-5%）。居民住院起付线三级800元、二级500元、一级200元，比例一级85%、二级75%、三级65%。大病保险起付线1.5万元。'
+      officialUrl: 'https://ybj.xz.gov.cn/zwgk/002002/20231125/8921345.html',
+      summaryQuote: '居民门诊年度政策范围内医疗费用最高支付限额提高至1200元（签约家庭医生1800元）。居民住院起付线：三级医疗机构1500元、二级700元、一级及社区300元；报销比例一级85%、二级75%、三级65%。年度内多次住院起付线依次递减100元，但各级别设有最低限额（三级1100元、二级300元、一级100元）。基本医保年度最高支付限额25万元。'
     }
   ],
 
@@ -89,8 +89,8 @@ export const xuzhouCityData: CityInsuranceData = {
   // 城乡居民医保待遇 (徐州标准)
   resident: {
     outpatient: {
-      sourceDocId: 'xz-employee-outpatient-reform-2022',
-      annualCap: 800,
+      sourceDocId: 'xz-resident-medical-2023',
+      annualCap: 1200, // 居民门诊统筹年度限额1200元（签约家庭医生1800元）
       tierBenefits: {
         community: { tierName: '基层社区服务机构', deductible: 0, reimbursementRatio: 0.60 },
         tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.60 },
@@ -98,18 +98,18 @@ export const xuzhouCityData: CityInsuranceData = {
         tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.40 },
         tier3_top: { tierName: '省属重点三甲医院', deductible: 200, reimbursementRatio: 0.40 }
       },
-      note: '居民基层门诊免起付线报销60%，限额800元。'
+      note: '居民基层门诊免起付线报销60%，限额1200元（家庭医生签约对象1800元）。'
     },
     inpatient: {
-      sourceDocId: 'xz-medical-insurance-inpatient-2023',
+      sourceDocId: 'xz-resident-medical-2023',
       annualCap: 250000,
-      repeatedDeductibleRule: '二次及多次住院起付线依次递减',
+      repeatedDeductibleRule: '同一统筹年度内多次住院起付线依次递减100元，三级不低于1100元、二级不低于300元、一级不低于100元',
       tierBenefits: {
-        community: { tierName: '基层卫生机构', deductible: 200, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.75 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '重点三甲医院', deductible: 800, reimbursementRatio: 0.65 }
+        community: { tierName: '一级机构及社区卫生服务中心', deductible: 300, reimbursementRatio: 0.85 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.85 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 700, reimbursementRatio: 0.75 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 1500, reimbursementRatio: 0.65 },
+        tier3_top: { tierName: '重点三甲医院', deductible: 1500, reimbursementRatio: 0.65 }
       }
     },
     catastrophic: {

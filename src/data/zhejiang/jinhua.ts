@@ -95,13 +95,13 @@ export const jinhuaCityData: CityInsuranceData = {
       sourceDocId: 'jh-medical-insurance-measures-2021',
       annualCap: 1000,
       tierBenefits: {
-        community: { tierName: '基层社区服务机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
+        community: { tierName: '基层社区服务机构', deductible: 0, reimbursementRatio: 0.55 },
+        tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.55 },
         tier2: { tierName: '二级医疗机构', deductible: 200, reimbursementRatio: 0.40 },
         tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.30 },
         tier3_top: { tierName: '重点三甲医院', deductible: 200, reimbursementRatio: 0.30 }
       },
-      note: '居民基层门诊免起付线报销50%，限额1000元。'
+      note: '居民基层门诊免起付线报销55%（签约家庭医生提高至60%），限额1000元。'
     },
     inpatient: {
       sourceDocId: 'jh-medical-insurance-inpatient-2023',
