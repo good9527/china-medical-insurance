@@ -40,6 +40,7 @@
     "audit:smart": "tsx src/scripts/run-smart-inspection.ts --mode=full",
     "audit:patrol": "tsx src/scripts/run-smart-inspection.ts --mode=patrol",
     "audit:deep": "tsx src/scripts/deep-nationwide-audit.ts",
+    "audit:freshness": "tsx src/scripts/analyze-policy-freshness.ts",
     "monitor:policies": "tsx src/scripts/monitor-policies.ts",
     "update:pipeline": "tsx src/scripts/update-policy-pipeline.ts",
     "test:calc": "tsx src/scripts/run-calculator-suite.ts",

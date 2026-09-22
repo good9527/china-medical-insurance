@@ -29,14 +29,14 @@ export const zhengzhouCityData: CityInsuranceData = {
     },
     {
       docId: 'zz-medical-insurance-inpatient',
-      title: '郑州市基本医疗保险实施办法及现行住院待遇标准',
-      docNumber: '郑政办〔2021〕38号及2024年调整标准',
-      issuingDept: ['郑州市人民政府办公厅', '郑州市医疗保障局'],
-      publishDate: '2021-12-25',
-      effectiveDate: '2022-01-01',
+      title: '郑州市人民政府关于印发郑州市城镇职工基本医疗保险办法的通知及住院保障标准',
+      docNumber: '郑政〔2023〕18号',
+      issuingDept: ['郑州市人民政府', '郑州市医疗保障局'],
+      publishDate: '2023-11-20',
+      effectiveDate: '2024-01-01',
       status: 'active',
       officialUrl: 'https://ybj.zhengzhou.gov.cn/zcjd/5987123.jhtml',
-      summaryQuote: '职工住院起付线：乡级200元、市级二级300元、市级三级600元、省级三甲900元；在职职工报销比例二级92%、市级三级89%、省级三甲86%（退休人员相应上浮）。基本统筹年度封顶15万元。居民住院起付线：基层150元、二级600元、三级1200元、省级三甲2000元；分段报销二级75%、三级70%、省级三甲65%，基本统筹年封顶15万元。'
+      summaryQuote: '职工住院起付线：乡级200元、市级二级300元、市级三级600元、省级三甲900元；在职职工报销比例乡级95%、一二级95%、市级三级90%、省级三甲88%（退休人员分别按97%、97%、95%、93%报销）。基本统筹年度封顶15万元。居民住院起付线：基层150元、二级600元、三级1200元、省级三甲2000元；分段报销二级75%、三级70%、省级三甲65%，基本统筹年封顶15万元。'
     }
   ],
 
@@ -52,7 +52,7 @@ export const zhengzhouCityData: CityInsuranceData = {
         community: { tierName: '基层社区服务中心/乡镇卫生院', deductible: 0, reimbursementRatio: 0.65, retireeRatioBonus: 0.10 },
         tier1: { tierName: '一级定点医疗机构', deductible: 40, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
         tier2: { tierName: '二级定点医疗机构', deductible: 40, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 40, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 },
+        tier3: { tierName: '市级三级定点医疗机构', deductible: 40, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 },
         tier3_top: { tierName: '省级三甲综合医院', deductible: 40, reimbursementRatio: 0.55, retireeRatioBonus: 0.10 }
       },
       note: '基层机构不设起付线报销65%（退休75%），二级及以上医院每次起付线40元，二级报销60%、三级报销55%（退休各上浮10%）。在职限额1800元，退休限额2300元。'
@@ -61,11 +61,11 @@ export const zhengzhouCityData: CityInsuranceData = {
       sourceDocId: 'zz-medical-insurance-inpatient',
       annualCap: 150000, // 基本统筹限额 15 万元
       tierBenefits: {
-        community: { tierName: '乡镇卫生院/社区卫生中心', deductible: 200, reimbursementRatio: 0.94, retireeRatioBonus: 0.03 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
-        tier3: { tierName: '市级三级定点医疗机构', deductible: 600, reimbursementRatio: 0.89, retireeRatioBonus: 0.03 },
-        tier3_top: { tierName: '省级三甲综合医院', deductible: 900, reimbursementRatio: 0.86, retireeRatioBonus: 0.03 }
+        community: { tierName: '乡镇卫生院/社区卫生中心', deductible: 200, reimbursementRatio: 0.95, retireeRatioBonus: 0.02 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.95, retireeRatioBonus: 0.02 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.95, retireeRatioBonus: 0.02 },
+        tier3: { tierName: '市级三级定点医疗机构', deductible: 600, reimbursementRatio: 0.90, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '省级三甲综合医院', deductible: 900, reimbursementRatio: 0.88, retireeRatioBonus: 0.05 }
       }
     },
     catastrophic: {
