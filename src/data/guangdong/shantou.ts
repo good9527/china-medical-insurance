@@ -38,8 +38,8 @@ export const shantouCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'st-employee-outpatient-2022-38',
       annualDeductible: 0,
-      annualCap: 2400,
-      annualCapRetiree: 2800,
+      annualCap: 1947, // 职工普通门诊在职年度最高支付限额 1947 元
+      annualCapRetiree: 2336, // 职工普通门诊退休人员年度最高支付限额 2336 元
       tierBenefits: {
         community: { tierName: '基层及一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
@@ -47,7 +47,7 @@ export const shantouCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '市级重点三甲医院', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '普通门诊免设起付线。定点就医基层报销75%（退休80%），二级报销60%（退休65%），三级报销50%（退休55%）。年度限额在职2400元，退休2800元。'
+      note: '普通门诊免设起付线。选定机构就医基层报销75%（退休80%），二级报销60%（退休65%），三级报销50%（退休55%）。年度限额在职1947元，退休2336元。'
     },
     inpatient: {
       sourceDocId: 'st-medical-insurance-inpatient-2024',
@@ -86,7 +86,7 @@ export const shantouCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'st-medical-insurance-inpatient-2024',
-      annualCap: 1200,
+      annualCap: 490, // 城乡居民普通门诊统筹年度最高支付限额 490 元/人
       tierBenefits: {
         community: { tierName: '基层定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
@@ -94,7 +94,7 @@ export const shantouCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点机构(选定)', deductible: 0, reimbursementRatio: 0.40 },
         tier3_top: { tierName: '市级三甲综合医院', deductible: 0, reimbursementRatio: 0.40 }
       },
-      note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
+      note: '居民普通门诊免设起付线，基层选点报销65%，选定二级报销50%、三级报销40%，每人每年门诊统筹最高支付限额490元。'
     },
     inpatient: {
       sourceDocId: 'st-medical-insurance-inpatient-2024',

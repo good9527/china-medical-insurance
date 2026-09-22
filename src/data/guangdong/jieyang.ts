@@ -38,16 +38,16 @@ export const jieyangCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'jy-employee-outpatient-2022-23',
       annualDeductible: 0,
-      annualCap: 1800,
-      annualCapRetiree: 2200,
+      annualCap: 1400,
+      annualCapRetiree: 1400,
       tierBenefits: {
-        community: { tierName: '基层及一级选定医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级选定医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级选定医疗机构', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.80, retireeRatioBonus: 0.00 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.80, retireeRatioBonus: 0.00 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 0, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 }
       },
-      note: '普通门诊免设起付线。选点就医基层报销75%（退休80%），二级报销60%（退休65%），三级报销50%（退休55%）。在职限额1800元，退休2200元。'
+      note: '普通门诊免设起付线。基层医疗机构报销80%，二级医疗机构在职70%（退休75%），三级医疗机构在职60%（退休65%）。年度最高支付限额1400元。'
     },
     inpatient: {
       sourceDocId: 'jy-medical-insurance-inpatient-2024',
@@ -86,15 +86,15 @@ export const jieyangCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'jy-medical-insurance-inpatient-2024',
-      annualCap: 1200,
+      annualCap: 400, // 城乡居民普通门诊统筹年度最高支付限额 400 元/人
       tierBenefits: {
         community: { tierName: '基层社区及定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
-        tier2: { tierName: '二级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
-        tier3: { tierName: '三级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
+        tier2: { tierName: '二级医疗机构(未纳普通门诊)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级医疗机构(未纳普通门诊)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '市级重点三甲医院(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
+      note: '居民门诊免设起付线，基层选定医疗机构报销65%，年度最高支付限额400元/人。'
     },
     inpatient: {
       sourceDocId: 'jy-medical-insurance-inpatient-2024',

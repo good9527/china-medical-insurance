@@ -38,8 +38,8 @@ export const weihaiCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'wh-employee-outpatient-2022-18',
       annualDeductible: 200,
-      annualCap: 3000,
-      annualCapRetiree: 3500,
+      annualCap: 4500, // 职工门诊年度最高支付限额 4500 元（含大额补助1000元）
+      annualCapRetiree: 5500, // 退休职工门诊年度最高支付限额 5500 元（含大额补助1000元）
       tierBenefits: {
         community: { tierName: '基层社区卫生服务中心及卫生院', deductible: 200, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
@@ -47,7 +47,7 @@ export const weihaiCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '威海市立医院等重点三甲', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 }
       },
-      note: '普通门诊统筹按年度设起付线200元。基层报销80%（退休85%），二级70%（退休75%），三级60%（退休65%）。限额在职3000元，退休3500元。'
+      note: '普通门诊统筹年度起付线200元。基层报销80%（退休85%），二级70%（退休75%），三级60%（退休65%）。年度限额在职4500元（含大额补助1000元），退休5500元（含大额补助1000元）。'
     },
     inpatient: {
       sourceDocId: 'wh-medical-insurance-inpatient-2024',
@@ -86,15 +86,15 @@ export const weihaiCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'wh-medical-insurance-inpatient-2024',
       annualDeductible: 0,
-      annualCap: 450,
+      annualCap: 400, // 城乡居民普通门诊统筹年度最高支付限额 400 元（二档缴费400元，一档200元）
       tierBenefits: {
         community: { tierName: '基层社区卫生服务中心及卫生院', deductible: 0, reimbursementRatio: 0.60 },
-        tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
-        tier2: { tierName: '二级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
-        tier3: { tierName: '三级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
+        tier2: { tierName: '二级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
+        tier3: { tierName: '三级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '重点三甲医院(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民普通门诊在基层定点机构免起付线报销60%，年度限额450元。'
+      note: '居民普通门诊在基层定点机构就医，政策范围内报销50%~60%，年度最高支付限额二档400元（一档200元）。'
     },
     inpatient: {
       sourceDocId: 'wh-medical-insurance-inpatient-2024',

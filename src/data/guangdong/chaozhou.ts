@@ -39,7 +39,7 @@ export const chaozhouCityData: CityInsuranceData = {
       sourceDocId: 'cz-gd-employee-outpatient-2022-26',
       annualDeductible: 0,
       annualCap: 2000,
-      annualCapRetiree: 2400,
+      annualCapRetiree: 2500, // 退休人员年度最高支付限额 2500 元
       tierBenefits: {
         community: { tierName: '基层及一级选定医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
@@ -47,7 +47,7 @@ export const chaozhouCityData: CityInsuranceData = {
         tier3: { tierName: '三级选定医疗机构', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '市级重点三甲医院', deductible: 0, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '普通门诊免设起付线。选点就医基层报销75%（退休80%），二级报销60%（退休65%），三级报销50%（退休55%）。在职限额2000元，退休2400元。'
+      note: '普通门诊免设起付线。选点就医基层报销75%（退休80%），二级报销60%（退休65%），三级报销50%（退休55%）。年度最高支付限额在职2000元，退休2500元。'
     },
     inpatient: {
       sourceDocId: 'cz-gd-medical-insurance-inpatient-2024',
@@ -88,13 +88,13 @@ export const chaozhouCityData: CityInsuranceData = {
       sourceDocId: 'cz-gd-medical-insurance-inpatient-2024',
       annualCap: 1200,
       tierBenefits: {
-        community: { tierName: '基层社区及定点门诊机构', deductible: 0, reimbursementRatio: 0.65 },
-        tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
-        tier2: { tierName: '二级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
-        tier3: { tierName: '三级医疗机构(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 },
-        tier3_top: { tierName: '市级重点三甲医院(未纳门诊统筹)', deductible: 0, reimbursementRatio: 0.00 }
+        community: { tierName: '基层及一级定点医疗机构', deductible: 0, reimbursementRatio: 0.70 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.70 },
+        tier2: { tierName: '公立二级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
+        tier3: { tierName: '公立三级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
+        tier3_top: { tierName: '市级重点三甲综合医院', deductible: 0, reimbursementRatio: 0.50 }
       },
-      note: '居民门诊免设起付线，基层选点报销65%，选定二级及以上报销40%-50%，年度限额1200元。'
+      note: '居民门诊免设起付线。根据《潮州市基本医疗保险规定》，一级及以下定点机构报销70%，二级定点机构报销60%，三级定点机构报销50%，年度限额1200元。'
     },
     inpatient: {
       sourceDocId: 'cz-gd-medical-insurance-inpatient-2024',

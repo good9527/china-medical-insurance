@@ -40,8 +40,8 @@ export const guilinCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'gl-employee-outpatient-2022',
       annualDeductible: 300,
-      annualCap: 1800,
-      annualCapRetiree: 2400,
+      annualCap: 1200, // 职工普通门诊在职年度最高支付限额 1200 元
+      annualCapRetiree: 1800, // 退休职工年度最高支付限额 1800 元
       tierBenefits: {
         community: { tierName: '基层及一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
@@ -49,7 +49,7 @@ export const guilinCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '自治区级三甲医院', deductible: 300, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '门诊按机构级别累计起付线（一级100元、二级200元、三级300元）。在职报销比例：一级60%、二级55%、三级50%（退休人员各提高5%）。年度最高支付限额在职人员1800元，退休人员2400元。'
+      note: '门诊按机构级别累计起付线（一级100元、二级200元、三级300元）。在职报销比例：一级60%、二级55%、三级50%（退休人员各提高5%）。年度最高支付限额在职人员1200元，退休人员1800元。'
     },
     inpatient: {
       sourceDocId: 'gl-medical-treatment-policy-2023',

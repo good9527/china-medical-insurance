@@ -85,15 +85,15 @@ export const linyiCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'ly-medical-insurance-inpatient-2023',
-      annualCap: 350,
+      annualCap: 300, // 城乡居民普通门诊统筹年度最高支付限额 300 元
       tierBenefits: {
-        community: { tierName: '基层社区卫生服务中心及卫生院', deductible: 0, reimbursementRatio: 0.60 },
-        tier1: { tierName: '一级医疗机构(普通门诊未签约)', deductible: 0, reimbursementRatio: 0.00 },
+        community: { tierName: '基层社区卫生服务中心及卫生院', deductible: 0, reimbursementRatio: 0.50 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
         tier2: { tierName: '二级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3: { tierName: '三级医疗机构(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '重点三甲医院(未纳统筹)', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民普通门诊在基层定点机构免起付线报销60%，年度限额350元。'
+      note: '居民普通门诊在基层定点机构免起付线报销50%，年度限额300元。'
     },
     inpatient: {
       sourceDocId: 'ly-medical-insurance-inpatient-2023',
