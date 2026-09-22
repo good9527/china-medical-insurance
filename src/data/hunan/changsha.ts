@@ -44,13 +44,13 @@ export const changshaData: CityInsuranceData = {
       annualCap: 1500,       // 在职门诊限额 1500 元
       annualCapRetiree: 2000, // 退休门诊限额 2000 元
       tierBenefits: {
-        community: { tierName: '一级定点及基层医疗机构', deductible: 0, reimbursementRatio: 0.70 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.70 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.60 },
-        tier3: { tierName: '市级三级定点医疗机构', deductible: 300, reimbursementRatio: 0.60 },
-        tier3_top: { tierName: '省部属三级医院', deductible: 300, reimbursementRatio: 0.60 }
+        community: { tierName: '一级定点及基层医疗机构', deductible: 0, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '市级三级定点医疗机构', deductible: 300, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '省部属三级医院', deductible: 300, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 }
       },
-      note: '门诊年度起付线累计300元。基层无起付线报销70%，二级起付200元报销60%，三级起付300元报销60%。在职限额1500元，退休限额2000元。'
+      note: '门诊年度起付线累计300元。基层无起付线在职报销70%（退休75%），二级起付200元在职报销60%（退休65%），三级起付300元在职报销60%（退休65%）。在职限额1500元，退休限额2000元。'
     },
     inpatient: {
       sourceDocId: 'cs-medical-insurance-inpatient-2024',

@@ -6066,6 +6066,105 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H30 PASS] 遵义在职职工三级门诊(花费1000): 扣起付¥150，按50%实报¥425 (依据: 遵府办发〔2022〕21号)`);
   passCount++;
 
+  // >>> [Suite H31] 执行湖南/安徽/河北/江西/黑龙江统筹区深层穿透测算断言...
+  console.log(`\n>>> [Suite H31] 执行湖南/安徽/河北/江西/黑龙江统筹区深层穿透测算断言...`);
+
+  // 1. 长沙市 (430100) - 退休职工二级门诊：花费 1000 元，起付 200 元，退休比例 60%+5%=65%，实报 (1000-200)*0.65 = 520
+  totalChecks++;
+  const changshaEmpOutRet = calculateReimbursement({
+    cityCode: '430100',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(changshaEmpOutRet.breakdown.deductibleDeducted, 200, '长沙职工二级门诊起付线应为200元');
+  assertEqual(changshaEmpOutRet.breakdown.baseReimbursed, 520, '长沙退休职工二级门诊实报不符: (1000-200)*0.65=520');
+  console.log(`  ✓ [H31 PASS] 长沙退休职工二级门诊(花费1000): 扣起付¥200，按65%优待比例实报¥520 (依据: 长政办发〔2022〕39号)`);
+  passCount++;
+
+  // 2. 合肥市 (340100) - 退休职工三级门诊：花费 1000 元，起付 400 元，退休比例 50%+10%=60%，实报 (1000-400)*0.60 = 360
+  totalChecks++;
+  const hefeiEmpOutRet = calculateReimbursement({
+    cityCode: '340100',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(hefeiEmpOutRet.breakdown.deductibleDeducted, 400, '合肥职工门诊起付线应为400元');
+  assertEqual(hefeiEmpOutRet.breakdown.baseReimbursed, 360, '合肥退休职工三级门诊实报不符: (1000-400)*0.60=360');
+  console.log(`  ✓ [H31 PASS] 合肥退休职工三级门诊(花费1000): 扣起付¥400，按60%优待比例实报¥360 (依据: 合医保发〔2023〕18号)`);
+  passCount++;
+
+  // 3. 芜湖市 (340200) - 在职职工二级住院：花费 10000 元，起付 400 元，比例 92%，实报 (10000-400)*0.92 = 8832
+  totalChecks++;
+  const wuhuEmpInTier2 = calculateReimbursement({
+    cityCode: '340200',
+    insuranceType: 'employee',
+    isRetiree: false,
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(wuhuEmpInTier2.breakdown.deductibleDeducted, 400, '芜湖职工二级住院起付线应为400元');
+  assertEqual(wuhuEmpInTier2.breakdown.baseReimbursed, 8832, '芜湖职工二级住院实报不符: (10000-400)*0.92=8832');
+  console.log(`  ✓ [H31 PASS] 芜湖职工二级住院(花费10000): 扣起付¥400，按92%实报¥8832 (依据: 芜医保发〔2023〕16号)`);
+  passCount++;
+
+  // 4. 石家庄市 (130100) - 退休职工门诊：花费 1000 元，起付 100 元，退休比例 60%+10%=70%，实报 (1000-100)*0.70 = 630
+  totalChecks++;
+  const sjzEmpOutRet = calculateReimbursement({
+    cityCode: '130100',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(sjzEmpOutRet.breakdown.deductibleDeducted, 100, '石家庄职工门诊起付线应为100元');
+  assertEqual(sjzEmpOutRet.breakdown.baseReimbursed, 630, '石家庄退休职工门诊实报不符: (1000-100)*0.70=630');
+  console.log(`  ✓ [H31 PASS] 石家庄退休职工门诊(花费1000): 扣起付¥100，按70%优待比例实报¥630 (依据: 石政办发〔2023〕18号)`);
+  passCount++;
+
+  // 5. 南昌市 (360100) - 退休职工一级门诊：花费 1000 元，起付 300 元，退休比例 65%+5%=70%，实报 (1000-300)*0.70 = 490
+  totalChecks++;
+  const ncEmpOutRet = calculateReimbursement({
+    cityCode: '360100',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(ncEmpOutRet.breakdown.deductibleDeducted, 300, '南昌职工门诊起付线应为300元');
+  assertEqual(ncEmpOutRet.breakdown.baseReimbursed, 490, '南昌退休职工一级门诊实报不符: (1000-300)*0.70=490');
+  console.log(`  ✓ [H31 PASS] 南昌退休职工一级门诊(花费1000): 扣起付¥300，按70%优待比例实报¥490 (依据: 洪府办发〔2022〕118号)`);
+  passCount++;
+
+  // 6. 哈尔滨市 (230100) - 退休职工二级门诊：花费 1000 元，起付 400 元，退休比例 60%+5%=65%，实报 (1000-400)*0.65 = 390
+  totalChecks++;
+  const hrbEmpOutRet = calculateReimbursement({
+    cityCode: '230100',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(hrbEmpOutRet.breakdown.deductibleDeducted, 400, '哈尔滨职工门诊起付线应为400元');
+  assertEqual(hrbEmpOutRet.breakdown.baseReimbursed, 390, '哈尔滨退休职工二级门诊实报不符: (1000-400)*0.65=390');
+  console.log(`  ✓ [H31 PASS] 哈尔滨退休职工二级门诊(花费1000): 扣起付¥400，按65%优待比例实报¥390 (依据: 哈政办规〔2022〕9号)`);
+  passCount++;
+
   console.log(`\n=========================================`);
   console.log(`🎉 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);
