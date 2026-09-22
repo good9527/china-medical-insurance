@@ -28,15 +28,15 @@ export const wenzhouCityData: CityInsuranceData = {
       summaryQuote: '职工医保门诊统筹起付标准为在职600元、退休400元。统筹基金年度最高支付限额为10000元。起付线以上政策范围内报销比例：基层医疗机构80%（退休85%）、二级及其他医疗机构70%（退休75%）、三级医疗机构60%（退休65%）。'
     },
     {
-      docId: 'wz-medical-insurance-inpatient-2023',
-      title: '温州市医疗保障局关于进一步明确基本医疗保险住院与大病保障待遇的通知',
-      docNumber: '温医保发〔2022〕38号',
+      docId: 'wz-medical-insurance-inpatient-2024',
+      title: '温州市医疗保障局关于公布基本医疗保险及城乡居民大病待遇标准的通知及待遇简明表',
+      docNumber: '温医保发〔2024〕28号',
       issuingDept: ['温州市医疗保障局', '温州市财政局'],
-      publishDate: '2022-12-10',
-      effectiveDate: '2023-01-01',
+      publishDate: '2024-09-15',
+      effectiveDate: '2025-01-01',
       status: 'active',
       officialUrl: 'https://ybj.wenzhou.gov.cn/art/2022/12/15/art_1229246445_58941235.html',
-      summaryQuote: '职工住院起付线：三级800元、二级500元、一级及基层300元（第二次减半，第三次及以上免除）。职工报销比例三级85%、二级89%、基层93%（退休人员增加4%）。统筹基金最高支付限额40万元。居民住院起付线三级800元、二级500元、一级300元，比例一级85%、二级75%、三级65%。大病保险起付线2万元。'
+      summaryQuote: '居民门诊在基层医疗机构就医报销50%（慢性病60%），年度最高支付限额1500元。居民住院起付线：三级700元、二级400元、一级及基层300元；报销比例：三级70%、二级80%、基层90%。年度内设一次住院起付标准，多次住院按最高级别标准计算。基本医保年度限额20万元。大病保险起付线25700元，符合范围部分按70%报销。'
     }
   ],
 
@@ -92,42 +92,40 @@ export const wenzhouCityData: CityInsuranceData = {
   // 城乡居民医保待遇 (温州标准)
   resident: {
     outpatient: {
-      sourceDocId: 'wz-medical-insurance-measures-2022',
-      annualCap: 1200,
+      sourceDocId: 'wz-medical-insurance-inpatient-2024',
+      annualCap: 1500, // 居民普通门诊年度限额1500元
       tierBenefits: {
-        community: { tierName: '基层社区服务机构', deductible: 0, reimbursementRatio: 0.55 },
-        tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.55 },
-        tier2: { tierName: '二级医疗机构', deductible: 200, reimbursementRatio: 0.45 },
-        tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.35 },
-        tier3_top: { tierName: '重点三甲医院', deductible: 200, reimbursementRatio: 0.35 }
+        community: { tierName: '基层社区服务机构', deductible: 0, reimbursementRatio: 0.50 },
+        tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
+        tier2: { tierName: '二级医疗机构', deductible: 100, reimbursementRatio: 0.35 },
+        tier3: { tierName: '三级医疗机构', deductible: 100, reimbursementRatio: 0.35 },
+        tier3_top: { tierName: '重点三甲医院', deductible: 100, reimbursementRatio: 0.35 }
       },
-      note: '居民基层门诊免起付线报销55%，限额1200元。'
+      note: '居民基层门诊免起付线报销50%（慢性病60%），其他机构起付100元报销35%，年度限额1500元。'
     },
     inpatient: {
-      sourceDocId: 'wz-medical-insurance-inpatient-2023',
-      annualCap: 300000,
-      repeatedDeductibleRule: '二次住院减半，三次免除',
+      sourceDocId: 'wz-medical-insurance-inpatient-2024',
+      annualCap: 200000, // 居民统筹年度限额 20 万元
+      repeatedDeductibleRule: '年度内设一次住院起付标准，多次住院按最高级别标准计算',
       tierBenefits: {
-        community: { tierName: '基层社区医院', deductible: 300, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.85 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.75 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '重点三甲医院', deductible: 800, reimbursementRatio: 0.65 }
+        community: { tierName: '基层社区医院', deductible: 300, reimbursementRatio: 0.90 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.90 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.80 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 700, reimbursementRatio: 0.70 },
+        tier3_top: { tierName: '重点三甲医院', deductible: 700, reimbursementRatio: 0.70 }
       }
     },
     catastrophic: {
-      sourceDocId: 'wz-medical-insurance-inpatient-2023',
+      sourceDocId: 'wz-medical-insurance-inpatient-2024',
       name: '温州市城乡居民大病保险',
-      deductible: 20000,
+      deductible: 25700,
       annualCap: 400000,
       tiers: [
-        { minAmount: 20000, maxAmount: 50000, ratio: 0.60 },
-        { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
-        { minAmount: 100000, ratio: 0.80 }
+        { minAmount: 25700, ratio: 0.70 }
       ]
     },
     remoteMedical: {
-      sourceDocId: 'wz-medical-insurance-inpatient-2023',
+      sourceDocId: 'wz-medical-insurance-inpatient-2024',
       filingChannels: ['国家医保服务平台APP', '浙里办APP'],
       longTermFiledRatio: 1.0,
       transferFiledRatio: 0.90,

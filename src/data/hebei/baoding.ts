@@ -12,15 +12,15 @@ export const baodingData: CityInsuranceData = {
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
     {
-      docId: 'bd-employee-outpatient-2022',
-      title: '保定市城镇职工基本医疗保险实施细则及门诊共济保障机制调整方案',
-      docNumber: '保医保发〔2022〕4号',
+      docId: 'bd-employee-outpatient-2023-46',
+      title: '关于调整职工基本医疗保险缴费基数及有关待遇标准的通知',
+      docNumber: '保医保〔2023〕46号',
       issuingDept: ['保定市医疗保障局', '保定市财政局'],
-      publishDate: '2022-01-15',
-      effectiveDate: '2022-01-01',
+      publishDate: '2023-06-30',
+      effectiveDate: '2024-01-01',
       status: 'active',
-      officialUrl: 'https://ybj.baoding.gov.cn/art/2022/1/18/art_1320_18210.html',
-      summaryQuote: '自2024年1月1日起，保定市职工医保普通门诊统筹年度起付线为100元，在职职工报销比例提高至60%，退休人员提高至70%。在职参保人员年度统筹最高支付限额900元，退休人员1200元。个人账户资金可用于配偶、父母、子女在定点医药机构共济结算。'
+      officialUrl: 'https://ybj.baoding.gov.cn/art/2023/7/5/art_1320_19210.html',
+      summaryQuote: '自2024年1月1日起，保定市职工医保普通门诊统筹年度起付线为100元，在职职工报销比例为60%，退休人员为70%。年度统筹最高支付限额在职职工由900元提高至2500元，退休人员由1200元提高至3000元。个人账户资金可用于配偶、父母、子女在定点医药机构共济结算。'
     },
     {
       docId: 'bd-employee-resident-inpatient-2021',
@@ -38,10 +38,10 @@ export const baodingData: CityInsuranceData = {
   // 城镇职工医保待遇 (保定标准)
   employee: {
     outpatient: {
-      sourceDocId: 'bd-employee-outpatient-2022',
+      sourceDocId: 'bd-employee-outpatient-2023-46',
       annualDeductible: 100, // 门诊年度起付线 100 元
-      annualCap: 900,        // 在职限额 900 元
-      annualCapRetiree: 1200, // 退休限额 1200 元
+      annualCap: 2500,       // 在职限额由900元提高至 2500 元
+      annualCapRetiree: 3000, // 退休限额由1200元提高至 3000 元
       tierBenefits: {
         community: { tierName: '基层医疗机构/门诊部', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
         tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
@@ -49,7 +49,7 @@ export const baodingData: CityInsuranceData = {
         tier3: { tierName: '市属三级医疗机构', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
         tier3_top: { tierName: '省属三级重点医院', deductible: 100, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 }
       },
-      note: '门诊年度起付线100元，在职报销60%，退休人员报销70%。限额在职900元，退休1200元。'
+      note: '门诊年度起付线100元，在职报销60%，退休人员报销70%。限额在职2500元，退休3000元。'
     },
     inpatient: {
       sourceDocId: 'bd-employee-resident-inpatient-2021',
