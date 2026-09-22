@@ -12,15 +12,15 @@ export const quanzhouCityData: CityInsuranceData = {
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
     {
-      docId: 'qz-employee-outpatient-2022',
-      title: '泉州市人民政府办公室关于印发泉州市职工基本医疗保险门诊共济保障机制实施细则的通知',
-      docNumber: '泉政办〔2022〕28号',
-      issuingDept: ['泉州市人民政府办公室', '泉州市医疗保障局'],
-      publishDate: '2022-12-16',
-      effectiveDate: '2023-01-01',
+      docId: 'qz-employee-outpatient-2024',
+      title: '泉州市医疗保障局关于建立职工医保门诊医疗费用综合保障制度的通知',
+      docNumber: '泉医保规〔2024〕5号',
+      issuingDept: ['泉州市医疗保障局', '泉州市财政局'],
+      publishDate: '2024-03-25',
+      effectiveDate: '2024-04-01',
       status: 'active',
-      officialUrl: 'http://ybj.quanzhou.gov.cn/zwgk/zfxxgk/zfxxgkml/zcfg/202212/t20221220_2809124.htm',
-      summaryQuote: '职工门诊统筹年度起付标准调整为600元。起付线以上统筹基金支付比例：一级及以下定点医疗机构85%、二级定点医疗机构80%、三级定点医疗机构75%；退休人员支付比例分别相应提高5个百分点（一级90%、二级85%、三级80%）。普通门诊统筹年度最高支付限额在职职工及退休人员均为25000元。'
+      officialUrl: 'http://ybj.quanzhou.gov.cn/',
+      summaryQuote: '泉医保规〔2024〕5号规定自2024年4月1日起施行：全面实行职工门诊按费用保障，取消原特殊病种限制。门诊统筹起付标准为：三级医疗机构700元、二级医疗机构300元、一级及基层医疗机构50元（基层公立机构使用国家基本药物免起付线）。在职统筹支付比例：一级90%、二级85%、三级80%（退休人员提高5个百分点）。门诊与住院合并计算统筹基金年度最高支付限额40万元（基本统筹15万+大额补助25万）。'
     },
     {
       docId: 'qz-medical-treatment-policy-2023',
@@ -38,18 +38,18 @@ export const quanzhouCityData: CityInsuranceData = {
   // 城镇职工医保待遇 (泉州标准)
   employee: {
     outpatient: {
-      sourceDocId: 'qz-employee-outpatient-2022',
-      annualDeductible: 600,
-      annualCap: 25000,
-      annualCapRetiree: 25000,
+      sourceDocId: 'qz-employee-outpatient-2024',
+      annualDeductible: 300,
+      annualCap: 400000,
+      annualCapRetiree: 400000,
       tierBenefits: {
-        community: { tierName: '基层定点医疗机构', deductible: 600, reimbursementRatio: 0.85, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 600, reimbursementRatio: 0.85, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 600, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 600, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层公立定点医疗机构', deductible: 50, reimbursementRatio: 0.90, retireeRatioBonus: 0.05 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 50, reimbursementRatio: 0.90, retireeRatioBonus: 0.05 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 300, reimbursementRatio: 0.85, retireeRatioBonus: 0.05 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 700, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '省属三级重点医疗机构', deductible: 700, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 }
       },
-      note: '职工门诊年度起付线600元。在职报销75%~85%，退休人员各级提高5个百分点（80%~90%），年度封顶2.5万元。'
+      note: '职工门诊起付线按机构分级：三级700元、二级300元、一级及基层50元（基层使用基药免起付）。在职报销80%~90%，退休提高5个百分点（85%~95%），门诊住院合并限额40万元。'
     },
     inpatient: {
       sourceDocId: 'qz-medical-treatment-policy-2023',

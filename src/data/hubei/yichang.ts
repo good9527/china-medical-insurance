@@ -106,8 +106,8 @@ export const yichangCityData: CityInsuranceData = {
       sourceDocId: 'yc-employee-inpatient-2023',
       annualCap: 150000,
       tierBenefits: {
-        community: { tierName: '乡镇卫生院/社区卫生中心', deductible: 200, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
+        community: { tierName: '乡镇卫生院/社区卫生中心', deductible: 200, reimbursementRatio: 0.90 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.90 },
         tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.75 },
         tier3: { tierName: '三级定点医疗机构', deductible: 1000, reimbursementRatio: 0.60 },
         tier3_top: { tierName: '三甲重点医院', deductible: 1000, reimbursementRatio: 0.60 }
@@ -118,7 +118,7 @@ export const yichangCityData: CityInsuranceData = {
       sourceDocId: 'yc-employee-inpatient-2023',
       name: '宜昌市城乡居民大病保险',
       deductible: 12000,
-      annualCap: 300000,
+      annualCap: 400000,
       tiers: [
         { minAmount: 12000, maxAmount: 30000, ratio: 0.60 },
         { minAmount: 30000, maxAmount: 100000, ratio: 0.65 },

@@ -58,7 +58,7 @@ export const xiangyangCityData: CityInsuranceData = {
     },
     inpatient: {
       sourceDocId: 'xy-employee-inpatient-2024',
-      annualCap: 180000,
+      annualCap: 200000,
       tierBenefits: {
         community: { tierName: '社区卫生服务中心', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.02 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.02 },
@@ -71,10 +71,10 @@ export const xiangyangCityData: CityInsuranceData = {
     catastrophic: {
       sourceDocId: 'xy-employee-inpatient-2024',
       name: '襄阳市职工大额医疗费用补助',
-      deductible: 180000,
+      deductible: 200000,
       annualCap: 350000,
       tiers: [
-        { minAmount: 180000, maxAmount: 530000, ratio: 0.85 }
+        { minAmount: 200000, maxAmount: 550000, ratio: 0.85 }
       ]
     },
     remoteMedical: {

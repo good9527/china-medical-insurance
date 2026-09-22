@@ -3886,7 +3886,7 @@ export function runCalculatorTests() {
 
   console.log(`\n>>> [Suite H14] 执行福建省地级市专项医保测算断言...`);
 
-  // 泉州市 (350500) - 职工门诊二级在职花费 2000 元，起付600元，报销80%
+  // 泉州市 (350500) - 职工门诊二级在职花费 2000 元，起付300元，报销85%
   totalChecks++;
   const quanzhouEmpOut = calculateReimbursement({
     cityCode: '350500',
@@ -3897,9 +3897,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 2000
   });
-  assertEqual(quanzhouEmpOut.breakdown.deductibleDeducted, 600, '泉州职工门诊起付线应为600元');
-  assertEqual(quanzhouEmpOut.breakdown.baseReimbursed, 1120, '泉州职工二级门诊实报不符: (2000-600)*0.80=1120');
-  console.log(`  ✓ [H14 PASS] 泉州职工二级门诊(花费2000): 扣起付¥600，实报¥1120 (80%比例，依据: 泉政办〔2022〕28号)`);
+  assertEqual(quanzhouEmpOut.breakdown.deductibleDeducted, 300, '泉州职工二级门诊起付线应为300元');
+  assertEqual(quanzhouEmpOut.breakdown.baseReimbursed, 1445, '泉州职工二级门诊实报不符: (2000-300)*0.85=1445');
+  console.log(`  ✓ [H14 PASS] 泉州职工二级门诊(花费2000): 扣起付¥300，实报¥1445 (85%比例，依据: 泉医保规〔2024〕5号)`);
   passCount++;
 
   // 漳州市 (350600) - 职工门诊一级退休花费 2000 元，起付600元，退休报销85%+5%=90%

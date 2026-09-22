@@ -85,7 +85,7 @@ export const wuhanCityData: CityInsuranceData = {
       tierBenefits: {
         community: { tierName: '社区卫生服务中心', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.04 },
         tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.90, retireeRatioBonus: 0.04 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.88, retireeRatioBonus: 0.04 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.89, retireeRatioBonus: 0.04 },
         tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.86, retireeRatioBonus: 0.04 },
         tier3_top: { tierName: '三甲重点综合医院', deductible: 800, reimbursementRatio: 0.86, retireeRatioBonus: 0.04 }
       },

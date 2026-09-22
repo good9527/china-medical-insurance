@@ -14,13 +14,13 @@ export const fuzhouCityData: CityInsuranceData = {
     {
       docId: 'fz-employee-outpatient-2024',
       title: '福州市医疗保障局关于落实完善职工基本医疗保险门诊共济保障机制的通知',
-      docNumber: '榕医保文〔2024〕12号',
+      docNumber: '榕医保文〔2024〕21号',
       issuingDept: ['福州市医疗保障局', '福州市财政局'],
       publishDate: '2024-03-25',
-      effectiveDate: '2024-04-01',
+      effectiveDate: '2024-03-31',
       status: 'active',
-      officialUrl: 'http://ybj.fuzhou.gov.cn/zz/fzybj/zwgk/zfxxgkzl/ndbg/202404/t20240402_4801123.htm',
-      summaryQuote: '职工门诊起付线调整为600元，使用国家基本药物免起付线。一级及以下机构在职报销88%（退休93%），二级机构在职报销83%（退休88%），三级机构在职报销78%（退休83%）。普通门诊统筹年度最高支付限额提高至3万元。'
+      officialUrl: 'http://ybj.fuzhou.gov.cn/',
+      summaryQuote: '榕医保文〔2024〕21号规定：自2024年3月31日起，职工门诊起付线调整为600元，使用国家基本药物免起付线。一级及以下机构在职报销88%（退休93%），二级机构在职报销83%（退休88%），三级机构在职报销78%（退休83%）。普通门诊统筹年度最高支付限额提高至3万元。'
     },
     {
       docId: 'fz-medical-insurance-inpatient-2025',
