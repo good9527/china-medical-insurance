@@ -89,15 +89,16 @@ export const baodingData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'bd-employee-resident-inpatient-2021',
-      annualCap: 200, // 普通门诊统筹年度最高限额 200 元
+      annualCap: 200, // 普通门诊统筹年度最高限额 200 元（大学生400元）
+      annualDeductible: 50, // 普通门诊统筹起付线 50 元（学生儿童免起付标准）
       tierBenefits: {
-        community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3: { tierName: '市属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
-        tier3_top: { tierName: '省属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 }
+        community: { tierName: '基层定点医疗机构', deductible: 50, reimbursementRatio: 0.50 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 50, reimbursementRatio: 0.50 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 50, reimbursementRatio: 0.50 },
+        tier3: { tierName: '市属三级医疗机构', deductible: 50, reimbursementRatio: 0.50 },
+        tier3_top: { tierName: '省属三级医疗机构', deductible: 50, reimbursementRatio: 0.50 }
       },
-      note: '普通门诊统筹报销比例提高至60%（基层），年度限额200元。'
+      note: '普通居民门诊统筹起付线50元（学生儿童免起付线），政策范围内报销比例50%，年度统筹支付限额200元（大学生400元）。'
     },
     inpatient: {
       sourceDocId: 'bd-employee-resident-inpatient-2021',

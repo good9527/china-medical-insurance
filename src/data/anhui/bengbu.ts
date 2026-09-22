@@ -20,7 +20,7 @@ export const bengbuData: CityInsuranceData = {
       effectiveDate: '2022-07-01',
       status: 'active',
       officialUrl: 'http://ybj.bengbu.gov.cn/zcfg/zcjd/7812934.html',
-      summaryQuote: '普通门诊统筹年度起付标准为一级及以下200元、二级及三级400元。起付线以上支付比例：在职职工一级60%、二级55%、三级50%；退休人员支付比例分别提高5个百分点。年度最高支付限额在职职工2000元，退休人员3000元。'
+      summaryQuote: '普通门诊统筹年度起付标准为一级及以下200元、二级及三级400元。起付线以上支付比例：在职职工一级60%、二级及三级50%；退休人员支付比例分别提高10个百分点（一级70%、二级及三级60%）。年度最高支付限额在职职工2000元，退休人员3000元。'
     },
     {
       docId: 'bb-resident-employee-inpatient-2023',
@@ -43,13 +43,13 @@ export const bengbuData: CityInsuranceData = {
       annualCap: 2000,       // 在职限额 2000 元
       annualCapRetiree: 3000, // 退休限额 3000 元
       tierBenefits: {
-        community: { tierName: '基层一级医疗机构', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '省属三级重点医院', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层一级医疗机构', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 },
+        tier3_top: { tierName: '省属三级重点医院', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 }
       },
-      note: '门诊年度起付线一级200元、二级及三级400元。在职报销一级60%、二级55%、三级50%；退休人员提高5个百分点。限额在职2000元，退休3000元。'
+      note: '门诊年度起付线一级200元、二级及三级400元。在职报销一级60%、二三级50%；退休人员提高10个百分点（一级70%、二三级60%）。限额在职2000元，退休3000元。'
     },
     inpatient: {
       sourceDocId: 'bb-resident-employee-inpatient-2023',

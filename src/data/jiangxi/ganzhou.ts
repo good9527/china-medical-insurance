@@ -89,7 +89,7 @@ export const ganzhouData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'gz-medical-treatment-policy-2023',
-      annualCap: 150,
+      annualCap: 150000, // 县域内一级及以下基层医疗机构不设单项封顶线，合并基本医保限额 15 万元
       tierBenefits: {
         community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
@@ -97,7 +97,7 @@ export const ganzhouData: CityInsuranceData = {
         tier3: { tierName: '市属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
         tier3_top: { tierName: '省级医疗机构', deductible: 0, reimbursementRatio: 0.50 }
       },
-      note: '基层定点普通门诊免起付线，报销65%，年度最高支付限额150元。'
+      note: '参保居民在参保地县域内一级及以下定点基层医疗机构门诊就医，免起付线，报销比例65%，不设单项封顶线（合并年度统筹限额15万元）。'
     },
     inpatient: {
       sourceDocId: 'gz-medical-treatment-policy-2023',

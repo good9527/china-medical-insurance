@@ -89,7 +89,7 @@ export const pingxiangData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'px-resident-employee-inpatient-2023',
-      annualCap: 150, // 普通门诊统筹年度最高限额 150 元
+      annualCap: 150, // 普通门诊统筹年度最高限额 150 元（萍医保发〔2023〕14号）
       tierBenefits: {
         community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
@@ -97,7 +97,7 @@ export const pingxiangData: CityInsuranceData = {
         tier3: { tierName: '市属三级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
         tier3_top: { tierName: '省级医疗机构', deductible: 0, reimbursementRatio: 0.50 }
       },
-      note: '基层定点普通门诊免起付线，报销65%，年度限额150元。'
+      note: '基层定点普通门诊免起付线，政策范围内报销比例65%，年度最高支付限额150元（依据: 萍医保发〔2023〕14号）。'
     },
     inpatient: {
       sourceDocId: 'px-resident-employee-inpatient-2023',

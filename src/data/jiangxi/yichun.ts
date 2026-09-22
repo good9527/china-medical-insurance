@@ -89,7 +89,7 @@ export const yichunData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'yc-medical-treatment-policy-2023',
-      annualCap: 150,
+      annualCap: 150000, // 基层普通门诊不设单项封顶线，合并基本医保年度最高支付限额 15 万元
       tierBenefits: {
         community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
@@ -97,7 +97,7 @@ export const yichunData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
         tier3_top: { tierName: '三级甲等医疗机构', deductible: 0, reimbursementRatio: 0.50 }
       },
-      note: '居民普通门诊统筹仅限基层定点机构，免起付线，报销65%，年封顶150元。'
+      note: '居民普通门诊统筹在基层定点机构免起付线，政策范围内报销比例65%，不设单项封顶线（合并年度统筹限额15万元）。'
     },
     inpatient: {
       sourceDocId: 'yc-medical-treatment-policy-2023',

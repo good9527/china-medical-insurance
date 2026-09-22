@@ -43,13 +43,13 @@ export const wuhuData: CityInsuranceData = {
       annualCap: 2000,       // 在职限额 2000 元
       annualCapRetiree: 3000, // 退休限额 3000 元
       tierBenefits: {
-        community: { tierName: '基层一级医疗机构', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '省属三级重点医院', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层一级医疗机构', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.60, retireeRatioBonus: 0.10 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 },
+        tier3_top: { tierName: '省属三级重点医院', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.10 }
       },
-      note: '门诊年度起付线一级200元、二级及三级400元。在职报销一级60%、二三级50%；退休人员提高5个百分点。限额在职2000元，退休3000元。'
+      note: '门诊年度起付线一级200元、二级及三级400元。在职报销一级60%、二三级50%；退休人员提高10个百分点（一级70%、二三级60%）。限额在职2000元，退休3000元。'
     },
     inpatient: {
       sourceDocId: 'wh-resident-employee-inpatient-2023',

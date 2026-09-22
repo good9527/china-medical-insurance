@@ -14,7 +14,7 @@ export const shangraoData: CityInsuranceData = {
     {
       docId: 'sr-employee-outpatient-2022',
       title: '上饶市人民政府办公室关于印发上饶市建立健全职工基本医疗保险门诊共济保障机制实施细则的通知',
-      docNumber: '饶府办字〔2022〕75号',
+      docNumber: '饶府办发〔2022〕12号',
       issuingDept: ['上饶市人民政府办公室', '上饶市医疗保障局'],
       publishDate: '2022-12-25',
       effectiveDate: '2023-01-01',
@@ -89,7 +89,7 @@ export const shangraoData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'sr-medical-treatment-policy-2023',
-      annualCap: 150,
+      annualCap: 150000, // 基层普通门诊不设单项封顶线，合并基本医保年度最高支付限额 15 万元
       tierBenefits: {
         community: { tierName: '基层定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
@@ -97,7 +97,7 @@ export const shangraoData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.50 },
         tier3_top: { tierName: '三级甲等医疗机构', deductible: 0, reimbursementRatio: 0.50 }
       },
-      note: '居民门诊统筹基层定点机构免起付线，报销比例65%，年度封顶150元。'
+      note: '居民门诊统筹在基层定点机构（乡镇卫生院/社区服务中心/村卫生室）免起付线，政策范围内报销比例65%，不设单项封顶线（合并年度统筹限额15万元）。'
     },
     inpatient: {
       sourceDocId: 'sr-medical-treatment-policy-2023',

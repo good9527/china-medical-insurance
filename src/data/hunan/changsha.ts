@@ -90,7 +90,7 @@ export const changshaData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'cs-medical-insurance-inpatient-2024',
-      annualCap: 400, // 基层普通门诊年度限额 400 元
+      annualCap: 560, // 基层普通门诊年度限额 560 元（长医保发统筹标准）
       tierBenefits: {
         community: { tierName: '基层医疗卫生机构', deductible: 0, reimbursementRatio: 0.70 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.70 },
@@ -98,7 +98,7 @@ export const changshaData: CityInsuranceData = {
         tier3: { tierName: '市属三级医疗机构（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '省部属三级医院（门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '普通门诊在定点基层医疗机构免起付线，报销70%，每人每年限额400元。'
+      note: '普通门诊在定点基层医疗机构免起付线，报销比例70%，每人每年门诊统筹最高报销限额560元。'
     },
     inpatient: {
       sourceDocId: 'cs-medical-insurance-inpatient-2024',
