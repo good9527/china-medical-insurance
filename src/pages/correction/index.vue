@@ -278,10 +278,10 @@
           </view>
         </view>
 
-        <!-- 右侧：近期采纳与透明动态 (简洁展示，去除说教) -->
+        <!-- 右侧：近期采纳与透明动态 (紧凑对称设计，高度与左侧表单完美平齐) -->
         <view class="sidebar-column">
           <!-- 我的在审记录 (如果有) -->
-          <view class="card mb-16" v-if="myRecords.length > 0">
+          <view class="card mb-12" v-if="myRecords.length > 0">
             <view class="card-head">
               <view class="head-left">
                 <text class="card-head-title">我的纠错记录</text>
@@ -300,8 +300,8 @@
             </view>
           </view>
 
-          <!-- 近期已采纳动态 -->
-          <view class="card">
+          <!-- 近期已采纳动态卡片 (带内滚动，高度与左侧表单平齐) -->
+          <view class="card dynamic-scroll-card">
             <view class="card-head">
               <view class="head-left">
                 <svg class="head-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -315,10 +315,10 @@
 
             <view class="dynamic-summary-bar">
               <text class="summary-badge">🛡️ 全域台账</text>
-              <text class="summary-txt">已合入 150+ 项统筹区公文核准 · {{ SITE_CONFIG.totalAssertions }} 项断言全绿守护</text>
+              <text class="summary-txt">已合入 150+ 项公文纠偏 · {{ SITE_CONFIG.totalAssertions }} 项断言守护</text>
             </view>
 
-            <view class="recent-list">
+            <view class="recent-scroll-body">
               <view class="recent-item" v-for="item in displayedUpdates" :key="item.id">
                 <view class="recent-item-top">
                   <view class="recent-city-tag">
@@ -339,106 +339,99 @@
             </view>
           </view>
 
-          <!-- 0 成本开源协同更新闭环流程透明看板 -->
-          <view class="card pipeline-flow-card mt-16">
-            <view class="card-head">
-              <view class="head-left">
-                <svg class="head-svg text-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg>
-                <text class="card-head-title">纠错机制如何闭环？信息去哪了？</text>
-              </view>
-              <text class="head-chip-cyan">透明开源管道</text>
+          <!-- 紧凑联系作者轻量条 -->
+          <view class="contact-compact-bar mt-12">
+            <view class="compact-bar-head">
+              <text class="compact-bar-title">📮 公文直投 / 联系作者团队</text>
             </view>
-
-            <view class="pipeline-steps-list">
-              <view class="pipe-step-item">
-                <view class="step-num-badge">1</view>
-                <view class="step-content">
-                  <text class="step-title">用户提交工单草稿</text>
-                  <text class="step-desc">系统校验统筹区、险种、字段与建议值，自动生成带公文溯源的标准化 GitHub Issue 或直投邮件草稿。</text>
-                </view>
+            <view class="compact-pills-row">
+              <view class="compact-pill-btn" @click="copyDirect(SITE_CONFIG.email, '邮箱')">
+                <text class="pill-k">邮箱</text>
+                <text class="pill-v monospace">{{ SITE_CONFIG.email }}</text>
+                <text class="pill-act">复制</text>
               </view>
-
-              <view class="pipe-step-item">
-                <view class="step-num-badge">2</view>
-                <view class="step-content">
-                  <text class="step-title">零延迟免费邮件提醒作者</text>
-                  <text class="step-desc">GitHub Issue 自动秒级推送提醒至维护者邮箱（keepkid0824@gmail.com），作者手机即时收到通知，全程零服务器费用与零 API 成本。</text>
-                </view>
+              <view class="compact-pill-btn" @click="copyDirect(SITE_CONFIG.wechat, '微信号')">
+                <text class="pill-k">微信</text>
+                <text class="pill-v">{{ SITE_CONFIG.wechat }}</text>
+                <text class="pill-act">复制</text>
               </view>
-
-              <view class="pipe-step-item">
-                <view class="step-num-badge">3</view>
-                <view class="step-content">
-                  <text class="step-title">本地一键拉取与 AI 协同修改</text>
-                  <text class="step-desc">作者在本地电脑运行 <text class="cmd-code">npm run feedback:list</text>，命令行秒级调取待核实工单，由 Antigravity 本地读取公文原文核对修改数据。</text>
-                </view>
-              </view>
-
-              <view class="pipe-step-item">
-                <view class="step-num-badge">4</view>
-                <view class="step-content">
-                  <text class="step-title">{{ SITE_CONFIG.totalAssertions }} 项自动化规则严密质检</text>
-                  <text class="step-desc">修改后运行 <text class="cmd-code">npm run test:calc</text>，全量覆盖 {{ SITE_CONFIG.totalCities }} 个统筹区全部 {{ SITE_CONFIG.totalAssertions }} 项计算与政策断言必须 100% 通过，杜绝误改与逻辑冲突。</text>
-                </view>
-              </view>
-
-              <view class="pipe-step-item">
-                <view class="step-num-badge">5</view>
-                <view class="step-content">
-                  <text class="step-title">Git 自动部署与给用户闭环反馈</text>
-                  <text class="step-desc">代码 push 到 GitHub 后，GitHub Actions 自动构建部署最新版；同时在 GitHub Issue 回复并关闭工单，原提交者自动收到邮件提醒“已核验并生效发布”！</text>
-                </view>
-              </view>
-            </view>
-
-            <view class="patrol-notice-box mt-12">
-              <text class="patrol-icon">🛡️</text>
-              <text class="patrol-txt">云端每周一定期自动巡检：配置了 GitHub Actions 自动化 Cron 巡检工作流，每周一自动核验全国 348 统筹区规则，异常自动向邮箱发信告警。</text>
-            </view>
-          </view>
-
-          <!-- 极简说明卡片 -->
-          <view class="clean-tip-card mt-16">
-            <text class="tip-title">为什么需要提供官方文件依据？</text>
-            <text class="tip-body">本站数据均整理自各统筹区公开的规范性文件。提供官方公文全称、字号或政务网链接能帮助我们在核实后以最快速度完成本地数据更新并生效。</text>
-          </view>
-
-          <!-- 公文直投与作者直连卡片 -->
-          <view class="contact-direct-card mt-16">
-            <view class="card-head">
-              <view class="head-left">
-                <svg class="head-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                  <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
-                <text class="card-head-title">公文原件直投 / 联系作者</text>
-              </view>
-              <text class="head-chip-blue">快速通道</text>
-            </view>
-            <text class="contact-direct-desc">
-              若手头有红头公文 PDF/扫描件或地方政策变动，欢迎直接联系作者团队：
-            </text>
-            <view class="direct-list">
-              <view class="direct-item" @click="copyDirect(SITE_CONFIG.email, '邮箱')">
-                <text class="direct-k">官方邮箱</text>
-                <text class="direct-v monospace">{{ SITE_CONFIG.email }}</text>
-                <text class="direct-copy">复制</text>
-              </view>
-              <view class="direct-item" @click="copyDirect(SITE_CONFIG.wechat, '微信号')">
-                <text class="direct-k">个人微信</text>
-                <text class="direct-v">{{ SITE_CONFIG.wechat }}</text>
-                <text class="direct-copy">复制</text>
-              </view>
-              <view class="direct-item" @click="copyDirect(SITE_CONFIG.officialAccount, '公众号名称')">
-                <text class="direct-k">微信公众号</text>
-                <text class="direct-v">{{ SITE_CONFIG.officialAccount }}</text>
-                <text class="direct-copy">复制</text>
+              <view class="compact-pill-btn" @click="copyDirect(SITE_CONFIG.officialAccount, '公众号名称')">
+                <text class="pill-k">公众号</text>
+                <text class="pill-v">{{ SITE_CONFIG.officialAccount }}</text>
+                <text class="pill-act">复制</text>
               </view>
             </view>
           </view>
+        </view>
+      </view>
+
+      <!-- 底部通栏横向流程看板：纠错机制如何闭环？信息去哪了？ -->
+      <view class="card pipeline-fullwidth-card mt-16">
+        <view class="card-head">
+          <view class="head-left">
+            <svg class="head-svg text-blue" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <text class="card-head-title">纠错机制如何透明闭环？信息去哪了？</text>
+          </view>
+          <text class="head-chip-cyan">透明开源流转 · 零成本运营</text>
+        </view>
+
+        <!-- 横向 5 步专业流程步骤条 -->
+        <view class="stepper-horizontal-grid">
+          <view class="step-card-box">
+            <view class="step-head-row">
+              <text class="step-badge">1</text>
+              <text class="step-name">提交工单草稿</text>
+            </view>
+            <text class="step-detail">系统自动生成带统筹区与公文溯源的标准化 GitHub Issue 或直投邮件。</text>
+          </view>
+
+          <view class="step-arrow-divider">➔</view>
+
+          <view class="step-card-box">
+            <view class="step-head-row">
+              <text class="step-badge">2</text>
+              <text class="step-name">秒级邮件提醒</text>
+            </view>
+            <text class="step-detail">Issue 秒级推送至作者邮箱（{{ SITE_CONFIG.email }}），手机即时收到通知。</text>
+          </view>
+
+          <view class="step-arrow-divider">➔</view>
+
+          <view class="step-card-box">
+            <view class="step-head-row">
+              <text class="step-badge">3</text>
+              <text class="step-name">本地公文核对</text>
+            </view>
+            <text class="step-detail">作者运行 <text class="cmd-code">npm run feedback:list</text> 调取工单，穿透公文条款修订数据。</text>
+          </view>
+
+          <view class="step-arrow-divider">➔</view>
+
+          <view class="step-card-box">
+            <view class="step-head-row">
+              <text class="step-badge">4</text>
+              <text class="step-name">{{ SITE_CONFIG.totalAssertions }}项全通质检</text>
+            </view>
+            <text class="step-detail">运行 <text class="cmd-code">npm run test:calc</text>，全量覆盖 348 统筹区全通断言，杜绝误改与偶发逻辑冲突。</text>
+          </view>
+
+          <view class="step-arrow-divider">➔</view>
+
+          <view class="step-card-box">
+            <view class="step-head-row">
+              <text class="step-badge">5</text>
+              <text class="step-name">自动部署与反馈</text>
+            </view>
+            <text class="step-detail">代码 push 后 GitHub Actions 自动构建发布；并在 Issue 回复关闭，提交者自动获知生效。</text>
+          </view>
+        </view>
+
+        <view class="patrol-notice-mini mt-10">
+          <text class="patrol-icon">🛡️</text>
+          <text class="patrol-txt">云端长效自动巡查：配置 GitHub Actions 定期 Cron 工作流，每周一自动核验全国 348 统筹区规则与官网连通性，全周期守卫政策真实性。</text>
         </view>
       </view>
     </view>
@@ -1772,51 +1765,160 @@ onMounted(() => {
   border-radius: 4px;
 }
 
-.pipeline-steps-list {
+/* 右侧采纳动态内滚动容器 (高度与左侧对齐) */
+.dynamic-scroll-card {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+}
+
+.recent-scroll-body {
+  max-height: 410px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 4px;
+}
+
+/* 紧凑联系作者轻量条 */
+.contact-compact-bar {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.compact-bar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.compact-bar-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #475569;
+}
+
+.compact-pills-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.compact-pill-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 5px 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.compact-pill-btn:hover {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+}
+
+.pill-k {
+  font-size: 11px;
+  font-weight: 700;
+  color: #334155;
+}
+
+.pill-v {
+  font-size: 11px;
+  color: #2563eb;
+  max-width: 90px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pill-act {
+  font-size: 10px;
+  color: #64748b;
+  background: #e2e8f0;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+/* 底部通栏横向流程看板 */
+.pipeline-fullwidth-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 16px 20px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.03);
+}
+
+.stepper-horizontal-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
   margin-top: 14px;
 }
 
-.pipe-step-item {
+.step-card-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 12px;
   display: flex;
-  align-items: flex-start;
-  gap: 10px;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
-.step-num-badge {
-  width: 20px;
-  height: 20px;
+.step-head-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.step-badge {
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: #0284c7;
   color: #ffffff;
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-top: 1px;
 }
 
-.step-content {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  flex: 1;
-}
-
-.step-title {
-  font-size: 12.5px;
+.step-name {
+  font-size: 12px;
   font-weight: 700;
   color: #0f172a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.step-desc {
-  font-size: 11.5px;
+.step-detail {
+  font-size: 11px;
   color: #64748b;
-  line-height: 1.5;
+  line-height: 1.45;
+}
+
+.step-arrow-divider {
+  font-size: 13px;
+  font-weight: 700;
+  color: #94a3b8;
+  user-select: none;
 }
 
 .cmd-code {
@@ -1824,20 +1926,21 @@ onMounted(() => {
   background: #f1f5f9;
   border: 1px solid #cbd5e1;
   color: #0369a1;
-  padding: 1px 5px;
-  border-radius: 4px;
-  font-size: 11px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 10.5px;
   font-weight: 600;
 }
 
-.patrol-notice-box {
+.patrol-notice-mini {
   background: #f0f9ff;
   border: 1px solid #bae6fd;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 6px 12px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 8px;
+  margin-top: 12px;
 }
 
 .patrol-icon {
@@ -1849,105 +1952,6 @@ onMounted(() => {
   font-size: 11px;
   color: #0369a1;
   line-height: 1.45;
-}
-
-/* 极简说明小卡片 */
-.clean-tip-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.tip-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: #334155;
-}
-
-.tip-body {
-  font-size: 11.5px;
-  color: #64748b;
-  line-height: 1.5;
-}
-
-/* 智库公文直投与作者直连卡片 */
-.contact-direct-card {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-}
-
-.head-chip-blue {
-  font-size: 11px;
-  font-weight: 700;
-  color: #2563eb;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  padding: 2px 8px;
-  border-radius: 9999px;
-}
-
-.contact-direct-desc {
-  font-size: 11.5px;
-  color: #64748b;
-  line-height: 1.5;
-  margin: 10px 0 12px;
-  display: block;
-}
-
-.direct-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.direct-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 10px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.18s ease;
-}
-
-.direct-item:hover {
-  background: #eff6ff;
-  border-color: #bfdbfe;
-}
-
-.direct-k {
-  font-size: 11.5px;
-  color: #64748b;
-  font-weight: 600;
-}
-
-.direct-v {
-  font-size: 12.5px;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.direct-v.monospace {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-}
-
-.direct-copy {
-  font-size: 11px;
-  color: #2563eb;
-  background: #ffffff;
-  border: 1px solid #bfdbfe;
-  padding: 1px 6px;
-  border-radius: 4px;
-  font-weight: 600;
 }
 
 /* 移动端响应式 */
@@ -2067,6 +2071,33 @@ onMounted(() => {
 
   .submit-row {
     grid-template-columns: 1fr;
+  }
+
+  /* 移动端步骤流程自适应为纵向清晰步骤条 */
+  .stepper-horizontal-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .step-card-box {
+    padding: 10px 12px;
+  }
+
+  .step-arrow-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: rotate(90deg);
+    height: 14px;
+    margin: -2px 0;
+    opacity: 0.7;
+  }
+
+  .compact-pills-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
   }
 }
 </style>
