@@ -19,7 +19,7 @@ export const luoyangCityData: CityInsuranceData = {
       effectiveDate: '2022-07-01',
       status: 'active',
       officialUrl: 'http://ybj.ly.gov.cn/zwgk/zcfg/202206/t20220630_210984.shtml',
-      summaryQuote: '职工普通门诊按次设起付标准：基层医疗机构免设起付线，二级及以上医院每次30元；报销比例基层65%（退休75%），二级60%（退休70%），三级55%（退休65%）；年度支付限额在职1800元，退休2300元。'
+      summaryQuote: '职工普通门诊按次设起付标准：基层医疗机构免设起付线，二级医疗机构每次20元，三级医疗机构每次40元；报销比例基层65%（退休75%），二级60%（退休70%），三级55%（退休65%）；年度支付限额在职1800元，退休2300元。'
     },
     {
       docId: 'ly-medical-insurance-inpatient-2023',
