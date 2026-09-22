@@ -38,6 +38,7 @@ export const neijiangCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'nj-employee-outpatient-2022-32',
       annualDeductible: 200,
+      annualDeductibleRetiree: 150,
       annualCap: 2000,
       annualCapRetiree: 2500,
       tierBenefits: {

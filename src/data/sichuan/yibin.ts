@@ -38,6 +38,7 @@ export const yibinCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'yb-employee-outpatient-2022-31',
       annualDeductible: 200,
+      annualDeductibleRetiree: 150,
       annualCap: 2000,
       annualCapRetiree: 2500,
       tierBenefits: {

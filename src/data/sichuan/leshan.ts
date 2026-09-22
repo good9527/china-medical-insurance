@@ -38,6 +38,7 @@ export const leshanCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'ls-employee-outpatient-2022-48',
       annualDeductible: 200,
+      annualDeductibleRetiree: 150,
       annualCap: 2000,
       annualCapRetiree: 2500,
       tierBenefits: {

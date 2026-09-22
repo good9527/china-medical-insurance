@@ -38,6 +38,7 @@ export const zigongCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'zg-employee-outpatient-2022-53',
       annualDeductible: 200,
+      annualDeductibleRetiree: 150,
       annualCap: 2000,
       annualCapRetiree: 2500,
       tierBenefits: {

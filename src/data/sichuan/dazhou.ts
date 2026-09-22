@@ -38,6 +38,7 @@ export const dazhouCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'dz-employee-outpatient-2022-68',
       annualDeductible: 200,
+      annualDeductibleRetiree: 150,
       annualCap: 2000,
       annualCapRetiree: 2500,
       tierBenefits: {

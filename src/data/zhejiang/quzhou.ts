@@ -45,6 +45,7 @@ export const quzhouCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'qz-medical-insurance-measures-2020',
       annualDeductible: 300,   // 在职门诊起付线 300 元，退休 150 元
+      annualDeductibleRetiree: 150,
       annualCap: 3000,         // 门诊年限额 3000 元
       tierBenefits: {
         community: { tierName: '基层社区卫生服务机构/卫生院', deductible: 300, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },

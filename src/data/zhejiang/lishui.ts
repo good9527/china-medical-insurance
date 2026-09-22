@@ -45,6 +45,7 @@ export const lishuiCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'ls-medical-insurance-measures-2022',
       annualDeductible: 1188,  // 在职门诊起付线 1188 元，退休 420 元（基层免起付 0 元）
+      annualDeductibleRetiree: 420,
       annualCap: 8000,         // 门诊年限额 8000 元
       tierBenefits: {
         community: { tierName: '基层社区卫生服务机构/乡镇卫生院', deductible: 0, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },

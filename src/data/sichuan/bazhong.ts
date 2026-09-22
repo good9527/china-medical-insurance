@@ -38,6 +38,7 @@ export const bazhongCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'bz-employee-outpatient-2022-56',
       annualDeductible: 200,
+      annualDeductibleRetiree: 150,
       annualCap: 2000,
       annualCapRetiree: 2500,
       tierBenefits: {

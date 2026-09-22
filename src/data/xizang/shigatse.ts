@@ -40,6 +40,7 @@ export const shigatseData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'rkz-employee-outpatient-2021-36',
       annualDeductible: 200,
+      annualDeductibleRetiree: 140,
       annualCap: 5000,
       annualCapRetiree: 5000,
       tierBenefits: {

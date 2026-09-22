@@ -45,6 +45,7 @@ export const zhoushanCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'zs-medical-insurance-measures-2022',
       annualDeductible: 400,   // 在职门诊基准起付线 400 元，退休 200 元（基层免起付 0 元）
+      annualDeductibleRetiree: 200,
       annualCap: 8000,         // 门诊年限额 8000 元
       tierBenefits: {
         community: { tierName: '基层社区卫生服务中心/海岛卫生院', deductible: 0, reimbursementRatio: 0.68, retireeRatioBonus: 0.05 },

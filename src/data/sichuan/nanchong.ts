@@ -38,6 +38,7 @@ export const nanchongCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'nc-employee-outpatient-2022-04',
       annualDeductible: 200,
+      annualDeductibleRetiree: 150,
       annualCap: 2000,
       annualCapRetiree: 2500,
       tierBenefits: {

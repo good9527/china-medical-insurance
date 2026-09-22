@@ -45,6 +45,7 @@ export const ningboCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'nb-employee-outpatient-reform-2022',
       annualDeductible: 750,   // 在职门诊基准起付线 750 元（45岁以下900/45岁以上600，退休300）
+      annualDeductibleRetiree: 300,
       annualCap: 20000,        // 门诊统筹限额 2 万元
       tierBenefits: {
         community: { tierName: '社区卫生服务机构/卫生院', deductible: 750, reimbursementRatio: 0.86, retireeRatioBonus: 0.06 },

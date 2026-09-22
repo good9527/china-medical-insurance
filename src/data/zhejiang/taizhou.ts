@@ -45,6 +45,7 @@ export const taizhouZjCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'tz-zj-medical-insurance-measures-2021',
       annualDeductible: 500,   // 在职门诊起付线 500 元，退休 250 元
+      annualDeductibleRetiree: 250,
       annualCap: 10000,        // 在职门诊限额 1 万元
       annualCapRetiree: 12000, // 退休门诊限额 1.2 万元
       tierBenefits: {

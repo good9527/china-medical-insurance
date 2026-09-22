@@ -2637,9 +2637,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 1000
   });
-  assertEqual(deyangEmpRet.breakdown.deductibleDeducted, 200, '德阳退休职工门诊起付线为200元');
-  assertEqual(deyangEmpRet.breakdown.baseReimbursed, 480, '德阳职工退休三级门诊实报不符: (1000-200)*0.60=480');
-  console.log(`  ✓ [H6 PASS] 德阳职工三级门诊(退休花费1000): 扣起付¥200，按退休优待60%实报¥480 (依据: 德办发〔2022〕56号)`);
+  assertEqual(deyangEmpRet.breakdown.deductibleDeducted, 150, '德阳退休职工门诊起付线为150元');
+  assertEqual(deyangEmpRet.breakdown.baseReimbursed, 510, '德阳职工退休三级门诊实报不符: (1000-150)*0.60=510');
+  console.log(`  ✓ [H6 PASS] 德阳职工三级门诊(退休花费1000): 扣起付¥150，按退休优待60%实报¥510 (依据: 德办发〔2022〕56号)`);
   passCount++;
 
   // 宜宾市 (511500) - 居民基层门诊花费 300 元，免起付，报销60% (180元 <= 200元限额)
@@ -5653,9 +5653,9 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 1000
   });
-  assertEqual(shannanEmpOut.breakdown.deductibleDeducted, 200, '山南职工门诊三级起付线应为200元');
-  assertEqual(shannanEmpOut.breakdown.baseReimbursed, 560, '山南职工退休三级门诊实报不符: (1000-200)*0.70=560');
-  console.log(`  ✓ [H26 PASS] 山南退休职工三级门诊(花费1000): 扣起付¥200，按70%实报¥560 (依据: 藏政办发〔2021〕36号)`);
+  assertEqual(shannanEmpOut.breakdown.deductibleDeducted, 140, '山南职工门诊三级退休起付线应为140元');
+  assertEqual(shannanEmpOut.breakdown.baseReimbursed, 602, '山南职工退休三级门诊实报不符: (1000-140)*0.70=602');
+  console.log(`  ✓ [H26 PASS] 山南退休职工三级门诊(花费1000): 扣退休起付¥140，按70%实报¥602 (依据: 藏政办发〔2021〕36号)`);
   passCount++;
 
   // 那曲市 (540600) - 居民基层门诊花费 300 元，免起付，报销 50%，受限额300元管控，实报 150 元
@@ -5963,6 +5963,107 @@ export function runCalculatorTests() {
   assertEqual(liaoyuanEmpOutCom.breakdown.deductibleDeducted, 0, '辽源职工基层门诊起付线应为0元');
   assertEqual(liaoyuanEmpOutCom.breakdown.baseReimbursed, 360, '辽源职工基层门诊实报不符: 600*0.60=360');
   console.log(`  ✓ [H29 PASS] 辽源职工基层门诊(花费600): 免起付实报¥360 (60%比例，依据: 辽医保发〔2023〕16号及细则)`);
+  passCount++;
+
+  // =========================================================================
+  // Suite H30: 四川/浙江/西藏/福建等统筹区退休门诊优待起付线与遵义报销比例专项测算断言
+  // =========================================================================
+  console.log('\n>>> [Suite H30] 执行四川/浙江/福建/贵州统筹区退休门诊起付优待与比例核验断言...');
+
+  // 1. 绵阳市 (510700) - 退休职工二级门诊：花费 1000 元，起付优待 150 元（在职200元），退休比例 60%+10%=70%，实报 (1000-150)*0.70 = 595
+  totalChecks++;
+  const mianyangEmpOutRet = calculateReimbursement({
+    cityCode: '510700',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(mianyangEmpOutRet.breakdown.deductibleDeducted, 150, '绵阳退休职工门诊起付线应享受优待150元');
+  assertEqual(mianyangEmpOutRet.breakdown.baseReimbursed, 595, '绵阳退休职工二级门诊实报不符: (1000-150)*0.70=595');
+  console.log(`  ✓ [H30 PASS] 绵阳退休职工二级门诊(花费1000): 扣优待起付¥150，按70%实报¥595 (依据: 绵府办规〔2022〕2号, 川办发〔2021〕85号)`);
+  passCount++;
+
+  // 2. 湖州市 (330500) - 退休职工二级门诊：花费 1000 元，起付优待 300 元（在职600元），退休比例 55%+5%=60%，实报 (1000-300)*0.60 = 420
+  totalChecks++;
+  const huzhouEmpOutRet = calculateReimbursement({
+    cityCode: '330500',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(huzhouEmpOutRet.breakdown.deductibleDeducted, 300, '湖州退休职工门诊起付线应享受优待300元');
+  assertEqual(huzhouEmpOutRet.breakdown.baseReimbursed, 420, '湖州退休职工二级门诊实报不符: (1000-300)*0.60=420');
+  console.log(`  ✓ [H30 PASS] 湖州退休职工二级门诊(花费1000): 扣优待起付¥300，按60%实报¥420 (依据: 湖政办发〔2023〕48号)`);
+  passCount++;
+
+  // 3. 宁波市 (330200) - 退休职工二级门诊：花费 1000 元，起付优待 300 元（在职750元），比例 80%，实报 (1000-300)*0.80 = 560
+  totalChecks++;
+  const ningboEmpOutRet = calculateReimbursement({
+    cityCode: '330200',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(ningboEmpOutRet.breakdown.deductibleDeducted, 300, '宁波退休职工门诊起付线应享受优待300元');
+  assertEqual(ningboEmpOutRet.breakdown.baseReimbursed, 560, '宁波退休职工二级门诊实报不符: (1000-300)*0.80=560');
+  console.log(`  ✓ [H30 PASS] 宁波退休职工二级门诊(花费1000): 扣优待起付¥300，按80%实报¥560 (依据: 甬政办发〔2022〕46号)`);
+  passCount++;
+
+  // 4. 丽水市 (331100) - 退休职工二级门诊：花费 1000 元，起付优待 420 元（在职1188元），退休比例 60%+5%=65%，实报 (1000-420)*0.65 = 377
+  totalChecks++;
+  const lishuiEmpOutRet = calculateReimbursement({
+    cityCode: '331100',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(lishuiEmpOutRet.breakdown.deductibleDeducted, 420, '丽水退休职工门诊起付线应享受优待420元');
+  assertEqual(lishuiEmpOutRet.breakdown.baseReimbursed, 377, '丽水退休职工二级门诊实报不符: (1000-420)*0.65=377');
+  console.log(`  ✓ [H30 PASS] 丽水退休职工二级门诊(花费1000): 扣优待起付¥420，按65%实报¥377 (依据: 丽政发〔2022〕18号)`);
+  passCount++;
+
+  // 5. 厦门市 (350200) - 退休职工三级门诊：花费 2000 元，起付优待 800 元（在职1200元），退休比例 75%+10%=85%，实报 (2000-800)*0.85 = 1020
+  totalChecks++;
+  const xiamenEmpOutRet = calculateReimbursement({
+    cityCode: '350200',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 2000
+  });
+  assertEqual(xiamenEmpOutRet.breakdown.deductibleDeducted, 800, '厦门退休职工门诊起付线应享受优待800元');
+  assertEqual(xiamenEmpOutRet.breakdown.baseReimbursed, 1020, '厦门退休职工三级门诊实报不符: (2000-800)*0.85=1020');
+  console.log(`  ✓ [H30 PASS] 厦门退休职工三级门诊(花费2000): 扣优待起付¥800，按85%实报¥1020 (依据: 厦医保〔2022〕12号)`);
+  passCount++;
+
+  // 6. 遵义市 (520300) - 在职职工三级门诊：花费 1000 元，起付 150 元，比例 50%，实报 (1000-150)*0.50 = 425
+  totalChecks++;
+  const zunyiEmpOutTier3 = calculateReimbursement({
+    cityCode: '520300',
+    insuranceType: 'employee',
+    isRetiree: false,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(zunyiEmpOutTier3.breakdown.deductibleDeducted, 150, '遵义职工门诊起付线应为150元');
+  assertEqual(zunyiEmpOutTier3.breakdown.baseReimbursed, 425, '遵义职工三级门诊实报不符: (1000-150)*0.50=425');
+  console.log(`  ✓ [H30 PASS] 遵义在职职工三级门诊(花费1000): 扣起付¥150，按50%实报¥425 (依据: 遵府办发〔2022〕21号)`);
   passCount++;
 
   console.log(`\n=========================================`);

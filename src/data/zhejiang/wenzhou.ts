@@ -45,6 +45,7 @@ export const wenzhouCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'wz-medical-insurance-measures-2022',
       annualDeductible: 600,   // 在职门诊起付线 600 元，退休 400 元
+      annualDeductibleRetiree: 400,
       annualCap: 10000,        // 门诊年限额 1 万元
       tierBenefits: {
         community: { tierName: '基层社区卫生服务机构/乡镇卫生院', deductible: 600, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },

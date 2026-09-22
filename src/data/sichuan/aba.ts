@@ -38,6 +38,7 @@ export const abaCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'ab-employee-outpatient-2022-42',
       annualDeductible: 200,
+      annualDeductibleRetiree: 150,
       annualCap: 2000,
       annualCapRetiree: 2500,
       tierBenefits: {

@@ -20,7 +20,7 @@ export const zunyiCityData: CityInsuranceData = {
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.zunyi.gov.cn/zwgk/zcfg/202212/t20221221_1189234.html',
-      summaryQuote: '在职职工门诊年度起付标准150元。一级及以下定点医疗机构统筹支付75%、二级机构70%、三级机构60%；退休人员支付比例分别提高5个百分点（一级80%、二级75%、三级65%）。门诊统筹年度最高支付限额在职及退休职工均为2000元。'
+      summaryQuote: '在职职工门诊年度起付标准150元。一级及以下定点医疗机构统筹支付70%、二级机构60%、三级机构50%；退休人员支付比例分别提高5个百分点（一级75%、二级65%、三级55%）。门诊统筹年度最高支付限额在职及退休职工均为2000元。'
     },
     {
       docId: 'zy-medical-insurance-policy-2023',

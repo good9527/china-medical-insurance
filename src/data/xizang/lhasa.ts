@@ -40,6 +40,7 @@ export const lhasaCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'xz-employee-outpatient-2021-36',
       annualDeductible: 200, // 在职门诊起付线 200 元（退休140元）
+      annualDeductibleRetiree: 140,
       annualCap: 5000,       // 门诊统筹年度最高限额 5000 元
       annualCapRetiree: 5000,
       tierBenefits: {

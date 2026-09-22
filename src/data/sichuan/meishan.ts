@@ -38,6 +38,7 @@ export const meishanCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'ms-employee-outpatient-2022-39',
       annualDeductible: 200,
+      annualDeductibleRetiree: 150,
       annualCap: 2000,
       annualCapRetiree: 2500,
       tierBenefits: {

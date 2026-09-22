@@ -38,6 +38,7 @@ export const suiningCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'sn-employee-outpatient-2022-03',
       annualDeductible: 200,
+      annualDeductibleRetiree: 150,
       annualCap: 2000,
       annualCapRetiree: 2500,
       tierBenefits: {

@@ -45,6 +45,7 @@ export const shaoxingCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'sx-medical-insurance-measures-2023',
       annualDeductible: 400,   // 在职门诊起付线 400 元，退休 200 元
+      annualDeductibleRetiree: 200,
       annualCap: 5000,         // 在职门诊限额 5000 元
       annualCapRetiree: 6000,  // 退休门诊限额 6000 元
       tierBenefits: {

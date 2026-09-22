@@ -45,6 +45,7 @@ export const huzhouCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'hz-medical-insurance-measures-2023',
       annualDeductible: 600,   // 在职门诊起付线 600 元，退休 300 元
+      annualDeductibleRetiree: 300,
       annualCap: 1700,         // 在职门诊年限额 1700 元
       annualCapRetiree: 2200,  // 退休门诊年限额 2200 元
       tierBenefits: {

@@ -38,6 +38,7 @@ export const panzhihuaCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'pzh-employee-outpatient-2022-46',
       annualDeductible: 200,
+      annualDeductibleRetiree: 150,
       annualCap: 2000,
       annualCapRetiree: 2500,
       tierBenefits: {

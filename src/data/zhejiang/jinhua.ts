@@ -45,6 +45,7 @@ export const jinhuaCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'jh-medical-insurance-measures-2021',
       annualDeductible: 600,   // 在职门诊起付线 600 元，退休 300 元
+      annualDeductibleRetiree: 300,
       annualCap: 8000,         // 门诊年限额 8000 元
       tierBenefits: {
         community: { tierName: '基层定点医疗机构/卫生院', deductible: 600, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },

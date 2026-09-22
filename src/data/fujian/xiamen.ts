@@ -40,6 +40,7 @@ export const xiamenCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'xm-employee-insurance-2022-12',
       annualDeductible: 1200, // 在职门诊起付线 1200 元（退休800元）
+      annualDeductibleRetiree: 800, // 退休人员门诊起付线 800 元
       annualCap: 100000,      // 门诊与住院合并统筹限额 10 万元
       annualCapRetiree: 100000,
       tierBenefits: {

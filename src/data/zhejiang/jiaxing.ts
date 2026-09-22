@@ -45,6 +45,7 @@ export const jiaxingCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'jx-medical-insurance-measures-2022',
       annualDeductible: 400,   // 在职门诊基准起付线 400 元，退休 200 元（基层免起付 0 元）
+      annualDeductibleRetiree: 200,
       annualCap: 10000,        // 门诊年限额 1 万元
       tierBenefits: {
         community: { tierName: '基层社区卫生服务机构/乡镇卫生院', deductible: 0, reimbursementRatio: 0.85, retireeRatioBonus: 0.05 },
