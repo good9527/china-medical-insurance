@@ -11,7 +11,7 @@
             <span class="pulse-dot"></span>
             <text class="badge-txt">天地图官方矢量配准 · 审图号 GS（2026）4921号</text>
             <text class="count-txt">全国 380 空间实体全域配准</text>
-            <text class="source-link-tag">ℹ️ 数据来源与合规说明</text>
+            <text class="source-link-tag">数据来源与合规说明 ↗</text>
           </view>
           <view class="hero-title-row">
             <text class="hero-h1">全国医保统筹区空间全景地图</text>
@@ -66,7 +66,6 @@
               :class="{ active: currentMetric === 'overall' }"
               @click="currentMetric = 'overall'"
             >
-              <text class="dim-ico">🏆</text>
               <text class="dim-txt">综合保障力</text>
             </view>
             <view 
@@ -74,7 +73,6 @@
               :class="{ active: currentMetric === 'inpatient' }"
               @click="currentMetric = 'inpatient'"
             >
-              <text class="dim-ico">🏥</text>
               <text class="dim-txt">职工三级住院比</text>
             </view>
             <view 
@@ -82,7 +80,6 @@
               :class="{ active: currentMetric === 'outpatient' }"
               @click="currentMetric = 'outpatient'"
             >
-              <text class="dim-ico">💊</text>
               <text class="dim-txt">门诊共济封顶</text>
             </view>
             <view 
@@ -90,7 +87,6 @@
               :class="{ active: currentMetric === 'resident' }"
               @click="currentMetric = 'resident'"
             >
-              <text class="dim-ico">🏡</text>
               <text class="dim-txt">居民三级住院</text>
             </view>
           </view>
@@ -100,9 +96,9 @@
         <view class="benchmark-quick-bar">
           <text class="bench-label">标杆统筹区：</text>
           <view class="bench-chips">
-            <text class="bench-item" @click="focusCityByCode('440300')">🥇 深圳市 91.6</text>
-            <text class="bench-item" @click="focusCityByCode('320100')">🥈 南京市 82.3</text>
-            <text class="bench-item" @click="focusCityByCode('441900')">🥉 东莞市 79.6</text>
+            <text class="bench-item" @click="focusCityByCode('440300')">深圳市 91.6</text>
+            <text class="bench-item" @click="focusCityByCode('320100')">南京市 82.3</text>
+            <text class="bench-item" @click="focusCityByCode('441900')">东莞市 79.6</text>
             <text class="bench-item" @click="focusCityByCode('440100')">广州市 79.1</text>
             <text class="bench-item" @click="focusCityByCode('310100')">上海市 77.3</text>
             <text class="bench-item" @click="focusCityByCode('110100')">北京市 75.8</text>
@@ -353,7 +349,7 @@
           <!-- 港澳台特区专属保障呈现 (恪守国家版图完整性第一优先级，友好说明) -->
           <view class="dock-special-box" v-if="activeCity.isSpecialRegion || activeCity.hasInsuranceData === false">
             <view class="dsb-lead-row">
-              <text class="dsb-tag">🏛️ {{ activeCity.cityName }} · 属地专属医疗卫生保障体系</text>
+              <text class="dsb-tag">{{ activeCity.cityName }} · 属地专属医疗卫生保障体系</text>
               <text class="dsb-sub">恪守中国国家版图完整性全域收录</text>
             </view>
             <text class="dsb-desc">
@@ -473,7 +469,11 @@
         <view class="sm-scroll-content">
           <!-- 审图号重点澄清警示条 (按用户明确指示：审图号是数据的审图号不是我们这个图的审图号，天地图官方写的是可以用来可视化) -->
           <view class="sm-highlight-box">
-            <view class="sm-hb-icon">⚖️</view>
+            <view class="sm-hb-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 22px; height: 22px; color: #2563eb;">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </view>
             <view class="sm-hb-content">
               <text class="sm-hb-title">审图号法律界定与权利声明：</text>
               <text class="sm-hb-text">
