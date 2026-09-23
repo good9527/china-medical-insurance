@@ -305,6 +305,43 @@
           </view>
         </view>
 
+        <!-- 横向多参数快捷滑动排序条 (用户要求：横向的可以滑动选择更多参数排序) -->
+        <view class="quick-sort-section">
+          <view class="quick-sort-head-row">
+            <view class="quick-sort-title-wrap">
+              <svg class="quick-sort-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="4" y1="6" x2="20" y2="6"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+                <line x1="10" y1="18" x2="14" y2="18"></line>
+              </svg>
+              <text class="quick-sort-lead">横向轻滑选择参数排序：</text>
+            </view>
+            <view class="quick-sort-status-tag" :class="{ 'is-custom': sortColumn !== 'composite' && sortColumn !== 'overall_score' }">
+              <text class="status-txt">当前基准：{{ currentSortLabel }}</text>
+              <text class="status-arrow">{{ sortAsc ? '▲ 升序 (低起付/低门槛优选)' : '▼ 降序 (高比例/高限额优选)' }}</text>
+            </view>
+          </view>
+
+          <!-- 横向滑动容器 -->
+          <view class="quick-sort-scroll-container">
+            <view class="quick-sort-chips-track">
+              <view 
+                class="quick-sort-chip"
+                v-for="opt in quickSortOptions"
+                :key="'qs_' + opt.key"
+                :class="{ active: sortColumn === opt.key }"
+                @click="toggleSort(opt.key)"
+              >
+                <text class="chip-ico">{{ opt.icon }}</text>
+                <text class="chip-name">{{ opt.label }}</text>
+                <text class="chip-order-icon" v-if="sortColumn === opt.key">
+                  {{ sortAsc ? '▲' : '▼' }}
+                </text>
+              </view>
+            </view>
+          </view>
+        </view>
+
         <!-- 前三甲领奖台高光卡片 (权威金融科技级香槟金/钛银/瑰铜华堂) -->
         <view class="podium-row" v-if="!searchQuery && selectedProvince === 'all' && sortColumn === 'composite' && !sortAsc && rankings.length >= 3">
           <!-- 银席 No.2 -->
@@ -461,13 +498,13 @@
         <!-- 布局 B：多列可排序 Benchmark 数据大宽表 (Table View)         -->
         <!-- ========================================================== -->
         <view class="benchmark-table-card" v-if="displayLayout === 'table'">
-          <!-- 移动端横滑提示栏 -->
+          <!-- 横滑提示栏 -->
           <view class="mobile-table-hint">
             <svg class="hint-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="15 18 9 12 15 6"></polyline>
               <polyline points="9 18 3 12 9 6"></polyline>
             </svg>
-            <text class="hint-txt">可横向轻滑浏览各维度深度参数 · 也可在上方切换为【政策卡片】视图</text>
+            <text class="hint-txt">👉 支持水平横向平滑滚动浏览 16+ 项细颗粒度法定待遇指标 · 点击表头任意列可即时排序</text>
             <svg class="hint-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="9 18 15 12 9 6"></polyline>
               <polyline points="15 18 21 12 15 6"></polyline>
@@ -495,17 +532,44 @@
                   <th class="col-sortable" @click="toggleSort('resident_score')">
                     <view class="th-sort-inner"><text>居民综合</text><text class="sort-arrow" :class="{ active: sortColumn === 'resident_score' }">{{ sortColumn === 'resident_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
-                  <th class="col-sortable" @click="toggleSort('inpatient_score')">
-                    <view class="th-sort-inner"><text>住院保障</text><text class="sort-arrow" :class="{ active: sortColumn === 'inpatient_score' }">{{ sortColumn === 'inpatient_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  <th class="col-sortable" @click="toggleSort('emp_inpatient')">
+                    <view class="th-sort-inner"><text>职工三级住院</text><text class="sort-arrow" :class="{ active: sortColumn === 'emp_inpatient' }">{{ sortColumn === 'emp_inpatient' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
-                  <th class="col-sortable" @click="toggleSort('outpatient_score')">
-                    <view class="th-sort-inner"><text>门诊共济</text><text class="sort-arrow" :class="{ active: sortColumn === 'outpatient_score' }">{{ sortColumn === 'outpatient_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  <th class="col-sortable" @click="toggleSort('emp_inpatient_ded')">
+                    <view class="th-sort-inner"><text>职工住院起付</text><text class="sort-arrow" :class="{ active: sortColumn === 'emp_inpatient_ded' }">{{ sortColumn === 'emp_inpatient_ded' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('emp_outpatient_cap')">
+                    <view class="th-sort-inner"><text>职工门诊封顶</text><text class="sort-arrow" :class="{ active: sortColumn === 'emp_outpatient_cap' }">{{ sortColumn === 'emp_outpatient_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('threshold_score')">
+                    <view class="th-sort-inner"><text>门诊免起付友好</text><text class="sort-arrow" :class="{ active: sortColumn === 'threshold_score' }">{{ sortColumn === 'threshold_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('emp_outpatient_ratio_community')">
+                    <view class="th-sort-inner"><text>基层门诊统筹比</text><text class="sort-arrow" :class="{ active: sortColumn === 'emp_outpatient_ratio_community' }">{{ sortColumn === 'emp_outpatient_ratio_community' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('res_inpatient')">
+                    <view class="th-sort-inner"><text>居民三级住院</text><text class="sort-arrow" :class="{ active: sortColumn === 'res_inpatient' }">{{ sortColumn === 'res_inpatient' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('res_inpatient_ded')">
+                    <view class="th-sort-inner"><text>居民住院起付</text><text class="sort-arrow" :class="{ active: sortColumn === 'res_inpatient_ded' }">{{ sortColumn === 'res_inpatient_ded' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('res_outpatient_cap')">
+                    <view class="th-sort-inner"><text>居民门诊限额</text><text class="sort-arrow" :class="{ active: sortColumn === 'res_outpatient_cap' }">{{ sortColumn === 'res_outpatient_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('catastrophic_max_ratio')">
+                    <view class="th-sort-inner"><text>大病最高报销</text><text class="sort-arrow" :class="{ active: sortColumn === 'catastrophic_max_ratio' }">{{ sortColumn === 'catastrophic_max_ratio' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
                   <th class="col-sortable" @click="toggleSort('catastrophic_score')">
-                    <view class="th-sort-inner"><text>大病兜底</text><text class="sort-arrow" :class="{ active: sortColumn === 'catastrophic_score' }">{{ sortColumn === 'catastrophic_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                    <view class="th-sort-inner"><text>大病兜底限额</text><text class="sort-arrow" :class="{ active: sortColumn === 'catastrophic_score' }">{{ sortColumn === 'catastrophic_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
-                  <th class="col-sortable" @click="toggleSort('retiree_score')">
-                    <view class="th-sort-inner"><text>群体倾斜</text><text class="sort-arrow" :class="{ active: sortColumn === 'retiree_score' }">{{ sortColumn === 'retiree_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  <th class="col-sortable" @click="toggleSort('retiree_bonus')">
+                    <view class="th-sort-inner"><text>退休上浮倾斜</text><text class="sort-arrow" :class="{ active: sortColumn === 'retiree_bonus' }">{{ sortColumn === 'retiree_bonus' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('retiree_inpatient_ratio')">
+                    <view class="th-sort-inner"><text>退休实享报销</text><text class="sort-arrow" :class="{ active: sortColumn === 'retiree_inpatient_ratio' }">{{ sortColumn === 'retiree_inpatient_ratio' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('mobility_score')">
+                    <view class="th-sort-inner"><text>异地转诊保持</text><text class="sort-arrow" :class="{ active: sortColumn === 'mobility_score' }">{{ sortColumn === 'mobility_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
                   <th class="col-action text-right">操作</th>
                 </tr>
@@ -520,15 +584,31 @@
                   <th class="col-sortable" @click="toggleSort('emp_inpatient')">
                     <view class="th-sort-inner"><text>在职三级住院</text><text class="sort-arrow" :class="{ active: sortColumn === 'emp_inpatient' }">{{ sortColumn === 'emp_inpatient' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
-                  <th>二级定点比例</th>
+                  <th>二级定点住院</th>
+                  <th class="col-sortable" @click="toggleSort('emp_inpatient_ded')">
+                    <view class="th-sort-inner"><text>住院门槛起付</text><text class="sort-arrow" :class="{ active: sortColumn === 'emp_inpatient_ded' }">{{ sortColumn === 'emp_inpatient_ded' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
                   <th class="col-sortable" @click="toggleSort('emp_outpatient_cap')">
                     <view class="th-sort-inner"><text>门诊共济封顶</text><text class="sort-arrow" :class="{ active: sortColumn === 'emp_outpatient_cap' }">{{ sortColumn === 'emp_outpatient_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
                   <th class="col-sortable" @click="toggleSort('threshold_score')">
-                    <view class="th-sort-inner"><text>门诊起付门槛</text><text class="sort-arrow" :class="{ active: sortColumn === 'threshold_score' }">{{ sortColumn === 'threshold_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                    <view class="th-sort-inner"><text>门诊年起付线</text><text class="sort-arrow" :class="{ active: sortColumn === 'threshold_score' }">{{ sortColumn === 'threshold_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
+                  <th class="col-sortable" @click="toggleSort('emp_outpatient_ratio_community')">
+                    <view class="th-sort-inner"><text>基层门诊统筹比</text><text class="sort-arrow" :class="{ active: sortColumn === 'emp_outpatient_ratio_community' }">{{ sortColumn === 'emp_outpatient_ratio_community' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th>三级门诊比例</th>
                   <th class="col-sortable" @click="toggleSort('retiree_bonus')">
                     <view class="th-sort-inner"><text>退休上浮优待</text><text class="sort-arrow" :class="{ active: sortColumn === 'retiree_bonus' }">{{ sortColumn === 'retiree_bonus' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('retiree_inpatient_ratio')">
+                    <view class="th-sort-inner"><text>退休实享报销</text><text class="sort-arrow" :class="{ active: sortColumn === 'retiree_inpatient_ratio' }">{{ sortColumn === 'retiree_inpatient_ratio' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('annual_cap')">
+                    <view class="th-sort-inner"><text>基本险年封顶</text><text class="sort-arrow" :class="{ active: sortColumn === 'annual_cap' }">{{ sortColumn === 'annual_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('mobility_score')">
+                    <view class="th-sort-inner"><text>异地转诊保持</text><text class="sort-arrow" :class="{ active: sortColumn === 'mobility_score' }">{{ sortColumn === 'mobility_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
                   <th class="col-action text-right">操作</th>
                 </tr>
@@ -544,11 +624,27 @@
                     <view class="th-sort-inner"><text>居民三级住院</text><text class="sort-arrow" :class="{ active: sortColumn === 'res_inpatient' }">{{ sortColumn === 'res_inpatient' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
                   <th>居民二级住院</th>
+                  <th class="col-sortable" @click="toggleSort('res_inpatient_ded')">
+                    <view class="th-sort-inner"><text>住院门槛起付</text><text class="sort-arrow" :class="{ active: sortColumn === 'res_inpatient_ded' }">{{ sortColumn === 'res_inpatient_ded' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
                   <th class="col-sortable" @click="toggleSort('res_outpatient_cap')">
                     <view class="th-sort-inner"><text>基层门诊限额</text><text class="sort-arrow" :class="{ active: sortColumn === 'res_outpatient_cap' }">{{ sortColumn === 'res_outpatient_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
+                  <th>基层门诊报销比</th>
+                  <th class="col-sortable" @click="toggleSort('catastrophic_ded')">
+                    <view class="th-sort-inner"><text>大病起付门槛</text><text class="sort-arrow" :class="{ active: sortColumn === 'catastrophic_ded' }">{{ sortColumn === 'catastrophic_ded' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('catastrophic_max_ratio')">
+                    <view class="th-sort-inner"><text>大病最高报销</text><text class="sort-arrow" :class="{ active: sortColumn === 'catastrophic_max_ratio' }">{{ sortColumn === 'catastrophic_max_ratio' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
                   <th class="col-sortable" @click="toggleSort('catastrophic_score')">
-                    <view class="th-sort-inner"><text>大病兜底机制</text><text class="sort-arrow" :class="{ active: sortColumn === 'catastrophic_score' }">{{ sortColumn === 'catastrophic_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                    <view class="th-sort-inner"><text>大病兜底限额</text><text class="sort-arrow" :class="{ active: sortColumn === 'catastrophic_score' }">{{ sortColumn === 'catastrophic_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('annual_cap')">
+                    <view class="th-sort-inner"><text>年度总支付限额</text><text class="sort-arrow" :class="{ active: sortColumn === 'annual_cap' }">{{ sortColumn === 'annual_cap' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
+                  </th>
+                  <th class="col-sortable" @click="toggleSort('mobility_score')">
+                    <view class="th-sort-inner"><text>异地转诊保持</text><text class="sort-arrow" :class="{ active: sortColumn === 'mobility_score' }">{{ sortColumn === 'mobility_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
                   <th class="col-action text-right">操作</th>
                 </tr>
@@ -561,14 +657,14 @@
                   :key="item.cityCode"
                   @click="goToCityPolicy(item.cityCode)"
                 >
-                  <!-- 排名 -->
+                  <!-- 排名 (Sticky Left 1) -->
                   <td class="col-rank">
                     <view class="rank-badge" :class="getRankClass(item.rank)">
                       {{ item.rank }}
                     </view>
                   </td>
 
-                  <!-- 城市与省份：极简化设计，消除重复城市名与塑料灰色标签 -->
+                  <!-- 城市与省份 (Sticky Left 2) -->
                   <td class="col-city">
                     <view class="city-cell-stack">
                       <text class="city-name">{{ item.cityName }}</text>
@@ -576,37 +672,26 @@
                     </view>
                   </td>
 
-                  <!-- 全域整体模式数据行：消除多余背景框，聚焦核心数字与法定待遇明细 -->
+                  <!-- 全域整体模式数据行 -->
                   <template v-if="currentCategory === 'overall'">
                     <td class="col-score">
                       <text class="score-display font-bold">{{ item.overallScore }}</text>
                     </td>
                     <td><text class="plain-data-txt font-bold text-blue">{{ item.employeeScore }}</text></td>
                     <td><text class="plain-data-txt font-bold text-emerald">{{ item.residentScore }}</text></td>
-                    <td>
-                      <view class="dim-stat-cell">
-                        <text class="dim-stat-score text-cyan">{{ item.radar.inpatient }}</text>
-                        <text class="dim-stat-detail">{{ Math.round(item.empInpatientRatio * 100) }}% / {{ Math.round(item.resInpatientRatio * 100) }}%</text>
-                      </view>
-                    </td>
-                    <td>
-                      <view class="dim-stat-cell">
-                        <text class="dim-stat-score text-blue">{{ item.radar.outpatient }}</text>
-                        <text class="dim-stat-detail">{{ formatCap(item.empOutpatientCap) }}</text>
-                      </view>
-                    </td>
-                    <td>
-                      <view class="dim-stat-cell">
-                        <text class="dim-stat-score text-purple">{{ item.radar.catastrophic }}</text>
-                        <text class="dim-stat-detail">{{ item.isCatastrophicUncapped ? '不设封顶' : '¥' + Math.round(item.annualMaxCap / 10000) + '万' }}</text>
-                      </view>
-                    </td>
-                    <td>
-                      <view class="dim-stat-cell">
-                        <text class="dim-stat-score text-amber">{{ item.radar.retiree }}</text>
-                        <text class="dim-stat-detail">+{{ Math.round(item.retireeBonusRatio * 100) }}%</text>
-                      </view>
-                    </td>
+                    <td><text class="plain-data-txt font-bold text-cyan">{{ Math.round(item.empInpatientRatio * 100) }}%</text></td>
+                    <td><text class="plain-data-txt font-mono">¥{{ item.empInpatientDed }}</text></td>
+                    <td><text class="plain-data-txt font-bold text-blue">{{ formatCap(item.empOutpatientCap) }}</text></td>
+                    <td><text class="plain-data-txt">{{ item.empOutpatientDed === 0 ? '0元免起付' : '¥' + item.empOutpatientDed }}</text></td>
+                    <td><text class="plain-data-txt text-emerald">{{ Math.round(item.empOutpatientRatioCommunity * 100) }}%</text></td>
+                    <td><text class="plain-data-txt font-bold text-emerald">{{ Math.round(item.resInpatientRatio * 100) }}%</text></td>
+                    <td><text class="plain-data-txt font-mono">¥{{ item.resInpatientDed }}</text></td>
+                    <td><text class="plain-data-txt">¥{{ item.resOutpatientCap }}/年</text></td>
+                    <td><text class="plain-data-txt font-bold text-purple">{{ Math.round(item.catastrophicMaxRatio * 100) }}%</text></td>
+                    <td><text class="plain-data-txt font-semibold text-purple">{{ item.isCatastrophicUncapped ? '不设封顶' : '¥' + Math.round(item.annualMaxCap / 10000) + '万' }}</text></td>
+                    <td><text class="plain-data-txt font-bold text-amber">+{{ Math.round(item.retireeBonusRatio * 100) }}%</text></td>
+                    <td><text class="plain-data-txt font-semibold text-amber">{{ Math.round(item.retireeInpatientRatio * 100) }}%</text></td>
+                    <td><text class="plain-data-txt text-blue">{{ Math.round(item.remoteTransferRatio * 100) }}%</text></td>
                   </template>
 
                   <!-- 城镇职工医保模式数据行 -->
@@ -616,9 +701,15 @@
                     </td>
                     <td><text class="plain-data-txt font-semibold text-blue">{{ Math.round(item.empInpatientRatio * 100) }}%</text></td>
                     <td><text class="plain-data-txt">{{ Math.round(item.empInpatientTier2Ratio * 100) }}%</text></td>
+                    <td><text class="plain-data-txt font-mono">¥{{ item.empInpatientDed }}</text></td>
                     <td><text class="plain-data-txt" :class="{ 'text-emerald font-bold': item.empOutpatientCap >= 9999999 }">{{ formatCap(item.empOutpatientCap) }}</text></td>
-                    <td><text class="plain-data-txt">{{ item.empOutpatientDed === 0 ? '0元 (免起付)' : '¥' + item.empOutpatientDed }}</text></td>
+                    <td><text class="plain-data-txt">{{ item.empOutpatientDed === 0 ? '0元免起付' : '¥' + item.empOutpatientDed }}</text></td>
+                    <td><text class="plain-data-txt text-emerald font-semibold">{{ Math.round(item.empOutpatientRatioCommunity * 100) }}%</text></td>
+                    <td><text class="plain-data-txt text-slate-500">{{ Math.round(item.empOutpatientRatioTier3 * 100) }}%</text></td>
                     <td><text class="plain-data-txt font-semibold text-amber">+{{ Math.round(item.retireeBonusRatio * 100) }}%</text></td>
+                    <td><text class="plain-data-txt font-bold text-amber">{{ Math.round(item.retireeInpatientRatio * 100) }}%</text></td>
+                    <td><text class="plain-data-txt font-mono">{{ item.annualMaxCap >= 9999999 ? '上不封顶' : formatCap(item.annualMaxCap) }}</text></td>
+                    <td><text class="plain-data-txt text-blue font-semibold">{{ Math.round(item.remoteTransferRatio * 100) }}%</text></td>
                   </template>
 
                   <!-- 城乡居民医保模式数据行 -->
@@ -628,16 +719,17 @@
                     </td>
                     <td><text class="plain-data-txt font-semibold text-emerald">{{ Math.round(item.resInpatientRatio * 100) }}%</text></td>
                     <td><text class="plain-data-txt">{{ Math.round(item.resInpatientTier2Ratio * 100) }}%</text></td>
-                    <td><text class="plain-data-txt">¥{{ item.resOutpatientCap }}/年</text></td>
-                    <td>
-                      <view class="dim-stat-cell">
-                        <text class="dim-stat-score text-purple">{{ item.radar.catastrophic }}分</text>
-                        <text class="dim-stat-detail">{{ item.isCatastrophicUncapped ? '不设封顶' : '¥' + Math.round(item.annualMaxCap / 10000) + '万' }}</text>
-                      </view>
-                    </td>
+                    <td><text class="plain-data-txt font-mono">¥{{ item.resInpatientDed }}</text></td>
+                    <td><text class="plain-data-txt font-semibold">¥{{ item.resOutpatientCap }}/年</text></td>
+                    <td><text class="plain-data-txt text-emerald font-semibold">{{ Math.round(item.resOutpatientRatioCommunity * 100) }}%</text></td>
+                    <td><text class="plain-data-txt font-mono">¥{{ item.catastrophicDed }}</text></td>
+                    <td><text class="plain-data-txt text-purple font-bold">{{ Math.round(item.catastrophicMaxRatio * 100) }}%</text></td>
+                    <td><text class="plain-data-txt text-purple font-semibold">{{ item.isCatastrophicUncapped ? '不设封顶' : '¥' + Math.round(item.annualMaxCap / 10000) + '万' }}</text></td>
+                    <td><text class="plain-data-txt font-mono">{{ formatCap(item.annualMaxCap) }}</text></td>
+                    <td><text class="plain-data-txt text-blue">{{ Math.round(item.remoteTransferRatio * 100) }}%</text></td>
                   </template>
 
-                  <!-- 操作列：加入竞技场 PK -->
+                  <!-- 操作列：加入竞技场 PK (Sticky Right) -->
                   <td class="col-action text-right" @click.stop>
                     <view class="action-btn-group">
                       <button class="mini-pk-btn" @click.stop="quickBattle(item.cityCode)">
@@ -862,17 +954,30 @@
           </view>
         </view>
 
-        <!-- 详细对决指标对照表 (12 项核心法定条款技术指标) -->
+        <!-- 详细对决指标对照表 (24 项核心法定条款技术指标) -->
         <view class="metrics-battle-card" v-if="battleResult">
           <view class="metrics-head">
-            <text class="metrics-head-title">详细待遇指标比拼矩阵 (12 项法定条款纵深对决)</text>
-            <text class="metrics-head-sub">涵盖门诊共济、分级住院、大病兜底、特殊优待与异地流动，智能标出优势方与领先幅度</text>
+            <text class="metrics-head-title">详细待遇指标比拼矩阵 (24 项法定条款纵深对决)</text>
+            <text class="metrics-head-sub">涵盖门诊共济、全级次住院、大病兜底、群体倾斜、异地流动与红头规章溯源，智能标出优势方与领先幅度</text>
+          </view>
+
+          <!-- 分类筛选导航药丸 -->
+          <view class="battle-cat-nav">
+            <view 
+              class="battle-cat-pill"
+              v-for="cat in battleCategoryOptions"
+              :key="cat.key"
+              :class="{ active: selectedBattleCategory === cat.key }"
+              @click="selectedBattleCategory = cat.key; triggerHaptic()"
+            >
+              <text class="cat-pill-label">{{ cat.label }}</text>
+            </view>
           </view>
 
           <view class="battle-item-list">
             <view 
               class="battle-item-row" 
-              v-for="(m, idx) in battleResult.metrics" 
+              v-for="(m, idx) in filteredBattleMetrics" 
               :key="idx"
             >
               <!-- 蓝方数值 -->
@@ -1030,12 +1135,65 @@ const sortColumnLabels: Record<SortColumn, string> = {
   retiree_score: '群体倾斜度',
   mobility_score: '异地自由度',
   emp_inpatient: '职工三级住院比例',
+  emp_inpatient_ded: '职工住院门槛起付线',
   res_inpatient: '居民三级住院比例',
+  res_inpatient_ded: '居民住院门槛起付线',
   emp_outpatient_cap: '职工门诊共济限额',
   res_outpatient_cap: '居民门诊年度限额',
+  emp_outpatient_ratio_community: '职工基层门诊比例',
+  catastrophic_ded: '大病保险起付线',
+  catastrophic_max_ratio: '大病最高报销比例',
   annual_cap: '住院年度封顶限额',
-  retiree_bonus: '退休优待上浮幅度'
+  retiree_bonus: '退休优待上浮幅度',
+  retiree_inpatient_ratio: '退休三级住院实享比例'
 };
+
+// 横向可滑动快捷排序指标选项定义
+const quickSortOptions = computed(() => {
+  if (currentCategory.value === 'employee') {
+    return [
+      { key: 'employee_score' as SortColumn, label: '职工综合分', icon: '🏆' },
+      { key: 'emp_inpatient' as SortColumn, label: '三级在职住院比', icon: '🏥' },
+      { key: 'emp_inpatient_ded' as SortColumn, label: '住院起付门槛(低)', icon: '🚪' },
+      { key: 'emp_outpatient_cap' as SortColumn, label: '门诊共济年封顶', icon: '💊' },
+      { key: 'threshold_score' as SortColumn, label: '门诊免起付友好', icon: '✨' },
+      { key: 'emp_outpatient_ratio_community' as SortColumn, label: '基层门诊统筹比', icon: '🩺' },
+      { key: 'retiree_bonus' as SortColumn, label: '退休倾斜上浮', icon: '👴' },
+      { key: 'retiree_inpatient_ratio' as SortColumn, label: '退休实享统筹比', icon: '🎖️' },
+      { key: 'annual_cap' as SortColumn, label: '基本医保年封顶', icon: '🛡️' },
+      { key: 'mobility_score' as SortColumn, label: '异地转诊保持率', icon: '🌐' }
+    ];
+  }
+  if (currentCategory.value === 'resident') {
+    return [
+      { key: 'resident_score' as SortColumn, label: '居民综合分', icon: '🏆' },
+      { key: 'res_inpatient' as SortColumn, label: '居民三级住院比', icon: '🏥' },
+      { key: 'res_inpatient_ded' as SortColumn, label: '住院起付门槛(低)', icon: '🚪' },
+      { key: 'res_outpatient_cap' as SortColumn, label: '基层门诊年限额', icon: '💊' },
+      { key: 'catastrophic_ded' as SortColumn, label: '大病起赔门槛(低)', icon: '🛡️' },
+      { key: 'catastrophic_max_ratio' as SortColumn, label: '大病最高报销比', icon: '📈' },
+      { key: 'catastrophic_score' as SortColumn, label: '大病不设限兜底', icon: '🌟' },
+      { key: 'annual_cap' as SortColumn, label: '年度总支付限额', icon: '💰' },
+      { key: 'mobility_score' as SortColumn, label: '异地转诊保持率', icon: '🌐' }
+    ];
+  }
+  return [
+    { key: 'overall_score' as SortColumn, label: '全域综合分', icon: '🏆' },
+    { key: 'employee_score' as SortColumn, label: '职工综合分', icon: '💼' },
+    { key: 'resident_score' as SortColumn, label: '居民综合分', icon: '🏡' },
+    { key: 'emp_inpatient' as SortColumn, label: '职工三级住院比', icon: '🏥' },
+    { key: 'emp_inpatient_ded' as SortColumn, label: '职工住院门槛(低)', icon: '🚪' },
+    { key: 'emp_outpatient_cap' as SortColumn, label: '职工门诊共济封顶', icon: '💊' },
+    { key: 'res_inpatient' as SortColumn, label: '居民三级住院比', icon: '🏥' },
+    { key: 'res_inpatient_ded' as SortColumn, label: '居民住院门槛(低)', icon: '🚪' },
+    { key: 'res_outpatient_cap' as SortColumn, label: '居民门诊限额', icon: '🩺' },
+    { key: 'annual_cap' as SortColumn, label: '基本医保总封顶', icon: '💰' },
+    { key: 'catastrophic_max_ratio' as SortColumn, label: '大病最高报销比', icon: '🛡️' },
+    { key: 'retiree_bonus' as SortColumn, label: '退休倾斜优待', icon: '👴' },
+    { key: 'retiree_inpatient_ratio' as SortColumn, label: '退休实享报销比', icon: '🎖️' },
+    { key: 'mobility_score' as SortColumn, label: '异地转诊保持率', icon: '🌐' }
+  ];
+});
 
 const currentSortLabel = computed(() => sortColumnLabels[sortColumn.value] || '综合分');
 
@@ -1045,7 +1203,12 @@ function toggleSort(col: SortColumn) {
     sortAsc.value = !sortAsc.value;
   } else {
     sortColumn.value = col;
-    sortAsc.value = false;
+    // 如果是起付线类门槛指标，首次点击默认升序（即门槛越低越靠前排）
+    if (col === 'emp_inpatient_ded' || col === 'res_inpatient_ded' || col === 'catastrophic_ded') {
+      sortAsc.value = true;
+    } else {
+      sortAsc.value = false;
+    }
   }
   currentPage.value = 1;
 }
@@ -1250,8 +1413,27 @@ function quickBattle(targetCityCode: string) {
 function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   if (adv === 'city1') return 'diff-blue';
   if (adv === 'city2') return 'diff-orange';
+  if (adv === 'neutral') return 'diff-neutral';
   return 'diff-equal';
 }
+
+// 双城对决 24 项指标分类过滤
+const selectedBattleCategory = ref<string>('all');
+const battleCategoryOptions = [
+  { key: 'all', label: '全部 24 项条款' },
+  { key: '门诊共济', label: '门诊共济 (6)' },
+  { key: '住院保障', label: '分级住院 (7)' },
+  { key: '大病兜底', label: '大病兜底 (4)' },
+  { key: '群体倾斜', label: '退休倾斜 (4)' },
+  { key: '异地流动', label: '异地转诊 (2)' },
+  { key: '政策依据', label: '红头公文 (1)' }
+];
+
+const filteredBattleMetrics = computed(() => {
+  if (!battleResult.value) return [];
+  if (selectedBattleCategory.value === 'all') return battleResult.value.metrics;
+  return battleResult.value.metrics.filter(m => m.category === selectedBattleCategory.value);
+});
 </script>
 
 <style scoped>
@@ -2290,6 +2472,149 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   transform: translateY(-1px);
 }
 
+/* 横向多参数快捷滑动排序栏 */
+.quick-sort-section {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+}
+
+.quick-sort-head-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.quick-sort-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.quick-sort-svg {
+  width: 15px;
+  height: 15px;
+  color: #2563eb;
+}
+
+.quick-sort-lead {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.quick-sort-status-tag {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  color: #475569;
+}
+
+.quick-sort-status-tag.is-custom {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  color: #1d4ed8;
+  font-weight: 700;
+}
+
+.status-arrow {
+  color: #2563eb;
+  font-weight: 700;
+}
+
+.quick-sort-scroll-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  padding-bottom: 6px;
+  white-space: nowrap;
+}
+
+.quick-sort-scroll-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.quick-sort-scroll-container::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+.quick-sort-chips-track {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  align-items: center !important;
+  gap: 8px !important;
+  width: max-content !important;
+}
+
+.quick-sort-chip {
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  flex-shrink: 0 !important;
+  gap: 6px !important;
+  padding: 6px 14px !important;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  white-space: nowrap !important;
+}
+
+.quick-sort-chip:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.quick-sort-chip.active {
+  background: #2563eb;
+  border-color: #1d4ed8;
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+
+.chip-ico {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.chip-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: inherit;
+  white-space: nowrap !important;
+  display: inline-block !important;
+}
+
+.quick-sort-chip.active .chip-name {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.chip-order-icon {
+  font-size: 11px;
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.25);
+  padding: 1px 5px;
+  border-radius: 4px;
+  margin-left: 2px;
+  line-height: 1;
+}
+
 /* ============================================================ */
 /* 布局 B：Benchmark 大宽表                                      */
 /* ============================================================ */
@@ -2303,13 +2628,13 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .mobile-table-hint {
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px 12px;
-  background: #eff6ff;
-  border-bottom: 1px solid #dbeafe;
+  padding: 9px 12px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
 }
 
 .hint-svg {
@@ -2320,8 +2645,8 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .hint-txt {
-  font-size: 11px;
-  color: #1e40af;
+  font-size: 11.5px;
+  color: #475569;
   font-weight: 600;
 }
 
@@ -2335,7 +2660,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   border-collapse: separate;
   border-spacing: 0;
   text-align: left;
-  min-width: 900px;
+  min-width: 1560px;
 }
 
 .b-thead-tr {
@@ -2343,13 +2668,16 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .b-thead-tr th {
-  padding: 12px 14px;
+  padding: 12px 16px;
   font-size: 12px;
   font-weight: 700;
   color: #475569;
   user-select: none;
   border-bottom: 2px solid #e2e8f0;
   background: #f8fafc;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  min-width: 95px;
 }
 
 .col-sortable {
@@ -2363,14 +2691,23 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 }
 
 .th-sort-inner {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 5px !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+}
+
+.th-sort-inner text {
+  white-space: nowrap !important;
 }
 
 .sort-arrow {
   font-size: 11px;
   color: #94a3b8;
+  margin-left: 2px;
+  line-height: 1;
 }
 
 .sort-arrow.active {
@@ -2389,6 +2726,7 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
   vertical-align: middle;
   border-bottom: 1px solid #f1f5f9;
   background: #ffffff;
+  white-space: nowrap;
 }
 
 .b-tbody-tr:hover td {
@@ -2397,37 +2735,80 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 
 /* 粘性固定列：排名列与统筹区列在横向滑动时不丢失 */
 .col-rank {
-  width: 50px;
-  min-width: 50px;
-  max-width: 50px;
+  width: 56px;
+  min-width: 56px;
+  max-width: 56px;
+  box-sizing: border-box;
   text-align: center;
   position: sticky;
   left: 0;
-  z-index: 2;
+  z-index: 3;
+  background: #ffffff;
 }
 
 .b-thead-tr th.col-rank {
+  width: 56px;
+  min-width: 56px;
+  max-width: 56px;
+  box-sizing: border-box;
   position: sticky;
   left: 0;
-  z-index: 4;
+  z-index: 6;
   background: #f8fafc;
 }
 
 .col-city {
-  width: 130px;
-  min-width: 130px;
+  width: 145px;
+  min-width: 145px;
+  max-width: 145px;
+  box-sizing: border-box;
   position: sticky;
-  left: 50px;
-  z-index: 2;
-  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.04);
+  left: 56px;
+  z-index: 3;
+  background: #ffffff;
+  border-right: 1px solid #e2e8f0;
+  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.06);
 }
 
 .b-thead-tr th.col-city {
+  width: 145px;
+  min-width: 145px;
+  max-width: 145px;
+  box-sizing: border-box;
   position: sticky;
-  left: 50px;
-  z-index: 4;
+  left: 56px;
+  z-index: 6;
   background: #f8fafc;
-  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.04);
+  border-right: 1px solid #e2e8f0;
+  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.06);
+}
+
+/* 右侧粘性固定列：操作按钮列在滑动时不丢失 */
+.col-action {
+  width: 96px;
+  min-width: 96px;
+  max-width: 96px;
+  box-sizing: border-box;
+  text-align: right;
+  position: sticky;
+  right: 0;
+  z-index: 3;
+  background: #ffffff;
+  border-left: 1px solid #e2e8f0;
+  box-shadow: -4px 0 8px -2px rgba(0, 0, 0, 0.06);
+}
+
+.b-thead-tr th.col-action {
+  width: 96px;
+  min-width: 96px;
+  max-width: 96px;
+  box-sizing: border-box;
+  position: sticky;
+  right: 0;
+  z-index: 6;
+  background: #f8fafc;
+  border-left: 1px solid #e2e8f0;
+  box-shadow: -4px 0 8px -2px rgba(0, 0, 0, 0.06);
 }
 
 .rank-badge {
@@ -3017,7 +3398,59 @@ function getDiffClass(adv: 'city1' | 'city2' | 'equal' | 'neutral'): string {
 .diff-blue { background: #eff6ff; color: #2563eb; }
 .diff-orange { background: #fff7ed; color: #ea580c; }
 .diff-equal { background: #f1f5f9; color: #64748b; }
-.metric-exp { font-size: 11px; color: #94a3b8; line-height: 1.3; max-width: 320px; }
+.diff-neutral { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
+.metric-exp { font-size: 11px; color: #94a3b8; line-height: 1.3; max-width: 340px; }
+
+/* 双城对决 24 项指标分类药丸 */
+.battle-cat-nav {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 6px 0 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.battle-cat-nav::-webkit-scrollbar {
+  height: 3px;
+}
+
+.battle-cat-nav::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.battle-cat-pill {
+  padding: 6px 14px;
+  border-radius: 20px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.battle-cat-pill:hover {
+  background: #e2e8f0;
+}
+
+.battle-cat-pill.active {
+  background: #0f172a;
+  border-color: #0f172a;
+}
+
+.cat-pill-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.battle-cat-pill.active .cat-pill-label {
+  color: #ffffff;
+  font-weight: 700;
+}
 
 /* 分页条样式 */
 .table-pagination-bar {

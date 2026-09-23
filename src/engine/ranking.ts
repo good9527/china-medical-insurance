@@ -15,11 +15,17 @@ export type SortColumn =
   | 'retiree_score'       // 👴 群体倾斜与关怀力得分
   | 'mobility_score'      // 🌐 异地就医流动自由度得分
   | 'emp_inpatient'       // 职工三级住院比例
+  | 'emp_inpatient_ded'   // 职工三级住院起付线 (门槛越低越好)
   | 'res_inpatient'       // 居民三级住院比例
+  | 'res_inpatient_ded'   // 居民三级住院起付线 (门槛越低越好)
   | 'emp_outpatient_cap'  // 职工门诊封顶线
   | 'res_outpatient_cap'  // 居民门诊封顶线
+  | 'emp_outpatient_ratio_community' // 职工基层门诊比例
+  | 'catastrophic_ded'    // 大病保险起付线
+  | 'catastrophic_max_ratio' // 大病保险最高分段比例
   | 'annual_cap'          // 年度最高支付限额
-  | 'retiree_bonus';      // 退休优待上浮
+  | 'retiree_bonus'       // 退休优待上浮
+  | 'retiree_inpatient_ratio'; // 退休三级住院实享比例
 
 export interface BenchmarkCityMetrics {
   rank: number;
@@ -36,21 +42,38 @@ export interface BenchmarkCityMetrics {
   empInpatientRatio: number;      // 职工三级住院比例 (0~1)
   empInpatientTier2Ratio: number; // 职工二级住院比例 (0~1)
   empInpatientTier1Ratio: number; // 职工一级/基层住院比例 (0~1)
+  empInpatientDed: number;        // 职工三级住院起付线 (元)
+  empInpatientTier2Ded: number;   // 职工二级住院起付线 (元)
+  empInpatientTier1Ded: number;   // 职工一级住院起付线 (元)
   empOutpatientCap: number;       // 职工门诊年度限额 (元)
   empOutpatientDed: number;       // 职工门诊起付线 (元)
+  empOutpatientRatioTier3: number;     // 职工三级门诊比例 (0~1)
+  empOutpatientRatioCommunity: number; // 职工基层门诊比例 (0~1)
   retireeBonusRatio: number;      // 退休上浮比例 (0~1)
+  retireeInpatientRatio: number;  // 退休职工三级住院实享报销比例 (0~1)
+  retireeOutpatientCap?: number;  // 退休职工门诊年度限额 (元)
+  retireeOutpatientDed?: number;  // 退休职工门诊起付线 (元)
   
   // 居民专属核心指标
   resInpatientRatio: number;      // 居民三级住院比例 (0~1)
   resInpatientTier2Ratio: number; // 居民二级住院比例 (0~1)
   resInpatientTier1Ratio: number; // 居民一级/基层住院比例 (0~1)
+  resInpatientDed: number;        // 居民三级住院起付线 (元)
+  resInpatientTier2Ded: number;   // 居民二级住院起付线 (元)
   resOutpatientCap: number;       // 居民门诊年度限额 (元)
+  resOutpatientRatioCommunity: number; // 居民基层门诊比例 (0~1)
   annualMaxCap: number;           // 医保年度总支付限额 (元)
   isCatastrophicUncapped: boolean;// 大病保险是否不设封顶
+  catastrophicDed: number;        // 大病保险起付线 (元)
+  catastrophicMaxRatio: number;   // 大病保险最高分段报销比例 (0~1)
 
   // 异地就医核心指标
   remoteTransferRatio: number;    // 规范异地转诊报销保持率 (如 0.90)
   remoteUnfiledRatio: number;     // 未备案自行就医保持率 (如 0.70)
+
+  // 政策公文溯源依据
+  latestPolicyDocNumber: string;  // 最新政策公文发文字号
+  latestPolicyTitle: string;      // 最新政策公文标题
 
   // 6大能力雷达维度 (0 - 100 分，CMI-Index 2.0 标准)
   radar: {
@@ -66,7 +89,7 @@ export interface BenchmarkCityMetrics {
 
 export interface CityComparisonMetric {
   name: string;
-  category: '门诊共济' | '住院保障' | '大病兜底' | '群体倾斜' | '异地流动';
+  category: '门诊共济' | '住院保障' | '大病兜底' | '群体倾斜' | '异地流动' | '政策依据';
   city1Val: string;
   city2Val: string;
   advantage: 'city1' | 'city2' | 'equal' | 'neutral';
@@ -101,24 +124,39 @@ export function extractCityBenchmarkMetrics(city: CityInsuranceData): BenchmarkC
   const empInTier2 = empIn.tierBenefits.tier2?.reimbursementRatio || 0.88;
   const empInTier1 = empIn.tierBenefits.tier1?.reimbursementRatio || 0.90;
   const empDedInTier3 = empIn.tierBenefits.tier3?.deductible || 800;
+  const empDedInTier2 = empIn.tierBenefits.tier2?.deductible || 500;
+  const empDedInTier1 = empIn.tierBenefits.tier1?.deductible || 300;
   const empCap = empOut.annualCap || 3000;
   const empDed = empOut.annualDeductible ?? 200;
+  const empOutRatioTier3 = empOut.tierBenefits?.tier3?.reimbursementRatio || 0.50;
+  const empOutRatioCommunity = empOut.tierBenefits?.community?.reimbursementRatio || 0.75;
   const retBonus = empIn.tierBenefits.tier3?.retireeRatioBonus || 0.03;
+  const retireeInpatientRatio = Math.min(0.99, empInTier3 + retBonus);
   const hasRetireeOutpatientAdvantage = (empOut.annualCapRetiree && empOut.annualCapRetiree > empCap) || false;
+  const retOutCap = empOut.annualCapRetiree;
+  const retOutDed = empOut.annualDeductibleRetiree;
 
   // 2. 提取核心参数 - 居民
   const resInTier3 = resIn.tierBenefits.tier3?.reimbursementRatio || 0.65;
   const resInTier2 = resIn.tierBenefits.tier2?.reimbursementRatio || 0.75;
   const resInTier1 = resIn.tierBenefits.tier1?.reimbursementRatio || 0.85;
   const resDedInTier3 = resIn.tierBenefits.tier3?.deductible || 1000;
+  const resDedInTier2 = resIn.tierBenefits.tier2?.deductible || 600;
   const resCap = resOut.annualCap || 300;
   const resOutRatio = resOut.tierBenefits.community?.reimbursementRatio || 0.60;
   const maxCap = resIn.comprehensiveCap || resIn.annualCap || 200000;
   const isCatastrophicUncapped = resCata.annualCap === undefined;
+  const cataDed = resCata.deductible || 12000;
+  const cataMaxRatio = resCata.tiers?.length ? Math.max(...resCata.tiers.map(t => t.ratio)) : 0.70;
 
   // 3. 提取核心参数 - 异地就医
   const remoteTransferRatio = empRemote?.transferFiledRatio || 0.90;
   const remoteUnfiledRatio = empRemote?.unfiledNormalRatio || 0.65;
+
+  // 4. 政策公文依据
+  const latestDoc = city.sourceDocs && city.sourceDocs.length > 0 ? city.sourceDocs[0] : null;
+  const latestPolicyDocNumber = latestDoc?.docNumber || '现行有效政策文件';
+  const latestPolicyTitle = latestDoc?.title || `${city.cityName}医疗保险待遇管理规定`;
 
   // ==================== 6 大能力维度量化评分 (0 - 100 分) ====================
 
@@ -140,7 +178,6 @@ export function extractCityBenchmarkMetrics(city: CityInsuranceData): BenchmarkC
   // [维度 3] 🛡️ 大病重疾抗风险力 (catastrophic)
   const maxCapScore = Math.min(100, Math.round(Math.min(maxCap, 1050000) / 1050000 * 75 + 25));
   const cataSafetyScore = isCatastrophicUncapped ? 99 : Math.min(90, Math.max(40, Math.round((resCata.annualCap || 300000) / 600000 * 50 + 40)));
-  const cataMaxRatio = resCata.tiers?.length ? Math.max(...resCata.tiers.map(t => t.ratio)) : 0.70;
   const cataRatioScore = Math.min(100, Math.round((cataMaxRatio / 0.85) * 80 + 20));
   const catastrophicScore = Math.round(maxCapScore * 0.40 + cataSafetyScore * 0.35 + cataRatioScore * 0.25);
 
@@ -200,17 +237,32 @@ export function extractCityBenchmarkMetrics(city: CityInsuranceData): BenchmarkC
     empInpatientRatio: empInTier3,
     empInpatientTier2Ratio: empInTier2,
     empInpatientTier1Ratio: empInTier1,
+    empInpatientDed: empDedInTier3,
+    empInpatientTier2Ded: empDedInTier2,
+    empInpatientTier1Ded: empDedInTier1,
     empOutpatientCap: empCap,
     empOutpatientDed: empDed,
+    empOutpatientRatioTier3: empOutRatioTier3,
+    empOutpatientRatioCommunity: empOutRatioCommunity,
     retireeBonusRatio: retBonus,
+    retireeInpatientRatio,
+    retireeOutpatientCap: retOutCap,
+    retireeOutpatientDed: retOutDed,
     resInpatientRatio: resInTier3,
     resInpatientTier2Ratio: resInTier2,
     resInpatientTier1Ratio: resInTier1,
+    resInpatientDed: resDedInTier3,
+    resInpatientTier2Ded: resDedInTier2,
     resOutpatientCap: resCap,
+    resOutpatientRatioCommunity: resOutRatio,
     annualMaxCap: maxCap,
     isCatastrophicUncapped,
+    catastrophicDed: cataDed,
+    catastrophicMaxRatio: cataMaxRatio,
     remoteTransferRatio,
     remoteUnfiledRatio,
+    latestPolicyDocNumber,
+    latestPolicyTitle,
     radar: {
       inpatient: Math.max(30, Math.min(100, inpatientScore)),
       outpatient: Math.max(30, Math.min(100, outpatientScore)),
@@ -296,8 +348,14 @@ export function getBenchmarkRankings(
       case 'emp_inpatient':
         diff = b.empInpatientRatio - a.empInpatientRatio;
         break;
+      case 'emp_inpatient_ded':
+        diff = a.empInpatientDed - b.empInpatientDed;
+        break;
       case 'res_inpatient':
         diff = b.resInpatientRatio - a.resInpatientRatio;
+        break;
+      case 'res_inpatient_ded':
+        diff = a.resInpatientDed - b.resInpatientDed;
         break;
       case 'emp_outpatient_cap':
         diff = b.empOutpatientCap - a.empOutpatientCap;
@@ -305,11 +363,23 @@ export function getBenchmarkRankings(
       case 'res_outpatient_cap':
         diff = b.resOutpatientCap - a.resOutpatientCap;
         break;
+      case 'emp_outpatient_ratio_community':
+        diff = b.empOutpatientRatioCommunity - a.empOutpatientRatioCommunity;
+        break;
+      case 'catastrophic_ded':
+        diff = a.catastrophicDed - b.catastrophicDed;
+        break;
+      case 'catastrophic_max_ratio':
+        diff = b.catastrophicMaxRatio - a.catastrophicMaxRatio;
+        break;
       case 'annual_cap':
         diff = b.annualMaxCap - a.annualMaxCap;
         break;
       case 'retiree_bonus':
         diff = b.retireeBonusRatio - a.retireeBonusRatio;
+        break;
+      case 'retiree_inpatient_ratio':
+        diff = b.retireeInpatientRatio - a.retireeInpatientRatio;
         break;
       default:
         diff = b.overallScore - a.overallScore;
@@ -324,7 +394,7 @@ export function getBenchmarkRankings(
 }
 
 /**
- * 双城横向 PK 对比逻辑 (升级为 12 项深度指标对照)
+ * 双城横向 PK 对比逻辑 (升级为 24 项深度指标对照矩阵)
  */
 export function compareTwoCities(cityCode1: string, cityCode2: string): {
   city1: BenchmarkCityMetrics;
@@ -358,7 +428,7 @@ export function compareTwoCities(cityCode1: string, cityCode2: string): {
     unit: string,
     explanation: string
   ) {
-    let advantage: 'city1' | 'city2' | 'equal' = 'equal';
+    let advantage: 'city1' | 'city2' | 'equal' | 'neutral' = 'equal';
     let diffText = '双方指标持平';
     if (v1 !== v2) {
       const isCity1Better = higherIsBetter ? v1 > v2 : v1 < v2;
@@ -373,7 +443,6 @@ export function compareTwoCities(cityCode1: string, cityCode2: string): {
       if (v1 >= 9999999 || v2 >= 9999999) {
         diffText = `${betterCity.cityName} 更优 (上不封顶/无限制)`;
       } else if (unit === '%') {
-        // v1 and v2 are decimals between 0 and 1, convert to percentage points
         const pctDiff = Math.abs(Math.round((v1 - v2) * 1000) / 10);
         const diffStr = pctDiff % 1 === 0 ? pctDiff.toFixed(0) : pctDiff.toFixed(1);
         diffText = `${betterCity.cityName} 更优 (+${diffStr}%)`;
@@ -411,16 +480,20 @@ export function compareTwoCities(cityCode1: string, cityCode2: string): {
     });
   }
 
-function formatMoney(amount: number): string {
-  if (amount >= 9999999) return '上不封顶';
-  if (amount >= 10000) {
-    if (amount % 10000 === 0) return `¥${amount / 10000}万`;
-    return `¥${(amount / 10000).toFixed(1).replace(/\.0$/, '')}万`;
+  function formatMoney(amount: number): string {
+    if (amount >= 9999999) return '上不封顶';
+    if (amount >= 10000) {
+      if (amount % 10000 === 0) return `¥${amount / 10000}万`;
+      return `¥${(amount / 10000).toFixed(1).replace(/\.0$/, '')}万`;
+    }
+    return `¥${amount}`;
   }
-  return `¥${amount}`;
-}
 
-  // 1. 职工门诊起付线 (越低越好)
+  // ==========================================
+  // 【一、门诊共济保障深度比拼 (6项)】
+  // ==========================================
+
+  // 1. 职工门诊年起付线 (越低越好)
   pushMetric(
     '职工门诊年起付线',
     '门诊共济',
@@ -430,12 +503,12 @@ function formatMoney(amount: number): string {
     city2.empOutpatientDed,
     false,
     '元',
-    '自然年度内累计自付超过此起付线后即时按比例报销，0元免起付最友好。'
+    '自然年度内累计自付超过此门槛后即时按比例统筹报销，0元免起付最减负。'
   );
 
   // 2. 职工门诊年度封顶线 (越高越好)
   pushMetric(
-    '职工门诊年度封顶',
+    '职工门诊年度最高封顶',
     '门诊共济',
     city1.empOutpatientCap >= 9999999 ? '上不封顶' : formatMoney(city1.empOutpatientCap),
     city2.empOutpatientCap >= 9999999 ? '上不封顶' : formatMoney(city2.empOutpatientCap),
@@ -443,10 +516,36 @@ function formatMoney(amount: number): string {
     city2.empOutpatientCap,
     true,
     '元',
-    '职工门诊统筹自然年度内最高报销额度，额度越高门诊减负越充裕。'
+    '职工门诊统筹自然年度内最高统筹支付限额，上不封顶或额度越高保障越稳。'
   );
 
-  // 3. 居民基层门诊限额
+  // 3. 职工基层定点门诊报销比例 (越高越好)
+  pushMetric(
+    '职工基层门诊统筹比例',
+    '门诊共济',
+    `${Math.round(city1.empOutpatientRatioCommunity * 100)}%`,
+    `${Math.round(city2.empOutpatientRatioCommunity * 100)}%`,
+    city1.empOutpatientRatioCommunity,
+    city2.empOutpatientRatioCommunity,
+    true,
+    '%',
+    '职工在社区卫生服务中心、乡镇卫生院门诊看病的统筹基金支付比例。'
+  );
+
+  // 4. 职工三级医疗机构门诊报销比例 (越高越好)
+  pushMetric(
+    '职工三级门诊统筹比例',
+    '门诊共济',
+    `${Math.round(city1.empOutpatientRatioTier3 * 100)}%`,
+    `${Math.round(city2.empOutpatientRatioTier3 * 100)}%`,
+    city1.empOutpatientRatioTier3,
+    city2.empOutpatientRatioTier3,
+    true,
+    '%',
+    '职工在三甲等三级定点医院门诊统筹政策范围内的统筹报销比例。'
+  );
+
+  // 5. 居民基层门诊年限额 (越高越好)
   pushMetric(
     '居民基层门诊年限额',
     '门诊共济',
@@ -456,10 +555,40 @@ function formatMoney(amount: number): string {
     city2.resOutpatientCap,
     true,
     '元',
-    '城乡居民在定点社区卫生服务中心及村卫生室看门诊的年度统筹支付限额。'
+    '城乡居民在定点基层医疗机构门诊享受的年度统筹支付最高限额。'
   );
 
-  // 4. 职工三级在职住院比例
+  // 6. 居民基层门诊统筹报销比例 (越高越好)
+  pushMetric(
+    '居民基层门诊统筹比例',
+    '门诊共济',
+    `${Math.round(city1.resOutpatientRatioCommunity * 100)}%`,
+    `${Math.round(city2.resOutpatientRatioCommunity * 100)}%`,
+    city1.resOutpatientRatioCommunity,
+    city2.resOutpatientRatioCommunity,
+    true,
+    '%',
+    '城乡居民在乡镇卫生院或社区卫生机构看门诊时的统筹报销比例。'
+  );
+
+  // ==========================================
+  // 【二、住院全级次全层级保障 (7项)】
+  // ==========================================
+
+  // 7. 职工三级医院住院起付线 (越低越好)
+  pushMetric(
+    '职工三级住院门槛费(起付线)',
+    '住院保障',
+    `¥${city1.empInpatientDed}`,
+    `¥${city2.empInpatientDed}`,
+    city1.empInpatientDed,
+    city2.empInpatientDed,
+    false,
+    '元',
+    '在职职工首次在三级大医院住院的起付门槛，门槛越低自费进入统筹越快。'
+  );
+
+  // 8. 职工三级在职住院比例 (越高越好)
   pushMetric(
     '职工三级在职住院比例',
     '住院保障',
@@ -469,10 +598,10 @@ function formatMoney(amount: number): string {
     city2.empInpatientRatio,
     true,
     '%',
-    '三级重点医院住院政策范围内统筹基金报销比例，代表重症救治待遇。'
+    '在职职工在三级医疗机构住院政策范围内统筹基金支付比例，代表大病重症救治保障力度。'
   );
 
-  // 5. 职工二级住院报销比例
+  // 9. 职工二级住院报销比例 (越高越好)
   pushMetric(
     '职工二级定点住院比例',
     '住院保障',
@@ -482,10 +611,36 @@ function formatMoney(amount: number): string {
     city2.empInpatientTier2Ratio,
     true,
     '%',
-    '二级公立医院在职职工住院报销比例，代表常见病住院保障水平。'
+    '二级公立医院在职职工住院报销比例，代表常见病多发病住院保障水平。'
   );
 
-  // 6. 居民三级医院住院比例
+  // 10. 职工一级/基层定点住院比例 (越高越好)
+  pushMetric(
+    '职工一级/基层住院比例',
+    '住院保障',
+    `${Math.round(city1.empInpatientTier1Ratio * 100)}%`,
+    `${Math.round(city2.empInpatientTier1Ratio * 100)}%`,
+    city1.empInpatientTier1Ratio,
+    city2.empInpatientTier1Ratio,
+    true,
+    '%',
+    '一级医疗机构或社区医院在职职工住院统筹报销比例。'
+  );
+
+  // 11. 居民三级医院住院起付线 (越低越好)
+  pushMetric(
+    '居民三级住院门槛费(起付线)',
+    '住院保障',
+    `¥${city1.resInpatientDed}`,
+    `¥${city2.resInpatientDed}`,
+    city1.resInpatientDed,
+    city2.resInpatientDed,
+    false,
+    '元',
+    '城乡居民首次在三级医院住院的起付标准，门槛费直接影响小病轻症自付负担。'
+  );
+
+  // 12. 居民三级医院住院比例 (越高越好)
   pushMetric(
     '居民三级住院报销比例',
     '住院保障',
@@ -495,10 +650,10 @@ function formatMoney(amount: number): string {
     city2.resInpatientRatio,
     true,
     '%',
-    '城乡居民在三级医疗机构住院政策范围内统筹报销比例。'
+    '城乡居民在三级重点公立医院住院政策范围内统筹报销比例。'
   );
 
-  // 7. 居民二级定点住院比例
+  // 13. 居民二级定点住院比例 (越高越好)
   pushMetric(
     '居民二级住院报销比例',
     '住院保障',
@@ -511,7 +666,11 @@ function formatMoney(amount: number): string {
     '城乡居民在二级定点医院住院政策范围内统筹基金支付比例。'
   );
 
-  // 8. 基本医保年统筹最高限额
+  // ==========================================
+  // 【三、大病重疾抗风险与兜底 (4项)】
+  // ==========================================
+
+  // 14. 基本医保年统筹最高限额 (越高越好)
   pushMetric(
     '基本医保年度封顶线',
     '大病兜底',
@@ -521,10 +680,36 @@ function formatMoney(amount: number): string {
     city2.annualMaxCap,
     true,
     '元',
-    '参保人年度内享受基本医保统筹基金支付的最大上限，超限进入大病保险。'
+    '年度内享受基本医保统筹基金支付的最大上限，超限后进入大病保险/大额互助。'
   );
 
-  // 9. 大病保险年封顶机制
+  // 15. 大病保险起付线门槛 (越低越好)
+  pushMetric(
+    '大病保险(二次报销)起付线',
+    '大病兜底',
+    `¥${city1.catastrophicDed}`,
+    `¥${city2.catastrophicDed}`,
+    city1.catastrophicDed,
+    city2.catastrophicDed,
+    false,
+    '元',
+    '个人自付合规费用进入大病保险梯级救助的起赔门槛，门槛越低救助触发越及时。'
+  );
+
+  // 16. 大病保险最高分段报销比例 (越高越好)
+  pushMetric(
+    '大病保险最高分段报销比例',
+    '大病兜底',
+    `${Math.round(city1.catastrophicMaxRatio * 100)}%`,
+    `${Math.round(city2.catastrophicMaxRatio * 100)}%`,
+    city1.catastrophicMaxRatio,
+    city2.catastrophicMaxRatio,
+    true,
+    '%',
+    '城乡居民高额自付费用进入大病保险最高支付梯级时的再报销比例（通常为60%~85%）。'
+  );
+
+  // 17. 大病保险年封顶机制 (不设封顶或限额越高越好)
   const cataCapVal1 = city1.isCatastrophicUncapped ? '不设封顶' : `¥${Math.round((city1.rawCity.resident.catastrophic.annualCap || 300000) / 10000)}万`;
   const cataCapVal2 = city2.isCatastrophicUncapped ? '不设封顶' : `¥${Math.round((city2.rawCity.resident.catastrophic.annualCap || 300000) / 10000)}万`;
   const cataScore1 = city1.isCatastrophicUncapped ? 9999999 : (city1.rawCity.resident.catastrophic.annualCap || 300000);
@@ -538,12 +723,16 @@ function formatMoney(amount: number): string {
     cataScore2,
     true,
     '元',
-    '大病保险（二次报销）是否设有年度最高支付限额，不设封顶提供终极安全垫。'
+    '大病保险是否设立年度最高支付封顶，不设封顶能对灾难性医疗支出实现彻底兜底。'
   );
 
-  // 10. 退休人员比例优待上浮
+  // ==========================================
+  // 【四、群体倾斜与退休关怀 (4项)】
+  // ==========================================
+
+  // 18. 退休人员比例优待上浮 (越高越好)
   pushMetric(
-    '退休人员报销倾斜幅度',
+    '退休人员住院倾斜上浮',
     '群体倾斜',
     `+${Math.round(city1.retireeBonusRatio * 100)}%`,
     `+${Math.round(city2.retireeBonusRatio * 100)}%`,
@@ -551,10 +740,57 @@ function formatMoney(amount: number): string {
     city2.retireeBonusRatio,
     true,
     '%',
-    '退休职工相比在职人员获得的额外统筹报销倾斜优待幅度。'
+    '退休职工相比在职人员获得的额外法定住院统筹报销倾斜优待比例。'
   );
 
-  // 11. 异地规范转诊待遇保留率
+  // 19. 退休职工三级住院综合实享比例 (越高越好)
+  pushMetric(
+    '退休职工三级住院实享比例',
+    '群体倾斜',
+    `${Math.round(city1.retireeInpatientRatio * 100)}%`,
+    `${Math.round(city2.retireeInpatientRatio * 100)}%`,
+    city1.retireeInpatientRatio,
+    city2.retireeInpatientRatio,
+    true,
+    '%',
+    '退休人员在三级医院住院最终实际享受的综合统筹报销比例（在职基准 + 退休倾斜）。'
+  );
+
+  // 20. 退休职工门诊共济封顶倾斜
+  const retCap1 = city1.retireeOutpatientCap || city1.empOutpatientCap;
+  const retCap2 = city2.retireeOutpatientCap || city2.empOutpatientCap;
+  pushMetric(
+    '退休职工门诊年度限额',
+    '群体倾斜',
+    retCap1 >= 9999999 ? '上不封顶' : (city1.retireeOutpatientCap ? `${formatMoney(city1.retireeOutpatientCap)} (专属倾斜)` : `${formatMoney(city1.empOutpatientCap)} (与在职同额)`),
+    retCap2 >= 9999999 ? '上不封顶' : (city2.retireeOutpatientCap ? `${formatMoney(city2.retireeOutpatientCap)} (专属倾斜)` : `${formatMoney(city2.empOutpatientCap)} (与在职同额)`),
+    retCap1,
+    retCap2,
+    true,
+    '元',
+    '退休职工自然年度内门诊共济统筹最高限额，部分统筹区为退休老人设立更高专属额度。'
+  );
+
+  // 21. 退休门诊起付门槛优待
+  const retDed1 = city1.retireeOutpatientDed !== undefined ? city1.retireeOutpatientDed : city1.empOutpatientDed;
+  const retDed2 = city2.retireeOutpatientDed !== undefined ? city2.retireeOutpatientDed : city2.empOutpatientDed;
+  pushMetric(
+    '退休职工门诊起付线',
+    '群体倾斜',
+    retDed1 === 0 ? '0 元 (免起付)' : (city1.retireeOutpatientDed !== undefined ? `¥${retDed1} (退休优待)` : `¥${retDed1} (与在职同额)`),
+    retDed2 === 0 ? '0 元 (免起付)' : (city2.retireeOutpatientDed !== undefined ? `¥${retDed2} (退休优待)` : `¥${retDed2} (与在职同额)`),
+    retDed1,
+    retDed2,
+    false,
+    '元',
+    '退休职工门诊就医起付门槛，更低门槛保障老年慢性病门诊用药减负。'
+  );
+
+  // ==========================================
+  // 【五、异地流动与公文溯源 (3项)】
+  // ==========================================
+
+  // 22. 异地规范转诊待遇保留率 (越高越好)
   pushMetric(
     '异地转诊待遇保持率',
     '异地流动',
@@ -564,10 +800,10 @@ function formatMoney(amount: number): string {
     city2.remoteTransferRatio,
     true,
     '%',
-    '规范办理转诊转院备案后，在省外或市外医疗机构享受的待遇折损比例（100%为完全不打折）。'
+    '规范办理转诊转院备案后，在省外或市外医疗机构享受的统筹待遇保留比例（100%为完全不折损）。'
   );
 
-  // 12. 未备案自行外出就医宽容度
+  // 23. 未备案自行外出就医宽容度 (越高越好)
   pushMetric(
     '自行外出就医报销保持率',
     '异地流动',
@@ -577,8 +813,19 @@ function formatMoney(amount: number): string {
     city2.remoteUnfiledRatio,
     true,
     '%',
-    '参保人未办备案或转诊自行前往外地大医院就医时，统筹基金支付的最低宽容保底比例。'
+    '参保人未办备案或转诊自行前往外地大医院就医时，统筹基金直接结算的最低宽容保底比例。'
   );
+
+  // 24. 法定政策公文依据发文字号
+  metrics.push({
+    name: '现行法定政策红头公文依据',
+    category: '政策依据',
+    city1Val: `${city1.latestPolicyDocNumber} (${city1.latestPolicyTitle})`,
+    city2Val: `${city2.latestPolicyDocNumber} (${city2.latestPolicyTitle})`,
+    advantage: 'neutral',
+    diffText: '各地公开红头法规依据',
+    explanation: '两地测算模型与待遇条款所依据的当地政府或医保局官方公开现行规章文件。'
+  });
 
   return {
     city1,

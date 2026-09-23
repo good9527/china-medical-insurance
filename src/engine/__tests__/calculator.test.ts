@@ -5717,12 +5717,14 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H27 PASS] 全国 348 统筹区 CMI-Index 2.0 评测参数结构与 6 大能力雷达数值健全稳定`);
   passCount++;
 
-  // 验证双城 PK 12 项指标比拼矩阵
+  // 验证双城 PK 24 项指标比拼矩阵
   totalChecks++;
   const pkRes = compareTwoCities('110100', '310100');
   assertTrue(pkRes !== null, '北京与上海双城对比不可为空');
-  assertEqual(pkRes!.metrics.length, 12, '双城竞技场必须包含 12 项法定深度比拼指标');
-  console.log(`  ✓ [H27 PASS] 双城竞技场成功输出 12 项法定条款纵深比拼矩阵 (北京 vs 上海)`);
+  assertEqual(pkRes!.metrics.length, 24, '双城竞技场必须包含 24 项法定深度比拼指标');
+  assertTrue(pkRes!.metrics.some(m => m.category === '政策依据'), '双城对决必须包含法定红头公文溯源依据');
+  assertTrue(pkRes!.city1.empInpatientDed > 0, '统筹区职工住院门槛费起付线必须健全');
+  console.log(`  ✓ [H27 PASS] 双城竞技场成功输出 24 项法定条款纵深比拼矩阵与公文依据 (北京 vs 上海)`);
   passCount++;
 
   // --------------------------------------------------------------------------
