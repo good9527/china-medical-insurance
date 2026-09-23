@@ -2,7 +2,7 @@
   <view class="site-header">
     <view class="site-header-inner">
       <!-- 左侧：简洁品牌 (去除浮夸官腔，搭载专属科技医保矢量Logo) -->
-      <view class="header-brand" @click="navTo('/pages/index/index')">
+      <view class="header-brand" @click="navTo('/pages/home/index')">
         <AppLogo size="md" />
         <view class="brand-text-group">
           <text class="brand-name">全国医保待遇估算与政策查询</text>
@@ -15,6 +15,18 @@
 
       <!-- 中间：绝对对称恒定居中的 Tab 导航栏 (像素级零偏移) -->
       <view class="header-nav">
+        <view 
+          class="nav-tab" 
+          :class="{ active: currentTab === 'home' }" 
+          @click="navTo('/pages/home/index')"
+        >
+          <svg class="tab-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
+            <line x1="8" y1="2" x2="8" y2="18"></line>
+            <line x1="16" y1="6" x2="16" y2="22"></line>
+          </svg>
+          <text class="nav-label">首页地图</text>
+        </view>
         <view 
           class="nav-tab" 
           :class="{ active: currentTab === 'index' }" 
@@ -178,7 +190,7 @@ import AppLogo from './AppLogo.vue';
 import { SITE_CONFIG } from '../config/site';
 
 defineProps<{
-  currentTab: 'index' | 'policy' | 'ranking' | 'remote' | 'service' | 'correction';
+  currentTab: 'home' | 'index' | 'policy' | 'ranking' | 'remote' | 'service' | 'correction';
 }>();
 
 const showContactModal = ref(false);

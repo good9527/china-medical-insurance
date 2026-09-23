@@ -1,6 +1,13 @@
 {
   "pages": [
     {
+      "path": "pages/home/index",
+      "style": {
+        "navigationBarTitleText": "全国医保统筹区空间全景地图 - 全国医保待遇参考",
+        "enablePullDownRefresh": false
+      }
+    },
+    {
       "path": "pages/index/index",
       "style": {
         "navigationBarTitleText": "全国医保报销估算与政策查询",
@@ -56,6 +63,12 @@
     "borderStyle": "white",
     "list": [
       {
+        "pagePath": "pages/home/index",
+        "text": "首页",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home_active.png"
+      },
+      {
         "pagePath": "pages/index/index",
         "text": "报销估算",
         "iconPath": "static/tabbar/calc.png",
@@ -78,12 +91,6 @@
         "text": "便民服务",
         "iconPath": "static/tabbar/service.png",
         "selectedIconPath": "static/tabbar/service_active.png"
-      },
-      {
-        "pagePath": "pages/correction/index",
-        "text": "政策纠错",
-        "iconPath": "static/tabbar/correction.png",
-        "selectedIconPath": "static/tabbar/correction_active.png"
       }
     ]
   }

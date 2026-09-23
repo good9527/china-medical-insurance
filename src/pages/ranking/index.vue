@@ -1357,6 +1357,21 @@ function goToCityCalc(cityCode: string) {
 const cityCode1 = ref('110100'); // 北京
 const cityCode2 = ref('310100'); // 上海
 
+onShow(() => {
+  try {
+    const target = uni.getStorageSync('battle_target_city');
+    if (target) {
+      if (target !== cityCode1.value) {
+        cityCode2.value = target;
+      } else {
+        cityCode2.value = '310100';
+      }
+      viewMode.value = 'battle';
+      uni.removeStorageSync('battle_target_city');
+    }
+  } catch (e) {}
+});
+
 const allCitiesList = computed(() => {
   return allCities.map(c => ({
     cityCode: c.cityCode,
