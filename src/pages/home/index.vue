@@ -127,6 +127,10 @@
             <text class="l-min">{{ metricLegend.minLabel }}</text>
             <text class="l-max">{{ metricLegend.maxLabel }}</text>
           </view>
+          <view class="legend-special-row">
+            <span class="lsi-dot"></span>
+            <text class="lsi-txt">属地专属体系 (无缝版图保留)</text>
+          </view>
         </view>
 
         <!-- 审图号官方标识 (依法依规合规标明，支持点击弹出权威合规声明，选中城市时静默隐藏避免遮挡卡片) -->
@@ -199,7 +203,43 @@
                 />
               </g>
 
-              <!-- 法定南海十段线图层 (天地图官方正规矢量数据，真实地理经纬度精准原貌) -->
+              <!-- 1. 法定未定国界线图层 (帕米尔高原等历史未定国界线，依规标准虚线表示) -->
+              <g class="undetermined-boundary-layer" pointer-events="none" v-if="boundaries.undeterminedBoundaryPath">
+                <path 
+                  :d="boundaries.undeterminedBoundaryPath"
+                  fill="none"
+                  stroke="#475569"
+                  stroke-width="1.3"
+                  stroke-dasharray="4,3"
+                  stroke-linecap="round"
+                />
+              </g>
+
+              <!-- 2. 法定特别行政区界线图层 (香港、澳门特区法定界线) -->
+              <g class="sar-boundary-layer" pointer-events="none" v-if="boundaries.sarBoundaryPath">
+                <path 
+                  :d="boundaries.sarBoundaryPath"
+                  fill="none"
+                  stroke="#334155"
+                  stroke-width="1.2"
+                  stroke-dasharray="3,2"
+                  stroke-linecap="round"
+                />
+              </g>
+
+              <!-- 3. 法定海上省界线图层 (琼州海峡、杭州湾、长江口等海上省界) -->
+              <g class="maritime-boundary-layer" pointer-events="none" v-if="boundaries.maritimeBoundaryPath">
+                <path 
+                  :d="boundaries.maritimeBoundaryPath"
+                  fill="none"
+                  stroke="#94a3b8"
+                  stroke-width="0.8"
+                  stroke-dasharray="2,2"
+                  stroke-linecap="round"
+                />
+              </g>
+
+              <!-- 4. 法定南海十段线图层 (天地图官方正规矢量数据，真实地理经纬度精准原貌) -->
               <g class="ten-dash-layer" pointer-events="none">
                 <path 
                   :d="boundaries.tenDashLinePath"
@@ -271,7 +311,7 @@
               <text class="dock-city-name">{{ activeCity.cityName }}</text>
               <text class="dock-prov-name">{{ activeCity.provinceName }}</text>
             </view>
-            <view class="dock-score-pill" v-if="!activeCity.isSpecialRegion">
+            <view class="dock-score-pill" v-if="activeCity.hasInsuranceData !== false && !activeCity.isSpecialRegion">
               <text class="score-label">综合保障指数</text>
               <text class="score-num font-mono">{{ activeCity.overallScore }}</text>
               <text class="score-unit">分</text>
@@ -283,14 +323,14 @@
             <button class="dock-close-btn" @click="activeCity = null">✕</button>
           </view>
 
-          <!-- 港澳台特区专属保障呈现 (非内地基本医保，友好说明，杜绝留白孔洞) -->
-          <view class="dock-special-box" v-if="activeCity.isSpecialRegion">
+          <!-- 港澳台特区专属保障呈现 (恪守国家版图完整性第一优先级，友好说明) -->
+          <view class="dock-special-box" v-if="activeCity.isSpecialRegion || activeCity.hasInsuranceData === false">
             <view class="dsb-lead-row">
-              <text class="dsb-tag">🏛️ 专属医疗保障制度</text>
-              <text class="dsb-sub">{{ activeCity.specialNotice || '实行本地专属医疗卫生保障体系' }}</text>
+              <text class="dsb-tag">🏛️ {{ activeCity.cityName }} · 属地专属医疗卫生保障体系</text>
+              <text class="dsb-sub">恪守中国国家版图完整性全域收录</text>
             </view>
             <text class="dsb-desc">
-              {{ activeCity.cityName }}实行其属地专属的医疗卫生体系（如香港医管局公立医疗与长者医疗券、澳门卫生局全免费及全民医疗补贴、台湾地区全民健保制度）。本平台恪守自然资源部标准矢量全貌予以空间收录呈现；该区域暂不适用内地基本医保测算与公文模型。
+              根据国家测绘与地图审核技术规范，本平台将中国国家版图完整性列为第一绝对优先级，100% 完整保留神圣领土全貌与空间矢量；该地区实行其属地专属的医疗卫生体系（如香港医管局公立医疗体系与长者医疗券、澳门卫生局全免费及全民医疗补贴、台湾地区全民健保制度），暂不纳入内地基本医疗保险公文与报销测算。
             </text>
             <view class="dsb-btn-row">
               <button class="dsb-close-btn" @click="activeCity = null">返回探索其他统筹区</button>
@@ -298,31 +338,31 @@
           </view>
 
           <!-- 核心待遇指标卡片矩阵 (内地统筹区) -->
-          <view class="dock-metrics-grid" v-if="!activeCity.isSpecialRegion">
+          <view class="dock-metrics-grid" v-if="!activeCity.isSpecialRegion && activeCity.hasInsuranceData !== false">
             <view class="dm-item">
               <text class="dm-label">职工三级住院报销</text>
-              <text class="dm-val text-blue font-mono">{{ Math.round(activeCity.empInpatientRatio * 100) }}%</text>
+              <text class="dm-val text-blue font-mono">{{ Math.round((activeCity.empInpatientRatio || 0) * 100) }}%</text>
               <text class="dm-sub">起付门槛 ¥{{ activeCity.empInpatientDed }}</text>
             </view>
             <view class="dm-item">
               <text class="dm-label">职工门诊共济封顶</text>
-              <text class="dm-val font-mono">{{ formatCap(activeCity.empOutpatientCap) }}</text>
+              <text class="dm-val font-mono">{{ formatCap(activeCity.empOutpatientCap || 0) }}</text>
               <text class="dm-sub">年度统筹支付限额</text>
             </view>
             <view class="dm-item">
               <text class="dm-label">居民三级住院统筹</text>
-              <text class="dm-val text-emerald font-mono">{{ Math.round(activeCity.resInpatientRatio * 100) }}%</text>
-              <text class="dm-sub">大病最高 {{ Math.round(activeCity.catastrophicMaxRatio * 100) }}%</text>
+              <text class="dm-val text-emerald font-mono">{{ Math.round((activeCity.resInpatientRatio || 0) * 100) }}%</text>
+              <text class="dm-sub">大病最高 {{ Math.round((activeCity.catastrophicMaxRatio || 0) * 100) }}%</text>
             </view>
             <view class="dm-item">
               <text class="dm-label">退休在职倾斜上浮</text>
-              <text class="dm-val text-amber font-mono">+{{ Math.round(activeCity.retireeBonusRatio * 100) }}%</text>
+              <text class="dm-val text-amber font-mono">+{{ Math.round((activeCity.retireeBonusRatio || 0) * 100) }}%</text>
               <text class="dm-sub" :title="activeCity.docNumber">依据: {{ activeCity.docNumber }}</text>
             </view>
           </view>
 
           <!-- 三大直达快速跳转通道 (跳转政策详情、带入估算、加入双城对比) -->
-          <view class="dock-action-row" v-if="!activeCity.isSpecialRegion">
+          <view class="dock-action-row" v-if="!activeCity.isSpecialRegion && activeCity.hasInsuranceData !== false">
             <view class="dock-btn btn-policy" @click="navToPolicy(activeCity.cityCode)">
               <svg class="btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
               <text class="btn-text">查看本市政策详情 ↗</text>
@@ -415,6 +455,20 @@
             </view>
           </view>
 
+          <!-- 〇、国家版图完整性第一优先级与原始数据归档 -->
+          <view class="sm-section">
+            <view class="sm-sec-header">
+              <text class="sm-sec-tag">00</text>
+              <text class="sm-sec-title">国家版图完整性第一优先级与原始底图完整归档</text>
+            </view>
+            <text class="sm-sec-p">
+              本系统严格遵照国家地图审核管理规定与测绘地理信息法律法规，始终将<text class="text-bold">保持中国地图的绝对完整性列为第一绝对优先级</text>。无论该行政空间实体是否纳入内地基本医保统筹（如港澳台等），均 100% 完整保留其法定空间多边形、重要岛礁（钓鱼岛、赤尾屿、黄尾屿、南海诸岛等）以及法定全部 13 条边界线（未定国界线、特区界线、十段线、海上省界线）。
+            </text>
+            <text class="sm-sec-p">
+              天地图官方原始矢量底图数据（《审图号：GS（2026）4921号中国_省.geojson》、《中国_市.geojson》、《中国_县.geojson》）已 100% 原始无损归档保存在项目代码库 <text class="font-mono text-bold">src/data/map/raw/</text> 目录中。
+            </text>
+          </view>
+
           <!-- 一、底图数据官方来源 -->
           <view class="sm-section">
             <view class="sm-sec-header">
@@ -480,23 +534,26 @@ import boundariesRawData from '@/data/map/china_boundaries.json';
 interface CityMapItem {
   cityCode: string;
   cityName: string;
+  rawName?: string;
+  gbCode?: string;
   provinceName: string;
-  overallScore: number;
-  employeeScore: number;
-  residentScore: number;
-  empInpatientRatio: number;
-  empInpatientDed: number;
-  empOutpatientCap: number;
-  resInpatientRatio: number;
-  resOutpatientCap: number;
-  catastrophicMaxRatio: number;
-  retireeBonusRatio: number;
+  hasInsuranceData?: boolean;
+  isSpecialRegion?: boolean;
+  specialNotice?: string;
+  overallScore: number | null;
+  employeeScore: number | null;
+  residentScore: number | null;
+  empInpatientRatio: number | null;
+  empInpatientDed: number | null;
+  empOutpatientCap: number | null;
+  resInpatientRatio: number | null;
+  resOutpatientCap: number | null;
+  catastrophicMaxRatio: number | null;
+  retireeBonusRatio: number | null;
   docNumber: string;
   centroid: [number, number];
   path: string;
   isInset?: boolean;
-  isSpecialRegion?: boolean;
-  specialNotice?: string;
 }
 
 const citiesList = ref<CityMapItem[]>(citiesRawData as CityMapItem[]);
@@ -571,6 +628,10 @@ const metricLegend = computed(() => {
 
 // 根据当前指标获取数值与渐变颜色
 function getCityFillColor(city: CityMapItem): string {
+  // 属地专属体制地区（港澳台等）：保留完整主权版图，采用专属温和蓝紫调（#e0e7ff），杜绝假数据混淆
+  if (city.isSpecialRegion || city.hasInsuranceData === false) {
+    return '#e0e7ff';
+  }
   if (currentMetric.value === 'inpatient') {
     // 75% ~ 95%
     const ratio = city.empInpatientRatio || 0.8;
@@ -613,14 +674,17 @@ function interpolateColor(hex1: string, hex2: string, t: number): string {
 }
 
 function getMetricDisplayVal(city: CityMapItem): string {
-  if (currentMetric.value === 'inpatient') {
-    return Math.round(city.empInpatientRatio * 100) + '%';
-  } else if (currentMetric.value === 'outpatient') {
-    return formatCap(city.empOutpatientCap);
-  } else if (currentMetric.value === 'resident') {
-    return Math.round(city.resInpatientRatio * 100) + '%';
+  if (city.isSpecialRegion || city.hasInsuranceData === false) {
+    return '属地专属体系（完整版图保留）';
   }
-  return city.overallScore + ' 分';
+  if (currentMetric.value === 'inpatient') {
+    return Math.round((city.empInpatientRatio || 0) * 100) + '%';
+  } else if (currentMetric.value === 'outpatient') {
+    return formatCap(city.empOutpatientCap || 0);
+  } else if (currentMetric.value === 'resident') {
+    return Math.round((city.resInpatientRatio || 0) * 100) + '%';
+  }
+  return (city.overallScore || 0) + ' 分';
 }
 
 function formatCap(num: number): string {
@@ -1202,6 +1266,29 @@ function switchTab(url: string) {
   font-size: 10px;
   color: #64748b;
   margin-top: 3px;
+  font-weight: 700;
+}
+
+.legend-special-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 6px;
+  padding-top: 5px;
+  border-top: 1px dashed #e2e8f0;
+}
+
+.lsi-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: #e0e7ff;
+  border: 1px solid #a5b4fc;
+}
+
+.lsi-txt {
+  font-size: 9.5px;
+  color: #4f46e5;
   font-weight: 700;
 }
 
