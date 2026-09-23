@@ -4,8 +4,8 @@
     <AppHeader currentTab="home" />
 
     <view class="home-main-wrapper">
-      <!-- 英雄区：标题、动态标杆与实时搜索 -->
-      <view class="hero-control-header">
+      <!-- 英雄区：标题、动态标杆与实时搜索 (搭载旗舰级柔和层级渐进展开) -->
+      <view class="hero-control-header anim-cascade-1">
         <view class="hero-left-title">
           <view class="hero-badge-pill clickable" @click="showSourceModal = true" title="点击查看底图数据来源与审图号合规声明">
             <span class="pulse-dot"></span>
@@ -56,8 +56,8 @@
         </view>
       </view>
 
-      <!-- 地图工具条：图层指标切换与快速标杆统筹区 -->
-      <view class="map-toolbar">
+      <!-- 地图工具条：图层指标切换与快速标杆统筹区 (第2级柔和入场) -->
+      <view class="map-toolbar anim-cascade-2">
         <view class="dimension-picker">
           <text class="dim-lead">图层指标：</text>
           <view class="dim-chips-group">
@@ -106,8 +106,8 @@
         </view>
       </view>
 
-      <!-- 核心矢量地图展示区 -->
-      <view class="map-stage-card">
+      <!-- 核心矢量地图展示区 (第3级质感展开) -->
+      <view class="map-stage-card anim-cascade-3">
         <!-- 右上角复位全景按钮 (明确文字标识，方便快速找回归位) -->
         <button class="map-reset-btn" @click.stop="resetView" title="重置地图视角至全国全貌">
           <svg class="reset-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -166,8 +166,8 @@
               class="map-root-g"
               :class="{ 'is-dragging': isDragging, 'is-wheel-zooming': isWheelZooming }"
             >
-              <!-- 海洋背景底衬 -->
-              <rect x="-1000" y="-1000" width="3000" height="3000" fill="#f8fafc" />
+              <!-- 海洋背景底衬 (采用透明设计，使画板中心微光径向氛围自然透显) -->
+              <rect x="-1000" y="-1000" width="3000" height="3000" fill="transparent" />
 
               <!-- 348 个医保统筹区多边形面图层 (包含三沙市及南海诸岛，天然融为一体) -->
               <g class="cities-layer">
@@ -404,14 +404,14 @@
         </view>
       </view>
 
-      <!-- 底部平台四大服务板块直通 -->
-      <view class="quick-service-section">
+      <!-- 底部平台四大服务板块直通 (第4级瀑布流浮现) -->
+      <view class="quick-service-section anim-cascade-4">
         <view class="service-block-header">
           <text class="sb-title">全国医保便民公共服务直通</text>
           <text class="sb-sub">数据均来自于各省市医保局及政府公开发布的正式文件与办事规程</text>
         </view>
         <view class="service-cards-grid">
-          <view class="s-card" @click="switchTab('/pages/index/index')">
+          <view class="s-card anim-card-1" @click="switchTab('/pages/index/index')">
             <view class="s-ico ico-calc">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="8" y1="14" x2="8" y2="14.01"></line><line x1="12" y1="14" x2="12" y2="14.01"></line><line x1="16" y1="14" x2="16" y2="14.01"></line></svg>
             </view>
@@ -420,7 +420,7 @@
             <text class="s-link">立即测算 ➔</text>
           </view>
 
-          <view class="s-card" @click="switchTab('/pages/policy/index')">
+          <view class="s-card anim-card-2" @click="switchTab('/pages/policy/index')">
             <view class="s-ico ico-policy">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
             </view>
@@ -429,7 +429,7 @@
             <text class="s-link">查阅公文 ➔</text>
           </view>
 
-          <view class="s-card" @click="switchTab('/pages/ranking/index')">
+          <view class="s-card anim-card-3" @click="switchTab('/pages/ranking/index')">
             <view class="s-ico ico-rank">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
             </view>
@@ -438,7 +438,7 @@
             <text class="s-link">进入对决 ➔</text>
           </view>
 
-          <view class="s-card" @click="switchTab('/pages/service/index')">
+          <view class="s-card anim-card-4" @click="switchTab('/pages/service/index')">
             <view class="s-ico ico-service">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
             </view>
@@ -990,6 +990,58 @@ function switchTab(url: string) {
   box-sizing: border-box;
 }
 
+/* 旗舰级层级瀑布流渐进展开 (Staggered Cascade Reveal) */
+@keyframes cascadeFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes stageCardReveal {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.anim-cascade-1 {
+  animation: cascadeFadeIn 0.48s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.anim-cascade-2 {
+  animation: cascadeFadeIn 0.48s cubic-bezier(0.16, 1, 0.3, 1) 0.08s both;
+}
+
+.anim-cascade-3 {
+  animation: stageCardReveal 0.58s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
+}
+
+.anim-cascade-4 {
+  animation: cascadeFadeIn 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
+}
+
+.anim-card-1 {
+  animation: cascadeFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.26s both;
+}
+.anim-card-2 {
+  animation: cascadeFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.31s both;
+}
+.anim-card-3 {
+  animation: cascadeFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both;
+}
+.anim-card-4 {
+  animation: cascadeFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.41s both;
+}
+
 /* 英雄区控制台 */
 .hero-control-header {
   display: flex;
@@ -1018,14 +1070,14 @@ function switchTab(url: string) {
 
 .hero-badge-pill.clickable {
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .hero-badge-pill.clickable:hover {
   background: #dbeafe;
   border-color: #93c5fd;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+  transform: translateY(-1.5px);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.14);
 }
 
 .source-link-tag {
@@ -1037,14 +1089,49 @@ function switchTab(url: string) {
   padding: 1px 7px;
   border-radius: 9999px;
   margin-left: 4px;
+  transition: all 0.2s ease;
 }
 
+.hero-badge-pill.clickable:hover .source-link-tag {
+  border-color: #93c5fd;
+  box-shadow: 0 1px 4px rgba(37, 99, 235, 0.15);
+}
+
+/* 赋予国家级配准实时生命力的双重雷达脉冲呼吸灯 */
 .pulse-dot {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: #2563eb;
-  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  position: relative;
+  display: inline-block;
+  box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.25);
+}
+
+.pulse-dot::before,
+.pulse-dot::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1.5px solid #2563eb;
+  animation: radarRipple 2.2s cubic-bezier(0.24, 0, 0.38, 1) infinite;
+  pointer-events: none;
+}
+
+.pulse-dot::after {
+  animation-delay: 1.1s;
+}
+
+@keyframes radarRipple {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(2.8);
+    opacity: 0;
+  }
 }
 
 .badge-txt {
@@ -1223,24 +1310,26 @@ function switchTab(url: string) {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 5px 12px;
+  padding: 5px 13px;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
   border-radius: 9999px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
 }
 
 .dim-chip:hover {
   background: #e2e8f0;
+  transform: translateY(-1px);
 }
 
 .dim-chip.active {
   background: #2563eb;
   border-color: #1d4ed8;
   color: #ffffff;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+  transform: translateY(-1px);
 }
 
 .dim-ico { font-size: 13px; }
@@ -1271,30 +1360,37 @@ function switchTab(url: string) {
   color: #1e293b;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  padding: 3px 8px;
+  padding: 4px 9px;
   border-radius: 6px;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .bench-item:hover {
   background: #eff6ff;
-  border-color: #bfdbfe;
+  border-color: #93c5fd;
   color: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.12);
 }
 
-/* 核心地图画板卡片 */
+.bench-item:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* 核心地图画板卡片 (搭载居中径向柔光与旗舰级纵深阴影) */
 .map-stage-card {
   position: relative;
-  background: #ffffff;
+  background: radial-gradient(circle at 50% 42%, #ffffff 0%, #f8fafc 75%, #f1f5f9 100%);
   border: 1px solid #e2e8f0;
-  border-radius: 16px;
+  border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 16px 40px -12px rgba(15, 23, 42, 0.07), 0 2px 6px rgba(0, 0, 0, 0.02);
   height: 640px;
+  transition: box-shadow 0.3s ease;
 }
 
-/* 右上角复位全景按钮 (明确文字标识，方便快速找回归位) */
+/* 右上角复位全景按钮 (旗舰级高透磨砂亚克力胶囊) */
 .map-reset-btn {
   position: absolute;
   top: 16px;
@@ -1302,27 +1398,28 @@ function switchTab(url: string) {
   z-index: 20;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  background: rgba(255, 255, 255, 0.94);
-  backdrop-filter: blur(8px);
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  padding: 7px 13px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  border-radius: 9999px;
+  padding: 7px 15px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.26s cubic-bezier(0.16, 1, 0.3, 1);
   line-height: 1;
 }
 
 .map-reset-btn:hover {
   background: #ffffff;
   border-color: #2563eb;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.16);
-  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.18);
+  transform: translateY(-2px) scale(1.02);
 }
 
 .map-reset-btn:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
 }
 
 .reset-ico {
@@ -1330,11 +1427,11 @@ function switchTab(url: string) {
   height: 14px;
   color: #2563eb;
   flex-shrink: 0;
-  transition: transform 0.3s ease;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .map-reset-btn:hover .reset-ico {
-  transform: rotate(-90deg);
+  transform: rotate(-120deg);
 }
 
 .reset-txt {
@@ -1342,24 +1439,32 @@ function switchTab(url: string) {
   font-weight: 700;
   color: #1e293b;
   white-space: nowrap;
+  transition: color 0.2s ease;
 }
 
 .map-reset-btn:hover .reset-txt {
   color: #2563eb;
 }
 
-/* 图例 */
+/* 图例 (高透毛玻璃) */
 .map-legend-dock {
   position: absolute;
   top: 16px;
   left: 16px;
   z-index: 20;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(8px);
-  border: 1px solid #cbd5e1;
-  border-radius: 8px;
-  padding: 8px 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
+  border: 1px solid rgba(203, 213, 225, 0.85);
+  border-radius: 12px;
+  padding: 9px 13px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  transition: all 0.25s ease;
+}
+
+.map-legend-dock:hover {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 
 .legend-title {
@@ -1374,6 +1479,7 @@ function switchTab(url: string) {
   width: 140px;
   height: 8px;
   border-radius: 4px;
+  transition: background 0.4s ease;
 }
 
 .legend-labels {
@@ -1435,25 +1541,27 @@ function switchTab(url: string) {
   z-index: 20;
   display: flex;
   align-items: center;
-  gap: 5px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(4px);
-  border: 1px solid #e2e8f0;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(226, 232, 240, 0.85);
   padding: 5px 12px;
-  border-radius: 6px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .map-audit-tag.clickable {
   pointer-events: auto;
   cursor: pointer;
-  transition: all 0.18s ease;
 }
 
 .map-audit-tag.clickable:hover {
   background: #ffffff;
   border-color: #93c5fd;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.16);
 }
 
 .map-audit-tag.clickable:hover .audit-txt {
@@ -1493,9 +1601,9 @@ function switchTab(url: string) {
   display: block;
 }
 
-/* 缩放平移图层过渡：拖拽时 0 延迟，缩放与聚焦时平滑缓动 */
+/* 缩放平移图层过渡：拖拽与滚轮时 0 延迟实时响应，点击聚焦与复位时如航拍云台般平滑缓动 */
 .map-root-g {
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1);
   transform-origin: 0 0;
   will-change: transform;
 }
@@ -1505,38 +1613,55 @@ function switchTab(url: string) {
   transition: none !important;
 }
 
-/* 统筹区矢量 Path 样式 */
+/* 统筹区矢量 Path 样式 (液态色彩平滑流动与微光辉光) */
 .city-path {
   cursor: pointer;
-  transition: fill 0.18s ease, stroke 0.18s ease;
+  transition: fill 0.45s cubic-bezier(0.4, 0, 0.2, 1), 
+              stroke 0.25s ease, 
+              stroke-width 0.25s ease, 
+              filter 0.25s ease;
 }
 
 .city-path:hover,
 .city-path.is-hover {
-  filter: brightness(1.08) drop-shadow(0 0 4px rgba(37, 99, 235, 0.4));
+  filter: brightness(1.12) drop-shadow(0 2px 10px rgba(37, 99, 235, 0.42));
   stroke: #2563eb !important;
-  stroke-width: 1.5 !important;
+  stroke-width: 1.6 !important;
 }
 
 .city-path.is-active {
   stroke: #ea580c !important;
-  stroke-width: 2.2 !important;
-  filter: drop-shadow(0 0 6px rgba(234, 88, 12, 0.5));
+  stroke-width: 2.4 !important;
+  filter: drop-shadow(0 0 10px rgba(234, 88, 12, 0.65)) brightness(1.08);
 }
 
-/* 浮动 Tooltip */
+/* 浮动 Tooltip (旗舰级毛玻璃亚克力与微弹入场) */
 .map-hover-tooltip {
   position: fixed;
   z-index: 1000;
-  background: rgba(15, 23, 42, 0.92);
-  backdrop-filter: blur(6px);
+  background: rgba(15, 23, 42, 0.86);
+  backdrop-filter: blur(14px) saturate(180%);
+  -webkit-backdrop-filter: blur(14px) saturate(180%);
   color: #ffffff;
-  padding: 6px 12px;
-  border-radius: 8px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  padding: 8px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
   pointer-events: none;
   transform: translate(-50%, -120%);
   white-space: nowrap;
+  animation: tooltipPop 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes tooltipPop {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -105%) scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -120%) scale(1);
+  }
 }
 
 .tt-head {
@@ -1564,29 +1689,40 @@ function switchTab(url: string) {
 }
 
 .tt-label { color: #cbd5e1; }
-.tt-val { color: #60a5fa; font-weight: 800; }
-
-/* 选中统筹区直达浮动 Bento 看板 (紧凑排布，彻底杜绝遮挡与视口截断) */
-.active-city-dock {
-  position: absolute;
-  bottom: 12px;
-  left: 14px;
-  right: 14px;
-  max-width: 720px;
-  margin: 0 auto;
-  z-index: 35;
-  background: rgba(255, 255, 255, 0.98);
-  backdrop-filter: blur(12px);
-  border: 1px solid #bfdbfe;
-  border-radius: 14px;
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.16);
-  padding: 12px 18px 14px;
-  animation: slideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+.tt-val {
+  color: #38bdf8;
+  font-weight: 800;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(14px); }
-  to { opacity: 1; transform: translateY(0); }
+/* 选中统筹区直达浮动 Bento 看板 (旗舰级弹性升起与高阶光影质感) */
+.active-city-dock {
+  position: absolute;
+  bottom: 14px;
+  left: 16px;
+  right: 16px;
+  max-width: 740px;
+  margin: 0 auto;
+  z-index: 35;
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(191, 219, 254, 0.8);
+  border-radius: 16px;
+  box-shadow: 0 20px 48px -12px rgba(15, 23, 42, 0.16), 0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+  padding: 14px 20px 16px;
+  animation: bentoDockSlideUp 0.36s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes bentoDockSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(24px) scale(0.975);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .dock-header {
@@ -1742,9 +1878,10 @@ function switchTab(url: string) {
   padding: 0;
   margin: 0;
   line-height: 1;
+  transition: all 0.18s ease;
 }
 
-.dock-close-btn:hover { background: #e2e8f0; color: #0f172a; }
+.dock-close-btn:hover { background: #e2e8f0; color: #0f172a; transform: scale(1.05); }
 
 .dock-metrics-grid {
   display: grid;
@@ -1756,8 +1893,16 @@ function switchTab(url: string) {
 .dm-item {
   background: #f8fafc;
   border: 1px solid #f1f5f9;
-  border-radius: 8px;
-  padding: 6px 10px;
+  border-radius: 10px;
+  padding: 8px 12px;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.dm-item:hover {
+  background: #ffffff;
+  border-color: #cbd5e1;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 .dm-label { font-size: 11px; color: #64748b; display: block; }
@@ -1779,12 +1924,12 @@ function switchTab(url: string) {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 9px 14px;
-  border-radius: 8px;
+  padding: 10px 14px;
+  border-radius: 10px;
   font-size: 13px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
 }
 
@@ -1799,21 +1944,25 @@ function switchTab(url: string) {
   color: #047857;
   border: 1px solid #a7f3d0;
 }
-.btn-policy:hover { background: #059669; color: #ffffff; border-color: #059669; }
+.btn-policy:hover { background: #059669; color: #ffffff; border-color: #059669; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(5, 150, 105, 0.25); }
 
 .btn-calc {
   background: #eff6ff;
   color: #1d4ed8;
   border: 1px solid #bfdbfe;
 }
-.btn-calc:hover { background: #2563eb; color: #ffffff; border-color: #2563eb; }
+.btn-calc:hover { background: #2563eb; color: #ffffff; border-color: #2563eb; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(37, 99, 235, 0.25); }
 
 .btn-pk {
   background: #fff7ed;
   color: #c2410c;
   border: 1px solid #fed7aa;
 }
-.btn-pk:hover { background: #ea580c; color: #ffffff; border-color: #ea580c; }
+.btn-pk:hover { background: #ea580c; color: #ffffff; border-color: #ea580c; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(234, 88, 12, 0.25); }
+
+.dock-btn:active {
+  transform: translateY(0) scale(0.98);
+}
 
 /* 底部服务网格 */
 .quick-service-section {
@@ -1847,28 +1996,33 @@ function switchTab(url: string) {
 .s-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 18px;
+  border-radius: 14px;
+  padding: 20px;
   display: flex;
   flex-direction: column;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.32s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .s-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  transform: translateY(-5px);
+  box-shadow: 0 18px 38px -8px rgba(15, 23, 42, 0.1), 0 2px 6px rgba(0, 0, 0, 0.02);
   border-color: #cbd5e1;
 }
 
 .s-ico {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.s-card:hover .s-ico {
+  transform: scale(1.08) translateY(-2px);
 }
 
 .s-ico svg {
@@ -1900,9 +2054,17 @@ function switchTab(url: string) {
   font-size: 12px;
   font-weight: 700;
   color: #2563eb;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* 底图数据来源与审图号合规声明模态框 */
+.s-card:hover .s-link {
+  transform: translateX(4px);
+}
+
+/* 底图数据来源与审图号合规声明模态框 (旗舰级磨砂玻璃与弹性缩放展开) */
 .source-modal-overlay {
   position: fixed;
   top: 0;
@@ -1911,13 +2073,14 @@ function switchTab(url: string) {
   bottom: 0;
   z-index: 9999;
   background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
   box-sizing: border-box;
-  animation: fadeIn 0.18s ease;
+  animation: fadeIn 0.24s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes fadeIn {
@@ -1927,20 +2090,20 @@ function switchTab(url: string) {
 
 .source-modal-card {
   background: #ffffff;
-  border-radius: 16px;
+  border-radius: 20px;
   max-width: 680px;
   width: 100%;
   max-height: 88vh;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
-  border: 1px solid #e2e8f0;
+  box-shadow: 0 25px 60px -12px rgba(15, 23, 42, 0.3);
+  border: 1px solid rgba(226, 232, 240, 0.8);
   overflow: hidden;
-  animation: modalScale 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: modalScale 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes modalScale {
-  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  from { opacity: 0; transform: scale(0.96) translateY(14px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
