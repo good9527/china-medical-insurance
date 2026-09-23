@@ -301,22 +301,6 @@
               </g>
             </g>
           </svg>
-
-          <!-- 鼠标移入即时气泡提示 Tooltip -->
-          <view 
-            class="map-hover-tooltip"
-            v-if="hoveredCity && !activeCity"
-            :style="{ left: tooltipPos.x + 'px', top: tooltipPos.y + 'px' }"
-          >
-            <view class="tt-head">
-              <text class="tt-city">{{ hoveredCity.cityName }}</text>
-              <text class="tt-prov">{{ hoveredCity.provinceName }}</text>
-            </view>
-            <view class="tt-metric-row">
-              <text class="tt-label">{{ metricLegend.title }}:</text>
-              <text class="tt-val font-mono">{{ getMetricDisplayVal(hoveredCity) }}</text>
-            </view>
-          </view>
         </view>
 
         <!-- 选中统筹区直达浮动 Bento 看板 (用户核心诉求：可视化点击转跳到各个统筹区) -->
@@ -551,6 +535,22 @@
         </view>
       </view>
     </view>
+
+    <!-- 全局悬浮气泡探针 Tooltip (置于最顶层，严格遵照视口坐标定位，绝不受任何卡片形变或容器裁剪干扰) -->
+    <view 
+      class="map-hover-tooltip"
+      v-if="hoveredCity && !activeCity"
+      :style="{ left: tooltipPos.x + 'px', top: tooltipPos.y + 'px' }"
+    >
+      <view class="tt-head">
+        <text class="tt-city">{{ hoveredCity.cityName }}</text>
+        <text class="tt-prov">{{ hoveredCity.provinceName }}</text>
+      </view>
+      <view class="tt-metric-row">
+        <text class="tt-label">{{ metricLegend.title }}:</text>
+        <text class="tt-val font-mono">{{ getMetricDisplayVal(hoveredCity) }}</text>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -746,10 +746,26 @@ function focusCityByCode(code: string) {
 
 function onCityHover(city: CityMapItem, event: MouseEvent) {
   hoveredCity.value = city;
-  tooltipPos.value = {
-    x: event.clientX + 15,
-    y: event.clientY + 15
-  };
+  let x = event.clientX + 16;
+  let y = event.clientY + 12;
+
+  // #ifdef H5
+  if (typeof window !== 'undefined') {
+    // 预留 Tooltip 安全宽度 ~260px，若靠近屏幕右边缘则自动翻转至光标左侧
+    if (x + 260 > window.innerWidth) {
+      x = Math.max(12, event.clientX - 260);
+    }
+    // 靠近屏幕底部时自动上移
+    if (y + 80 > window.innerHeight) {
+      y = Math.max(12, event.clientY - 70);
+    }
+    if (y < 40) {
+      y = event.clientY + 20;
+    }
+  }
+  // #endif
+
+  tooltipPos.value = { x, y };
 }
 
 function onCityLeave() {
@@ -1005,11 +1021,11 @@ function switchTab(url: string) {
 @keyframes stageCardReveal {
   from {
     opacity: 0;
-    transform: translateY(18px) scale(0.985);
+    transform: translateY(14px);
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: none;
   }
 }
 
@@ -1635,64 +1651,89 @@ function switchTab(url: string) {
   filter: drop-shadow(0 0 10px rgba(234, 88, 12, 0.65)) brightness(1.08);
 }
 
-/* 浮动 Tooltip (旗舰级毛玻璃亚克力与微弹入场) */
+/* 浮动 Tooltip (严格保持比例与矩形形状，严禁折行或竖向挤压变形) */
 .map-hover-tooltip {
-  position: fixed;
-  z-index: 1000;
-  background: rgba(15, 23, 42, 0.86);
-  backdrop-filter: blur(14px) saturate(180%);
-  -webkit-backdrop-filter: blur(14px) saturate(180%);
-  color: #ffffff;
-  padding: 8px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
-  pointer-events: none;
-  transform: translate(-50%, -120%);
-  white-space: nowrap;
-  animation: tooltipPop 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+  position: fixed !important;
+  z-index: 99999 !important;
+  background: rgba(15, 23, 42, 0.90) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  color: #ffffff !important;
+  padding: 8px 14px !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  box-shadow: 0 12px 32px -4px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.08) inset !important;
+  pointer-events: none !important;
+  white-space: nowrap !important;
+  width: max-content !important;
+  min-width: 190px !important;
+  max-width: none !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 3px !important;
+  animation: tooltipFade 0.12s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-@keyframes tooltipPop {
+@keyframes tooltipFade {
   from {
     opacity: 0;
-    transform: translate(-50%, -105%) scale(0.94);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
-    transform: translate(-50%, -120%) scale(1);
+    transform: scale(1);
   }
 }
 
 .tt-head {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 .tt-city {
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 13.5px !important;
+  font-weight: 800 !important;
+  color: #ffffff !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 .tt-prov {
-  font-size: 11px;
-  color: #94a3b8;
+  font-size: 11px !important;
+  color: #94a3b8 !important;
+  background: rgba(255, 255, 255, 0.08) !important;
+  padding: 1px 6px !important;
+  border-radius: 4px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 .tt-metric-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 3px;
-  font-size: 11.5px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  margin-top: 2px !important;
+  font-size: 12px !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
-.tt-label { color: #cbd5e1; }
+.tt-label {
+  color: #cbd5e1 !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
+}
+
 .tt-val {
-  color: #38bdf8;
-  font-weight: 800;
-  text-shadow: 0 0 10px rgba(56, 189, 248, 0.35);
+  color: #38bdf8 !important;
+  font-weight: 800 !important;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.35) !important;
+  white-space: nowrap !important;
+  flex-shrink: 0 !important;
 }
 
 /* 选中统筹区直达浮动 Bento 看板 (旗舰级弹性升起与高阶光影质感) */
