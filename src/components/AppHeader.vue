@@ -113,8 +113,93 @@
         </view>
       </view>
     </view>
+    <!-- 全局快捷联系作者与数据合作弹窗 (H5 环境下 Teleport 至 body，彻底脱离父级 sticky/backdrop-filter 包含块，解决居中和侧边露白漏洞) -->
+    <!-- #ifdef H5 -->
+    <teleport to="body">
+      <view class="contact-modal-mask" v-if="showContactModal" @click="showContactModal = false">
+        <view class="contact-modal-card" @click.stop>
+          <view class="modal-head">
+            <view class="head-brand">
+              <AppLogo size="sm" />
+              <text class="modal-title">联系作者 / 公文反馈与交流</text>
+            </view>
+            <text class="modal-close-btn" @click="showContactModal = false">✕</text>
+          </view>
 
-    <!-- 全局快捷联系作者与数据合作弹窗 -->
+          <view class="modal-body">
+            <text class="modal-desc">
+              欢迎就全国 348 统筹区公开政策文件、待遇估算规则或公文勘误直接联系我们：
+            </text>
+
+            <view class="modal-contact-list">
+              <view class="m-contact-item" @click="copyInfo(SITE_CONFIG.email, '邮箱')">
+                <view class="m-icon mail-bg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </view>
+                <view class="m-info">
+                  <text class="m-k">官方反馈邮箱</text>
+                  <text class="m-v font-mono">{{ SITE_CONFIG.email }}</text>
+                </view>
+                <text class="m-copy-chip">复制</text>
+              </view>
+
+              <view class="m-contact-item" @click="copyInfo(SITE_CONFIG.wechat, '微信号')">
+                <view class="m-icon wx-bg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                  </svg>
+                </view>
+                <view class="m-info">
+                  <text class="m-k">个人微信</text>
+                  <text class="m-v">{{ SITE_CONFIG.wechat }}</text>
+                </view>
+                <text class="m-copy-chip">复制</text>
+              </view>
+
+              <view class="m-contact-item" @click="copyInfo(SITE_CONFIG.officialAccount, '公众号名称')">
+                <view class="m-icon gzh-bg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                </view>
+                <view class="m-info">
+                  <text class="m-k">微信公众号</text>
+                  <text class="m-v">{{ SITE_CONFIG.officialAccount }}</text>
+                </view>
+                <text class="m-copy-chip">复制</text>
+              </view>
+
+              <!-- 政策纠错与公文提报直通入口 (便于手机端和电脑端用户随时直达) -->
+              <view class="m-contact-item corr-entry-item" @click="navTo('/pages/correction/index'); showContactModal = false">
+                <view class="m-icon corr-bg">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    <path d="m9 12 2 2 4-4"></path>
+                  </svg>
+                </view>
+                <view class="m-info">
+                  <text class="m-k">公文勘误与政策纠错</text>
+                  <text class="m-v">进入政策纠错提报通道</text>
+                </view>
+                <text class="m-copy-chip corr-chip">立即进入 ↗</text>
+              </view>
+            </view>
+
+            <view class="modal-foot">
+              <text class="m-dev-tag">开发者：{{ SITE_CONFIG.author }}</text>
+              <text class="m-repo-link" @click="openRepo">GitHub 仓库 ↗</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </teleport>
+    <!-- #endif -->
+    <!-- #ifndef H5 -->
     <view class="contact-modal-mask" v-if="showContactModal" @click="showContactModal = false">
       <view class="contact-modal-card" @click.stop>
         <view class="modal-head">
@@ -196,6 +281,7 @@
         </view>
       </view>
     </view>
+    <!-- #endif -->
   </view>
 </template>
 
@@ -471,32 +557,46 @@ function openRepo() {
   font-weight: 500;
 }
 
-/* 弹窗遮罩与卡片 */
+/* 弹窗遮罩与卡片 (全屏沉浸式无死角暗色遮罩) */
 .contact-modal-mask {
   position: fixed;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(15, 23, 42, 0.45);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  background: rgba(15, 23, 42, 0.52);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 99999;
+  z-index: 999999;
   padding: 16px;
   box-sizing: border-box;
+  animation: modalFadeIn 0.22s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .contact-modal-card {
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
   background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.2);
-  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  box-shadow: 0 25px 60px -12px rgba(15, 23, 42, 0.35), 0 0 1px rgba(15, 23, 42, 0.2);
+  border: 1px solid rgba(226, 232, 240, 0.85);
   overflow: hidden;
+  animation: cardSlideUp 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes cardSlideUp {
+  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .modal-head {
