@@ -13,6 +13,8 @@
 import json
 import math
 import os
+from shapely.geometry import shape
+from shapely.ops import unary_union, linemerge
 
 # 1. 中国标准 Albers 等面积投影 (viewBox: 0 0 920 940)
 phi1 = math.radians(25.0)
@@ -430,6 +432,24 @@ sar_boundary_path = hk_sar_path + mo_sar_path
 maritime_indices = [17, 23, 53, 166, 201, 214, 239, 262, 289]
 maritime_boundary_path = ''.join(geom_to_path(city_data['features'][idx]['geometry']) for idx in maritime_indices)
 
+# 4.5 省级行政边界虚线 (相邻省份陆地分界线，强化省域视觉轮廓，便于用户秒定所在省份并快速检索统筹区)
+prov_shapes = [shape(f['geometry']).buffer(0) for f in prov_data['features'] if 'Polygon' in f['geometry']['type']]
+all_prov_boundaries = unary_union([p.boundary for p in prov_shapes])
+china_mainland_union = unary_union(prov_shapes)
+internal_prov_lines = all_prov_boundaries.difference(china_mainland_union.boundary)
+merged_prov_lines = linemerge(internal_prov_lines)
+prov_geoms = list(merged_prov_lines.geoms) if hasattr(merged_prov_lines, 'geoms') else [merged_prov_lines]
+
+prov_svg_parts = []
+for g in prov_geoms:
+    coords = list(g.coords)
+    raw_pts = [to_svg(pt[0], pt[1]) for pt in coords]
+    simp = simplify_points(raw_pts, tol=0.35)
+    pts_str = [f"{round(p[0], 1)},{round(p[1], 1)}" for p in simp]
+    prov_svg_parts.append("M" + "L".join(pts_str))
+
+province_dashed_boundary_path = "".join(prov_svg_parts)
+
 boundaries_meta = {
     'mapAuditNumber': "GS（2026）4921号",
     'source': "自然资源部全国地理信息资源目录服务系统 · 天地图官方标准矢量数据",
@@ -438,7 +458,8 @@ boundaries_meta = {
     'tenDashLinePath': ten_dash_path,
     'undeterminedBoundaryPath': undetermined_path,
     'sarBoundaryPath': sar_boundary_path,
-    'maritimeBoundaryPath': maritime_boundary_path
+    'maritimeBoundaryPath': maritime_boundary_path,
+    'provinceDashedBoundaryPath': province_dashed_boundary_path
 }
 
 # 5. 写入生产存储

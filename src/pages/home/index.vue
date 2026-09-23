@@ -29,7 +29,7 @@
             <input 
               class="map-search-input"
               v-model="searchKeyword" 
-              placeholder="输入省份或城市（如：成都 / 深圳 / 西安 / 威海）" 
+              placeholder="输入省份或统筹区（如：四川 / 广东 / 成都 / 深圳 / 西安）" 
               @click.stop
             />
             <text class="clear-search" v-if="searchKeyword" @click.stop="searchKeyword = ''">✕</text>
@@ -131,6 +131,10 @@
             <span class="lsi-dot"></span>
             <text class="lsi-txt">属地专属体系 (无缝版图保留)</text>
           </view>
+          <view class="legend-dashed-row">
+            <span class="lsi-dash"></span>
+            <text class="lsi-txt-gray">省级区隔虚线 (便捷省域检索)</text>
+          </view>
         </view>
 
         <!-- 审图号官方标识 (依法依规合规标明，支持点击弹出权威合规声明，选中城市时静默隐藏避免遮挡卡片) -->
@@ -180,6 +184,29 @@
                   @mouseenter="onCityHover(c, $event)"
                   @mouseleave="onCityLeave"
                   @click.stop="selectCity(c)"
+                />
+              </g>
+
+              <!-- 省级行政区划虚线区隔图层 (相邻省界虚线区隔，让用户秒定省份定位统筹区) -->
+              <g class="province-dashed-layer" pointer-events="none" v-if="boundaries.provinceDashedBoundaryPath">
+                <!-- 底部高对比度微白晕，确保在任何深色/浅色统筹区上均极其清晰 -->
+                <path 
+                  :d="boundaries.provinceDashedBoundaryPath"
+                  fill="none"
+                  stroke="#ffffff"
+                  stroke-width="2.4"
+                  stroke-linecap="round"
+                  opacity="0.6"
+                />
+                <!-- 核心深蓝灰色精细虚线 -->
+                <path 
+                  :d="boundaries.provinceDashedBoundaryPath"
+                  fill="none"
+                  stroke="#334155"
+                  stroke-width="1.3"
+                  stroke-dasharray="5,3.5"
+                  stroke-linecap="round"
+                  opacity="0.8"
                 />
               </g>
 
@@ -1289,6 +1316,25 @@ function switchTab(url: string) {
 .lsi-txt {
   font-size: 9.5px;
   color: #4f46e5;
+  font-weight: 700;
+}
+
+.legend-dashed-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.lsi-dash {
+  width: 14px;
+  height: 0;
+  border-top: 2px dashed #475569;
+}
+
+.lsi-txt-gray {
+  font-size: 9.5px;
+  color: #475569;
   font-weight: 700;
 }
 
