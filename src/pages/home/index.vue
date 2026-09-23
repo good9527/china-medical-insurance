@@ -128,8 +128,8 @@
           </view>
         </view>
 
-        <!-- 审图号官方标识 (依法依规合规标明) -->
-        <view class="map-audit-tag">
+        <!-- 审图号官方标识 (依法依规合规标明，选中城市时静默隐藏避免遮挡卡片) -->
+        <view class="map-audit-tag" v-if="!activeCity">
           <svg class="shield-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
           </svg>
@@ -150,125 +150,87 @@
         >
           <svg 
             class="china-svg-canvas"
-            viewBox="0 0 1000 760" 
+            viewBox="0 0 920 940" 
             preserveAspectRatio="xMidYMid meet"
           >
             <!-- 整体缩放与平移变换组 -->
-            <g :transform="`translate(${panX}, ${panY}) scale(${zoomScale})`" class="map-root-g">
+            <g 
+              :transform="`translate(${panX}, ${panY}) scale(${zoomScale})`" 
+              class="map-root-g"
+              :class="{ 'is-dragging': isDragging }"
+            >
               <!-- 海洋背景底衬 -->
               <rect x="-1000" y="-1000" width="3000" height="3000" fill="#f8fafc" />
 
-              <!-- 348 个医保统筹区多边形面图层 -->
+              <!-- 348 个医保统筹区多边形面图层 (包含三沙市及南海诸岛，天然融为一体) -->
               <g class="cities-layer">
                 <path 
                   v-for="c in citiesList"
                   :key="c.cityCode"
                   :d="c.path"
                   :fill="getCityFillColor(c)"
-                  :stroke="activeCity && activeCity.cityCode === c.cityCode ? '#ea580c' : '#ffffff'"
-                  :stroke-width="activeCity && activeCity.cityCode === c.cityCode ? '2.5' : '0.5'"
+                  stroke="#ffffff"
+                  stroke-width="0.6"
                   class="city-path"
-                  :class="{ 
-                    'is-active': activeCity && activeCity.cityCode === c.cityCode,
-                    'is-hover': hoveredCity && hoveredCity.cityCode === c.cityCode 
-                  }"
                   @mouseenter="onCityHover(c, $event)"
                   @mouseleave="onCityLeave"
                   @click.stop="selectCity(c)"
                 />
               </g>
 
-              <!-- 省级边界线图层 (柔和深灰分隔线) -->
-              <g class="province-borders-layer" pointer-events="none">
+              <!-- 悬浮高亮层：将当前 hovered 城市提升到顶层绘制，绝不被临近区域压边 -->
+              <g class="hover-overlay-layer" pointer-events="none" v-if="hoveredCity && (!activeCity || hoveredCity.cityCode !== activeCity.cityCode)">
                 <path 
-                  v-for="(p, idx) in boundaries.provinceBorders"
-                  :key="'pb_' + idx"
-                  :d="p.mainPath"
-                  fill="none"
-                  stroke="#cbd5e1"
-                  stroke-width="0.8"
-                  stroke-dasharray="2,2"
-                />
-              </g>
-
-              <!-- 十段线与国界骨架线图层 (天地图官方现行有效法定九段/十段线) -->
-              <g class="ten-dash-layer" pointer-events="none">
-                <path 
-                  v-for="(td, idx) in boundaries.tenDashLines"
-                  :key="'td_' + idx"
-                  :d="td.mainPath"
-                  fill="none"
-                  stroke="#3b82f6"
+                  :d="hoveredCity.path"
+                  fill="rgba(37, 99, 235, 0.08)"
+                  stroke="#2563eb"
                   stroke-width="1.8"
                 />
               </g>
 
-              <!-- 南海诸岛附图线框 (法定国家标准附图位置) -->
-              <g class="south-sea-inset-group">
-                <!-- 附图底盒背景与边框 -->
-                <rect 
-                  x="815" 
-                  y="515" 
-                  width="170" 
-                  height="230" 
-                  fill="#f1f5f9" 
-                  stroke="#94a3b8" 
-                  stroke-width="1.2" 
-                  rx="4" 
+              <!-- 选中高光置顶层：将当前 activeCity 专属提升到所有城市最顶层，永远拥有完整无遮挡的 2.6px 橙色光环与外发光！ -->
+              <g class="active-overlay-layer" pointer-events="none" v-if="activeCity">
+                <path 
+                  :d="activeCity.path"
+                  fill="rgba(234, 88, 12, 0.12)"
+                  stroke="#ea580c"
+                  stroke-width="2.6"
                 />
-                <text x="825" y="533" fill="#475569" font-size="11" font-weight="bold">南海诸岛 (附图)</text>
-                
-                <!-- 附图省份与诸岛路径 -->
-                <g class="inset-elements">
-                  <path 
-                    v-for="(p, idx) in boundaries.provinceBorders"
-                    :key="'in_pb_' + idx"
-                    :d="p.insetPath"
-                    fill="none"
-                    stroke="#cbd5e1"
-                    stroke-width="0.7"
-                  />
-                  <!-- 三沙市及南海诸岛多边形 -->
-                  <path 
-                    v-if="sanshaCity"
-                    :d="sanshaCity.path"
-                    :fill="getCityFillColor(sanshaCity)"
-                    stroke="#2563eb"
-                    stroke-width="1"
-                    @click.stop="selectCity(sanshaCity)"
-                  />
-                  <!-- 十段线附图矢量 -->
-                  <path 
-                    v-for="(td, idx) in boundaries.tenDashLines"
-                    :key="'in_td_' + idx"
-                    :d="td.insetPath"
-                    fill="none"
-                    stroke="#2563eb"
-                    stroke-width="1.5"
-                    pointer-events="none"
-                  />
-                </g>
               </g>
 
-              <!-- 选中统筹区高光定位指示锚标 -->
+              <!-- 法定南海十段线图层 (天地图官方正规矢量数据，真实地理经纬度精准原貌) -->
+              <g class="ten-dash-layer" pointer-events="none">
+                <path 
+                  :d="boundaries.tenDashLinePath"
+                  fill="none"
+                  stroke="#2563eb"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </g>
+
+              <!-- 选中统筹区高光定位指示锚标 (原生平滑参数动画，精准锚定地理点位，杜绝外扩重叠) -->
               <g v-if="activeCity && activeCity.centroid" class="active-pin-group" pointer-events="none">
                 <circle 
                   :cx="activeCity.centroid[0]" 
                   :cy="activeCity.centroid[1]" 
-                  r="7" 
-                  fill="#ea580c" 
-                  stroke="#ffffff" 
-                  stroke-width="2" 
-                  class="pin-circle"
-                />
+                  r="6" 
+                  fill="none" 
+                  stroke="#ea580c" 
+                  stroke-width="2"
+                >
+                  <animate attributeName="r" from="6" to="22" dur="1.8s" repeatCount="indefinite" />
+                  <animate attributeName="stroke-width" from="2.5" to="0.4" dur="1.8s" repeatCount="indefinite" />
+                  <animate attributeName="opacity" from="0.9" to="0" dur="1.8s" repeatCount="indefinite" />
+                </circle>
                 <circle 
                   :cx="activeCity.centroid[0]" 
                   :cy="activeCity.centroid[1]" 
-                  r="14" 
-                  fill="none" 
-                  stroke="#ea580c" 
-                  stroke-width="1.5" 
-                  class="pin-pulse"
+                  r="5.5" 
+                  fill="#ea580c" 
+                  stroke="#ffffff" 
+                  stroke-width="2" 
                 />
               </g>
             </g>
@@ -446,11 +408,6 @@ const isDragging = ref(false);
 const dragStart = { x: 0, y: 0 };
 const panStart = { x: 0, y: 0 };
 
-// 单独提取三沙市（用于南海诸岛附图）
-const sanshaCity = computed(() => {
-  return citiesList.value.find(c => c.isInset || c.cityName.includes('三沙'));
-});
-
 // 联想建议列表
 const suggestedCities = computed(() => {
   const q = searchKeyword.value.trim().toLowerCase();
@@ -561,10 +518,10 @@ function selectCity(city: CityMapItem, shouldCenter: boolean = false) {
   activeCity.value = city;
   searchKeyword.value = '';
   if (shouldCenter && city.centroid) {
-    // 平滑聚焦并计算精确视口偏移 (考虑 1.6 倍缩放，使所选统筹区居中偏上)
-    zoomScale.value = 1.6;
-    panX.value = Math.round(500 - city.centroid[0] * 1.6);
-    panY.value = Math.round(330 - city.centroid[1] * 1.6);
+    // 平滑聚焦并计算精确视口偏移 (viewBox 920x940，目标定焦在水平中心460，垂直380，留出底部Bento安全间距)
+    zoomScale.value = 1.7;
+    panX.value = Math.round(460 - city.centroid[0] * 1.7);
+    panY.value = Math.round(380 - city.centroid[1] * 1.7);
   }
 }
 
@@ -592,13 +549,25 @@ function handlePageClick() {
   // 不重置 activeCity，方便查看
 }
 
-// 视角控制
+// 视角控制 (以画布视口几何中心 460, 470 为基准等比缩放)
 function zoomIn() {
-  if (zoomScale.value < 3.5) zoomScale.value = +(zoomScale.value + 0.3).toFixed(1);
+  if (zoomScale.value < 5.0) {
+    const newScale = Math.min(5.0, +(zoomScale.value * 1.25).toFixed(2));
+    const ratio = newScale / zoomScale.value;
+    panX.value = Math.round(460 - (460 - panX.value) * ratio);
+    panY.value = Math.round(470 - (470 - panY.value) * ratio);
+    zoomScale.value = newScale;
+  }
 }
 
 function zoomOut() {
-  if (zoomScale.value > 0.8) zoomScale.value = +(zoomScale.value - 0.3).toFixed(1);
+  if (zoomScale.value > 0.75) {
+    const newScale = Math.max(0.75, +(zoomScale.value * 0.8).toFixed(2));
+    const ratio = newScale / zoomScale.value;
+    panX.value = Math.round(460 - (460 - panX.value) * ratio);
+    panY.value = Math.round(470 - (470 - panY.value) * ratio);
+    zoomScale.value = newScale;
+  }
 }
 
 function resetView() {
@@ -626,12 +595,31 @@ function endDrag() {
   isDragging.value = false;
 }
 
+// 鼠标滚轮缩放 (高精度以鼠标指针所在位置为定焦中心进行平滑连续缩放)
 function onWheelZoom(e: WheelEvent) {
-  const delta = e.deltaY > 0 ? -0.15 : 0.15;
-  const newScale = +(zoomScale.value + delta).toFixed(2);
-  if (newScale >= 0.8 && newScale <= 3.5) {
-    zoomScale.value = newScale;
-  }
+  e.preventDefault();
+  const container = (e.currentTarget as HTMLElement).getBoundingClientRect();
+  if (!container || container.width <= 0) return;
+
+  const mouseX = e.clientX - container.left;
+  const mouseY = e.clientY - container.top;
+
+  // 映射至 SVG viewBox 坐标系 (920 x 940)
+  const svgX = (mouseX / container.width) * 920;
+  const svgY = (mouseY / container.height) * 940;
+
+  const factor = e.deltaY < 0 ? 1.15 : 0.87;
+  const oldScale = zoomScale.value;
+  let newScale = oldScale * factor;
+  if (newScale < 0.75) newScale = 0.75;
+  if (newScale > 5.0) newScale = 5.0;
+
+  if (Math.abs(newScale - oldScale) < 0.001) return;
+
+  const ratio = newScale / oldScale;
+  panX.value = Math.round(svgX - (svgX - panX.value) * ratio);
+  panY.value = Math.round(svgY - (svgY - panY.value) * ratio);
+  zoomScale.value = +newScale.toFixed(3);
 }
 
 // 触摸屏手势拖拽
@@ -978,7 +966,7 @@ function switchTab(url: string) {
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.04);
-  height: 720px;
+  height: 640px;
 }
 
 /* 缩放控制器 */
@@ -1107,10 +1095,21 @@ function switchTab(url: string) {
   display: block;
 }
 
+/* 缩放平移图层过渡：拖拽时 0 延迟，缩放与聚焦时平滑缓动 */
+.map-root-g {
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.map-root-g.is-dragging {
+  transition: none !important;
+}
+
 /* 统筹区矢量 Path 样式 */
 .city-path {
   cursor: pointer;
-  transition: fill 0.18s ease, stroke 0.18s ease, transform 0.18s ease;
+  transition: fill 0.18s ease, stroke 0.18s ease;
 }
 
 .city-path:hover,
@@ -1124,17 +1123,6 @@ function switchTab(url: string) {
   stroke: #ea580c !important;
   stroke-width: 2.2 !important;
   filter: drop-shadow(0 0 6px rgba(234, 88, 12, 0.5));
-}
-
-/* 定位锚点 */
-.pin-pulse {
-  animation: mapPulse 1.8s infinite ease-out;
-  transform-origin: center;
-}
-
-@keyframes mapPulse {
-  0% { transform: scale(0.6); opacity: 0.9; }
-  100% { transform: scale(1.6); opacity: 0; }
 }
 
 /* 浮动 Tooltip */
@@ -1179,26 +1167,26 @@ function switchTab(url: string) {
 .tt-label { color: #cbd5e1; }
 .tt-val { color: #60a5fa; font-weight: 800; }
 
-/* 选中统筹区直达浮动 Bento 看板 */
+/* 选中统筹区直达浮动 Bento 看板 (紧凑排布，彻底杜绝遮挡与视口截断) */
 .active-city-dock {
   position: absolute;
-  bottom: 16px;
-  left: 16px;
-  right: 16px;
-  max-width: 780px;
+  bottom: 12px;
+  left: 14px;
+  right: 14px;
+  max-width: 720px;
   margin: 0 auto;
-  z-index: 30;
-  background: rgba(255, 255, 255, 0.96);
+  z-index: 35;
+  background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(12px);
   border: 1px solid #bfdbfe;
   border-radius: 14px;
-  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.15);
-  padding: 16px 20px;
-  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.16);
+  padding: 12px 18px 14px;
+  animation: slideUp 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes slideUp {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(14px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
@@ -1274,20 +1262,20 @@ function switchTab(url: string) {
 .dock-metrics-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 10px;
+  margin-bottom: 12px;
 }
 
 .dm-item {
   background: #f8fafc;
   border: 1px solid #f1f5f9;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 6px 10px;
 }
 
 .dm-label { font-size: 11px; color: #64748b; display: block; }
-.dm-val { font-size: 16px; font-weight: 900; color: #0f172a; margin-top: 2px; display: block; }
-.dm-sub { font-size: 10.5px; color: #94a3b8; margin-top: 2px; display: block; }
+.dm-val { font-size: 15px; font-weight: 900; color: #0f172a; margin-top: 1px; display: block; }
+.dm-sub { font-size: 10px; color: #94a3b8; margin-top: 1px; display: block; }
 
 .text-blue { color: #2563eb !important; }
 .text-emerald { color: #059669 !important; }

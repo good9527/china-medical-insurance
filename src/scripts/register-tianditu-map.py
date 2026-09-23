@@ -1,6 +1,8 @@
 """
-天地图官方矢量数据（审图号：GS（2026）4921号）配准与轻量化 SVG 路径生成脚本
-覆盖全国 348 个医保统筹区，支持高精度 Albers 投影、边界线与南海诸岛附图
+天地图官方矢量数据（审图号：GS（2026）4921号）全域一体化配准与轻量化 SVG 生成脚本
+- 取消独立附图线框，全国版图（含三沙市与南海诸岛十段线）一体化真实投影无缝融合
+- 精确剔除多余重叠层与杂乱省界虚线，仅保留 348 个医保统筹区与法定南海十段线
+- 统一中国 Albers 等面积投影 (viewBox: 0 0 920 940)
 """
 
 import json
@@ -8,7 +10,7 @@ import math
 import os
 import sys
 
-# 1. 中国标准 Albers 等面积投影参数
+# 1. 中国标准 Albers 等面积投影
 phi1 = math.radians(25.0)
 phi2 = math.radians(47.0)
 lam0 = math.radians(105.0)
@@ -25,31 +27,18 @@ def albers(lon, lat):
     val = C - 2 * n * math.sin(phi)
     rho = math.sqrt(max(0.0, val)) / n
     x = rho * math.sin(theta)
-    y = -(rho0 - rho * math.cos(theta)) # SVG y轴向下
+    y = rho0 - rho * math.cos(theta) # 北向为正
     return x, y
 
-# 画布坐标尺寸：viewBox 0 0 1000 760
-scale = 1170.0
-offset_x = 515.0
-offset_y = 435.0
+# 画布坐标：viewBox 0 0 920 940
+scale = 1005.83
+offset_x = 493.04
+offset_y = 375.40
 
 def to_svg(lon, lat):
     px, py = albers(lon, lat)
     sx = round(offset_x + px * scale, 1)
-    sy = round(offset_y + py * scale, 1)
-    return sx, sy
-
-# 南海诸岛标准附图（右下角）
-# 视窗：x=815, y=515, w=170, h=230
-inset_scale = 360.0
-inset_cx = 900.0
-inset_cy = 635.0
-
-def to_inset_svg(lon, lat):
-    px, py = albers(lon, lat)
-    cx_ref, cy_ref = albers(114.0, 13.0)
-    sx = round(inset_cx + (px - cx_ref) * inset_scale, 1)
-    sy = round(inset_cy + (py - cy_ref) * inset_scale, 1)
+    sy = round(offset_y - py * scale, 1) # SVG y轴向下
     return sx, sy
 
 def simplify_points(pts, tol=0.35):
@@ -78,38 +67,45 @@ def simplify_points(pts, tol=0.35):
     else:
         return [pts[0], pts[-1]]
 
-def coords_to_path(coords, is_inset=False):
-    trans = to_inset_svg if is_inset else to_svg
+def coords_to_path(coords, is_island_boost=False):
     if not coords: return ''
     if isinstance(coords[0][0], (int, float)):
         # 环 (Ring)
-        raw_pts = [trans(pt[0], pt[1]) for pt in coords]
+        raw_pts = [to_svg(pt[0], pt[1]) for pt in coords]
         simp_pts = simplify_points(raw_pts, tol=0.35)
         if len(simp_pts) < 3:
             simp_pts = raw_pts
+        if len(simp_pts) < 3 and len(raw_pts) > 0:
+            # 单点或两点岛礁：生成微型可见多边形
+            p0 = raw_pts[0]
+            r = 1.4 if is_island_boost else 1.0
+            simp_pts = [
+                (p0[0] - r, p0[1] - r),
+                (p0[0] + r, p0[1] - r),
+                (p0[0] + r, p0[1] + r),
+                (p0[0] - r, p0[1] + r)
+            ]
         pts_str = [f"{round(p[0], 1)},{round(p[1], 1)}" for p in simp_pts]
         return "M" + "L".join(pts_str) + "Z"
     else:
-        return "".join(coords_to_path(ring, is_inset) for ring in coords)
+        return "".join(coords_to_path(ring, is_island_boost) for ring in coords)
 
-def geom_to_path(geom, is_inset=False):
+def geom_to_path(geom, is_island_boost=False):
     gtype = geom.get('type')
     coords = geom.get('coordinates', [])
     if gtype == 'Polygon':
-        return coords_to_path(coords, is_inset)
+        return coords_to_path(coords, is_island_boost)
     elif gtype == 'MultiPolygon':
-        return "".join(coords_to_path(poly, is_inset) for poly in coords)
+        return "".join(coords_to_path(poly, is_island_boost) for poly in coords)
     elif gtype == 'LineString':
-        trans = to_inset_svg if is_inset else to_svg
-        raw_pts = [trans(pt[0], pt[1]) for pt in coords]
+        raw_pts = [to_svg(pt[0], pt[1]) for pt in coords]
         simp_pts = simplify_points(raw_pts, tol=0.35)
         pts_str = [f"{round(p[0], 1)},{round(p[1], 1)}" for p in simp_pts]
         return "M" + "L".join(pts_str)
     elif gtype == 'MultiLineString':
-        trans = to_inset_svg if is_inset else to_svg
         parts = []
         for line in coords:
-            raw_pts = [trans(pt[0], pt[1]) for pt in line]
+            raw_pts = [to_svg(pt[0], pt[1]) for pt in line]
             simp_pts = simplify_points(raw_pts, tol=0.35)
             pts_str = [f"{round(p[0], 1)},{round(p[1], 1)}" for p in simp_pts]
             parts.append("M" + "L".join(pts_str))
@@ -125,20 +121,20 @@ def get_centroid(geom):
             for sub in c: extract_pts(sub)
     extract_pts(geom.get('coordinates', []))
     if not coords:
-        return [500, 380]
-    # 取经纬度平均中心并投影
+        return [460, 470]
     avg_lon = sum(pt[0] for pt in coords) / len(coords)
     avg_lat = sum(pt[1] for pt in coords) / len(coords)
     sx, sy = to_svg(avg_lon, avg_lat)
     return [sx, sy]
 
-# 2. 加载源数据
-benchmarks_path = 'scratch_benchmarks.json'
-with open(benchmarks_path, 'r', encoding='utf-8') as f:
-    benchmarks = json.load(f)
+# 2. 读取当前已有的 348 统筹区元数据
+existing_cities_file = os.path.join("src", "data", "map", "china_cities_map.json")
+with open(existing_cities_file, 'r', encoding='utf-8') as f:
+    existing_cities = json.load(f)
 
-print(f"Loaded {len(benchmarks)} healthcare benchmarks")
+print(f"Loaded {len(existing_cities)} healthcare cities metadata")
 
+# 3. 读取天地图官方矢量数据
 desktop_dir = r"C:\Users\19901\OneDrive\Desktop"
 city_path = os.path.join(desktop_dir, "审图号：GS（2026）4921号中国_市.geojson")
 prov_path = os.path.join(desktop_dir, "审图号：GS（2026）4921号中国_省.geojson")
@@ -185,14 +181,12 @@ special_mapping = {
     '660000': 'P_650000'  # 兵团
 }
 
-# 3. 为 348 个统筹区构建配准数据集
+# 4. 重新投影生成 348 个医保统筹区
 output_cities = []
-for b in benchmarks:
-    code = b['cityCode']
-    name = b['cityName']
-    pname = b['provinceName']
+for c_item in existing_cities:
+    code = c_item['cityCode']
+    name = c_item['cityName']
     
-    # 获取几何
     geom_feat = None
     if code in special_mapping:
         mapped_key = special_mapping[code]
@@ -206,85 +200,39 @@ for b in benchmarks:
         raise ValueError(f"Missing geometry for {code} {name}")
     
     geom = geom_feat['geometry']
-    
-    # 针对三沙市特殊处理：南海主图中不展示，直接呈现在右下角附图中
     is_sansha = ('三沙' in name or code == '460300')
+    
+    # 统筹区几何转换：全部统一在主画布中
+    path_str = geom_to_path(geom, is_island_boost=is_sansha)
     if is_sansha:
-        path_str = geom_to_path(geom, is_inset=True)
-        centroid = [inset_cx, inset_cy]
+        # 三沙市定焦锚点设为永兴岛中心 (112.34°E, 16.84°N)
+        centroid = list(to_svg(112.34, 16.84))
     else:
-        path_str = geom_to_path(geom, is_inset=False)
         centroid = get_centroid(geom)
     
-    city_item = {
-        'cityCode': code,
-        'cityName': name,
-        'provinceName': pname,
-        'overallScore': b.get('overallScore', 75),
-        'employeeScore': b.get('employeeScore', 75),
-        'residentScore': b.get('residentScore', 75),
-        'empInpatientRatio': b.get('empInpatientRatio', 0.85),
-        'empInpatientDed': b.get('empInpatientDed', 800),
-        'empOutpatientCap': b.get('empOutpatientCap', 3000),
-        'resInpatientRatio': b.get('resInpatientRatio', 0.65),
-        'resOutpatientCap': b.get('resOutpatientCap', 1000),
-        'catastrophicMaxRatio': b.get('catastrophicMaxRatio', 0.70),
-        'retireeBonusRatio': b.get('retireeBonusRatio', 0.05),
-        'docNumber': b.get('latestPolicyDocNumber', '现行有效规章'),
-        'centroid': centroid,
-        'path': path_str,
-        'isInset': is_sansha
-    }
-    output_cities.append(city_item)
+    new_item = dict(c_item)
+    new_item['centroid'] = centroid
+    new_item['path'] = path_str
+    if 'isInset' in new_item:
+        del new_item['isInset'] # 不再区分附图，全域一体化
+    output_cities.append(new_item)
 
-print(f"Successfully processed {len(output_cities)} cities")
+print(f"Successfully reprojected {len(output_cities)} cities")
 
-# 4. 提取国界线、省界骨架线与十段线
-boundary_items = []
-ten_dash_lines = []
-province_border_paths = []
-
-for feat in prov_data['features']:
-    props = feat.get('properties', {})
-    p_name = props.get('name', '')
-    geom = feat.get('geometry', {})
-    
-    if '境界线' in p_name:
-        # 国界与十段线
-        p_main = geom_to_path(geom, is_inset=False)
-        p_inset = geom_to_path(geom, is_inset=True)
-        ten_dash_lines.append({
-            'mainPath': p_main,
-            'insetPath': p_inset
-        })
-    else:
-        # 省界
-        p_main = geom_to_path(geom, is_inset=False)
-        p_inset = geom_to_path(geom, is_inset=True)
-        province_border_paths.append({
-            'name': p_name,
-            'mainPath': p_main,
-            'insetPath': p_inset
-        })
+# 5. 提取法定南海十段线（Line 35）
+# 官方自然资源部数据第 35 项为南海十段线与海上界线
+line35_feat = prov_data['features'][35]
+ten_dash_path = geom_to_path(line35_feat['geometry'])
 
 boundaries_meta = {
     'mapAuditNumber': "GS（2026）4921号",
     'source': "自然资源部天地图官方矢量数据",
-    'viewBox': "0 0 1000 760",
-    'insetBox': {
-        'x': 815,
-        'y': 515,
-        'width': 170,
-        'height': 230
-    },
-    'tenDashLines': ten_dash_lines,
-    'provinceBorders': province_border_paths
+    'viewBox': "0 0 920 940",
+    'tenDashLinePath': ten_dash_path
 }
 
-# 5. 写入目标目录
+# 6. 保存新数据
 target_dir = os.path.join("src", "data", "map")
-os.makedirs(target_dir, exist_ok=True)
-
 cities_file = os.path.join(target_dir, "china_cities_map.json")
 with open(cities_file, 'w', encoding='utf-8') as f:
     json.dump(output_cities, f, ensure_ascii=False)
@@ -295,4 +243,4 @@ with open(boundaries_file, 'w', encoding='utf-8') as f:
 
 print(f"Saved {cities_file} ({os.path.getsize(cities_file) / 1024:.1f} KB)")
 print(f"Saved {boundaries_file} ({os.path.getsize(boundaries_file) / 1024:.1f} KB)")
-print("ALL DONE SUCCESS!")
+print("REPROJECT SUCCESSFUL!")
