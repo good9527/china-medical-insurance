@@ -831,9 +831,13 @@ function onWheelZoom(e: WheelEvent) {
   const svgX = (mouseX - ox) / s;
   const svgY = (mouseY - oy) / s;
 
-  // 滚轮缩放系数：向上滚放大，向下滚缩小
-  const zoomFactor = e.deltaY < 0 ? 1.12 : 0.89;
-  const oldScale = zoomScale.value;
+  // 保证 svgX, svgY 为有效数值
+  if (!isFinite(svgX) || !isFinite(svgY)) return;
+
+  // 严格遵照规范：往前滚（deltaY < 0）是放大，往后滚（deltaY > 0）是缩小
+  const isZoomIn = e.deltaY < 0;
+  const zoomFactor = isZoomIn ? 1.15 : 0.87;
+  const oldScale = (typeof zoomScale.value === 'number' && !isNaN(zoomScale.value) && zoomScale.value > 0) ? zoomScale.value : 1.0;
   let newScale = oldScale * zoomFactor;
   if (newScale < 0.7) newScale = 0.7;
   if (newScale > 6.0) newScale = 6.0;
@@ -848,14 +852,42 @@ function onWheelZoom(e: WheelEvent) {
   }, 120);
 
   // 以鼠标指针在底图上的真实几何点为定焦中心进行平滑缩放
+  const currentPanX = typeof panX.value === 'number' && !isNaN(panX.value) ? panX.value : 0;
+  const currentPanY = typeof panY.value === 'number' && !isNaN(panY.value) ? panY.value : 0;
   const ratio = newScale / oldScale;
-  panX.value = Math.round(svgX - (svgX - panX.value) * ratio);
-  panY.value = Math.round(svgY - (svgY - panY.value) * ratio);
+
+  const nextPanX = Math.round(svgX - (svgX - currentPanX) * ratio);
+  const nextPanY = Math.round(svgY - (svgY - currentPanY) * ratio);
+
+  if (isFinite(nextPanX)) panX.value = nextPanX;
+  if (isFinite(nextPanY)) panY.value = nextPanY;
   zoomScale.value = +newScale.toFixed(3);
+}
+
+// 全局滚轮命中测试拦截：只要光标在地图画板范围内，立刻捕获滚轮事件，阻止页面滚动并触发平滑缩放
+function handleGlobalWheel(e: WheelEvent) {
+  // #ifdef H5
+  const viewport = document.querySelector('.svg-viewport') as HTMLElement | null;
+  if (!viewport) return;
+  const rect = viewport.getBoundingClientRect();
+  if (!rect || rect.width <= 0 || rect.height <= 0) return;
+
+  if (
+    e.clientX >= rect.left &&
+    e.clientX <= rect.right &&
+    e.clientY >= rect.top &&
+    e.clientY <= rect.bottom
+  ) {
+    if (e.preventDefault) e.preventDefault();
+    if (e.stopPropagation) e.stopPropagation();
+    onWheelZoom(e);
+  }
+  // #endif
 }
 
 onMounted(() => {
   // #ifdef H5
+  window.addEventListener('wheel', handleGlobalWheel, { passive: false });
   const viewport = document.querySelector('.svg-viewport') as HTMLElement | null;
   if (viewport) {
     viewport.addEventListener('wheel', onWheelZoom, { passive: false });
@@ -865,6 +897,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   // #ifdef H5
+  window.removeEventListener('wheel', handleGlobalWheel);
   const viewport = document.querySelector('.svg-viewport') as HTMLElement | null;
   if (viewport) {
     viewport.removeEventListener('wheel', onWheelZoom);
