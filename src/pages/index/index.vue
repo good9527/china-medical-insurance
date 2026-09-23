@@ -442,9 +442,9 @@
               </view>
             </view>
 
-            <!-- 极简免责与就医提示 -->
-            <view class="estimate-disclaimer-bar mt-12">
-              <text class="disclaimer-txt">⚠️ 结果基于地方公开政策估算逻辑，仅供参考；实际报销金额以就医定点医疗机构出院医保结算单为准。</text>
+            <!-- 柔和合规注脚 (消除突兀感，精致内敛收口) -->
+            <view class="estimate-footnote-bar">
+              <text class="footnote-txt">* 估算结果基于地方公开政策逻辑测算，仅供参考，实际报销以定点医疗机构出院结算单为准</text>
             </view>
           </view>
 
@@ -1986,6 +1986,20 @@ onShow(() => {
   font-size: 12px;
   color: #1d4ed8;
   font-weight: 600;
+}
+
+/* 柔和合规注脚 (克制、内敛，融入卡片整体，消除突兀感) */
+.estimate-footnote-bar {
+  margin-top: 10px;
+  padding: 0 4px;
+  text-align: center;
+}
+
+.footnote-txt {
+  font-size: 11px;
+  color: #94a3b8;
+  line-height: 1.4;
+  display: block;
 }
 
 /* 空状态 */
