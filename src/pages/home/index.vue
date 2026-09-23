@@ -7,10 +7,11 @@
       <!-- 英雄区：标题、动态标杆与实时搜索 -->
       <view class="hero-control-header">
         <view class="hero-left-title">
-          <view class="hero-badge-pill">
+          <view class="hero-badge-pill clickable" @click="showSourceModal = true" title="点击查看底图数据来源与审图号合规声明">
             <span class="pulse-dot"></span>
             <text class="badge-txt">天地图官方矢量配准 · 审图号 GS（2026）4921号</text>
-            <text class="count-txt">全国 348 统筹区全收录</text>
+            <text class="count-txt">全国 380 空间实体全域配准</text>
+            <text class="source-link-tag">ℹ️ 数据来源与合规说明</text>
           </view>
           <view class="hero-title-row">
             <text class="hero-h1">全国医保统筹区空间全景地图</text>
@@ -128,12 +129,12 @@
           </view>
         </view>
 
-        <!-- 审图号官方标识 (依法依规合规标明，选中城市时静默隐藏避免遮挡卡片) -->
-        <view class="map-audit-tag" v-if="!activeCity">
+        <!-- 审图号官方标识 (依法依规合规标明，支持点击弹出权威合规声明，选中城市时静默隐藏避免遮挡卡片) -->
+        <view class="map-audit-tag clickable" v-if="!activeCity" @click.stop="showSourceModal = true" title="查看底图数据来源与审图号合规声明">
           <svg class="shield-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
           </svg>
-          <text class="audit-txt">审图号：GS（2026）4921号 · 自然资源部监制 · 天地图矢量</text>
+          <text class="audit-txt">审图号：GS（2026）4921号（天地图底层矢量数据审图号）· 数据说明 ↗</text>
         </view>
 
         <!-- SVG 空间地图画板 (支持鼠标滚轮与拖拽平移) -->
@@ -257,20 +258,47 @@
         <view class="active-city-dock" v-if="activeCity" @click.stop>
           <view class="dock-header">
             <view class="dock-title-left">
-              <view class="dock-badge">已选中统筹区</view>
+              <view 
+                class="dock-badge"
+                :class="{
+                  'badge-special': activeCity.isSpecialRegion,
+                  'badge-xpcc': activeCity.cityCode.startsWith('659'),
+                  'badge-hainan': activeCity.cityCode.startsWith('469')
+                }"
+              >
+                {{ activeCity.isSpecialRegion ? '特别行政区 / 台湾省' : (activeCity.cityCode.startsWith('659') ? '兵团统筹师市' : (activeCity.cityCode.startsWith('469') ? '海南全省统筹直辖' : '已收录统筹区')) }}
+              </view>
               <text class="dock-city-name">{{ activeCity.cityName }}</text>
               <text class="dock-prov-name">{{ activeCity.provinceName }}</text>
             </view>
-            <view class="dock-score-pill">
+            <view class="dock-score-pill" v-if="!activeCity.isSpecialRegion">
               <text class="score-label">综合保障指数</text>
               <text class="score-num font-mono">{{ activeCity.overallScore }}</text>
               <text class="score-unit">分</text>
             </view>
+            <view class="dock-score-pill score-special" v-else>
+              <text class="score-label">保障体系</text>
+              <text class="score-num-spec">属地专属</text>
+            </view>
             <button class="dock-close-btn" @click="activeCity = null">✕</button>
           </view>
 
-          <!-- 核心待遇指标卡片矩阵 -->
-          <view class="dock-metrics-grid">
+          <!-- 港澳台特区专属保障呈现 (非内地基本医保，友好说明，杜绝留白孔洞) -->
+          <view class="dock-special-box" v-if="activeCity.isSpecialRegion">
+            <view class="dsb-lead-row">
+              <text class="dsb-tag">🏛️ 专属医疗保障制度</text>
+              <text class="dsb-sub">{{ activeCity.specialNotice || '实行本地专属医疗卫生保障体系' }}</text>
+            </view>
+            <text class="dsb-desc">
+              {{ activeCity.cityName }}实行其属地专属的医疗卫生体系（如香港医管局公立医疗与长者医疗券、澳门卫生局全免费及全民医疗补贴、台湾地区全民健保制度）。本平台恪守自然资源部标准矢量全貌予以空间收录呈现；该区域暂不适用内地基本医保测算与公文模型。
+            </text>
+            <view class="dsb-btn-row">
+              <button class="dsb-close-btn" @click="activeCity = null">返回探索其他统筹区</button>
+            </view>
+          </view>
+
+          <!-- 核心待遇指标卡片矩阵 (内地统筹区) -->
+          <view class="dock-metrics-grid" v-if="!activeCity.isSpecialRegion">
             <view class="dm-item">
               <text class="dm-label">职工三级住院报销</text>
               <text class="dm-val text-blue font-mono">{{ Math.round(activeCity.empInpatientRatio * 100) }}%</text>
@@ -289,12 +317,12 @@
             <view class="dm-item">
               <text class="dm-label">退休在职倾斜上浮</text>
               <text class="dm-val text-amber font-mono">+{{ Math.round(activeCity.retireeBonusRatio * 100) }}%</text>
-              <text class="dm-sub">依据: {{ activeCity.docNumber }}</text>
+              <text class="dm-sub" :title="activeCity.docNumber">依据: {{ activeCity.docNumber }}</text>
             </view>
           </view>
 
           <!-- 三大直达快速跳转通道 (跳转政策详情、带入估算、加入双城对比) -->
-          <view class="dock-action-row">
+          <view class="dock-action-row" v-if="!activeCity.isSpecialRegion">
             <view class="dock-btn btn-policy" @click="navToPolicy(activeCity.cityCode)">
               <svg class="btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
               <text class="btn-text">查看本市政策详情 ↗</text>
@@ -356,6 +384,90 @@
         </view>
       </view>
     </view>
+
+    <!-- 底图数据来源与审图号合规声明模态框 -->
+    <view class="source-modal-overlay" v-if="showSourceModal" @click="showSourceModal = false">
+      <view class="source-modal-card" @click.stop>
+        <view class="sm-card-header">
+          <view class="sm-card-title-group">
+            <view class="sm-icon-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </view>
+            <view class="sm-title-texts">
+              <text class="sm-main-title">底图矢量数据来源与审图号合规声明</text>
+              <text class="sm-sub-title">自然资源部天地图官方底图标准配准 · 法律与合规公示</text>
+            </view>
+          </view>
+          <button class="sm-close-btn" @click="showSourceModal = false">✕</button>
+        </view>
+
+        <view class="sm-scroll-content">
+          <!-- 审图号重点澄清警示条 (按用户明确指示：审图号是数据的审图号不是我们这个图的审图号，天地图官方写的是可以用来可视化) -->
+          <view class="sm-highlight-box">
+            <view class="sm-hb-icon">⚖️</view>
+            <view class="sm-hb-content">
+              <text class="sm-hb-title">审图号法律界定与权利声明：</text>
+              <text class="sm-hb-text">
+                本平台展示之审图号 <text class="font-bold font-mono">GS（2026）4921号</text> 为中华人民共和国自然资源部配准发布之<text class="font-bold text-blue">天地图底层行政区划矢量数据的官方批准审图号</text>，<text class="font-bold text-amber">并非本应用自行测绘或二次出版的自制地图审图号</text>。依据自然资源部天地图官方公开数据使用规范，该行政区划矢量数据可免费公开用于行业数据分析、政务信息与公共服务可视化呈现。
+              </text>
+            </view>
+          </view>
+
+          <!-- 一、底图数据官方来源 -->
+          <view class="sm-section">
+            <view class="sm-sec-header">
+              <text class="sm-sec-tag">01</text>
+              <text class="sm-sec-title">底图数据官方来源与投影标准</text>
+            </view>
+            <text class="sm-sec-p">
+              底图数据源自中华人民共和国自然资源部全国地理信息资源目录服务系统（国家地理信息公共服务平台·天地图），包含标准《中国_市》、《中国_省》、《中国_县》行政区划矢量及法定南海十段线（LineString），采用标准中国 Albers 等面积割圆锥投影 (标准纬线 25°N, 47°N，中央经线 105°E) 进行规范化拓扑空间配准。
+            </text>
+          </view>
+
+          <!-- 二、空间全域完整性说明 -->
+          <view class="sm-section">
+            <view class="sm-sec-header">
+              <text class="sm-sec-tag">02</text>
+              <text class="sm-sec-title">空间行政实体全域配准 (380 空间实体无漏洞)</text>
+            </view>
+            <text class="sm-sec-p">
+              针对传统地级市数据容易出现的版图视觉空洞，本系统完成了 100% 空间实体的拓扑全量补齐，绝无任何空白漏缺：
+            </text>
+            <view class="sm-grid-list">
+              <view class="sm-grid-item">
+                <text class="sgi-badge">海南全省统筹</text>
+                <text class="sgi-text">全量收录五指山、琼海、文昌、万宁、东方、澄迈、定安等 15 个直辖县市多边形，全面填满海南全岛，依规映射《琼医保规〔2022〕4号》海南全省统筹待遇。</text>
+              </view>
+              <view class="sm-grid-item">
+                <text class="sgi-badge">新疆兵团师市</text>
+                <text class="sgi-text">全量收录石河子、阿拉尔、图木舒克、五家渠等 12 个兵团直辖师市独立多边形，彻底消除新疆腹地空白漏洞，统一映射《兵医保规〔2022〕2号》兵团统筹政策。</text>
+              </view>
+              <view class="sm-grid-item">
+                <text class="sgi-badge">神圣领土全貌</text>
+                <text class="sgi-text">完整保留港澳台特别行政区与台湾省法定矢量几何，依法依规展示神圣领土全貌，并贴心提供专属保障体系特别说明。</text>
+              </view>
+            </view>
+          </view>
+
+          <!-- 三、医保政策公文溯源 -->
+          <view class="sm-section">
+            <view class="sm-sec-header">
+              <text class="sm-sec-tag">03</text>
+              <text class="sm-sec-title">医保待遇公文溯源</text>
+            </view>
+            <text class="sm-sec-p">
+              全国各统筹区的住院起付线、报销比例、门诊共济限额、大病封顶及退休倾斜比例，均提取自各省市医保局公开发布的正式有效规章公文，并在系统内逐条标注公文发文字号，保障数据严谨客观。
+            </text>
+          </view>
+        </view>
+
+        <view class="sm-card-footer">
+          <button class="sm-understand-btn" @click="showSourceModal = false">我已了解合规声明</button>
+        </view>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -383,10 +495,15 @@ interface CityMapItem {
   centroid: [number, number];
   path: string;
   isInset?: boolean;
+  isSpecialRegion?: boolean;
+  specialNotice?: string;
 }
 
 const citiesList = ref<CityMapItem[]>(citiesRawData as CityMapItem[]);
 const boundaries = ref(boundariesRawData);
+
+// 合规声明与数据来源弹窗控制
+const showSourceModal = ref(false);
 
 // 当前高亮/选中的统筹区
 const activeCity = ref<CityMapItem | null>(null);
@@ -644,24 +761,42 @@ function onTouchMove(e: TouchEvent) {
 function onTouchEnd() {}
 
 // 快速跳转至各主要功能页 (用户核心诉求：可视化点击转跳到各个统筹区)
+function getNavCityCode(cityCode: string): string {
+  // 新疆生产建设兵团直辖师市 (659001 ~ 659012) 统一映射至兵团统筹代码 660000
+  if (cityCode.startsWith('659')) {
+    return '660000';
+  }
+  // 海南省直辖县/县级市 (469001 ~ 469030) 统一映射至海南省级统筹基准 460100 (海口市)
+  if (cityCode.startsWith('469')) {
+    return '460100';
+  }
+  // 甘肃省特殊保护区
+  if (cityCode === '629700') return '620700';
+  if (cityCode === '629800' || cityCode === '629900') return '622900';
+  return cityCode;
+}
+
 function navToPolicy(cityCode: string) {
-  uni.setStorageSync('selected_medical_city_code', cityCode);
-  uni.setStorageSync('selected_policy_city_code', cityCode);
+  const code = getNavCityCode(cityCode);
+  uni.setStorageSync('selected_medical_city_code', code);
+  uni.setStorageSync('selected_policy_city_code', code);
   uni.switchTab({
     url: '/pages/policy/index'
   });
 }
 
 function navToEstimate(cityCode: string) {
-  uni.setStorageSync('selected_medical_city_code', cityCode);
-  uni.setStorageSync('selected_policy_city_code', cityCode);
+  const code = getNavCityCode(cityCode);
+  uni.setStorageSync('selected_medical_city_code', code);
+  uni.setStorageSync('selected_policy_city_code', code);
   uni.switchTab({
     url: '/pages/index/index'
   });
 }
 
 function navToBattle(cityCode: string) {
-  uni.setStorageSync('battle_target_city', cityCode);
+  const code = getNavCityCode(cityCode);
+  uni.setStorageSync('battle_target_city', code);
   uni.switchTab({
     url: '/pages/ranking/index'
   });
@@ -712,6 +847,29 @@ function switchTab(url: string) {
   padding: 4px 12px;
   border-radius: 9999px;
   margin-bottom: 8px;
+}
+
+.hero-badge-pill.clickable {
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.hero-badge-pill.clickable:hover {
+  background: #dbeafe;
+  border-color: #93c5fd;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12);
+}
+
+.source-link-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: #2563eb;
+  background: #ffffff;
+  border: 1px solid #bfdbfe;
+  padding: 1px 7px;
+  border-radius: 9999px;
+  margin-left: 4px;
 }
 
 .pulse-dot {
@@ -1056,24 +1214,42 @@ function switchTab(url: string) {
   display: flex;
   align-items: center;
   gap: 5px;
-  background: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.92);
   backdrop-filter: blur(4px);
   border: 1px solid #e2e8f0;
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 6px;
-  pointer-events: none;
+}
+
+.map-audit-tag.clickable {
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.map-audit-tag.clickable:hover {
+  background: #ffffff;
+  border-color: #93c5fd;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.15);
+}
+
+.map-audit-tag.clickable:hover .audit-txt {
+  color: #2563eb;
 }
 
 .shield-svg {
-  width: 12px;
-  height: 12px;
+  width: 13px;
+  height: 13px;
   color: #2563eb;
+  flex-shrink: 0;
 }
 
 .audit-txt {
   font-size: 11px;
   color: #475569;
   font-weight: 600;
+  transition: color 0.15s ease;
 }
 
 /* SVG 视口 */
@@ -1215,6 +1391,24 @@ function switchTab(url: string) {
   border-radius: 4px;
 }
 
+.dock-badge.badge-special {
+  background: #fdf2f8 !important;
+  color: #db2777 !important;
+  border-color: #fbcfe8 !important;
+}
+
+.dock-badge.badge-xpcc {
+  background: #f0fdf4 !important;
+  color: #15803d !important;
+  border-color: #bbf7d0 !important;
+}
+
+.dock-badge.badge-hainan {
+  background: #f0fdfa !important;
+  color: #0f766e !important;
+  border-color: #99f6e4 !important;
+}
+
 .dock-city-name {
   font-size: 20px;
   font-weight: 900;
@@ -1234,6 +1428,76 @@ function switchTab(url: string) {
   padding: 4px 12px;
   border-radius: 9999px;
   border: 1px solid #e2e8f0;
+}
+
+.dock-score-pill.score-special {
+  background: #fdf2f8 !important;
+  border-color: #fbcfe8 !important;
+}
+
+.score-num-spec {
+  font-size: 13px;
+  font-weight: 800;
+  color: #db2777;
+}
+
+/* 港澳台特区专属看板 */
+.dock-special-box {
+  background: #fdf2f8;
+  border: 1px solid #fbcfe8;
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 8px;
+}
+
+.dsb-lead-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.dsb-tag {
+  font-size: 13px;
+  font-weight: 800;
+  color: #be185d;
+}
+
+.dsb-sub {
+  font-size: 11px;
+  color: #9d174d;
+  font-weight: 600;
+}
+
+.dsb-desc {
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.55;
+  display: block;
+}
+
+.dsb-btn-row {
+  margin-top: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.dsb-close-btn {
+  background: #ffffff;
+  border: 1px solid #fbcfe8;
+  color: #be185d;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.dsb-close-btn:hover {
+  background: #fce7f3;
 }
 
 .score-label { font-size: 11.5px; color: #64748b; }
@@ -1415,6 +1679,252 @@ function switchTab(url: string) {
   color: #2563eb;
 }
 
+/* 底图数据来源与审图号合规声明模态框 */
+.source-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  animation: fadeIn 0.18s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.source-modal-card {
+  background: #ffffff;
+  border-radius: 16px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+  animation: modalScale 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalScale {
+  from { opacity: 0; transform: scale(0.96) translateY(10px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.sm-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px;
+  border-bottom: 1px solid #f1f5f9;
+  background: #f8fafc;
+}
+
+.sm-card-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sm-icon-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #eff6ff;
+  color: #2563eb;
+  border: 1px solid #bfdbfe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sm-icon-badge svg {
+  width: 20px;
+  height: 20px;
+}
+
+.sm-title-texts {
+  display: flex;
+  flex-direction: column;
+}
+
+.sm-main-title {
+  font-size: 16px;
+  font-weight: 900;
+  color: #0f172a;
+}
+
+.sm-sub-title {
+  font-size: 11.5px;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.sm-close-btn {
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  color: #64748b;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1;
+  padding: 0;
+}
+
+.sm-close-btn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.sm-scroll-content {
+  padding: 20px 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-sizing: border-box;
+}
+
+.sm-highlight-box {
+  background: #fefce8;
+  border: 1px solid #fef08a;
+  border-left: 4px solid #ca8a04;
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.sm-hb-icon {
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.sm-hb-content {
+  flex: 1;
+}
+
+.sm-hb-title {
+  font-size: 13px;
+  font-weight: 800;
+  color: #854d0e;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.sm-hb-text {
+  font-size: 12px;
+  color: #713f12;
+  line-height: 1.6;
+}
+
+.font-bold { font-weight: 800; }
+
+.sm-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sm-sec-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sm-sec-tag {
+  font-size: 10px;
+  font-weight: 900;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.sm-sec-title {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.sm-sec-p {
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.sm-grid-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.sm-grid-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sgi-badge {
+  font-size: 11px;
+  font-weight: 800;
+  color: #1d4ed8;
+}
+
+.sgi-text {
+  font-size: 11.5px;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.sm-card-footer {
+  padding: 14px 24px;
+  border-top: 1px solid #f1f5f9;
+  background: #f8fafc;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.sm-understand-btn {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 22px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+}
+
+.sm-understand-btn:hover {
+  background: #1d4ed8;
+}
+
 /* 响应式适配 */
 @media (max-width: 900px) {
   .hero-control-header {
@@ -1437,7 +1947,12 @@ function switchTab(url: string) {
     grid-template-columns: 1fr;
   }
   .map-audit-tag {
-    display: none;
+    bottom: 8px;
+    left: 8px;
+    padding: 3px 8px;
+  }
+  .map-audit-tag .audit-txt {
+    font-size: 10px;
   }
 }
 
@@ -1466,6 +1981,19 @@ function switchTab(url: string) {
   .dock-metrics-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 6px;
+  }
+  .sm-card-header {
+    padding: 14px 16px;
+  }
+  .sm-scroll-content {
+    padding: 14px 16px;
+    gap: 14px;
+  }
+  .sm-main-title {
+    font-size: 14.5px;
+  }
+  .sm-card-footer {
+    padding: 10px 16px;
   }
 }
 </style>
