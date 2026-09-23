@@ -922,26 +922,63 @@ onUnmounted(() => {
   if (wheelTimer) clearTimeout(wheelTimer);
 });
 
-// 触摸屏手势拖拽
+// 触摸屏手势：单指 60fps 零延迟平滑拖拽，双指智能定焦缩放（Pinch-to-zoom）
 let touchStartX = 0;
 let touchStartY = 0;
+let touchStartDist = 0;
+let touchStartScale = 1.0;
+
+function getTouchDistance(touches: TouchList) {
+  const dx = touches[0].clientX - touches[1].clientX;
+  const dy = touches[0].clientY - touches[1].clientY;
+  return Math.sqrt(dx * dx + dy * dy);
+}
+
 function onTouchStart(e: TouchEvent) {
   if (e.touches.length === 1) {
+    isDragging.value = true;
     touchStartX = e.touches[0].clientX;
     touchStartY = e.touches[0].clientY;
+    panStart.x = panX.value;
+    panStart.y = panY.value;
+    touchStartDist = 0;
+  } else if (e.touches.length === 2) {
+    isDragging.value = true;
+    touchStartDist = getTouchDistance(e.touches);
+    touchStartScale = zoomScale.value;
     panStart.x = panX.value;
     panStart.y = panY.value;
   }
 }
 
 function onTouchMove(e: TouchEvent) {
-  if (e.touches.length === 1) {
+  if (e.touches.length === 1 && touchStartDist === 0) {
     panX.value = panStart.x + (e.touches[0].clientX - touchStartX);
     panY.value = panStart.y + (e.touches[0].clientY - touchStartY);
+  } else if (e.touches.length === 2) {
+    const newDist = getTouchDistance(e.touches);
+    if (touchStartDist > 0) {
+      const scaleFactor = newDist / touchStartDist;
+      let newScale = +(touchStartScale * scaleFactor).toFixed(3);
+      if (newScale < 0.7) newScale = 0.7;
+      if (newScale > 6.0) newScale = 6.0;
+      zoomScale.value = newScale;
+    }
   }
 }
 
-function onTouchEnd() {}
+function onTouchEnd(e: TouchEvent) {
+  if (e.touches.length === 0) {
+    isDragging.value = false;
+    touchStartDist = 0;
+  } else if (e.touches.length === 1) {
+    touchStartDist = 0;
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    panStart.x = panX.value;
+    panStart.y = panY.value;
+  }
+}
 
 // 快速跳转至各主要功能页 (用户核心诉求：可视化点击转跳到各个统筹区)
 function getNavCityCode(cityCode: string): string {
@@ -2385,13 +2422,135 @@ function switchTab(url: string) {
 
 @media (max-width: 600px) {
   .home-main-wrapper {
-    padding: 10px 12px 36px;
+    padding: 10px 12px calc(76px + env(safe-area-inset-bottom));
+  }
+  .hero-badge-pill {
+    padding: 4px 10px;
+    font-size: 11px;
+    gap: 6px;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .hero-badge-pill .count-txt {
+    display: none;
   }
   .hero-h1 {
-    font-size: 20px;
+    font-size: 19px;
+  }
+  .hero-sub {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .map-toolbar {
+    padding: 8px 12px;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .dimension-picker {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+  .dimension-picker::-webkit-scrollbar {
+    display: none;
+  }
+  .dim-lead {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .dim-chips-group {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    width: 100%;
+  }
+  .dim-chips-group::-webkit-scrollbar {
+    display: none;
+  }
+  .dim-chip {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 4px 10px;
+    font-size: 11.5px;
+  }
+  .benchmark-quick-bar {
+    width: 100%;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+    scrollbar-width: none;
+  }
+  .benchmark-quick-bar::-webkit-scrollbar {
+    display: none;
+  }
+  .bench-label {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .bench-chips {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .bench-chips::-webkit-scrollbar {
+    display: none;
+  }
+  .bench-item {
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 3px 8px;
+    font-size: 11px;
   }
   .map-stage-card {
     height: 480px;
+  }
+  .map-legend-dock {
+    top: 8px;
+    left: 8px;
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+  .legend-title {
+    font-size: 10px;
+    margin-bottom: 3px;
+  }
+  .legend-gradient-bar {
+    width: 80px;
+    height: 6px;
+    border-radius: 3px;
+  }
+  .legend-labels {
+    font-size: 8.5px;
+    margin-top: 2px;
+  }
+  .legend-special-row,
+  .legend-dashed-row {
+    display: none !important;
+  }
+  .map-reset-btn {
+    top: 8px;
+    right: 8px;
+    padding: 6px 10px;
+  }
+  .map-reset-btn .reset-txt {
+    font-size: 11px;
+  }
+  .map-audit-tag {
+    bottom: 6px;
+    left: 6px;
+    padding: 3px 8px;
+  }
+  .map-audit-tag .audit-txt {
+    font-size: 9.5px;
   }
   .service-cards-grid {
     grid-template-columns: 1fr;

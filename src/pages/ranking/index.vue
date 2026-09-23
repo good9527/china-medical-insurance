@@ -305,7 +305,7 @@
                   :class="{ active: sortColumn === opt.key }"
                   @click.stop="toggleSort(opt.key); openDropdown = null"
                 >
-                  <text class="item-name">{{ opt.icon }} {{ opt.label }}</text>
+                  <text class="item-name">{{ opt.label }}</text>
                   <view class="item-status-group" v-if="sortColumn === opt.key">
                     <text class="item-order-badge">{{ sortAsc ? '▲ 升序' : '▼ 降序' }}</text>
                     <svg class="check-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
@@ -492,7 +492,7 @@
               <polyline points="15 18 9 12 15 6"></polyline>
               <polyline points="9 18 3 12 9 6"></polyline>
             </svg>
-            <text class="hint-txt">👉 支持水平横向平滑滚动浏览 16+ 项细颗粒度法定待遇指标 · 点击表头任意列可即时排序</text>
+            <text class="hint-txt">支持水平横向平滑滚动浏览 16+ 项细颗粒度法定待遇指标 · 点击表头任意列可即时排序</text>
             <svg class="hint-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <polyline points="9 18 15 12 9 6"></polyline>
               <polyline points="15 18 21 12 15 6"></polyline>
@@ -1143,46 +1143,46 @@ const sortColumnLabels: Record<SortColumn, string> = {
 const quickSortOptions = computed(() => {
   if (currentCategory.value === 'employee') {
     return [
-      { key: 'employee_score' as SortColumn, label: '职工综合分', icon: '🏆' },
-      { key: 'emp_inpatient' as SortColumn, label: '三级在职住院比', icon: '🏥' },
-      { key: 'emp_inpatient_ded' as SortColumn, label: '住院起付门槛(低)', icon: '🚪' },
-      { key: 'emp_outpatient_cap' as SortColumn, label: '门诊共济年封顶', icon: '💊' },
-      { key: 'threshold_score' as SortColumn, label: '门诊免起付友好', icon: '✨' },
-      { key: 'emp_outpatient_ratio_community' as SortColumn, label: '基层门诊统筹比', icon: '🩺' },
-      { key: 'retiree_bonus' as SortColumn, label: '退休倾斜上浮', icon: '👴' },
-      { key: 'retiree_inpatient_ratio' as SortColumn, label: '退休实享统筹比', icon: '🎖️' },
-      { key: 'annual_cap' as SortColumn, label: '基本医保年封顶', icon: '🛡️' },
-      { key: 'mobility_score' as SortColumn, label: '异地转诊保持率', icon: '🌐' }
+      { key: 'employee_score' as SortColumn, label: '职工综合分' },
+      { key: 'emp_inpatient' as SortColumn, label: '三级在职住院比' },
+      { key: 'emp_inpatient_ded' as SortColumn, label: '住院起付门槛(低)' },
+      { key: 'emp_outpatient_cap' as SortColumn, label: '门诊共济年封顶' },
+      { key: 'threshold_score' as SortColumn, label: '门诊免起付友好' },
+      { key: 'emp_outpatient_ratio_community' as SortColumn, label: '基层门诊统筹比' },
+      { key: 'retiree_bonus' as SortColumn, label: '退休倾斜上浮' },
+      { key: 'retiree_inpatient_ratio' as SortColumn, label: '退休实享统筹比' },
+      { key: 'annual_cap' as SortColumn, label: '基本医保年封顶' },
+      { key: 'mobility_score' as SortColumn, label: '异地转诊保持率' }
     ];
   }
   if (currentCategory.value === 'resident') {
     return [
-      { key: 'resident_score' as SortColumn, label: '居民综合分', icon: '🏆' },
-      { key: 'res_inpatient' as SortColumn, label: '居民三级住院比', icon: '🏥' },
-      { key: 'res_inpatient_ded' as SortColumn, label: '住院起付门槛(低)', icon: '🚪' },
-      { key: 'res_outpatient_cap' as SortColumn, label: '基层门诊年限额', icon: '💊' },
-      { key: 'catastrophic_ded' as SortColumn, label: '大病起赔门槛(低)', icon: '🛡️' },
-      { key: 'catastrophic_max_ratio' as SortColumn, label: '大病最高报销比', icon: '📈' },
-      { key: 'catastrophic_score' as SortColumn, label: '大病不设限兜底', icon: '🌟' },
-      { key: 'annual_cap' as SortColumn, label: '年度总支付限额', icon: '💰' },
-      { key: 'mobility_score' as SortColumn, label: '异地转诊保持率', icon: '🌐' }
+      { key: 'resident_score' as SortColumn, label: '居民综合分' },
+      { key: 'res_inpatient' as SortColumn, label: '居民三级住院比' },
+      { key: 'res_inpatient_ded' as SortColumn, label: '住院起付门槛(低)' },
+      { key: 'res_outpatient_cap' as SortColumn, label: '基层门诊年限额' },
+      { key: 'catastrophic_ded' as SortColumn, label: '大病起赔门槛(低)' },
+      { key: 'catastrophic_max_ratio' as SortColumn, label: '大病最高报销比' },
+      { key: 'catastrophic_score' as SortColumn, label: '大病不设限兜底' },
+      { key: 'annual_cap' as SortColumn, label: '年度总支付限额' },
+      { key: 'mobility_score' as SortColumn, label: '异地转诊保持率' }
     ];
   }
   return [
-    { key: 'overall_score' as SortColumn, label: '全域综合分', icon: '🏆' },
-    { key: 'employee_score' as SortColumn, label: '职工综合分', icon: '💼' },
-    { key: 'resident_score' as SortColumn, label: '居民综合分', icon: '🏡' },
-    { key: 'emp_inpatient' as SortColumn, label: '职工三级住院比', icon: '🏥' },
-    { key: 'emp_inpatient_ded' as SortColumn, label: '职工住院门槛(低)', icon: '🚪' },
-    { key: 'emp_outpatient_cap' as SortColumn, label: '职工门诊共济封顶', icon: '💊' },
-    { key: 'res_inpatient' as SortColumn, label: '居民三级住院比', icon: '🏥' },
-    { key: 'res_inpatient_ded' as SortColumn, label: '居民住院门槛(低)', icon: '🚪' },
-    { key: 'res_outpatient_cap' as SortColumn, label: '居民门诊限额', icon: '🩺' },
-    { key: 'annual_cap' as SortColumn, label: '基本医保总封顶', icon: '💰' },
-    { key: 'catastrophic_max_ratio' as SortColumn, label: '大病最高报销比', icon: '🛡️' },
-    { key: 'retiree_bonus' as SortColumn, label: '退休倾斜优待', icon: '👴' },
-    { key: 'retiree_inpatient_ratio' as SortColumn, label: '退休实享报销比', icon: '🎖️' },
-    { key: 'mobility_score' as SortColumn, label: '异地转诊保持率', icon: '🌐' }
+    { key: 'overall_score' as SortColumn, label: '全域综合分' },
+    { key: 'employee_score' as SortColumn, label: '职工综合分' },
+    { key: 'resident_score' as SortColumn, label: '居民综合分' },
+    { key: 'emp_inpatient' as SortColumn, label: '职工三级住院比' },
+    { key: 'emp_inpatient_ded' as SortColumn, label: '职工住院门槛(低)' },
+    { key: 'emp_outpatient_cap' as SortColumn, label: '职工门诊共济封顶' },
+    { key: 'res_inpatient' as SortColumn, label: '居民三级住院比' },
+    { key: 'res_inpatient_ded' as SortColumn, label: '居民住院门槛(低)' },
+    { key: 'res_outpatient_cap' as SortColumn, label: '居民门诊限额' },
+    { key: 'annual_cap' as SortColumn, label: '基本医保总封顶' },
+    { key: 'catastrophic_max_ratio' as SortColumn, label: '大病最高报销比' },
+    { key: 'retiree_bonus' as SortColumn, label: '退休倾斜优待' },
+    { key: 'retiree_inpatient_ratio' as SortColumn, label: '退休实享报销比' },
+    { key: 'mobility_score' as SortColumn, label: '异地转诊保持率' }
   ];
 });
 

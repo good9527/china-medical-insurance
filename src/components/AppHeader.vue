@@ -172,6 +172,21 @@
               </view>
               <text class="m-copy-chip">复制</text>
             </view>
+
+            <!-- 政策纠错与公文提报直通入口 (便于手机端和电脑端用户随时直达) -->
+            <view class="m-contact-item corr-entry-item" @click="navTo('/pages/correction/index'); showContactModal = false">
+              <view class="m-icon corr-bg">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  <path d="m9 12 2 2 4-4"></path>
+                </svg>
+              </view>
+              <view class="m-info">
+                <text class="m-k">公文勘误与政策纠错</text>
+                <text class="m-v">进入政策纠错提报通道</text>
+              </view>
+              <text class="m-copy-chip corr-chip">立即进入 ↗</text>
+            </view>
           </view>
 
           <view class="modal-foot">
@@ -211,8 +226,20 @@ onUnmounted(() => {
   }
 });
 
+const TAB_BAR_PAGES = [
+  '/pages/home/index',
+  '/pages/index/index',
+  '/pages/policy/index',
+  '/pages/ranking/index',
+  '/pages/service/index'
+];
+
 function navTo(url: string) {
-  uni.switchTab({ url });
+  if (TAB_BAR_PAGES.includes(url)) {
+    uni.switchTab({ url });
+  } else {
+    uni.navigateTo({ url });
+  }
 }
 
 function copyInfo(text: string, label: string) {
@@ -552,6 +579,8 @@ function openRepo() {
 .mail-bg { background: #dbeafe; color: #2563eb; }
 .wx-bg { background: #dcfce7; color: #16a34a; }
 .gzh-bg { background: #fef3c7; color: #d97706; }
+.corr-bg { background: #ede9fe; color: #7c3aed; }
+.corr-chip { background: #7c3aed !important; color: #ffffff !important; border-color: #6d28d9 !important; }
 
 .m-svg {
   width: 16px;

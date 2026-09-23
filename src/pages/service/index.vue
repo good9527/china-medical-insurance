@@ -387,7 +387,7 @@ import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/p
 import { getCityDataByCode, allCities } from '../../data';
 
 function goToCorrection() {
-  uni.switchTab({ url: '/pages/correction/index' });
+  uni.navigateTo({ url: '/pages/correction/index' });
 }
 
 // 悬浮回到顶部控制

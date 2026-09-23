@@ -149,7 +149,7 @@
           <!-- 严谨免责兜底与公章样式 -->
           <view class="voucher-disclaimer-box">
             <view class="disclaimer-left">
-              <text class="disclaimer-h">⚠️ 重要声明与就医提示：</text>
+              <text class="disclaimer-h">重要声明与就医提示：</text>
               <text class="disclaimer-p">1. 本凭据单由“全国医保待遇估算与政策查询”开源平台整理各地公开规范性文件生成，仅供就医费用预算参考，不具有行政结算与法律凭证效力。</text>
               <text class="disclaimer-p">2. 参保人实际发生的报销金额与自理明细，受定点医疗机构用药目录、诊疗耗材品规、出院实时医保结算系统核定为准。</text>
             </view>
@@ -221,7 +221,11 @@
         <view class="poster-preview-body">
           <img :src="posterImageUrl" class="poster-preview-img" alt="全国医保待遇预估参考凭证" />
           <view class="poster-save-tip">
-            <text class="tip-icon">💡</text>
+            <svg class="tip-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="16" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12.01" y2="8"></line>
+            </svg>
             <text class="tip-txt">长按上方图片即可“保存到手机相册”或直接转发给家人微信</text>
           </view>
         </view>
@@ -650,7 +654,7 @@ function handleExportImage() {
 
     ctx.fillStyle = '#b45309';
     ctx.font = 'bold 11px sans-serif';
-    ctx.fillText('⚠️ 免责声明与定点医疗机构结算须知：', 60, curY + 22);
+    ctx.fillText('免责声明与定点医疗机构结算须知：', 60, curY + 22);
 
     ctx.fillStyle = '#78350f';
     ctx.font = '10.5px sans-serif';
@@ -1388,8 +1392,10 @@ function handleExportImage() {
   box-sizing: border-box;
 }
 
-.tip-icon {
-  font-size: 14px;
+.tip-svg {
+  width: 15px;
+  height: 15px;
+  stroke: #2563eb;
   flex-shrink: 0;
 }
 

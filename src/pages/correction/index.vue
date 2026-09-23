@@ -128,7 +128,11 @@
           <!-- 智能现行参数轻提示 (自动根据城市+分类调取，一行清爽展示) -->
           <view class="live-param-banner mt-12">
             <view class="live-banner-left">
-              <text class="live-bulb">💡</text>
+              <svg class="live-tip-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
               <text class="live-banner-txt"><text class="font-bold">{{ currentCityOption.cityName }} · {{ currentCategoryObj.name }}</text> 库内现行数据：{{ liveBenchmarkText }}</text>
             </view>
           </view>
@@ -226,7 +230,7 @@
             </view>
 
             <view class="submit-note-hint mt-8">
-              <text class="hint-text">💡 填写并提交后将自动生成标准化 Issue 草稿，支持一键投递至 GitHub 或唤起邮件直接发送作者团队。</text>
+              <text class="hint-text">说明：填写并提交后将自动生成标准化 Issue 草稿，支持一键投递至 GitHub 或唤起邮件直接发送作者团队。</text>
             </view>
           </view>
 
@@ -639,7 +643,7 @@ const isGovUrl = computed(() => {
 const diffHintText = computed(() => {
   const val = suggestedValue.value.trim();
   if (!val) return '';
-  return `💡 已录入建议修改为：“${val}${currentFieldObj.value.unit}” (原现行标准为：${currentFieldValue.value})`;
+  return `已录入建议修改为：“${val}${currentFieldObj.value.unit}” (原现行标准为：${currentFieldValue.value})`;
 });
 
 // 官方采纳与更新动态（动态读取自 CORRECTION_UPDATES_LOG）
@@ -1187,8 +1191,11 @@ onMounted(() => {
   gap: 8px;
 }
 
-.live-bulb {
-  font-size: 14px;
+.live-tip-svg {
+  width: 15px;
+  height: 15px;
+  stroke: #2563eb;
+  flex-shrink: 0;
 }
 
 .live-banner-txt {
