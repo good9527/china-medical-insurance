@@ -5,7 +5,7 @@ import shutil
 from http.server import SimpleHTTPRequestHandler, HTTPServer
 from playwright.sync_api import sync_playwright
 
-PORT = 9993
+PORT = 9994
 DIST_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "dist", "build", "h5")
 SCREENSHOT_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "screenshots")
 ARTIFACT_DIR = r"C:\Users\19901\.gemini\antigravity\brain\ab264cee-a783-46c6-9006-711cd2f6a1e3"
@@ -36,43 +36,54 @@ with sync_playwright() as p:
     page.goto(url)
     page.wait_for_timeout(1800)
 
-    # 1.1 Overview screenshot showing provincial dashed lines
+    # 1.1 Overview screenshot showing the new "复位全景" text button in top right, no zoom in/out buttons
     p1 = os.path.join(SCREENSHOT_DIR, "home_province_dashed_overview.png")
     page.screenshot(path=p1)
     if os.path.exists(ARTIFACT_DIR):
         shutil.copy(p1, os.path.join(ARTIFACT_DIR, "home_province_dashed_overview.png"))
-    print("Captured overview screenshot")
+    print("Captured overview screenshot with reset button")
 
-    # 1.2 Zoom in on central China (Sichuan/Shaanxi/Hubei/Hunan)
-    # Click zoom button twice
-    zoom_btn = page.locator(".zoom-btn").first
-    zoom_btn.click()
-    page.wait_for_timeout(400)
-    zoom_btn.click()
-    page.wait_for_timeout(600)
-    p2 = os.path.join(SCREENSHOT_DIR, "home_province_dashed_zoomed.png")
+    # 1.2 Test mouse wheel zooming over central China
+    viewport = page.locator(".svg-viewport")
+    box = viewport.bounding_box()
+    if box:
+        # Move mouse to center of map and roll wheel upwards to zoom in
+        target_x = box["x"] + box["width"] * 0.52
+        target_y = box["y"] + box["height"] * 0.48
+        page.mouse.move(target_x, target_y)
+        page.mouse.wheel(0, -600) # scroll up = zoom in
+        page.wait_for_timeout(600)
+        page.mouse.wheel(0, -400) # zoom in more
+        page.wait_for_timeout(600)
+
+    p2 = os.path.join(SCREENSHOT_DIR, "home_wheel_zoomed.png")
     page.screenshot(path=p2)
     if os.path.exists(ARTIFACT_DIR):
-        shutil.copy(p2, os.path.join(ARTIFACT_DIR, "home_province_dashed_zoomed.png"))
-    print("Captured zoomed screenshot")
+        shutil.copy(p2, os.path.join(ARTIFACT_DIR, "home_wheel_zoomed.png"))
+    print("Captured mouse wheel zoomed screenshot")
 
-    # 1.3 Select a city (e.g. 成都市) by clicking or searching to show active overlay over dashed lines
+    # 1.3 Test clicking "复位全景" button
+    reset_btn = page.locator(".map-reset-btn")
+    reset_btn.click()
+    page.wait_for_timeout(600)
+
+    p3 = os.path.join(SCREENSHOT_DIR, "home_after_reset_clicked.png")
+    page.screenshot(path=p3)
+    if os.path.exists(ARTIFACT_DIR):
+        shutil.copy(p3, os.path.join(ARTIFACT_DIR, "home_after_reset_clicked.png"))
+    print("Captured after reset clicked screenshot")
+
+    # 1.4 Select a city by search to show active city card
     search_input = page.locator(".map-search-input input")
     search_input.fill("四川")
     page.wait_for_timeout(600)
-    p3 = os.path.join(SCREENSHOT_DIR, "home_province_search_sichuan.png")
-    page.screenshot(path=p3)
-    if os.path.exists(ARTIFACT_DIR):
-        shutil.copy(p3, os.path.join(ARTIFACT_DIR, "home_province_search_sichuan.png"))
-
-    # Click first suggested city (成都市)
     page.locator(".suggest-item").first.click()
     page.wait_for_timeout(800)
     p4 = os.path.join(SCREENSHOT_DIR, "home_province_chengdu_selected.png")
     page.screenshot(path=p4)
     if os.path.exists(ARTIFACT_DIR):
         shutil.copy(p4, os.path.join(ARTIFACT_DIR, "home_province_chengdu_selected.png"))
-    print("Captured Chengdu selected screenshot")
+    print("Captured city selected screenshot")
 
     ctx.close()
 
@@ -93,4 +104,4 @@ with sync_playwright() as p:
 
     browser.close()
 
-print("All screenshots captured successfully!")
+print("All verification screenshots captured successfully!")

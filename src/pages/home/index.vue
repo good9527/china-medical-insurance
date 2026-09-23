@@ -108,12 +108,14 @@
 
       <!-- 核心矢量地图展示区 -->
       <view class="map-stage-card">
-        <!-- 缩放与复位控制器 -->
-        <view class="map-controls-dock" @click.stop>
-          <button class="zoom-btn" title="放大视角" @click="zoomIn">＋</button>
-          <button class="zoom-btn" title="缩小视角" @click="zoomOut">－</button>
-          <button class="zoom-btn reset-btn" title="复位全景" @click="resetView">⟲</button>
-        </view>
+        <!-- 右上角复位全景按钮 (明确文字标识，方便快速找回归位) -->
+        <button class="map-reset-btn" @click.stop="resetView" title="重置地图视角至全国全貌">
+          <svg class="reset-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+            <path d="M3 3v5h5"></path>
+          </svg>
+          <text class="reset-txt">复位全景</text>
+        </button>
 
         <!-- 图例说明 (Legend) -->
         <view class="map-legend-dock">
@@ -148,7 +150,7 @@
           @mousemove="onDrag"
           @mouseup="endDrag"
           @mouseleave="endDrag"
-          @wheel.prevent="onWheelZoom"
+          @wheel.prevent.stop="onWheelZoom"
           @touchstart="onTouchStart"
           @touchmove="onTouchMove"
           @touchend="onTouchEnd"
@@ -162,7 +164,7 @@
             <g 
               :transform="`translate(${panX}, ${panY}) scale(${zoomScale})`" 
               class="map-root-g"
-              :class="{ 'is-dragging': isDragging }"
+              :class="{ 'is-dragging': isDragging, 'is-wheel-zooming': isWheelZooming }"
             >
               <!-- 海洋背景底衬 -->
               <rect x="-1000" y="-1000" width="3000" height="3000" fill="#f8fafc" />
@@ -553,7 +555,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import AppHeader from '@/components/AppHeader.vue';
 import citiesRawData from '@/data/map/china_cities_map.json';
 import boundariesRawData from '@/data/map/china_boundaries.json';
@@ -606,6 +608,8 @@ const zoomScale = ref(1.0);
 const panX = ref(0);
 const panY = ref(0);
 const isDragging = ref(false);
+const isWheelZooming = ref(false);
+let wheelTimer: any = null;
 const dragStart = { x: 0, y: 0 };
 const panStart = { x: 0, y: 0 };
 
@@ -757,31 +761,14 @@ function handlePageClick() {
   // 不重置 activeCity，方便查看
 }
 
-// 视角控制 (以画布视口几何中心 460, 470 为基准等比缩放)
-function zoomIn() {
-  if (zoomScale.value < 5.0) {
-    const newScale = Math.min(5.0, +(zoomScale.value * 1.25).toFixed(2));
-    const ratio = newScale / zoomScale.value;
-    panX.value = Math.round(460 - (460 - panX.value) * ratio);
-    panY.value = Math.round(470 - (470 - panY.value) * ratio);
-    zoomScale.value = newScale;
-  }
-}
-
-function zoomOut() {
-  if (zoomScale.value > 0.75) {
-    const newScale = Math.max(0.75, +(zoomScale.value * 0.8).toFixed(2));
-    const ratio = newScale / zoomScale.value;
-    panX.value = Math.round(460 - (460 - panX.value) * ratio);
-    panY.value = Math.round(470 - (470 - panY.value) * ratio);
-    zoomScale.value = newScale;
-  }
-}
+// 视角控制与全景复位
 
 function resetView() {
   zoomScale.value = 1.0;
   panX.value = 0;
   panY.value = 0;
+  activeCity.value = null;
+  searchKeyword.value = '';
 }
 
 // 鼠标拖拽平移
@@ -803,32 +790,88 @@ function endDrag() {
   isDragging.value = false;
 }
 
-// 鼠标滚轮缩放 (高精度以鼠标指针所在位置为定焦中心进行平滑连续缩放)
+// 鼠标滚轮缩放 (精准补偿 SVG viewBox letterboxing，以鼠标所在地理几何点为定焦中心，60fps 连续实时缩放)
 function onWheelZoom(e: WheelEvent) {
-  e.preventDefault();
-  const container = (e.currentTarget as HTMLElement).getBoundingClientRect();
-  if (!container || container.width <= 0) return;
+  if (e) {
+    if (e.preventDefault) e.preventDefault();
+    if (e.stopPropagation) e.stopPropagation();
+  }
 
-  const mouseX = e.clientX - container.left;
-  const mouseY = e.clientY - container.top;
+  // 获取 SVG 视口 DOM 容器真实矩形
+  const viewport = document.querySelector('.svg-viewport') as HTMLElement | null;
+  const rect = viewport ? viewport.getBoundingClientRect() : null;
+  if (!rect || rect.width <= 0 || rect.height <= 0) return;
 
-  // 映射至 SVG viewBox 坐标系 (920 x 940)
-  const svgX = (mouseX / container.width) * 920;
-  const svgY = (mouseY / container.height) * 940;
+  const mouseX = e.clientX - rect.left;
+  const mouseY = e.clientY - rect.top;
 
-  const factor = e.deltaY < 0 ? 1.15 : 0.87;
+  // 根据 SVG viewBox (920 x 940) 和 preserveAspectRatio="xMidYMid meet" 规范，精准计算实际投影尺寸与白边偏移
+  const vbW = 920;
+  const vbH = 940;
+  const vbAspect = vbW / vbH; // ~0.9787
+  const containerAspect = rect.width / rect.height;
+
+  let s = 1.0;
+  let ox = 0;
+  let oy = 0;
+
+  if (containerAspect > vbAspect) {
+    // 容器偏宽（桌面端）：高度撑满，左右居中留白
+    s = rect.height / vbH;
+    ox = (rect.width - vbW * s) / 2;
+    oy = 0;
+  } else {
+    // 容器偏窄（移动端）：宽度撑满，上下居中留白
+    s = rect.width / vbW;
+    ox = 0;
+    oy = (rect.height - vbH * s) / 2;
+  }
+
+  // 获得鼠标指针在 SVG viewBox (920 x 940) 原始坐标系下的真实位置
+  const svgX = (mouseX - ox) / s;
+  const svgY = (mouseY - oy) / s;
+
+  // 滚轮缩放系数：向上滚放大，向下滚缩小
+  const zoomFactor = e.deltaY < 0 ? 1.12 : 0.89;
   const oldScale = zoomScale.value;
-  let newScale = oldScale * factor;
-  if (newScale < 0.75) newScale = 0.75;
-  if (newScale > 5.0) newScale = 5.0;
+  let newScale = oldScale * zoomFactor;
+  if (newScale < 0.7) newScale = 0.7;
+  if (newScale > 6.0) newScale = 6.0;
 
   if (Math.abs(newScale - oldScale) < 0.001) return;
 
+  // 滚轮缩放期间关闭 CSS 缓动延迟，实现 60fps 实时连续无卡顿响应
+  isWheelZooming.value = true;
+  if (wheelTimer) clearTimeout(wheelTimer);
+  wheelTimer = setTimeout(() => {
+    isWheelZooming.value = false;
+  }, 120);
+
+  // 以鼠标指针在底图上的真实几何点为定焦中心进行平滑缩放
   const ratio = newScale / oldScale;
   panX.value = Math.round(svgX - (svgX - panX.value) * ratio);
   panY.value = Math.round(svgY - (svgY - panY.value) * ratio);
   zoomScale.value = +newScale.toFixed(3);
 }
+
+onMounted(() => {
+  // #ifdef H5
+  const viewport = document.querySelector('.svg-viewport') as HTMLElement | null;
+  if (viewport) {
+    viewport.addEventListener('wheel', onWheelZoom, { passive: false });
+  }
+  // #endif
+});
+
+onUnmounted(() => {
+  // #ifdef H5
+  const viewport = document.querySelector('.svg-viewport') as HTMLElement | null;
+  if (viewport) {
+    viewport.removeEventListener('wheel', onWheelZoom);
+  }
+  // #endif
+  if (wheelTimer) clearTimeout(wheelTimer);
+});
 
 // 触摸屏手势拖拽
 let touchStartX = 0;
@@ -1218,45 +1261,58 @@ function switchTab(url: string) {
   height: 640px;
 }
 
-/* 缩放控制器 */
-.map-controls-dock {
+/* 右上角复位全景按钮 (明确文字标识，方便快速找回归位) */
+.map-reset-btn {
   position: absolute;
   top: 16px;
   right: 16px;
   z-index: 20;
-  display: flex;
-  flex-direction: column;
-  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(8px);
   border: 1px solid #cbd5e1;
   border-radius: 8px;
+  padding: 7px 13px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-}
-
-.zoom-btn {
-  width: 36px;
-  height: 36px;
-  border: none;
-  background: #ffffff;
-  color: #0f172a;
-  font-size: 18px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
-  border-bottom: 1px solid #e2e8f0;
+  transition: all 0.2s ease;
   line-height: 1;
 }
 
-.zoom-btn:hover {
-  background: #f1f5f9;
-  color: #2563eb;
+.map-reset-btn:hover {
+  background: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.16);
+  transform: translateY(-1px);
 }
 
-.zoom-btn.reset-btn {
-  font-size: 15px;
-  border-bottom: none;
+.map-reset-btn:active {
+  transform: translateY(0);
+}
+
+.reset-ico {
+  width: 14px;
+  height: 14px;
+  color: #2563eb;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.map-reset-btn:hover .reset-ico {
+  transform: rotate(-90deg);
+}
+
+.reset-txt {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1e293b;
+  white-space: nowrap;
+}
+
+.map-reset-btn:hover .reset-txt {
+  color: #2563eb;
 }
 
 /* 图例 */
@@ -1411,7 +1467,8 @@ function switchTab(url: string) {
   will-change: transform;
 }
 
-.map-root-g.is-dragging {
+.map-root-g.is-dragging,
+.map-root-g.is-wheel-zooming {
   transition: none !important;
 }
 
