@@ -283,10 +283,35 @@
               </view>
             </view>
 
-            <!-- 排序提示徽章 -->
-            <view class="sort-indicator-pill">
-              <text class="sort-tip-label">排序：</text>
-              <text class="sort-tip-val">{{ currentSortLabel }} {{ sortAsc ? '▲ 升序' : '▼ 降序' }}</text>
+            <!-- 排序指标下拉选择器 (集成在筛选栏中，不再在领奖台上方堆砌悬浮块) -->
+            <view class="picker-anchor">
+              <view class="dropdown-trigger sort-dropdown-trigger" :class="{ open: openDropdown === 'sort' }" @click.stop="toggleDropdown('sort')">
+                <svg class="picker-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="4" y1="6" x2="20" y2="6"></line>
+                  <line x1="8" y1="12" x2="16" y2="12"></line>
+                  <line x1="10" y1="18" x2="14" y2="18"></line>
+                </svg>
+                <text class="dropdown-label">
+                  <text class="desktop-text">排序：{{ currentSortLabel }} {{ sortAsc ? '▲ 升序' : '▼ 降序' }}</text>
+                  <text class="mobile-text">{{ currentSortLabel }} {{ sortAsc ? '▲' : '▼' }}</text>
+                </text>
+                <text class="dropdown-caret">▾</text>
+              </view>
+              <view class="dropdown-menu sort-dropdown-menu" v-if="openDropdown === 'sort'" @click.stop>
+                <view 
+                  class="menu-item"
+                  v-for="opt in quickSortOptions"
+                  :key="'sort_opt_' + opt.key"
+                  :class="{ active: sortColumn === opt.key }"
+                  @click.stop="toggleSort(opt.key); openDropdown = null"
+                >
+                  <text class="item-name">{{ opt.icon }} {{ opt.label }}</text>
+                  <view class="item-status-group" v-if="sortColumn === opt.key">
+                    <text class="item-order-badge">{{ sortAsc ? '▲ 升序' : '▼ 降序' }}</text>
+                    <svg class="check-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  </view>
+                </view>
+              </view>
             </view>
           </view>
 
@@ -302,43 +327,6 @@
               placeholder="搜索统筹区或省份（如：西安 / 成都 / 威海）" 
             />
             <svg class="clear-svg" v-if="searchQuery" @click="searchQuery = ''" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-          </view>
-        </view>
-
-        <!-- 横向多参数快捷滑动排序条 (用户要求：横向的可以滑动选择更多参数排序) -->
-        <view class="quick-sort-section">
-          <view class="quick-sort-head-row">
-            <view class="quick-sort-title-wrap">
-              <svg class="quick-sort-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <line x1="4" y1="6" x2="20" y2="6"></line>
-                <line x1="8" y1="12" x2="16" y2="12"></line>
-                <line x1="10" y1="18" x2="14" y2="18"></line>
-              </svg>
-              <text class="quick-sort-lead">横向轻滑选择参数排序：</text>
-            </view>
-            <view class="quick-sort-status-tag" :class="{ 'is-custom': sortColumn !== 'composite' && sortColumn !== 'overall_score' }">
-              <text class="status-txt">当前基准：{{ currentSortLabel }}</text>
-              <text class="status-arrow">{{ sortAsc ? '▲ 升序 (低起付/低门槛优选)' : '▼ 降序 (高比例/高限额优选)' }}</text>
-            </view>
-          </view>
-
-          <!-- 横向滑动容器 -->
-          <view class="quick-sort-scroll-container">
-            <view class="quick-sort-chips-track">
-              <view 
-                class="quick-sort-chip"
-                v-for="opt in quickSortOptions"
-                :key="'qs_' + opt.key"
-                :class="{ active: sortColumn === opt.key }"
-                @click="toggleSort(opt.key)"
-              >
-                <text class="chip-ico">{{ opt.icon }}</text>
-                <text class="chip-name">{{ opt.label }}</text>
-                <text class="chip-order-icon" v-if="sortColumn === opt.key">
-                  {{ sortAsc ? '▲' : '▼' }}
-                </text>
-              </view>
-            </view>
           </view>
         </view>
 
@@ -571,7 +559,7 @@
                   <th class="col-sortable" @click="toggleSort('mobility_score')">
                     <view class="th-sort-inner"><text>异地转诊保持</text><text class="sort-arrow" :class="{ active: sortColumn === 'mobility_score' }">{{ sortColumn === 'mobility_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
-                  <th class="col-action text-right">操作</th>
+                  <th class="col-action">操作</th>
                 </tr>
 
                 <!-- 表头：城镇职工医保专属列 -->
@@ -610,7 +598,7 @@
                   <th class="col-sortable" @click="toggleSort('mobility_score')">
                     <view class="th-sort-inner"><text>异地转诊保持</text><text class="sort-arrow" :class="{ active: sortColumn === 'mobility_score' }">{{ sortColumn === 'mobility_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
-                  <th class="col-action text-right">操作</th>
+                  <th class="col-action">操作</th>
                 </tr>
 
                 <!-- 表头：城乡居民医保专属列 -->
@@ -646,7 +634,7 @@
                   <th class="col-sortable" @click="toggleSort('mobility_score')">
                     <view class="th-sort-inner"><text>异地转诊保持</text><text class="sort-arrow" :class="{ active: sortColumn === 'mobility_score' }">{{ sortColumn === 'mobility_score' ? (sortAsc ? '▲' : '▼') : '↕' }}</text></view>
                   </th>
-                  <th class="col-action text-right">操作</th>
+                  <th class="col-action">操作</th>
                 </tr>
               </thead>
 
@@ -729,12 +717,15 @@
                     <td><text class="plain-data-txt text-blue">{{ Math.round(item.remoteTransferRatio * 100) }}%</text></td>
                   </template>
 
-                  <!-- 操作列：加入竞技场 PK (Sticky Right) -->
-                  <td class="col-action text-right" @click.stop>
+                  <!-- 操作列：加入双城深度对决 (Sticky Right) -->
+                  <td class="col-action" @click.stop>
                     <view class="action-btn-group">
-                      <button class="mini-pk-btn" @click.stop="quickBattle(item.cityCode)">
-                        <text class="pk-btn-txt">深度对决</text><svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
-                      </button>
+                      <view class="mini-pk-btn" @click.stop="quickBattle(item.cityCode)">
+                        <text class="pk-btn-txt">深度对决</text>
+                        <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                          <polyline points="9 18 15 12 9 6"/>
+                        </svg>
+                      </view>
                     </view>
                   </td>
                 </tr>
@@ -2472,147 +2463,30 @@ const filteredBattleMetrics = computed(() => {
   transform: translateY(-1px);
 }
 
-/* 横向多参数快捷滑动排序栏 */
-.quick-sort-section {
-  background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 14px;
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+/* 筛选栏内嵌排序下拉菜单 */
+.sort-dropdown-trigger {
+  min-width: 175px;
 }
 
-.quick-sort-head-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-  gap: 8px;
+.sort-dropdown-menu {
+  min-width: 250px;
+  max-height: 380px;
 }
 
-.quick-sort-title-wrap {
-  display: flex;
+.item-status-group {
+  display: inline-flex;
   align-items: center;
   gap: 6px;
 }
 
-.quick-sort-svg {
-  width: 15px;
-  height: 15px;
-  color: #2563eb;
-}
-
-.quick-sort-lead {
-  font-size: 13px;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.quick-sort-status-tag {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  padding: 4px 10px;
-  border-radius: 6px;
+.item-order-badge {
   font-size: 11px;
-  color: #475569;
-}
-
-.quick-sort-status-tag.is-custom {
+  font-weight: 700;
+  color: #2563eb;
   background: #eff6ff;
-  border-color: #bfdbfe;
-  color: #1d4ed8;
-  font-weight: 700;
-}
-
-.status-arrow {
-  color: #2563eb;
-  font-weight: 700;
-}
-
-.quick-sort-scroll-container {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  width: 100%;
-  padding-bottom: 6px;
-  white-space: nowrap;
-}
-
-.quick-sort-scroll-container::-webkit-scrollbar {
-  height: 4px;
-}
-
-.quick-sort-scroll-container::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  border: 1px solid #bfdbfe;
+  padding: 1px 6px;
   border-radius: 4px;
-}
-
-.quick-sort-chips-track {
-  display: flex !important;
-  flex-direction: row !important;
-  flex-wrap: nowrap !important;
-  align-items: center !important;
-  gap: 8px !important;
-  width: max-content !important;
-}
-
-.quick-sort-chip {
-  display: inline-flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  flex-shrink: 0 !important;
-  gap: 6px !important;
-  padding: 6px 14px !important;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-  user-select: none;
-  white-space: nowrap !important;
-}
-
-.quick-sort-chip:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-}
-
-.quick-sort-chip.active {
-  background: #2563eb;
-  border-color: #1d4ed8;
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
-}
-
-.chip-ico {
-  font-size: 13px;
-  line-height: 1;
-}
-
-.chip-name {
-  font-size: 12px;
-  font-weight: 600;
-  color: inherit;
-  white-space: nowrap !important;
-  display: inline-block !important;
-}
-
-.quick-sort-chip.active .chip-name {
-  color: #ffffff;
-  font-weight: 700;
-}
-
-.chip-order-icon {
-  font-size: 11px;
-  font-weight: 900;
-  background: rgba(255, 255, 255, 0.25);
-  padding: 1px 5px;
-  border-radius: 4px;
-  margin-left: 2px;
-  line-height: 1;
 }
 
 /* ============================================================ */
@@ -2785,30 +2659,37 @@ const filteredBattleMetrics = computed(() => {
 
 /* 右侧粘性固定列：操作按钮列在滑动时不丢失 */
 .col-action {
-  width: 96px;
-  min-width: 96px;
-  max-width: 96px;
+  width: 112px;
+  min-width: 112px;
+  max-width: 112px;
   box-sizing: border-box;
-  text-align: right;
+  text-align: center;
   position: sticky;
   right: 0;
   z-index: 3;
   background: #ffffff;
   border-left: 1px solid #e2e8f0;
   box-shadow: -4px 0 8px -2px rgba(0, 0, 0, 0.06);
+  padding: 8px 10px !important;
 }
 
 .b-thead-tr th.col-action {
-  width: 96px;
-  min-width: 96px;
-  max-width: 96px;
+  width: 112px;
+  min-width: 112px;
+  max-width: 112px;
   box-sizing: border-box;
+  text-align: center;
   position: sticky;
   right: 0;
   z-index: 6;
   background: #f8fafc;
   border-left: 1px solid #e2e8f0;
   box-shadow: -4px 0 8px -2px rgba(0, 0, 0, 0.06);
+  padding: 12px 10px !important;
+  color: #475569;
+  font-weight: 700;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
 }
 
 .rank-badge {
@@ -2927,29 +2808,61 @@ const filteredBattleMetrics = computed(() => {
 .text-blue { color: #2563eb; }
 .text-emerald { color: #059669; }
 
+.action-btn-group {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+}
+
 .mini-pk-btn {
-  display: inline-flex;
-  align-items: center;
-  background: #f1f5f9;
-  border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 4px 10px;
+  display: inline-flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  gap: 3px !important;
+  height: 28px !important;
+  line-height: 28px !important;
+  padding: 0 10px !important;
+  background: #eff6ff !important;
+  border: 1px solid #bfdbfe !important;
+  border-radius: 6px !important;
   cursor: pointer;
-  transition: all 0.15s;
+  flex-shrink: 0 !important;
+  box-sizing: border-box !important;
+  transition: all 0.15s ease;
+  user-select: none;
 }
 
 .mini-pk-btn:hover {
-  background: #2563eb;
+  background: #2563eb !important;
+  border-color: #2563eb !important;
 }
 
-.mini-pk-btn:hover .pk-btn-txt {
-  color: #ffffff;
+.mini-pk-btn:hover .pk-btn-txt,
+.mini-pk-btn:hover .btn-icon-svg {
+  color: #ffffff !important;
 }
 
 .pk-btn-txt {
-  font-size: 11px;
-  font-weight: 700;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  color: #2563eb !important;
+  white-space: nowrap !important;
+  word-break: keep-all !important;
+  line-height: 1 !important;
+  display: inline-block !important;
+}
+
+.mini-pk-btn .btn-icon-svg {
+  width: 12px !important;
+  height: 12px !important;
   color: #2563eb;
+  margin-left: 2px;
+  flex-shrink: 0 !important;
+  transition: color 0.15s ease;
 }
 
 /* ============================================================ */
