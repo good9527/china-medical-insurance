@@ -107,59 +107,47 @@
         </view>
       </view>
 
-      <!-- 身份类型切换 (精致胶囊切换，去除冗余描述) -->
-      <view class="identity-switch-bar mb-16">
-        <view 
-          class="switch-pill-btn" 
-          :class="{ active: currentType === 'employee' }"
-          @click="currentType = 'employee'; persistCityChoice()"
-        >
-          <text class="pill-title">城镇职工医保</text>
-        </view>
-        <view 
-          class="switch-pill-btn" 
-          :class="{ active: currentType === 'resident' }"
-          @click="currentType = 'resident'; persistCityChoice()"
-        >
-          <text class="pill-title">城乡居民医保</text>
-        </view>
-      </view>
+      <!-- 核心政策控制台与待遇速览一体化看板 (降维聚合，首屏直达待遇数据) -->
+      <view class="policy-hero-brief-box mb-20">
+        <view class="phb-top-row">
+          <!-- 险种类型胶囊切换 -->
+          <view class="phb-switch-group">
+            <view 
+              class="phb-seg-btn" 
+              :class="{ active: currentType === 'employee' }"
+              @click="currentType = 'employee'; persistCityChoice()"
+            >
+              <text class="phb-seg-title">城镇职工医保</text>
+            </view>
+            <view 
+              class="phb-seg-btn" 
+              :class="{ active: currentType === 'resident' }"
+              @click="currentType = 'resident'; persistCityChoice()"
+            >
+              <text class="phb-seg-title">城乡居民医保</text>
+            </view>
+          </view>
 
-      <!-- 立即去估算 CTA 卡片 -->
-      <view class="calc-shortcut-banner mb-20" @click="goToCalculator">
-        <view class="banner-left">
-          <view class="banner-icon-wrap">
-            <svg class="banner-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- 快捷估算引流按钮 -->
+          <view class="phb-calc-cta" @click="goToCalculator">
+            <svg class="cta-svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <rect x="4" y="2" width="16" height="20" rx="2"></rect>
               <line x1="8" y1="6" x2="16" y2="6"></line>
               <line x1="16" y1="14" x2="16" y2="14.01"></line>
               <line x1="8" y1="14" x2="8" y2="14.01"></line>
-              <line x1="12" y1="14" x2="12" y2="14.01"></line>
-              <line x1="8" y1="18" x2="8" y2="18.01"></line>
-              <line x1="12" y1="18" x2="12" y2="18.01"></line>
-              <line x1="16" y1="18" x2="16" y2="18.01"></line>
             </svg>
-          </view>
-          <view class="banner-text">
-            <text class="banner-title">想了解在 {{ currentCity.cityName }} 大致能报销多少？</text>
-            <text class="banner-sub">带入当前 {{ currentType === 'employee' ? '职工' : '居民' }} 政策规则，估算个人就医统筹报销与自费金额</text>
+            <text class="cta-txt">带入测算实际自负 ↗</text>
           </view>
         </view>
-        <view class="banner-btn">
-          <view class="banner-btn-inner"><text class="banner-btn-txt">立即去估算</text><svg class="banner-btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 18 15 12 9 6"/></svg></view>
-        </view>
-      </view>
 
-      <!-- 参保地待遇核心一揽子速览横幅 (降低政策专业门槛，一秒读懂本市保障力) -->
-      <view class="policy-quick-digest-banner mb-20">
-        <view class="digest-lead-pill">
-          <svg class="digest-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-            <circle cx="12" cy="11" r="3"></circle>
-          </svg>
-          <text class="digest-tag-text">{{ currentCity.cityName }} · {{ currentType === 'employee' ? '职工医保' : '居民医保' }}待遇速览</text>
+        <!-- 一揽子待遇速览公文摘要 -->
+        <view class="phb-digest-row">
+          <view class="phb-digest-pill">
+            <span class="phb-dot"></span>
+            <text class="phb-tag-txt">{{ currentCity.cityName }} · {{ currentType === 'employee' ? '职工医保' : '居民医保' }}待遇规程</text>
+          </view>
+          <text class="phb-digest-body">{{ policyOneSentenceDigest }}</text>
         </view>
-        <text class="digest-body-text">{{ policyOneSentenceDigest }}</text>
       </view>
 
       <!-- 门诊与住院待遇卡片 -->
@@ -1084,128 +1072,145 @@ onShow(() => {
   color: #94a3b8;
 }
 
-/* 立即去测算 CTA 卡片 */
-.calc-shortcut-banner {
+/* 核心政策控制台与待遇速览一体化看板 (降维聚合，高质感金融票据风格) */
+.policy-hero-brief-box {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03), 0 6px 18px -4px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.phb-top-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
-  border: 1px solid #bfdbfe;
-  border-radius: 14px;
-  padding: 14px 18px;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.05);
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.calc-shortcut-banner:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.1);
-  border-color: #93c5fd;
-}
-
-.calc-shortcut-banner:active {
-  transform: scale(0.99);
-}
-
-.banner-left {
+.phb-switch-group {
   display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.banner-icon-wrap {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: #ffffff;
-  border: 1px solid #dbeafe;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.08);
-}
-
-.banner-svg {
-  width: 20px;
-  height: 20px;
-  stroke: #2563eb;
-}
-
-.banner-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.banner-title {
-  font-size: 14px;
-  font-weight: 700;
-  color: #1e3a8a;
-}
-
-.banner-sub {
-  font-size: 12px;
-  color: #64748b;
-}
-
-.banner-btn {
-  background: #2563eb;
-  color: #ffffff;
-  padding: 8px 16px;
-  border-radius: 9999rpx;
-  flex-shrink: 0;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.3);
-}
-
-.banner-btn-txt {
-  font-size: 13px;
-  font-weight: 700;
-  color: #ffffff;
-  white-space: nowrap;
-}
-
-/* 参保地核心待遇速览横幅 */
-.policy-quick-digest-banner {
-  background: #ffffff;
+  background: #f1f5f9;
   border: 1px solid #e2e8f0;
-  border-left: 4px solid #2563eb;
-  border-radius: 12px;
-  padding: 14px 18px;
-  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+  border-radius: 10px;
+  padding: 3px;
+  gap: 4px;
 }
 
-.digest-lead-pill {
+.phb-seg-btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+
+  &:hover {
+    color: #0f172a;
+  }
+
+  &.active {
+    background: #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+
+    .phb-seg-title {
+      color: #2563eb;
+      font-weight: 700;
+    }
+  }
+}
+
+.phb-seg-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #64748b;
+  line-height: 1;
+}
+
+.phb-calc-cta {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
-  padding: 3px 10px;
-  border-radius: 9999px;
-  margin-bottom: 8px;
+  color: #2563eb;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+
+  &:hover {
+    background: #2563eb;
+    color: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+
+    .cta-svg {
+      stroke: #ffffff;
+    }
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
 }
 
-.digest-svg {
+.cta-svg {
   width: 14px;
   height: 14px;
-  color: #2563eb;
+  stroke: #2563eb;
+  transition: stroke 0.18s ease;
+}
+
+.cta-txt {
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.phb-digest-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 8px;
+  padding: 8px 12px;
+  flex-wrap: wrap;
+}
+
+.phb-digest-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 2px 8px;
+  border-radius: 4px;
   flex-shrink: 0;
 }
 
-.digest-tag-text {
-  font-size: 11.5px;
+.phb-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2563eb;
+}
+
+.phb-tag-txt {
+  font-size: 11px;
   font-weight: 700;
   color: #1d4ed8;
 }
 
-.digest-body-text {
-  font-size: 13.5px;
-  color: #1e293b;
-  line-height: 1.6;
-  font-weight: 500;
-  display: block;
+.phb-digest-body {
+  font-size: 12.5px;
+  color: #334155;
+  line-height: 1.45;
+  flex: 1;
+  min-width: 240px;
 }
 
 /* 地区选择器行 */

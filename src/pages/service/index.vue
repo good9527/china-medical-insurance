@@ -889,18 +889,39 @@ onMounted(() => {
 
 .ratio-card {
   padding: 14px;
-  border-radius: 10px;
+  border-radius: 12px;
   border: 1px solid #e2e8f0;
-  background: #f8fafc;
   display: flex;
   flex-direction: column;
   gap: 6px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-.border-emerald { border-color: #a7f3d0; background: #f0fdf4; }
-.border-cyan { border-color: #a5f3fc; background: #ecfeff; }
-.border-amber { border-color: #fde68a; background: #fffbeb; }
-.border-rose { border-color: #fecdd3; background: #fff1f2; }
+.ratio-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px -2px rgba(15, 23, 42, 0.08);
+}
+
+.border-emerald { 
+  border-color: #a7f3d0; 
+  background: linear-gradient(145deg, #f0fdf4 0%, #ffffff 100%); 
+  box-shadow: 0 2px 8px -2px rgba(16, 185, 129, 0.08);
+}
+.border-cyan { 
+  border-color: #a5f3fc; 
+  background: linear-gradient(145deg, #ecfeff 0%, #ffffff 100%); 
+  box-shadow: 0 2px 8px -2px rgba(8, 145, 178, 0.08);
+}
+.border-amber { 
+  border-color: #fde68a; 
+  background: linear-gradient(145deg, #fffbeb 0%, #ffffff 100%); 
+  box-shadow: 0 2px 8px -2px rgba(217, 119, 6, 0.08);
+}
+.border-rose { 
+  border-color: #fecdd3; 
+  background: linear-gradient(145deg, #fff1f2 0%, #ffffff 100%); 
+  box-shadow: 0 2px 8px -2px rgba(225, 29, 72, 0.08);
+}
 
 .ratio-top {
   display: flex;
@@ -959,7 +980,7 @@ onMounted(() => {
   line-height: 1.45;
 }
 
-/* 双栏指引流程 */
+/* 双栏指引流程与垂直微光时间轴 */
 .dual-info-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -969,39 +990,56 @@ onMounted(() => {
 .steps-flow {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  position: relative;
 }
 
 .step-item {
   display: flex;
   align-items: flex-start;
-  gap: 10px;
+  gap: 12px;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.step-item:last-child {
+  padding-bottom: 0;
+}
+
+.step-item:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 26px;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, #93c5fd 0%, #cbd5e1 100%);
 }
 
 .step-num {
-  width: 22px;
-  height: 22px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  color: #2563eb;
-  font-size: 11px;
+  border: 2px solid #2563eb;
+  color: #1d4ed8;
+  font-size: 11.5px;
   font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  margin-top: 1px;
+  z-index: 1;
+  box-shadow: 0 0 0 3px #ffffff;
 }
 
 .step-content {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .step-title {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #0f172a;
 }
@@ -1013,13 +1051,19 @@ onMounted(() => {
 }
 
 .rule-card {
-  padding: 12px 14px;
-  border-radius: 8px;
-  background: #f8fafc;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
   border: 1px solid #e2e8f0;
+  border-left: 4px solid #0891b2;
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 5px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+}
+
+.rule-card.mt-16 {
+  border-left-color: #d97706;
 }
 
 .rule-seq-tag {

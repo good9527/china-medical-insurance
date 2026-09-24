@@ -228,7 +228,7 @@
                 </svg>
                 <text class="dropdown-label">
                   <text class="desktop-text">{{ selectedProvince === 'all' ? '全国 348 统筹区' : selectedProvince }}</text>
-                  <text class="mobile-text">{{ selectedProvince === 'all' ? '全国 348 统筹区' : selectedProvince }}</text>
+                  <text class="mobile-text">{{ selectedProvince === 'all' ? '全国 348 区' : selectedProvince }}</text>
                 </text>
                 <text class="dropdown-caret">▾</text>
               </view>
@@ -264,7 +264,7 @@
                 </svg>
                 <text class="dropdown-label">
                   <text class="desktop-text">排序：{{ currentSortLabel }} {{ sortAsc ? '▲ 升序' : '▼ 降序' }}</text>
-                  <text class="mobile-text">排序：{{ currentSortLabel }} {{ sortAsc ? '▲' : '▼' }}</text>
+                  <text class="mobile-text">{{ currentSortLabel }} {{ sortAsc ? '▲' : '▼' }}</text>
                 </text>
                 <text class="dropdown-caret">▾</text>
               </view>
@@ -1479,7 +1479,7 @@ const filteredBattleMetrics = computed(() => {
 .badge-row {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   margin-bottom: 8px;
 }
 
@@ -1489,7 +1489,7 @@ const filteredBattleMetrics = computed(() => {
   gap: 6px;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
-  padding: 4px 12px;
+  padding: 3px 10px;
   border-radius: 9999rpx;
 }
 
@@ -1502,44 +1502,45 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .chip-txt {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   color: #1d4ed8;
+  letter-spacing: 0.2px;
 }
 
 .meta-tag {
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
-  padding: 3px 10px;
+  padding: 3px 9px;
   border-radius: 9999rpx;
 }
 
 .meta-svg {
-  width: 12px;
-  height: 12px;
+  width: 11px;
+  height: 11px;
   color: #64748b;
 }
 
 .meta-txt {
   font-size: 11px;
   color: #475569;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .benchmark-title {
-  font-size: 22px;
+  font-size: 21px;
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.3px;
   line-height: 1.25;
-  margin-bottom: 6px;
+  margin-bottom: 5px;
 }
 
 .benchmark-sub {
-  font-size: 13px;
+  font-size: 12.5px;
   color: #64748b;
   line-height: 1.5;
   max-width: 720px;
@@ -1551,8 +1552,8 @@ const filteredBattleMetrics = computed(() => {
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
-  padding: 4px;
-  gap: 4px;
+  padding: 3px;
+  gap: 3px;
   flex-shrink: 0;
 }
 
@@ -1560,7 +1561,7 @@ const filteredBattleMetrics = computed(() => {
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 18px;
+  padding: 7px 16px;
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1575,33 +1576,33 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .pill-svg {
-  width: 15px;
-  height: 15px;
+  width: 14px;
+  height: 14px;
 }
 
 .pill-label {
-  font-size: 13px;
+  font-size: 12.5px;
 }
 
 /* 群体分类大胶囊栏 (全域综合 / 职工医保 / 居民医保) */
 .category-segmented-bar {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  background: rgba(241, 245, 249, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(226, 232, 240, 0.9);
-  padding: 6px;
-  border-radius: 14px;
-  margin-bottom: 20px;
+  gap: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 5px;
+  border-radius: 12px;
+  margin-bottom: 14px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.02);
 }
 
 .seg-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 12px 18px;
-  border-radius: 10px;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
   cursor: pointer;
   background: transparent;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1611,22 +1612,28 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .seg-item:hover {
-  background: rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.6);
 }
 
 .seg-item.active {
   background: #ffffff;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
 }
 
 .seg-icon-box {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.seg-item:hover .seg-icon-box {
+  transform: scale(1.05);
 }
 
 .cat-overall { background: #eef2ff; color: #4f46e5; border: 1px solid #c7d2fe; }
@@ -1634,8 +1641,8 @@ const filteredBattleMetrics = computed(() => {
 .cat-resident { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
 
 .cat-svg {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   stroke: currentColor;
 }
 
@@ -1649,19 +1656,19 @@ const filteredBattleMetrics = computed(() => {
 .seg-title-row {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
 .seg-title {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #1e293b;
 }
 
 .seg-badge {
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
-  padding: 1px 6px;
+  padding: 1px 5px;
   border-radius: 4px;
 }
 
@@ -1676,7 +1683,7 @@ const filteredBattleMetrics = computed(() => {
 .seg-desc {
   font-size: 11px;
   color: #64748b;
-  margin-top: 2px;
+  margin-top: 1px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1685,25 +1692,25 @@ const filteredBattleMetrics = computed(() => {
 .seg-active-indicator {
   position: absolute;
   bottom: 0;
-  left: 20px;
-  right: 20px;
-  height: 2.5px;
+  left: 16px;
+  right: 16px;
+  height: 2px;
   background: #2563eb;
   border-radius: 3px 3px 0 0;
 }
 
-/* 评测模型方法卡片 */
+/* 评测模型方法卡片（轻量微条） */
 .methodology-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  margin-bottom: 20px;
+  border-radius: 10px;
+  margin-bottom: 16px;
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
 .method-head {
-  padding: 12px 18px;
+  padding: 9px 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -2021,20 +2028,22 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .podium-card.rank-1 {
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  padding: 30px 22px;
-  background: linear-gradient(180deg, #fffdfa 0%, #ffffff 100%);
-  box-shadow: 0 8px 24px -2px rgba(245, 158, 11, 0.12), 0 2px 6px rgba(0,0,0,0.04);
+  border: 1.5px solid rgba(245, 158, 11, 0.45);
+  padding: 28px 22px;
+  background: linear-gradient(180deg, #fffdf2 0%, #fffcf0 50%, #ffffff 100%);
+  box-shadow: 0 12px 36px -4px rgba(245, 158, 11, 0.18), 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .podium-card.rank-2 {
   border: 1px solid rgba(148, 163, 184, 0.4);
-  background: linear-gradient(180deg, #fbfcfe 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 60%, #ffffff 100%);
+  box-shadow: 0 8px 24px -4px rgba(100, 116, 139, 0.08);
 }
 
 .podium-card.rank-3 {
-  border: 1px solid rgba(217, 119, 6, 0.3);
-  background: linear-gradient(180deg, #fffcf8 0%, #ffffff 100%);
+  border: 1px solid rgba(234, 88, 12, 0.35);
+  background: linear-gradient(180deg, #fffaf5 0%, #fff7ed 60%, #ffffff 100%);
+  box-shadow: 0 8px 24px -4px rgba(234, 88, 12, 0.08);
 }
 
 .podium-halo {
@@ -3549,87 +3558,177 @@ const filteredBattleMetrics = computed(() => {
 /* ------------------------------------------------------------- */
 @media (max-width: 767px) {
   .content-box {
-    padding: 12px 14px calc(84px + env(safe-area-inset-bottom)) !important;
+    padding: 10px 12px calc(80px + env(safe-area-inset-bottom)) !important;
   }
 
   .benchmark-header {
     flex-direction: column;
-    gap: 12px;
-    margin-bottom: 14px;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .badge-row {
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 4px;
+  }
+
+  .benchmark-chip {
+    padding: 2.5px 8px;
+  }
+
+  .chip-txt {
+    font-size: 11px;
+  }
+
+  .meta-tag {
+    padding: 2.5px 8px;
+  }
+
+  .meta-txt {
+    font-size: 10.5px;
   }
 
   .benchmark-title {
-    font-size: 19px;
-    line-height: 1.3;
+    font-size: 18px;
+    line-height: 1.25;
+    margin-bottom: 4px;
   }
 
   .benchmark-sub {
-    font-size: 12.5px;
+    font-size: 11.5px;
+    line-height: 1.4;
   }
 
   .arena-switch-bar {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
+    padding: 2px;
   }
 
+  .switch-pill {
+    padding: 6px 10px;
+    justify-content: center;
+  }
+
+  .pill-label {
+    font-size: 12px;
+  }
+
+  /* 移动端紧凑三等分单行控制胶囊 */
   .category-segmented-bar {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 4px;
-    padding: 4px;
-    margin-bottom: 12px;
+    padding: 3px;
+    margin-bottom: 8px;
+    background: #f1f5f9;
+    border-radius: 9px;
   }
 
   .seg-item {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    text-align: center;
-    padding: 8px 4px;
-    gap: 4px;
+    justify-content: center;
+    padding: 6px 4px;
+    gap: 5px;
+    border-radius: 7px;
   }
 
   .seg-icon-box {
-    width: 32px;
-    height: 32px;
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+    border: none;
   }
 
   .cat-svg {
-    width: 16px;
-    height: 16px;
+    width: 11px;
+    height: 11px;
   }
 
   .seg-title-row {
-    flex-direction: column;
-    gap: 2px;
+    flex-direction: row;
+    gap: 0;
   }
 
   .seg-title {
-    font-size: 12px;
+    font-size: 11.5px;
+    font-weight: 700;
+    white-space: nowrap;
   }
 
-  .seg-badge {
+  .seg-badge,
+  .seg-desc,
+  .seg-active-indicator {
     display: none;
   }
 
-  .seg-desc {
+  /* 移动端评测模型架构微型展开条 */
+  .methodology-card {
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+
+  .method-head {
+    padding: 7px 10px;
+    gap: 6px;
+  }
+
+  .method-left {
+    flex: 1;
+    min-width: 0;
+    gap: 5px;
+    flex-wrap: nowrap;
+  }
+
+  .method-icon-pulse {
+    width: 18px;
+    height: 18px;
+    border-radius: 4px;
+  }
+
+  .info-svg {
+    width: 11px;
+    height: 11px;
+  }
+
+  .method-title {
+    font-size: 11.5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .method-weights {
     display: none;
   }
 
+  .method-toggle {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .toggle-txt {
+    font-size: 10.5px;
+  }
+
+  /* 移动端高效集成工具条：省份 + 排序 + 紧凑图标切换在第一行，搜索在第二行 */
   .filter-bar {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 10px;
-    margin-bottom: 14px;
+    gap: 6px;
+    margin-bottom: 12px;
   }
 
   .filter-left {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    align-items: stretch;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 6px;
+    align-items: center;
   }
 
   .picker-anchor {
@@ -3647,10 +3746,10 @@ const filteredBattleMetrics = computed(() => {
 
   .dropdown-trigger {
     width: 100%;
-    height: 38px;
+    height: 34px;
     box-sizing: border-box;
     min-width: unset;
-    padding: 0 10px;
+    padding: 0 8px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -3662,18 +3761,27 @@ const filteredBattleMetrics = computed(() => {
   .dropdown-label {
     flex: 1;
     min-width: 0;
-    font-size: 13px;
+    font-size: 12px;
     white-space: nowrap !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    margin: 0 4px;
+    margin: 0 3px;
+  }
+
+  .picker-svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .dropdown-caret {
+    font-size: 10px;
   }
 
   .province-anchor .dropdown-menu {
     left: 0;
     right: auto;
-    min-width: 260px;
-    max-width: calc(100vw - 32px);
+    min-width: 250px;
+    max-width: calc(100vw - 28px);
     max-height: 48vh !important;
     z-index: 9999 !important;
     box-shadow: 0 16px 48px rgba(15, 23, 42, 0.2) !important;
@@ -3683,8 +3791,8 @@ const filteredBattleMetrics = computed(() => {
   .sort-anchor .dropdown-menu {
     right: 0;
     left: auto;
-    min-width: 250px;
-    max-width: calc(100vw - 32px);
+    min-width: 230px;
+    max-width: calc(100vw - 28px);
     max-height: 48vh !important;
     z-index: 9999 !important;
     box-shadow: 0 16px 48px rgba(15, 23, 42, 0.2) !important;
@@ -3692,21 +3800,31 @@ const filteredBattleMetrics = computed(() => {
   }
 
   .layout-toggle-dock {
-    grid-column: 1 / -1;
+    grid-column: 3 / 4;
     display: flex;
-    width: 100%;
+    padding: 2px;
+    border-radius: 8px;
+    height: 34px;
     box-sizing: border-box;
     background: #f1f5f9;
     border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    padding: 3px;
   }
 
   .layout-toggle-dock .layout-btn {
-    flex: 1;
+    padding: 0 8px;
+    height: 100%;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    padding: 8px 0;
-    font-size: 13px;
+  }
+
+  .layout-txt {
+    display: none !important;
+  }
+
+  .layout-svg {
+    width: 13px;
+    height: 13px;
   }
 
   .sort-indicator-pill {
@@ -3715,52 +3833,21 @@ const filteredBattleMetrics = computed(() => {
 
   .search-input-box {
     width: 100%;
+    height: 34px;
     box-sizing: border-box;
+    padding: 0 10px;
   }
 
-  /* 评测模型方法卡片移动端精细化 */
-  .methodology-card {
-    margin-bottom: 14px;
-  }
-
-  .method-head {
-    padding: 10px 12px;
-    gap: 8px;
-  }
-
-  .method-left {
-    flex: 1;
-    min-width: 0;
-    gap: 6px;
-    flex-wrap: nowrap;
-  }
-
-  .method-title {
+  .search-input {
+    height: 32px;
     font-size: 12px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
-  .method-weights {
-    display: none;
-  }
-
-  .method-toggle {
-    flex-shrink: 0;
-    white-space: nowrap;
-  }
-
-  .toggle-txt {
-    font-size: 11px;
-    white-space: nowrap;
-  }
-
-  /* 领奖台移动端尊享升级：NO.1 金榜领航居首横跨双列，NO.2/NO.3 钛银与瑰铜双峰并立 */
+  /* 领奖台移动端高光精致化 */
   .podium-row {
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-bottom: 18px;
+    gap: 8px;
+    margin-bottom: 14px;
     align-items: stretch;
   }
 
@@ -3768,67 +3855,64 @@ const filteredBattleMetrics = computed(() => {
   .podium-card.rank-1 {
     order: 1;
     grid-column: span 2;
-    padding: 18px 16px 16px;
-    border-radius: 16px;
-    background: radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.18) 0%, #ffffff 80%);
-    box-shadow: 0 4px 20px -2px rgba(245, 158, 11, 0.15), 0 1px 3px rgba(0, 0, 0, 0.04);
+    padding: 14px 14px 12px;
+    border-radius: 14px;
+    background: radial-gradient(ellipse at 50% 0%, rgba(245, 158, 11, 0.16) 0%, #ffffff 80%);
+    box-shadow: 0 4px 16px -2px rgba(245, 158, 11, 0.12), 0 1px 3px rgba(0, 0, 0, 0.04);
   }
 
   .podium-card.rank-1 .podium-crest {
-    font-size: 11px;
-    padding: 4px 12px;
-    margin-bottom: 8px;
+    font-size: 10.5px;
+    padding: 3px 10px;
+    margin-bottom: 6px;
   }
 
   .podium-card.rank-1 .gold-city {
-    font-size: 22px;
+    font-size: 19px;
     font-weight: 800;
-    letter-spacing: -0.3px;
   }
 
   .podium-card.rank-1 .podium-prov {
-    font-size: 12px;
+    font-size: 11px;
     color: #b45309;
-    margin-top: 2px;
+    margin-top: 1px;
   }
 
   .podium-card.rank-1 .podium-score-group {
-    margin: 10px 0 8px;
+    margin: 6px 0;
   }
 
   .podium-card.rank-1 .gold-num {
-    font-size: 36px;
+    font-size: 30px;
     font-weight: 900;
-    letter-spacing: -1px;
   }
 
   .podium-card.rank-1 .score-unit {
-    font-size: 12px;
-    color: #92400e;
+    font-size: 11px;
   }
 
   .podium-card.rank-1 .podium-feats {
     flex-direction: row;
     justify-content: center;
-    gap: 8px;
-    margin-bottom: 12px;
+    gap: 6px;
+    margin-bottom: 8px;
   }
 
   .podium-card.rank-1 .feat-tag {
-    font-size: 11px;
-    padding: 3px 10px;
-    border-radius: 6px;
+    font-size: 10.5px;
+    padding: 2px 8px;
+    border-radius: 5px;
   }
 
   .podium-card.rank-1 .podium-btn {
-    padding: 10px 16px;
+    padding: 8px 12px;
     border-radius: 8px;
     width: 100%;
     box-sizing: border-box;
   }
 
   .podium-card.rank-1 .gold-btn-txt {
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 700;
   }
 

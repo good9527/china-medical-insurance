@@ -108,9 +108,40 @@
 
       <!-- 核心矢量地图展示区 (第3级质感展开) -->
       <view class="map-stage-card anim-cascade-3">
+        <!-- 右上角动态响应式微看板 (Live Brief Board: 鼠标悬浮即变幻，科技金融质感) -->
+        <view class="map-live-brief-card" v-if="!activeCity">
+          <view class="brief-card-inner" v-if="hoveredCity">
+            <view class="bci-top">
+              <span class="live-dot-green"></span>
+              <text class="bci-city">{{ hoveredCity.cityName }}</text>
+              <text class="bci-prov">{{ hoveredCity.provinceName }}</text>
+              <text class="bci-score font-mono" v-if="hoveredCity.overallScore">{{ hoveredCity.overallScore }}分</text>
+            </view>
+            <view class="bci-mid">
+              <text class="bci-metric-name">{{ metricLegend.title }}：</text>
+              <text class="bci-metric-val font-mono">{{ getMetricDisplayVal(hoveredCity) }}</text>
+            </view>
+            <view class="bci-sub-row">
+              <text class="bci-hint">轻触或点击锁定该统筹区 ➔</text>
+            </view>
+          </view>
+          <view class="brief-card-inner brief-default" v-else>
+            <view class="bci-top">
+              <span class="live-dot-blue"></span>
+              <text class="bci-title">348 统筹区空间联动</text>
+            </view>
+            <text class="bci-desc">悬浮或轻触多边形，调取全维保障力与出院测算</text>
+            <view class="bci-bench-row">
+              <text class="bench-tag" @click.stop="focusCityByCode('440300')">深圳 91.6</text>
+              <text class="bench-tag" @click.stop="focusCityByCode('320100')">南京 82.3</text>
+              <text class="bench-tag" @click.stop="focusCityByCode('310100')">上海 77.3</text>
+            </view>
+          </view>
+        </view>
+
         <!-- 右上角复位全景按钮 (明确文字标识，方便快速找回归位) -->
         <button class="map-reset-btn" @click.stop="resetView" title="重置地图视角至全国全貌">
-          <svg class="reset-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg class="reset-ico" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
             <path d="M3 3v5h5"></path>
           </svg>
@@ -1460,6 +1491,139 @@ function switchTab(url: string) {
   transition: box-shadow 0.3s ease;
 }
 
+/* 动态响应式微看板 (Live Brief Board) */
+.map-live-brief-card {
+  position: absolute;
+  top: 16px;
+  right: 126px;
+  z-index: 20;
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(203, 213, 225, 0.9);
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  pointer-events: auto;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 190px;
+  max-width: 250px;
+}
+
+.brief-card-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.bci-top {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.live-dot-green {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 6px rgba(16, 185, 129, 0.8);
+  animation: radarRipple 2s infinite ease-out;
+}
+
+.live-dot-blue {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.8);
+}
+
+.bci-city {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.bci-prov {
+  font-size: 11px;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.bci-score {
+  font-size: 12px;
+  font-weight: 800;
+  color: #2563eb;
+  margin-left: auto;
+}
+
+.bci-title {
+  font-size: 12px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.bci-desc {
+  font-size: 10.5px;
+  color: #64748b;
+  line-height: 1.35;
+  margin-top: 1px;
+}
+
+.bci-mid {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.bci-metric-name {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.bci-metric-val {
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #0284c7;
+}
+
+.bci-sub-row {
+  margin-top: 2px;
+}
+
+.bci-hint {
+  font-size: 10px;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.bci-bench-row {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+.bench-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 1px 5px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #dbeafe;
+    border-color: #93c5fd;
+  }
+}
+
 /* 右上角复位全景按钮 (旗舰级高透磨砂亚克力胶囊) */
 .map-reset-btn {
   position: absolute;
@@ -2437,6 +2601,9 @@ function switchTab(url: string) {
   }
   .map-stage-card {
     height: 580px;
+  }
+  .map-live-brief-card {
+    display: none !important;
   }
   .service-cards-grid {
     grid-template-columns: repeat(2, 1fr);

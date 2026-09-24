@@ -265,7 +265,7 @@
                   <text class="d-primary">一键调起邮件发送作者</text>
                   <text class="d-sub">直发 keepkid0824@gmail.com · 自动预填标题与公文参数</text>
                 </view>
-                <text class="d-arrow">✉️</text>
+                <text class="d-arrow">↗</text>
               </view>
 
               <view class="dispatch-btn btn-wechat" @click="copyDirect(SITE_CONFIG.wechat, '微信号')">
@@ -276,7 +276,7 @@
                   <text class="d-primary">复制作者个人微信</text>
                   <text class="d-sub">微信号: {{ SITE_CONFIG.wechat }} · 支持发送公文原件截图与交流</text>
                 </view>
-                <text class="d-arrow">📋</text>
+                <text class="d-arrow">↗</text>
               </view>
             </view>
           </view>
@@ -330,7 +330,12 @@
             <!-- 视图 1：已采纳公文变更动态 -->
             <view class="tab-content-pane" v-if="rightActiveTab === 'updates'">
               <view class="dynamic-summary-bar">
-                <text class="summary-badge">🛡️ 全域台账 · 穿透核准</text>
+                <view class="summary-badge">
+                  <svg class="summary-badge-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  </svg>
+                  <text class="summary-badge-txt">全域台账 · 穿透核准</text>
+                </view>
                 <text class="summary-txt">已合入 150+ 项公文纠偏 · {{ SITE_CONFIG.totalAssertions }} 项断言守护</text>
               </view>
 
@@ -401,7 +406,9 @@
               </view>
 
               <view class="patrol-notice-mini mt-10">
-                <text class="patrol-icon">🛡️</text>
+                <svg class="patrol-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
                 <text class="patrol-txt">云端长效自动巡查：配置 GitHub Actions 每周一自动巡检全量统筹区官网连通性。</text>
               </view>
             </view>
@@ -410,7 +417,10 @@
             <view class="contact-direct-strip">
               <view class="strip-item" @click="copyDirect(SITE_CONFIG.email, '邮箱')">
                 <view class="strip-left">
-                  <text class="strip-icon">✉️</text>
+                  <svg class="strip-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
                   <text class="strip-label">作者邮箱</text>
                   <text class="strip-val monospace">{{ SITE_CONFIG.email }}</text>
                 </view>
@@ -418,7 +428,9 @@
               </view>
               <view class="strip-item" @click="copyDirect(SITE_CONFIG.wechat, '微信号')">
                 <view class="strip-left">
-                  <text class="strip-icon">💬</text>
+                  <svg class="strip-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                  </svg>
                   <text class="strip-label">个人微信</text>
                   <text class="strip-val">{{ SITE_CONFIG.wechat }}</text>
                 </view>
@@ -1608,13 +1620,26 @@ onMounted(() => {
 }
 
 .summary-badge {
-  font-size: 11px;
-  font-weight: 700;
-  color: #166534;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   background: #dcfce7;
   padding: 2px 6px;
   border-radius: 4px;
   white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.summary-badge-svg {
+  width: 12px;
+  height: 12px;
+  stroke: #166534;
+}
+
+.summary-badge-txt {
+  font-size: 11px;
+  font-weight: 700;
+  color: #166534;
 }
 
 .summary-txt {
@@ -1976,9 +2001,11 @@ onMounted(() => {
   gap: 8px;
 }
 
-.patrol-icon {
-  font-size: 13px;
-  line-height: 1.2;
+.patrol-svg {
+  width: 14px;
+  height: 14px;
+  stroke: #0284c7;
+  flex-shrink: 0;
 }
 
 .patrol-txt {
@@ -2023,8 +2050,10 @@ onMounted(() => {
   flex: 1;
 }
 
-.strip-icon {
-  font-size: 13px;
+.strip-svg {
+  width: 14px;
+  height: 14px;
+  stroke: #2563eb;
   flex-shrink: 0;
 }
 
