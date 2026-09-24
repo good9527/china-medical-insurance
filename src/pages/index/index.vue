@@ -38,47 +38,66 @@
       <view class="bento-grid">
         <!-- 左栏：测算配置器 -->
         <view class="bento-card config-card">
+          <!-- 卡片顶头标题与搜索入口 -->
+          <view class="card-lead-head">
+            <view class="lead-left">
+              <view class="lead-icon-wrap">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="lead-svg">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+              </view>
+              <view class="lead-texts">
+                <text class="lead-title">参数录入配置</text>
+                <text class="lead-subtitle">选择参保地与场景，调取地方公文规程</text>
+              </view>
+            </view>
+            <view class="quick-search-trigger" @click="showSearchModal = !showSearchModal">
+              <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="qs-svg">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <text class="search-trigger-txt">{{ showSearchModal ? '收起搜索' : '检索城市' }}</text>
+            </view>
+          </view>
+
+          <!-- 城市搜索面板 -->
+          <view class="search-panel" v-if="showSearchModal" @click.stop>
+            <view class="input-wrap">
+              <input 
+                class="search-input" 
+                v-model="citySearchQuery" 
+                placeholder="输入城市拼音或中文（如：成都 / 晋中 / 西安）" 
+                :focus="true"
+                @confirm="onSearchConfirm"
+              />
+              <text class="search-clear-btn" v-if="citySearchQuery" @click.stop="citySearchQuery = ''">✕</text>
+            </view>
+            <view class="search-results-list" v-if="filteredSearchCities.length > 0">
+              <view 
+                class="search-result-row" 
+                v-for="item in filteredSearchCities" 
+                :key="item.cityCode"
+                @click="selectSearchedCity(item)"
+              >
+                <view class="row-left">
+                  <text class="c-name">{{ item.cityName }}</text>
+                  <text class="c-prov">{{ item.provinceName }}</text>
+                </view>
+                <text class="c-action">选择 ↵</text>
+              </view>
+            </view>
+            <view class="search-empty" v-else-if="citySearchQuery.trim()">
+              <text class="empty-txt">未匹配到该城市，请尝试省份全称</text>
+            </view>
+          </view>
+
           <!-- 模块 1: 参保统筹区 -->
           <view class="config-group">
             <view class="group-header">
-              <text class="group-label">参保统筹区</text>
-              <view class="quick-search-trigger" @click="showSearchModal = !showSearchModal">
-                <text class="search-trigger-txt">{{ showSearchModal ? '收起搜索 ✕' : '快速检索城市 ↵' }}</text>
-              </view>
+              <text class="group-label">1. 参保统筹区</text>
+              <text class="group-hint">当前：{{ currentCityOption.cityName }}（{{ currentProvince.name }}）</text>
             </view>
-
-            <!-- 城市搜索面板 -->
-            <view class="search-panel" v-if="showSearchModal" @click.stop>
-              <view class="input-wrap">
-                <input 
-                  class="search-input" 
-                  v-model="citySearchQuery" 
-                  placeholder="输入城市拼音或中文（如：成都 / 拉萨 / 西安）" 
-                  :focus="true"
-                  @confirm="onSearchConfirm"
-                />
-                <text class="search-clear-btn" v-if="citySearchQuery" @click.stop="citySearchQuery = ''">✕</text>
-              </view>
-              <view class="search-results-list" v-if="filteredSearchCities.length > 0">
-                <view 
-                  class="search-result-row" 
-                  v-for="item in filteredSearchCities" 
-                  :key="item.cityCode"
-                  @click="selectSearchedCity(item)"
-                >
-                  <view class="row-left">
-                    <text class="c-name">{{ item.cityName }}</text>
-                    <text class="c-prov">{{ item.provinceName }}</text>
-                  </view>
-                  <text class="c-action">选择 ↵</text>
-                </view>
-              </view>
-              <view class="search-empty" v-else-if="citySearchQuery.trim()">
-                <text class="empty-txt">未匹配到该城市，请尝试省份全称</text>
-              </view>
-            </view>
-
-            <!-- 省市二级下拉 (等宽并排) -->
             <view class="region-dropdown-grid dropdown-anchor-row">
               <view class="col-field">
                 <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'province' }" @click.stop="toggleDropdown('province')">
@@ -121,17 +140,20 @@
           </view>
 
           <!-- 模块 2: 参保身份类别 -->
-          <view class="config-group mt-16">
+          <view class="config-group">
             <view class="group-header">
-              <text class="group-label">医保身份类别</text>
+              <text class="group-label">2. 医保身份类别</text>
             </view>
-            <!-- 二段式胶囊切换器 (Segmented Pill) -->
             <view class="segmented-control">
               <view 
                 class="seg-btn" 
                 :class="{ active: form.insuranceType === 'employee' }"
                 @click="switchInsuranceType('employee')"
               >
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="seg-icon">
+                  <rect x="2" y="7" width="20" height="14" rx="2"></rect>
+                  <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                </svg>
                 <text class="seg-title">城镇职工医保</text>
               </view>
               <view 
@@ -139,6 +161,10 @@
                 :class="{ active: form.insuranceType === 'resident' }"
                 @click="switchInsuranceType('resident')"
               >
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" class="seg-icon">
+                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                  <circle cx="9" cy="7" r="4"></circle>
+                </svg>
                 <text class="seg-title">城乡居民医保</text>
               </view>
             </view>
@@ -147,7 +173,7 @@
             <view class="retiree-bar" v-if="form.insuranceType === 'employee'" @click="toggleRetiree">
               <view class="retiree-bar-left">
                 <text class="retiree-label">退休人员待遇优待</text>
-                <text class="retiree-sub">（报销比例享受倾斜上浮）</text>
+                <text class="retiree-badge">比例上浮 +3%~5%</text>
                 <PolicyTooltip title="什么是退休人员待遇倾斜？" text="各地医保政策对退休参保人员给予法定倾斜优待，报销比例通常比在职人员高 3%~5%，部分城市门诊起付线更低或封顶线更高。" example="以西安三级医院住院为例，在职职工报销80%，退休职工报销85%。" />
               </view>
               <view class="custom-switch" :class="{ checked: form.isRetiree }">
@@ -157,12 +183,11 @@
           </view>
 
           <!-- 模块 3: 就医场景与定点机构 -->
-          <view class="config-group mt-16">
+          <view class="config-group">
             <view class="group-header">
-              <text class="group-label">就医场景与机构等级</text>
+              <text class="group-label">3. 就医场景与机构等级</text>
             </view>
             <view class="grid-2col dropdown-anchor-row">
-              <!-- 就医类型切换器 -->
               <view class="col-field">
                 <view class="sub-segmented-control">
                   <view 
@@ -182,7 +207,6 @@
                 </view>
               </view>
 
-              <!-- 机构等级下拉 -->
               <view class="col-field">
                 <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'hospital' }" @click.stop="toggleDropdown('hospital')">
                   <text class="select-val">{{ hospitalTiers[selectedHospitalIndex].shortName }}</text>
@@ -203,7 +227,7 @@
               </view>
             </view>
 
-            <!-- 门诊政策规则即时通报 -->
+            <!-- 门诊政策提醒 -->
             <view class="policy-notice" v-if="form.treatmentType === 'outpatient'">
               <text class="notice-badge">门诊政策提醒</text>
               <text class="notice-content" v-if="form.insuranceType === 'employee'">
@@ -216,11 +240,10 @@
           </view>
 
           <!-- 模块 4: 预估医疗花费与快捷芯片 -->
-          <view class="config-group mt-16">
+          <view class="config-group">
             <view class="group-header">
-              <text class="group-label">预估医疗总花费</text>
+              <text class="group-label">4. 预估医疗总花费</text>
             </view>
-            <!-- 主输入框 -->
             <view class="amount-input-box">
               <text class="currency-symbol">¥</text>
               <input 
@@ -233,7 +256,7 @@
               <text class="currency-unit">元</text>
             </view>
 
-            <!-- 快捷预设金额药丸 (规整排版) -->
+            <!-- 快捷预设金额药丸 -->
             <view class="preset-pill-row">
               <view 
                 class="preset-pill" 
@@ -247,8 +270,8 @@
             </view>
           </view>
 
-          <!-- 模块 5: 异地与自费折叠面板 (干净微光卡片，非虚线) -->
-          <view class="advanced-collapse-card mt-16">
+          <!-- 模块 5: 异地与自费折叠面板 -->
+          <view class="advanced-collapse-card">
             <view class="collapse-trigger" @click="showExtra = !showExtra">
               <view class="trigger-label-group">
                 <text class="trigger-label">异地就医与全自费项目</text>
@@ -313,7 +336,6 @@
                     <polyline points="14 2 14 8 20 8"></polyline>
                     <line x1="16" y1="13" x2="8" y2="13"></line>
                     <line x1="16" y1="17" x2="8" y2="17"></line>
-                    <polyline points="10 9 9 9 8 9"></polyline>
                   </svg>
                   <text class="voucher-btn-txt">生成凭据单</text>
                 </view>
@@ -324,160 +346,126 @@
                   </svg>
                   <text class="copy-btn-txt">复制凭据</text>
                 </view>
-                <view class="ratio-pill">
-                  <text class="ratio-text">预估报销率 {{ displayRatio }}%</text>
+              </view>
+            </view>
+
+            <!-- 核心精炼英雄结算看板 (左右并列，精致双核，杜绝冗余厚度) -->
+            <view class="result-hero-board">
+              <view class="hero-split-row">
+                <!-- 统筹报销 -->
+                <view class="hero-half half-reimbursed">
+                  <view class="half-tag tag-cyan">
+                    <text class="half-tag-txt">医保统筹报销</text>
+                    <text class="half-tag-pct">{{ displayRatio }}%</text>
+                  </view>
+                  <view class="half-price-row">
+                    <text class="half-yen text-cyan">¥</text>
+                    <text class="half-val text-cyan">{{ displayReimbursed.toLocaleString() }}</text>
+                  </view>
+                  <text class="half-hint">出院窗口联网直接结算抵扣</text>
+                </view>
+
+                <view class="hero-center-divider"></view>
+
+                <!-- 个人自理 -->
+                <view class="hero-half half-personal">
+                  <view class="half-tag tag-amber">
+                    <text class="half-tag-txt">个人预计自理</text>
+                    <text class="half-tag-pct">{{ (100 - (result.breakdown.effectiveRatio || 0)).toFixed(1) }}%</text>
+                  </view>
+                  <view class="half-price-row">
+                    <text class="half-yen text-amber">¥</text>
+                    <text class="half-val text-amber">{{ displayPersonalPay.toLocaleString() }}</text>
+                  </view>
+                  <text class="half-hint">含起付线及按比自负金额</text>
                 </view>
               </view>
-            </view>
 
-            <!-- 核心主数值 -->
-            <view class="receipt-hero-block">
-              <text class="receipt-hero-label">医保预估统筹报销</text>
-              <view class="receipt-price-row">
-                <text class="price-symbol">¥</text>
-                <text class="price-number">{{ displayReimbursed.toLocaleString() }}</text>
-              </view>
-              <text class="receipt-note">以出院窗口实际结算为准，符合目录部分医保直接抵扣</text>
-            </view>
-
-            <!-- 基金支付与自理对比矩阵 -->
-            <view class="compare-matrix">
-              <view class="matrix-cell">
-                <view class="cell-label-wrap">
-                  <text class="cell-label">统筹基金支付</text>
-                  <PolicyTooltip title="什么是统筹基金支付？" text="基本医疗保险统筹基金直接承担的公费报销金额。参保人在定点机构办理出院联网结算时，医保系统直接抵扣此项，无需个人垫付。" />
-                </view>
-                <text class="cell-val text-cyan">¥{{ (result.breakdown.baseReimbursed + result.breakdown.catastrophicReimbursed).toLocaleString() }}</text>
-              </view>
-              <view class="matrix-cell">
-                <view class="cell-label-wrap">
-                  <text class="cell-label">个人预计自理</text>
-                  <PolicyTooltip title="什么是个人预计自理？" text="参保人本次就医预计需自行承担的总额，包含起付线门槛以下部分、政策报销后个人按比例自负部分，以及医保目录外全自费的药品及特需耗材。" />
-                </view>
-                <text class="cell-val text-amber">¥{{ displayPersonalPay.toLocaleString() }}</text>
+              <!-- 极细构成双色比例条 -->
+              <view class="hero-mini-meter">
+                <view class="mini-bar bar-cyan" :style="{ width: result.breakdown.effectiveRatio + '%' }"></view>
+                <view class="mini-bar bar-amber" :style="{ width: Math.max(0, 100 - result.breakdown.effectiveRatio) + '%' }"></view>
               </view>
             </view>
 
-            <!-- 能量构成条形图 -->
-            <view class="progress-bar-wrap">
-              <view class="progress-labels">
-                <text class="prog-txt text-cyan">统筹基金 ({{ result.breakdown.effectiveRatio }}%)</text>
-                <text class="prog-txt text-amber-txt">个人自负 ({{ (100 - result.breakdown.effectiveRatio).toFixed(1) }}%)</text>
-              </view>
-              <view class="progress-track">
-                <view class="progress-bar bar-cyan" :style="{ width: result.breakdown.effectiveRatio + '%' }"></view>
-                <view class="progress-bar bar-dim" :style="{ width: Math.max(0, 100 - result.breakdown.effectiveRatio) + '%' }"></view>
-              </view>
-            </view>
-
-            <!-- 费用推导流水线 (一目了然看清计算脉络) -->
-            <view class="calc-pipeline-card">
-              <view class="pipeline-header">
-                <view class="pipe-header-left">
-                  <svg class="pipe-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <!-- 费用推导明细清单 (步骤流水化，零冗余，一表道尽) -->
+            <view class="flow-breakdown-card">
+              <view class="flow-card-head" @click="showDetail = !showDetail">
+                <view class="fch-left">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="fch-svg">
                     <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
                   </svg>
-                  <text class="pipeline-title">费用推导流水线 · 4 步清晰看懂账单去向</text>
+                  <text class="fch-title">费用推导分项明细</text>
+                  <text class="fch-badge">推导过程</text>
                 </view>
-                <text class="pipeline-tag">算账图解</text>
+                <text class="fch-toggle">{{ showDetail ? '收起 ▴' : '展开 ▾' }}</text>
               </view>
-              <view class="pipeline-flow">
-                <!-- 步骤1: 医疗总费用 -->
-                <view class="pipe-node">
-                  <view class="node-badge node-blue">1</view>
-                  <view class="node-info">
-                    <text class="node-k">医疗总花费</text>
-                    <text class="node-v">¥{{ (parseFloat(form.totalCost) || 0).toLocaleString() }}</text>
+
+              <view class="flow-list" v-if="showDetail">
+                <view class="flow-row">
+                  <view class="flow-row-name">
+                    <text class="flow-step-num num-1">1</text>
+                    <text class="flow-label">总医疗花费</text>
                   </view>
+                  <text class="flow-val font-mono">¥{{ (parseFloat(form.totalCost) || 0).toLocaleString() }}</text>
                 </view>
-                <view class="pipe-arrow">➔</view>
-                <!-- 步骤2: 扣除起付线 -->
-                <view class="pipe-node">
-                  <view class="node-badge node-amber">2</view>
-                  <view class="node-info">
-                    <text class="node-k">扣免赔线</text>
-                    <text class="node-v text-amber">-¥{{ result.breakdown.deductibleDeducted.toLocaleString() }}</text>
+
+                <view class="flow-row" v-if="result.breakdown.nonInsuranceDeducted > 0">
+                  <view class="flow-row-name">
+                    <text class="flow-step-num num-sub">-</text>
+                    <text class="flow-label">自费/乙类先行自付</text>
                   </view>
+                  <text class="flow-val text-dim font-mono">- ¥{{ result.breakdown.nonInsuranceDeducted.toLocaleString() }}</text>
                 </view>
-                <view class="pipe-arrow">➔</view>
-                <!-- 步骤3: 统筹按比报销 -->
-                <view class="pipe-node">
-                  <view class="node-badge node-cyan">3</view>
-                  <view class="node-info">
-                    <text class="node-k">统筹报销</text>
-                    <text class="node-v text-cyan">¥{{ (result.breakdown.baseReimbursed + result.breakdown.catastrophicReimbursed).toLocaleString() }}</text>
+
+                <view class="flow-row">
+                  <view class="flow-row-name">
+                    <text class="flow-step-num num-2">2</text>
+                    <text class="flow-label">扣除免赔起付线</text>
+                    <PolicyTooltip title="什么是起付线门槛？" text="医保统筹基金支付的最低起跑门槛。低于起付线由个人自理；超过起付线且属于政策范围内的合规费用，医保才开始按比例报销。" />
                   </view>
+                  <text class="flow-val text-amber font-mono">- ¥{{ result.breakdown.deductibleDeducted.toLocaleString() }}</text>
                 </view>
-                <view class="pipe-arrow">➔</view>
-                <!-- 步骤4: 个人自理实付 -->
-                <view class="pipe-node pipe-node-final">
-                  <view class="node-badge node-rose">=</view>
-                  <view class="node-info">
-                    <text class="node-k font-bold">个人自理</text>
-                    <text class="node-v text-rose font-bold">¥{{ result.breakdown.personalPayTotal.toLocaleString() }}</text>
+
+                <view class="flow-row highlight-row">
+                  <view class="flow-row-name">
+                    <text class="flow-step-num num-3">3</text>
+                    <text class="flow-label font-bold">实际纳规报销基数</text>
+                    <PolicyTooltip title="什么是实际纳规报销基数？" text="总医疗花费扣除自费项目及起付线后，真正进入政策报销池的基准金额。" />
                   </view>
+                  <text class="flow-val font-bold font-mono">¥{{ Math.max(0, result.breakdown.eligibleCost - result.breakdown.deductibleDeducted).toLocaleString() }}</text>
+                </view>
+
+                <view class="flow-row">
+                  <view class="flow-row-name">
+                    <text class="flow-step-num num-4">4</text>
+                    <text class="flow-label">统筹执行报销比例</text>
+                    <PolicyTooltip title="什么是统筹报销比例？" text="当前统筹区对于该级别医院及参保人身份所适用的法定公文报销比例。" />
+                  </view>
+                  <text class="flow-val text-blue font-bold font-mono">{{ Math.max(0, result.breakdown.eligibleCost - result.breakdown.deductibleDeducted) > 0 ? Math.round((result.breakdown.baseReimbursed / (result.breakdown.eligibleCost - result.breakdown.deductibleDeducted)) * 100) : 0 }}%</text>
+                </view>
+
+                <view class="flow-row result-row">
+                  <view class="flow-row-name">
+                    <text class="flow-step-num num-check">✓</text>
+                    <text class="flow-label text-cyan font-bold">统筹基金报销金额</text>
+                    <PolicyTooltip title="什么是统筹基金报销？" text="经起付线扣除后，由基本医疗保险统筹基金直接承担的减免金额。" />
+                  </view>
+                  <text class="flow-val text-cyan font-bold font-mono">¥{{ result.breakdown.baseReimbursed.toLocaleString() }}</text>
+                </view>
+
+                <view class="flow-row" v-if="result.breakdown.catastrophicReimbursed > 0">
+                  <view class="flow-row-name">
+                    <text class="flow-step-num num-plus">+</text>
+                    <text class="flow-label text-emerald font-bold">大病互助二次报销</text>
+                    <PolicyTooltip title="什么是大病互助二次报销？" text="合规自付费用突破大病起付线后，自动启动大病二次梯级报销。" />
+                  </view>
+                  <text class="flow-val text-emerald font-bold font-mono">+ ¥{{ result.breakdown.catastrophicReimbursed }}</text>
                 </view>
               </view>
             </view>
 
-            <!-- 费用测算结构收据明细 (结构严整的清单) -->
-            <view class="receipt-breakdown-card">
-              <view class="breakdown-head" @click="showDetail = !showDetail">
-                <text class="b-head-title">费用分项估算明细</text>
-                <text class="b-head-action">{{ showDetail ? '收起 ▴' : '展开 ▾' }}</text>
-              </view>
-              <view class="breakdown-table" v-if="showDetail">
-                <view class="b-row">
-                  <text class="b-col-name">总医疗花费</text>
-                  <text class="b-col-val">¥{{ (parseFloat(form.totalCost) || 0).toLocaleString() }}</text>
-                </view>
-                <view class="b-row" v-if="result.breakdown.nonInsuranceDeducted > 0">
-                  <text class="b-col-name">自费/乙类先行自付</text>
-                  <text class="b-col-val text-dim">- ¥{{ result.breakdown.nonInsuranceDeducted.toLocaleString() }}</text>
-                </view>
-                <view class="b-row">
-                  <view class="b-col-name-wrap">
-                    <text class="b-col-name">扣除起付线门槛</text>
-                    <PolicyTooltip title="什么是起付线门槛？" text="医保统筹基金支付的最低起跑门槛（门槛费）。低于起付线的合规费用由个人自理；超过起付线且属于政策范围内的合规费用，医保才开始按比例报销。" example="如起付线为1200元，医疗总花费1万元，则前1200元自付，剩余8800元按规定比例报销。" />
-                  </view>
-                  <text class="b-col-val text-dim">- ¥{{ result.breakdown.deductibleDeducted.toLocaleString() }}</text>
-                </view>
-                <view class="b-row">
-                  <view class="b-col-name-wrap">
-                    <text class="b-col-name">实际纳规报销基数</text>
-                    <PolicyTooltip title="什么是实际纳规报销基数？" text="总医疗花费扣减目录外全自费项目及起付线门槛后，符合当地医保报销目录、真正进入统筹报销池的基准金额。" />
-                  </view>
-                  <text class="b-col-val">¥{{ Math.max(0, result.breakdown.eligibleCost - result.breakdown.deductibleDeducted).toLocaleString() }}</text>
-                </view>
-                <view class="b-row">
-                  <view class="b-col-name-wrap">
-                    <text class="b-col-name">统筹执行报销比例</text>
-                    <PolicyTooltip title="什么是统筹执行报销比例？" text="当前统筹区对于该级别医院及参保人身份所适用的法定公文报销比例。" />
-                  </view>
-                  <text class="b-col-val text-blue font-bold">{{ Math.max(0, result.breakdown.eligibleCost - result.breakdown.deductibleDeducted) > 0 ? Math.round((result.breakdown.baseReimbursed / (result.breakdown.eligibleCost - result.breakdown.deductibleDeducted)) * 100) : 0 }}%</text>
-                </view>
-                <view class="b-row">
-                  <view class="b-col-name-wrap">
-                    <text class="b-col-name">统筹基金报销</text>
-                    <PolicyTooltip title="什么是统筹基金报销？" text="经起付线扣除、乙类自付折算后，由基本医疗保险统筹基金按地方公文规定比例直接承担的减免金额。" />
-                  </view>
-                  <text class="b-col-val text-cyan font-bold">¥{{ result.breakdown.baseReimbursed.toLocaleString() }}</text>
-                </view>
-                <view class="b-row" v-if="result.breakdown.catastrophicReimbursed > 0">
-                  <view class="b-col-name-wrap">
-                    <text class="b-col-name">大病互助二次报销</text>
-                    <PolicyTooltip title="什么是大病互助二次报销？" text="基本医保统筹结算后，合规自付费用累计突破大病保险起付线时，系统自动无缝启动大病二次报销，梯级递增补偿。" />
-                  </view>
-                  <text class="b-col-val text-emerald font-bold">+ ¥{{ result.breakdown.catastrophicReimbursed }}</text>
-                </view>
-                <view class="b-row" v-if="result.breakdown.nonInsuranceCost > 0">
-                  <text class="b-col-name">全自费丙类药/特需</text>
-                  <text class="b-col-val text-dim">- ¥{{ result.breakdown.nonInsuranceCost }}</text>
-                </view>
-              </view>
-            </view>
-
-            <!-- 经办政策备忘提醒 -->
+            <!-- 政策备忘 (仅当存在特别说明时呈现) -->
             <view class="policy-memo" v-if="result.policyNotes.length > 0">
               <view v-for="(note, idx) in result.policyNotes" :key="idx" class="memo-row">
                 <text class="memo-dot">·</text>
@@ -485,23 +473,21 @@
               </view>
             </view>
 
-            <!-- 公开文件依据卡片 (底部稳固收口) -->
-            <view class="official-statute-badge" @click="openDocUrl">
-              <view class="statute-info">
-                <view class="statute-tag-row">
-                  <text class="statute-tag">公开政策依据</text>
-                  <text class="statute-doc-num">{{ result.officialDocUsed?.docNumber || '现行基本医保规范' }}</text>
-                </view>
-                <text class="statute-title">{{ result.officialDocUsed?.title || currentCityOption.cityName + '基本医疗保险政策' }}</text>
+            <!-- 极简公文依据与合规注脚 (单行精悍收口) -->
+            <view class="doc-compact-bar" @click="openDocUrl">
+              <view class="dcb-left">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="dcb-svg">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                <text class="dcb-tag">政策依据</text>
+                <text class="dcb-title">{{ result.officialDocUsed?.title || currentCityOption.cityName + '医保政策' }}</text>
               </view>
-              <view class="statute-btn">
-                <text class="statute-btn-txt">查看公文 ↗</text>
-              </view>
+              <text class="dcb-action">查看公文 ↗</text>
             </view>
 
-            <!-- 柔和合规注脚 (消除突兀感，精致内敛收口) -->
             <view class="estimate-footnote-bar">
-              <text class="footnote-txt">* 估算结果基于地方公开政策逻辑测算，仅供参考，实际报销以定点医疗机构出院结算单为准</text>
+              <text class="footnote-txt">* 测算基于地方公开医保公文规则，实际以出院结算单为准</text>
             </view>
           </view>
 
@@ -1053,68 +1039,127 @@ onShow(() => {
   line-height: 1.5;
 }
 
+/* -------------------- 全局 SVG 尺寸保底 -------------------- */
+svg {
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+  max-width: 100%;
+}
+
 /* -------------------- 2. 主工作台 Bento 栅格 -------------------- */
 .bento-grid {
   display: grid;
-  grid-template-columns: 1.08fr 0.92fr;
+  grid-template-columns: 1.05fr 0.95fr;
   gap: 20px;
-  align-items: stretch;
+  align-items: start; /* 关键：顶部自然对齐，杜绝高度拉扯空白 */
 }
 
 /* Bento 卡片基础 */
 .bento-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
-  border-radius: 16rpx;
-  padding: 24px 26px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 12rpx 36rpx rgba(0, 0, 0, 0.04);
+  border-radius: 16px;
+  padding: 22px 24px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03), 0 8px 24px -4px rgba(15, 23, 42, 0.04);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 16px;
 }
 
-/* -------------------- 左栏：测算配置器组件 -------------------- */
-.config-group {
+/* -------------------- 左栏：参数录入配置器 -------------------- */
+.card-lead-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #f1f5f9;
+  padding-bottom: 12px;
+  gap: 8px;
+}
+
+.lead-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lead-icon-wrap {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lead-svg {
+  width: 16px;
+  height: 16px;
+  stroke: #2563eb;
+  flex-shrink: 0;
+}
+
+.lead-texts {
   display: flex;
   flex-direction: column;
 }
 
-.group-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
+.lead-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.25;
 }
 
-.group-label {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #1e293b;
+.lead-subtitle {
+  font-size: 12px;
+  color: #64748b;
+  margin-top: 2px;
 }
 
 .quick-search-trigger {
-  cursor: pointer;
-  padding: 2px 8px;
-  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 9999px;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #dbeafe;
+  }
+}
+
+.qs-svg {
+  width: 12px;
+  height: 12px;
+  stroke: #2563eb;
+  flex-shrink: 0;
 }
 
 .search-trigger-txt {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: #2563eb;
+  line-height: 1;
 }
 
-/* 城市搜索面板 */
+/* 城市快捷搜索面板 */
 .search-panel {
-  background: #ffffff;
-  border: 1px solid #93c5fd;
-  border-radius: 12rpx;
-  padding: 12px;
-  margin-bottom: 12px;
-  box-shadow: 0 12rpx 32rpx rgba(37, 99, 235, 0.08);
+  background: #f8fafc;
+  border: 1px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 10px 12px;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.08);
 }
 
 .input-wrap {
@@ -1126,18 +1171,18 @@ onShow(() => {
 .search-input {
   width: 100%;
   height: 36px;
-  background: #f8fafc;
+  background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   color: #0f172a;
-  padding: 0 40px 0 12px;
+  padding: 0 36px 0 10px;
   font-size: 13px;
   box-sizing: border-box;
 }
 
 .search-clear-btn {
   position: absolute;
-  right: 12px;
+  right: 10px;
   font-size: 13px;
   color: #64748b;
   cursor: pointer;
@@ -1145,35 +1190,70 @@ onShow(() => {
 }
 
 .search-results-list {
-  max-height: 200rpx;
+  max-height: 180px;
   overflow-y: auto;
   margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .search-result-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8rpx 12rpx;
-  border-radius: 8rpx;
+  padding: 6px 10px;
+  border-radius: 6px;
   cursor: pointer;
-}
+  background: #ffffff;
+  border: 1px solid #f1f5f9;
+  transition: all 0.15s ease;
 
-.search-result-row:hover {
-  background: #eff6ff;
+  &:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+  }
 }
 
 .c-name { font-size: 13px; color: #0f172a; font-weight: 600; }
-.c-prov { font-size: 11.5px; color: #64748b; margin-left: 8px; }
-.c-action { font-size: 12px; color: #2563eb; font-weight: 600; }
-.empty-txt { font-size: 12px; color: #64748b; }
+.c-prov { font-size: 11px; color: #64748b; margin-left: 6px; }
+.c-action { font-size: 11.5px; color: #2563eb; font-weight: 600; }
+.empty-txt { font-size: 12px; color: #64748b; padding: 8px 0; text-align: center; }
 
-/* 双列栅格 */
-.grid-2col,
+/* 配置步骤分组通用 */
+.config-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.group-label {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.group-hint {
+  font-size: 11.5px;
+  color: #059669;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* 省市下拉区域 */
 .region-dropdown-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: 10px;
 }
 
 .dropdown-anchor-row {
@@ -1184,26 +1264,24 @@ onShow(() => {
   position: relative;
 }
 
-/* 下拉触发器 */
 .cyber-dropdown-trigger {
   width: 100%;
-  height: 72rpx;
+  height: 40px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
-  border-radius: 12rpx;
-  padding: 0 16rpx;
+  border-radius: 10px;
+  padding: 0 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
   box-sizing: border-box;
-  transition: all 0.2s;
-}
+  transition: all 0.18s ease;
 
-.cyber-dropdown-trigger:hover,
-.cyber-dropdown-trigger.open {
-  border-color: #2563eb;
-  background: #eff6ff;
+  &:hover, &.open {
+    border-color: #2563eb;
+    background: #eff6ff;
+  }
 }
 
 .select-val {
@@ -1219,24 +1297,23 @@ onShow(() => {
   font-size: 11px;
   color: #64748b;
   transition: transform 0.2s ease;
+
+  &.rotated {
+    transform: rotate(180deg);
+    color: #2563eb;
+  }
 }
 
-.select-arrow.rotated {
-  transform: rotate(180deg);
-  color: #2563eb;
-}
-
-/* 下拉菜单浮层 */
 .cyber-dropdown-menu {
   position: absolute;
-  top: calc(100% + 6rpx);
+  top: calc(100% + 4px);
   left: 0;
   width: 100%;
-  max-height: 320px;
+  max-height: 280px;
   background: #ffffff;
-  border: 1px solid #e2e8f0;
-  border-radius: 12rpx;
-  box-shadow: 0 16rpx 40rpx rgba(0, 0, 0, 0.1);
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.12);
   overflow-y: auto;
   z-index: 100;
 }
@@ -1245,17 +1322,23 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12rpx 16rpx;
-  border-bottom: 1px solid #f1f5f9;
+  padding: 8px 12px;
+  border-bottom: 1px solid #f8fafc;
   cursor: pointer;
-}
+  transition: background-color 0.15s ease;
 
-.dropdown-item:hover {
-  background: #f8fafc;
-}
+  &:hover {
+    background: #f8fafc;
+  }
 
-.dropdown-item.selected {
-  background: #eff6ff;
+  &.selected {
+    background: #eff6ff;
+
+    .item-name {
+      color: #2563eb;
+      font-weight: 700;
+    }
+  }
 }
 
 .dropdown-item .item-name {
@@ -1264,62 +1347,63 @@ onShow(() => {
   font-weight: 500;
 }
 
-.dropdown-item.selected .item-name {
-  color: #2563eb;
-  font-weight: 700;
-}
-
 .dropdown-item .item-check {
   font-size: 12px;
   color: #2563eb;
   font-weight: 700;
 }
 
-/* 二段式胶囊切换器 (Segmented Control) */
+/* 医保身份切换二段钮 */
 .segmented-control {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 8px;
-  background: #f1f5f9;
-  padding: 4px;
-  border-radius: 12rpx;
-  border: 1px solid #e2e8f0;
 }
 
 .seg-btn {
-  padding: 10rpx 14rpx;
-  border-radius: 10rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 42px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
   cursor: pointer;
-  text-align: center;
-  transition: all 0.2s ease;
+  transition: all 0.18s ease;
+
+  &:hover {
+    background: #ffffff;
+    border-color: #cbd5e1;
+  }
+
+  &.active {
+    background: #eff6ff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb, 0 2px 8px rgba(37, 99, 235, 0.1);
+
+    .seg-icon {
+      stroke: #2563eb;
+    }
+
+    .seg-title {
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+  }
 }
 
-.seg-btn.active {
-  background: #ffffff;
-  border: 1px solid rgba(37, 99, 235, 0.25);
-  box-shadow: 0 2rpx 10rpx rgba(0, 0, 0, 0.05);
+.seg-icon {
+  width: 16px;
+  height: 16px;
+  stroke: #64748b;
+  flex-shrink: 0;
 }
 
 .seg-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #64748b;
-  display: block;
-}
-
-.seg-btn.active .seg-title {
-  color: #2563eb;
-}
-
-.seg-desc {
-  font-size: 11px;
-  color: #94a3b8;
-  display: block;
-  margin-top: 2px;
-}
-
-.seg-btn.active .seg-desc {
-  color: #64748b;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #475569;
 }
 
 /* 退休优待开关栏 */
@@ -1327,18 +1411,24 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 8px;
+  margin-top: 4px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 10rpx;
+  border-radius: 10px;
   padding: 8px 12px;
   cursor: pointer;
+  transition: all 0.18s ease;
+
+  &:hover {
+    border-color: #cbd5e1;
+  }
 }
 
 .retiree-bar-left {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-wrap: wrap;
 }
 
 .retiree-label {
@@ -1347,49 +1437,61 @@ onShow(() => {
   font-weight: 600;
 }
 
-.retiree-sub {
-  font-size: 11.5px;
-  color: #64748b;
+.retiree-badge {
+  font-size: 10.5px;
+  color: #059669;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 700;
 }
 
 .custom-switch {
-  width: 56rpx;
-  height: 32rpx;
-  border-radius: 9999rpx;
+  width: 44px;
+  height: 24px;
+  border-radius: 9999px;
   background: #cbd5e1;
   position: relative;
-  transition: all 0.2s ease;
-}
+  transition: background-color 0.2s ease;
+  flex-shrink: 0;
 
-.custom-switch.checked {
-  background: #10b981;
+  &.checked {
+    background: #10b981;
+
+    .switch-handle {
+      transform: translateX(20px);
+    }
+  }
 }
 
 .switch-handle {
-  width: 26rpx;
-  height: 26rpx;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   background: #ffffff;
   position: absolute;
-  top: 3rpx;
-  left: 3rpx;
+  top: 2px;
+  left: 2px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.custom-switch.checked .switch-handle {
-  transform: translateX(24rpx);
+/* 就医类型与机构等级栅格 */
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
-/* 子分段器 (就医类型) */
 .sub-segmented-control {
   display: flex;
-  height: 72rpx;
+  height: 40px;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
-  border-radius: 12rpx;
-  padding: 4rpx;
-  gap: 4rpx;
+  border-radius: 10px;
+  padding: 3px;
+  gap: 3px;
   box-sizing: border-box;
 }
 
@@ -1398,14 +1500,20 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 8rpx;
+  border-radius: 8px;
   cursor: pointer;
-}
+  transition: all 0.15s ease;
 
-.sub-seg-btn.active {
-  background: #ffffff;
-  border: 1px solid rgba(37, 99, 235, 0.25);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  &.active {
+    background: #ffffff;
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    .sub-seg-txt {
+      color: #2563eb;
+      font-weight: 700;
+    }
+  }
 }
 
 .sub-seg-txt {
@@ -1414,21 +1522,17 @@ onShow(() => {
   font-weight: 600;
 }
 
-.sub-seg-btn.active .sub-seg-txt {
-  color: #2563eb;
-}
-
-/* 门诊政策通知卡 */
+/* 门诊政策提醒 */
 .policy-notice {
-  margin-top: 10px;
+  margin-top: 4px;
   background: #eff6ff;
-  border-left: 3rpx solid #2563eb;
-  border-radius: 8rpx;
-  padding: 8px 12px;
+  border-left: 3px solid #2563eb;
+  border-radius: 8px;
+  padding: 8px 10px;
 }
 
 .notice-badge {
-  font-size: 11.5px;
+  font-size: 11px;
   color: #1d4ed8;
   font-weight: 700;
   display: block;
@@ -1436,9 +1540,9 @@ onShow(() => {
 }
 
 .notice-content {
-  font-size: 12px;
+  font-size: 11.5px;
   color: #1e3a8a;
-  line-height: 1.5;
+  line-height: 1.45;
   display: block;
 }
 
@@ -1446,93 +1550,97 @@ onShow(() => {
 .amount-input-box {
   display: flex;
   align-items: center;
-  height: 80rpx;
+  height: 46px;
   background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  border-radius: 12rpx;
-  padding: 0 18rpx;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 14px;
   box-sizing: border-box;
-  transition: all 0.2s;
-}
+  transition: all 0.2s ease;
 
-.amount-input-box:focus-within {
-  border-color: #2563eb;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-  background: #ffffff;
+  &:focus-within {
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  }
 }
 
 .currency-symbol {
   font-size: 20px;
   color: #2563eb;
-  font-weight: 700;
+  font-weight: 800;
   margin-right: 8px;
+  user-select: none;
 }
 
 .main-amount-input {
   flex: 1;
   height: 100%;
   color: #0f172a;
-  font-size: 22px;
-  font-weight: 700;
+  font-size: 20px;
+  font-weight: 800;
   font-variant-numeric: tabular-nums;
+  border: none;
+  outline: none;
+  background: transparent;
 }
 
 .currency-unit {
   font-size: 13px;
   color: #64748b;
   font-weight: 600;
+  user-select: none;
 }
 
 /* 预设金额药丸行 */
 .preset-pill-row {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  gap: 8px;
-  margin-top: 8px;
+  gap: 6px;
+  margin-top: 4px;
 }
 
 .preset-pill {
-  flex: 1;
-  min-width: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  padding: 8rpx 4rpx;
-  border-radius: 8rpx;
-  text-align: center;
+  padding: 6px 2px;
+  border-radius: 8px;
   cursor: pointer;
-  box-sizing: border-box;
-  transition: all 0.2s;
-}
+  transition: all 0.15s ease;
 
-.preset-pill.active {
-  background: #eff6ff;
-  border-color: #2563eb;
-  box-shadow: 0 0 0 1px #2563eb, 0 1px 4px rgba(37, 99, 235, 0.15);
+  &:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+  }
+
+  &.active {
+    background: #eff6ff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
+
+    .pill-text {
+      color: #1d4ed8;
+      font-weight: 700;
+    }
+  }
 }
 
 .pill-text {
-  font-size: 12px;
+  font-size: 11.5px;
   color: #64748b;
   font-weight: 600;
   white-space: nowrap;
-  word-break: keep-all;
-  line-height: 1.2;
 }
 
-.preset-pill.active .pill-text {
-  color: #1d4ed8;
-  font-weight: 700;
-}
-
-/* 高级折叠面板 */
+/* 高级自费折叠面板 */
 .advanced-collapse-card {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 12rpx;
-  padding: 10px 14px;
+  border-radius: 10px;
+  padding: 8px 12px;
 }
 
 .collapse-trigger {
@@ -1543,7 +1651,7 @@ onShow(() => {
 }
 
 .trigger-label {
-  font-size: 12.5px;
+  font-size: 12px;
   color: #475569;
   font-weight: 600;
 }
@@ -1554,8 +1662,8 @@ onShow(() => {
 }
 
 .collapse-content {
-  margin-top: 10px;
-  padding-top: 10px;
+  margin-top: 8px;
+  padding-top: 8px;
   border-top: 1px solid #e2e8f0;
 }
 
@@ -1565,28 +1673,24 @@ onShow(() => {
 }
 
 .field-label {
-  font-size: 12px;
+  font-size: 11.5px;
   color: #64748b;
   margin-bottom: 4px;
-  display: block;
 }
 
 .collapse-input {
   width: 100%;
-  height: 36px;
+  height: 34px;
   background: #ffffff;
   border: 1px solid #cbd5e1;
-  border-radius: 8px;
+  border-radius: 6px;
   color: #0f172a;
-  padding: 0 12px;
-  font-size: 13px;
+  padding: 0 10px;
+  font-size: 12.5px;
   box-sizing: border-box;
 }
 
-.mt-16 { margin-top: 16px; }
-.mt-12 { margin-top: 12px; }
-
-/* -------------------- 右栏：报销测算凭证组件 -------------------- */
+/* -------------------- 右栏：报销测算凭证看板 -------------------- */
 .receipt-card {
   border-color: #e2e8f0;
 }
@@ -1594,6 +1698,7 @@ onShow(() => {
 .receipt-inner {
   display: flex;
   flex-direction: column;
+  gap: 14px;
 }
 
 .receipt-header {
@@ -1601,7 +1706,9 @@ onShow(() => {
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 12px;
+  padding-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .receipt-title-wrap {
@@ -1611,8 +1718,8 @@ onShow(() => {
 }
 
 .status-indicator {
-  width: 10rpx;
-  height: 10rpx;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: #10b981;
   box-shadow: 0 0 6px rgba(16, 185, 129, 0.6);
@@ -1622,8 +1729,6 @@ onShow(() => {
   font-size: 15px;
   color: #0f172a;
   font-weight: 700;
-  white-space: nowrap;
-  word-break: keep-all;
 }
 
 .desktop-title-txt { display: inline; }
@@ -1640,27 +1745,21 @@ onShow(() => {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #0284c7;
-  border: 1px solid #0284c7;
+  background: #2563eb;
+  border: 1px solid #2563eb;
   padding: 4px 10px;
-  border-radius: 9999rpx;
+  border-radius: 9999px;
   cursor: pointer;
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  user-select: none;
-  white-space: nowrap;
-  word-break: keep-all;
-  flex-shrink: 0;
-  box-shadow: 0 1px 3px rgba(2, 132, 199, 0.25);
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.25);
+  transition: all 0.15s ease;
 
   &:hover {
-    background: #0369a1;
-    border-color: #0369a1;
-    transform: translateY(-1px);
+    background: #1d4ed8;
+    border-color: #1d4ed8;
   }
 
   &:active {
-    background: #075985;
-    transform: scale(0.95);
+    transform: scale(0.96);
   }
 }
 
@@ -1676,51 +1775,27 @@ onShow(() => {
   color: #ffffff;
   font-weight: 700;
   line-height: 1;
-  white-space: nowrap;
-  word-break: keep-all;
-}
-
-.trigger-label-group {
-  display: flex;
-  align-items: center;
-}
-
-.cell-label-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.b-col-name-wrap {
-  display: flex;
-  align-items: center;
 }
 
 .copy-voucher-btn {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  background: #f1f5f9;
+  background: #f8fafc;
   border: 1px solid #cbd5e1;
   padding: 4px 10px;
-  border-radius: 9999rpx;
+  border-radius: 9999px;
   cursor: pointer;
-  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
-  user-select: none;
-  white-space: nowrap;
-  word-break: keep-all;
-  flex-shrink: 0;
-}
+  transition: all 0.15s ease;
 
-.copy-voucher-btn:hover {
-  background: #eff6ff;
-  border-color: #93c5fd;
-  transform: translateY(-1px);
-}
+  &:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+  }
 
-.copy-voucher-btn:active {
-  background: #dbeafe;
-  transform: scale(0.95);
+  &:active {
+    transform: scale(0.96);
+  }
 }
 
 .copy-btn-svg {
@@ -1739,445 +1814,371 @@ onShow(() => {
   color: #475569;
   font-weight: 600;
   line-height: 1;
-  white-space: nowrap;
-  word-break: keep-all;
 }
 
 .copy-voucher-btn:hover .copy-btn-txt {
   color: #2563eb;
 }
 
-.ratio-pill {
-  background: #eff6ff;
+/* 双核英雄结算看板 (高度极度精炼，左右双核对比，去除了重复数字) */
+.result-hero-board {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #eff6ff 100%);
   border: 1px solid #bfdbfe;
-  padding: 4px 10px;
-  border-radius: 9999px;
-  white-space: nowrap;
-  word-break: keep-all;
-  flex-shrink: 0;
+  border-radius: 12px;
+  padding: 14px 16px 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 8px rgba(37, 99, 235, 0.04);
 }
 
-.ratio-text {
-  font-size: 12px;
-  color: #1d4ed8;
-  font-weight: 700;
-  white-space: nowrap;
-  word-break: keep-all;
+.hero-split-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
-/* 主指标大金额 */
-.receipt-hero-block {
-  text-align: center;
-  padding: 18px 16px 14px;
-  background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f0f9ff 100%);
-  border: 1px solid #bbf7d0;
-  border-radius: 14px;
-  margin-top: 12px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 8px -2px rgba(16, 185, 129, 0.08);
+.hero-half {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
-.receipt-hero-label {
-  font-size: 13px;
-  color: #059669;
-  font-weight: 600;
-  display: block;
-  margin-bottom: 4px;
+.half-personal {
+  align-items: flex-end;
+  text-align: right;
 }
 
-.receipt-price-row {
+.half-tag {
   display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 2px;
+}
+
+.half-tag-txt {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.tag-cyan .half-tag-txt {
+  color: #0369a1;
+}
+
+.tag-amber .half-tag-txt {
+  color: #b45309;
+}
+
+.half-tag-pct {
+  font-size: 10.5px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 9999px;
+  line-height: 1.2;
+}
+
+.tag-cyan .half-tag-pct {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #bae6fd;
+}
+
+.tag-amber .half-tag-pct {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.half-price-row {
+  display: flex;
   align-items: baseline;
   gap: 4px;
 }
 
-.price-symbol {
-  font-size: 20px;
-  color: #059669;
-  font-weight: 700;
+.half-yen {
+  font-size: 16px;
+  font-weight: 800;
+  line-height: 1;
 }
 
-.price-number {
-  font-size: 32px;
+.half-val {
+  font-size: 26px;
   font-weight: 900;
-  color: #047857;
-  letter-spacing: -0.5px;
   font-variant-numeric: tabular-nums;
+  line-height: 1;
+  letter-spacing: -0.5px;
 }
 
-.receipt-note {
-  font-size: 12px;
+.text-cyan { color: #0284c7 !important; }
+.text-amber { color: #d97706 !important; }
+.text-emerald { color: #059669 !important; }
+.text-dim { color: #64748b !important; }
+.text-blue { color: #2563eb !important; }
+.font-bold { font-weight: 700 !important; }
+.font-mono { font-family: monospace, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas; }
+
+.half-hint {
+  font-size: 11px;
   color: #64748b;
-  display: block;
   margin-top: 4px;
 }
 
-/* 对比矩阵 */
-.compare-matrix {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  background: #f8fafc;
-  padding: 12px 14px;
-  border-radius: 12rpx;
-  border: 1px solid #e2e8f0;
-  margin-top: 12px;
-}
-
-.matrix-cell {
-  text-align: center;
-}
-
-.matrix-cell:first-child {
-  border-right: 1px solid #e2e8f0;
-}
-
-.cell-label {
-  font-size: 12px;
-  color: #64748b;
-  display: block;
-  margin-bottom: 2px;
-}
-
-.cell-val {
-  font-size: 16px;
-  font-weight: 700;
-  display: block;
-  font-variant-numeric: tabular-nums;
-}
-
-.text-cyan { color: #0284c7; }
-.text-amber { color: #d97706; }
-.text-emerald { color: #059669; }
-.text-dim { color: #64748b; }
-.font-bold { font-weight: 700; }
-
-/* 能量条 */
-.progress-bar-wrap {
-  margin-top: 14px;
-}
-
-.progress-labels {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 4px;
-}
-
-.prog-txt {
-  font-size: 11.5px;
-  font-weight: 600;
-}
-
-.progress-track {
-  display: flex;
-  height: 10px;
+.hero-center-divider {
+  width: 1px;
+  height: 44px;
   background: #e2e8f0;
-  border-radius: 9999rpx;
+  margin: 0 16px;
+  flex-shrink: 0;
+}
+
+.hero-mini-meter {
+  display: flex;
+  height: 5px;
+  background: #e2e8f0;
+  border-radius: 9999px;
   overflow: hidden;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
+  margin-top: 10px;
 }
 
-.progress-bar {
+.mini-bar {
   height: 100%;
-  transition: width 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: width 0.35s ease;
 }
 
-.bar-cyan { 
-  background: linear-gradient(90deg, #2563eb 0%, #0284c7 60%, #059669 100%); 
-  position: relative;
-  overflow: hidden;
+.bar-cyan {
+  background: linear-gradient(90deg, #2563eb 0%, #0284c7 100%);
 }
 
-.bar-cyan::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.45) 50%, rgba(255, 255, 255, 0) 100%);
-  transform: translateX(-100%);
-  animation: barShimmer 2.8s infinite ease-in-out;
+.bar-amber {
+  background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
 }
 
-@keyframes barShimmer {
-  0% { transform: translateX(-100%); }
-  45%, 100% { transform: translateX(100%); }
-}
-.bar-dim { 
-  background: linear-gradient(90deg, #fcd34d 0%, #f59e0b 100%); 
-}
-
-.text-amber-txt { 
-  color: #b45309; 
-}
-
-/* 费用推导流水线卡片 */
-.calc-pipeline-card {
-  margin-top: 14px;
+/* 费用推导分项明细卡片 */
+.flow-breakdown-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
   padding: 12px 14px;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
 }
 
-.pipeline-header {
+.flow-card-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  user-select: none;
 }
 
-.pipe-header-left {
+.fch-left {
   display: flex;
   align-items: center;
   gap: 6px;
 }
 
-.pipe-svg {
-  width: 15px;
-  height: 15px;
-  color: #2563eb;
+.fch-svg {
+  width: 14px;
+  height: 14px;
+  stroke: #2563eb;
+  flex-shrink: 0;
 }
 
-.pipeline-title {
+.fch-title {
   font-size: 13px;
   font-weight: 700;
   color: #0f172a;
 }
 
-.pipeline-tag {
-  font-size: 10px;
-  font-weight: 600;
-  color: #2563eb;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+.fch-badge {
+  font-size: 10.5px;
+  color: #64748b;
+  background: #f1f5f9;
   padding: 1px 6px;
   border-radius: 4px;
 }
 
-.pipeline-flow {
+.fch-toggle {
+  font-size: 11.5px;
+  color: #64748b;
+}
+
+.flow-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 4px;
+}
+
+.flow-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 4px;
+  padding: 6px 0;
+  border-bottom: 1px solid #f8fafc;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
 }
 
-.pipe-node {
-  flex: 1;
+.flow-row.highlight-row {
+  background: #f8fafc;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 6px;
+}
+
+.flow-row.result-row {
+  background: #eff6ff;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 6px;
+}
+
+.flow-row-name {
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: #f8fafc;
-  border: 1px solid #f1f5f9;
-  border-radius: 8px;
-  padding: 8px 10px;
-  min-width: 0;
+  gap: 6px;
 }
 
-.pipe-node-final {
-  background: #fff1f2;
-  border-color: #ffe4e6;
-}
-
-.node-badge {
-  width: 20px;
-  height: 20px;
+.flow-step-num {
+  width: 16px;
+  height: 16px;
   border-radius: 50%;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 11px;
-  font-weight: 800;
-  flex-shrink: 0;
-}
+  line-height: 1;
 
-.node-blue { background: #dbeafe; color: #1d4ed8; }
-.node-amber { background: #fef3c7; color: #b45309; }
-.node-cyan { background: #e0f2fe; color: #0369a1; }
-.node-rose { background: #ffe4e6; color: #be123c; }
-
-.node-info {
-  display: flex;
-  flex-direction: column;
-  min-width: 0;
-}
-
-.node-k {
-  font-size: 11px;
-  color: #64748b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.node-v {
-  font-size: 13.5px;
-  font-weight: 800;
-  color: #0f172a;
-  font-variant-numeric: tabular-nums;
-  white-space: nowrap;
-}
-
-.text-rose { color: #e11d48 !important; }
-
-.pipe-arrow {
-  font-size: 11px;
-  color: #94a3b8;
-  flex-shrink: 0;
-}
-
-@media (max-width: 767px) {
-  .pipeline-flow {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+  &.num-sub {
+    background: #fee2e2;
+    color: #b91c1c;
   }
-  .pipe-arrow {
-    display: none;
+
+  &.num-check {
+    background: #e0f2fe;
+    color: #0369a1;
   }
-  .pipe-node {
-    padding: 8px 10px;
+
+  &.num-plus {
+    background: #d1fae5;
+    color: #047857;
   }
 }
 
-/* 费用测算结构清单 */
-.receipt-breakdown-card {
-  margin-top: 14px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10rpx;
-  padding: 10px 14px;
+.flow-label {
+  font-size: 12.5px;
+  color: #334155;
 }
 
-.breakdown-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
-.b-head-title {
-  font-size: 13.5px;
-  color: #1e293b;
-  font-weight: 700;
-}
-
-.b-head-action {
-  font-size: 12px;
-  color: #64748b;
-}
-
-.breakdown-table {
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid #e2e8f0;
-}
-
-.b-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 0;
+.flow-val {
   font-size: 13px;
+  color: #0f172a;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
-
-.b-col-name { color: #64748b; font-size: 13px; }
-.b-col-val { font-weight: 600; color: #0f172a; font-size: 13px; font-variant-numeric: tabular-nums; }
 
 /* 政策备忘 */
 .policy-memo {
-  margin-top: 12px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 8rpx;
-  padding: 10px 12px;
+  border-radius: 8px;
+  padding: 8px 10px;
 }
 
 .memo-row {
   display: flex;
   align-items: flex-start;
-  gap: 8rpx;
-  margin-bottom: 4px;
+  gap: 6px;
+  margin-bottom: 3px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
-.memo-row:last-child { margin-bottom: 0; }
-.memo-dot { color: #2563eb; font-size: 14px; line-height: 1; }
-.memo-txt { font-size: 12px; color: #475569; line-height: 1.5; flex: 1; }
+.memo-dot {
+  color: #2563eb;
+  font-size: 13px;
+  line-height: 1;
+}
 
-/* 底部官方依据卡片 (稳固收口) */
-.official-statute-badge {
+.memo-txt {
+  font-size: 11.5px;
+  color: #475569;
+  line-height: 1.45;
+  flex: 1;
+}
+
+/* 极简公文依据与合规注脚 (单行精悍收口) */
+.doc-compact-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 16px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 10rpx;
-  padding: 10px 14px;
-  gap: 12px;
+  border-radius: 8px;
+  padding: 8px 12px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #eff6ff;
+    border-color: #bfdbfe;
+
+    .dcb-action {
+      color: #1d4ed8;
+    }
+  }
 }
 
-.official-statute-badge:hover {
-  background: #eff6ff;
-  border-color: #93c5fd;
-}
-
-.statute-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.statute-tag-row {
+.dcb-left {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
 }
 
-.statute-tag {
-  font-size: 11px;
-  color: #2563eb;
-  font-weight: 700;
-}
-
-.statute-doc-num {
-  font-size: 12px;
-  color: #64748b;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.statute-title {
-  font-size: 13px;
-  color: #0f172a;
-  font-weight: 600;
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: 2px;
-}
-
-.statute-btn {
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  padding: 4px 10px;
-  border-radius: 6px;
+.dcb-svg {
+  width: 13px;
+  height: 13px;
+  stroke: #2563eb;
   flex-shrink: 0;
 }
 
-.statute-btn-txt {
-  font-size: 12px;
-  color: #1d4ed8;
-  font-weight: 600;
+.dcb-tag {
+  font-size: 10.5px;
+  color: #2563eb;
+  font-weight: 700;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 1px 5px;
+  border-radius: 4px;
+  flex-shrink: 0;
 }
 
-/* 柔和合规注脚 (克制、内敛，融入卡片整体，消除突兀感) */
+.dcb-title {
+  font-size: 12px;
+  color: #334155;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+}
+
+.dcb-action {
+  font-size: 11.5px;
+  color: #2563eb;
+  font-weight: 600;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
 .estimate-footnote-bar {
-  margin-top: 10px;
   padding: 0 4px;
   text-align: center;
 }
@@ -2191,7 +2192,7 @@ onShow(() => {
 
 /* 空状态 */
 .empty-receipt-wrap {
-  padding: 60px 20px;
+  padding: 48px 16px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -2199,9 +2200,9 @@ onShow(() => {
 }
 
 .empty-svg-wrap {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
   background: #f1f5f9;
   display: flex;
   align-items: center;
@@ -2210,13 +2211,13 @@ onShow(() => {
 }
 
 .empty-svg {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   stroke: #94a3b8;
 }
 
-.empty-title { font-size: 15px; font-weight: 700; color: #475569; }
-.empty-desc { font-size: 12.5px; color: #64748b; margin-top: 8px; line-height: 1.5; max-width: 320px; }
+.empty-title { font-size: 14.5px; font-weight: 700; color: #475569; }
+.empty-desc { font-size: 12px; color: #64748b; margin-top: 6px; line-height: 1.5; max-width: 300px; }
 
 /* -------------------- 3. 响应式布局：移动端自适应 -------------------- */
 @media (min-width: 768px) {
@@ -2478,40 +2479,38 @@ onShow(() => {
 }
 
 @media (max-width: 380px) {
-  .pulse-chip {
+  .hero-curr {
+    font-size: 14px;
+  }
+
+  .hero-val {
+    font-size: 20px;
+  }
+
+  .hero-pct-pill {
     display: none;
   }
 
-  .grid-2col {
+  .region-dropdown-grid,
+  .identity-grid,
+  .treatment-type-grid {
     grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .price-number {
-    font-size: 26px;
-  }
-
-  .compare-matrix {
-    padding: 12px 8px;
-    gap: 8px;
-  }
-
-  .cell-val {
-    font-size: 14.5px;
   }
 }
 
 /* ==================== 微动效与微交互 ==================== */
 .nav-pill-item,
-.quick-search-trigger,
+.search-pill-btn,
 .cyber-dropdown-trigger,
 .dropdown-item,
-.seg-btn,
-.sub-seg-btn,
+.id-card,
+.treat-btn,
 .preset-pill,
 .collapse-trigger,
-.official-statute-badge,
-.retiree-bar {
+.doc-compact-bar,
+.retiree-bar,
+.voucher-gen-btn,
+.copy-voucher-btn {
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -2519,23 +2518,26 @@ onShow(() => {
 }
 
 .nav-pill-item:hover,
-.seg-btn:hover,
-.sub-seg-btn:hover,
+.id-card:hover,
+.treat-btn:hover,
 .preset-pill:hover,
-.official-statute-badge:hover {
-  transform: translateY(-1rpx) scale(1.008);
+.doc-compact-bar:hover,
+.search-pill-btn:hover {
+  transform: translateY(-1px) scale(1.006);
 }
 
 .nav-pill-item:active,
 .cyber-dropdown-trigger:active,
 .dropdown-item:active,
-.seg-btn:active,
-.sub-seg-btn:active,
+.id-card:active,
+.treat-btn:active,
 .preset-pill:active,
 .collapse-trigger:active,
-.official-statute-badge:active,
-.retiree-bar:active {
-  transform: translateY(1rpx) scale(0.98) !important;
+.doc-compact-bar:active,
+.retiree-bar:active,
+.voucher-gen-btn:active,
+.copy-voucher-btn:active {
+  transform: translateY(1px) scale(0.98) !important;
   transition-duration: 0.08s !important;
 }
 </style>
