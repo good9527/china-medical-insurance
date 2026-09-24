@@ -219,7 +219,7 @@
         <view class="filter-bar">
           <view class="filter-left">
             <!-- 省份下拉 -->
-            <view class="picker-anchor">
+            <view class="picker-anchor province-anchor">
               <view class="dropdown-trigger" :class="{ open: openDropdown === 'province' }" @click.stop="toggleDropdown('province')">
                 <svg class="picker-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon>
@@ -228,7 +228,7 @@
                 </svg>
                 <text class="dropdown-label">
                   <text class="desktop-text">{{ selectedProvince === 'all' ? '全国 348 统筹区' : selectedProvince }}</text>
-                  <text class="mobile-text">{{ selectedProvince === 'all' ? '全国 348 区' : selectedProvince }}</text>
+                  <text class="mobile-text">{{ selectedProvince === 'all' ? '全国 348 统筹区' : selectedProvince }}</text>
                 </text>
                 <text class="dropdown-caret">▾</text>
               </view>
@@ -250,6 +250,37 @@
                 >
                   <text class="item-name">{{ p }}</text>
                   <svg class="check-svg" v-if="selectedProvince === p" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                </view>
+              </view>
+            </view>
+
+            <!-- 排序指标下拉选择器 -->
+            <view class="picker-anchor sort-anchor">
+              <view class="dropdown-trigger sort-dropdown-trigger" :class="{ open: openDropdown === 'sort' }" @click.stop="toggleDropdown('sort')">
+                <svg class="picker-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="4" y1="6" x2="20" y2="6"></line>
+                  <line x1="8" y1="12" x2="16" y2="12"></line>
+                  <line x1="10" y1="18" x2="14" y2="18"></line>
+                </svg>
+                <text class="dropdown-label">
+                  <text class="desktop-text">排序：{{ currentSortLabel }} {{ sortAsc ? '▲ 升序' : '▼ 降序' }}</text>
+                  <text class="mobile-text">排序：{{ currentSortLabel }} {{ sortAsc ? '▲' : '▼' }}</text>
+                </text>
+                <text class="dropdown-caret">▾</text>
+              </view>
+              <view class="dropdown-menu sort-dropdown-menu" v-if="openDropdown === 'sort'" @click.stop>
+                <view 
+                  class="menu-item"
+                  v-for="opt in quickSortOptions"
+                  :key="'sort_opt_' + opt.key"
+                  :class="{ active: sortColumn === opt.key }"
+                  @click.stop="toggleSort(opt.key); openDropdown = null"
+                >
+                  <text class="item-name">{{ opt.label }}</text>
+                  <view class="item-status-group" v-if="sortColumn === opt.key">
+                    <text class="item-order-badge">{{ sortAsc ? '▲ 升序' : '▼ 降序' }}</text>
+                    <svg class="check-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                  </view>
                 </view>
               </view>
             </view>
@@ -280,37 +311,6 @@
                   <line x1="3" y1="18" x2="21" y2="18"></line>
                 </svg>
                 <text class="layout-txt">全维宽表</text>
-              </view>
-            </view>
-
-            <!-- 排序指标下拉选择器 (集成在筛选栏中，不再在领奖台上方堆砌悬浮块) -->
-            <view class="picker-anchor">
-              <view class="dropdown-trigger sort-dropdown-trigger" :class="{ open: openDropdown === 'sort' }" @click.stop="toggleDropdown('sort')">
-                <svg class="picker-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <line x1="4" y1="6" x2="20" y2="6"></line>
-                  <line x1="8" y1="12" x2="16" y2="12"></line>
-                  <line x1="10" y1="18" x2="14" y2="18"></line>
-                </svg>
-                <text class="dropdown-label">
-                  <text class="desktop-text">排序：{{ currentSortLabel }} {{ sortAsc ? '▲ 升序' : '▼ 降序' }}</text>
-                  <text class="mobile-text">{{ currentSortLabel }} {{ sortAsc ? '▲' : '▼' }}</text>
-                </text>
-                <text class="dropdown-caret">▾</text>
-              </view>
-              <view class="dropdown-menu sort-dropdown-menu" v-if="openDropdown === 'sort'" @click.stop>
-                <view 
-                  class="menu-item"
-                  v-for="opt in quickSortOptions"
-                  :key="'sort_opt_' + opt.key"
-                  :class="{ active: sortColumn === opt.key }"
-                  @click.stop="toggleSort(opt.key); openDropdown = null"
-                >
-                  <text class="item-name">{{ opt.label }}</text>
-                  <view class="item-status-group" v-if="sortColumn === opt.key">
-                    <text class="item-order-badge">{{ sortAsc ? '▲ 升序' : '▼ 降序' }}</text>
-                    <svg class="check-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                  </view>
-                </view>
               </view>
             </view>
           </view>
@@ -3617,6 +3617,7 @@ const filteredBattleMetrics = computed(() => {
   }
 
   .filter-bar {
+    display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 10px;
@@ -3625,35 +3626,87 @@ const filteredBattleMetrics = computed(() => {
 
   .filter-left {
     width: 100%;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
+    align-items: stretch;
   }
 
   .picker-anchor {
-    flex: 1;
+    position: relative;
     min-width: 0;
+  }
+
+  .province-anchor {
+    grid-column: 1 / 2;
+  }
+
+  .sort-anchor {
+    grid-column: 2 / 3;
   }
 
   .dropdown-trigger {
     width: 100%;
+    height: 38px;
     box-sizing: border-box;
     min-width: unset;
-    padding: 8px 10px;
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
   }
 
-  .dropdown-menu {
+  .dropdown-label {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    margin: 0 4px;
+  }
+
+  .province-anchor .dropdown-menu {
     left: 0;
-    right: 0;
-    min-width: 100%;
-    width: 100%;
-    max-height: 46vh !important;
+    right: auto;
+    min-width: 260px;
+    max-width: calc(100vw - 32px);
+    max-height: 48vh !important;
     z-index: 9999 !important;
-    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.18) !important;
+    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.2) !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sort-anchor .dropdown-menu {
+    right: 0;
+    left: auto;
+    min-width: 250px;
+    max-width: calc(100vw - 32px);
+    max-height: 48vh !important;
+    z-index: 9999 !important;
+    box-shadow: 0 16px 48px rgba(15, 23, 42, 0.2) !important;
     -webkit-overflow-scrolling: touch;
   }
 
   .layout-toggle-dock {
-    flex-shrink: 0;
+    grid-column: 1 / -1;
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 3px;
+  }
+
+  .layout-toggle-dock .layout-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 8px 0;
+    font-size: 13px;
   }
 
   .sort-indicator-pill {

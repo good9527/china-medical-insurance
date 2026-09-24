@@ -370,6 +370,56 @@
               </view>
             </view>
 
+            <!-- 费用推导流水线 (一目了然看清计算脉络) -->
+            <view class="calc-pipeline-card">
+              <view class="pipeline-header">
+                <view class="pipe-header-left">
+                  <svg class="pipe-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                  </svg>
+                  <text class="pipeline-title">费用推导流水线 · 4 步清晰看懂账单去向</text>
+                </view>
+                <text class="pipeline-tag">算账图解</text>
+              </view>
+              <view class="pipeline-flow">
+                <!-- 步骤1: 医疗总费用 -->
+                <view class="pipe-node">
+                  <view class="node-badge node-blue">1</view>
+                  <view class="node-info">
+                    <text class="node-k">医疗总花费</text>
+                    <text class="node-v">¥{{ (parseFloat(form.totalCost) || 0).toLocaleString() }}</text>
+                  </view>
+                </view>
+                <view class="pipe-arrow">➔</view>
+                <!-- 步骤2: 扣除起付线 -->
+                <view class="pipe-node">
+                  <view class="node-badge node-amber">2</view>
+                  <view class="node-info">
+                    <text class="node-k">扣免赔线</text>
+                    <text class="node-v text-amber">-¥{{ result.breakdown.deductibleDeducted.toLocaleString() }}</text>
+                  </view>
+                </view>
+                <view class="pipe-arrow">➔</view>
+                <!-- 步骤3: 统筹按比报销 -->
+                <view class="pipe-node">
+                  <view class="node-badge node-cyan">3</view>
+                  <view class="node-info">
+                    <text class="node-k">统筹报销</text>
+                    <text class="node-v text-cyan">¥{{ (result.breakdown.baseReimbursed + result.breakdown.catastrophicReimbursed).toLocaleString() }}</text>
+                  </view>
+                </view>
+                <view class="pipe-arrow">➔</view>
+                <!-- 步骤4: 个人自理实付 -->
+                <view class="pipe-node pipe-node-final">
+                  <view class="node-badge node-rose">=</view>
+                  <view class="node-info">
+                    <text class="node-k font-bold">个人自理</text>
+                    <text class="node-v text-rose font-bold">¥{{ result.breakdown.personalPayTotal.toLocaleString() }}</text>
+                  </view>
+                </view>
+              </view>
+            </view>
+
             <!-- 费用测算结构收据明细 (结构严整的清单) -->
             <view class="receipt-breakdown-card">
               <view class="breakdown-head" @click="showDetail = !showDetail">
@@ -398,6 +448,13 @@
                     <PolicyTooltip title="什么是实际纳规报销基数？" text="总医疗花费扣减目录外全自费项目及起付线门槛后，符合当地医保报销目录、真正进入统筹报销池的基准金额。" />
                   </view>
                   <text class="b-col-val">¥{{ Math.max(0, result.breakdown.eligibleCost - result.breakdown.deductibleDeducted).toLocaleString() }}</text>
+                </view>
+                <view class="b-row">
+                  <view class="b-col-name-wrap">
+                    <text class="b-col-name">统筹执行报销比例</text>
+                    <PolicyTooltip title="什么是统筹执行报销比例？" text="当前统筹区对于该级别医院及参保人身份所适用的法定公文报销比例。" />
+                  </view>
+                  <text class="b-col-val text-blue font-bold">{{ Math.max(0, result.breakdown.eligibleCost - result.breakdown.deductibleDeducted) > 0 ? Math.round((result.breakdown.baseReimbursed / (result.breakdown.eligibleCost - result.breakdown.deductibleDeducted)) * 100) : 0 }}%</text>
                 </view>
                 <view class="b-row">
                   <view class="b-col-name-wrap">
@@ -1852,6 +1909,136 @@ onShow(() => {
 
 .text-amber-txt { 
   color: #b45309; 
+}
+
+/* 费用推导流水线卡片 */
+.calc-pipeline-card {
+  margin-top: 14px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.pipeline-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.pipe-header-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pipe-svg {
+  width: 15px;
+  height: 15px;
+  color: #2563eb;
+}
+
+.pipeline-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.pipeline-tag {
+  font-size: 10px;
+  font-weight: 600;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.pipeline-flow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.pipe-node {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-radius: 8px;
+  padding: 8px 10px;
+  min-width: 0;
+}
+
+.pipe-node-final {
+  background: #fff1f2;
+  border-color: #ffe4e6;
+}
+
+.node-badge {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+.node-blue { background: #dbeafe; color: #1d4ed8; }
+.node-amber { background: #fef3c7; color: #b45309; }
+.node-cyan { background: #e0f2fe; color: #0369a1; }
+.node-rose { background: #ffe4e6; color: #be123c; }
+
+.node-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.node-k {
+  font-size: 11px;
+  color: #64748b;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.node-v {
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #0f172a;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.text-rose { color: #e11d48 !important; }
+
+.pipe-arrow {
+  font-size: 11px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+@media (max-width: 767px) {
+  .pipeline-flow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .pipe-arrow {
+    display: none;
+  }
+  .pipe-node {
+    padding: 8px 10px;
+  }
 }
 
 /* 费用测算结构清单 */

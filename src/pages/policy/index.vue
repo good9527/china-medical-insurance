@@ -150,6 +150,18 @@
         </view>
       </view>
 
+      <!-- 参保地待遇核心一揽子速览横幅 (降低政策专业门槛，一秒读懂本市保障力) -->
+      <view class="policy-quick-digest-banner mb-20">
+        <view class="digest-lead-pill">
+          <svg class="digest-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            <circle cx="12" cy="11" r="3"></circle>
+          </svg>
+          <text class="digest-tag-text">{{ currentCity.cityName }} · {{ currentType === 'employee' ? '职工医保' : '居民医保' }}待遇速览</text>
+        </view>
+        <text class="digest-body-text">{{ policyOneSentenceDigest }}</text>
+      </view>
+
       <!-- 门诊与住院待遇卡片 -->
       <view class="benefits-grid">
         <!-- 门诊待遇卡片 -->
@@ -505,6 +517,27 @@ const cityLastUpdatedText = computed(() => {
 
 const currentType = ref<'employee' | 'resident'>('employee');
 const currentPkg = computed(() => currentCity.value[currentType.value]);
+
+// 参保地核心待遇一句话提炼 (便于普通群众秒懂本市医保保障水平)
+const policyOneSentenceDigest = computed(() => {
+  const pkg = currentPkg.value;
+  if (!pkg) return '';
+  if (currentType.value === 'employee') {
+    const capStr = pkg.outpatient.annualCap === 0 ? '普通门诊统筹上不封顶' : `普通门诊统筹年度最高可报 ¥${pkg.outpatient.annualCap.toLocaleString()}（起付线 ¥${pkg.outpatient.annualDeductible}）`;
+    const t3 = pkg.inpatient.tierBenefits.tier3;
+    const t3Str = t3 ? `三级定点医院住院报销 ${Math.round(t3.reimbursementRatio * 100)}%（起付线 ¥${t3.deductible}）` : '';
+    const bonus = t3?.retireeRatioBonus ? `退休人员住院比例再上浮 +${Math.round(t3.retireeRatioBonus * 100)}% 优待` : '';
+    const parts = [capStr, t3Str, bonus].filter(Boolean);
+    return parts.join('；') + '。';
+  } else {
+    const t3 = pkg.inpatient.tierBenefits.tier3;
+    const t3Str = t3 ? `三级定点医院住院按 ${Math.round(t3.reimbursementRatio * 100)}% 报销（起付线 ¥${t3.deductible}）` : '';
+    const catStr = pkg.catastrophic ? `大病保险二次报销比例最高达 ${Math.round(pkg.catastrophic.maxRatio * 100)}%` : '大病保险政策兜底';
+    const comm = pkg.inpatient.tierBenefits.community ? `基层医疗机构报销 ${Math.round(pkg.inpatient.tierBenefits.community.reimbursementRatio * 100)}%` : '';
+    const parts = [t3Str, catStr, comm].filter(Boolean);
+    return parts.join('；') + '。';
+  }
+});
 
 // 门诊起付线文案（精确区分【按年度累计起付】与【按就医诊次起付】及退休优待）
 const outpatientDeductibleDisplay = computed(() => {
@@ -1131,6 +1164,48 @@ onShow(() => {
   font-weight: 700;
   color: #ffffff;
   white-space: nowrap;
+}
+
+/* 参保地核心待遇速览横幅 */
+.policy-quick-digest-banner {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-left: 4px solid #2563eb;
+  border-radius: 12px;
+  padding: 14px 18px;
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+}
+
+.digest-lead-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  margin-bottom: 8px;
+}
+
+.digest-svg {
+  width: 14px;
+  height: 14px;
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.digest-tag-text {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+.digest-body-text {
+  font-size: 13.5px;
+  color: #1e293b;
+  line-height: 1.6;
+  font-weight: 500;
+  display: block;
 }
 
 /* 地区选择器行 */
@@ -1893,6 +1968,16 @@ onShow(() => {
 
   .content-box {
     padding: 12px 12px calc(80px + env(safe-area-inset-bottom)) !important;
+  }
+
+  .policy-quick-digest-banner {
+    padding: 12px 14px;
+    margin-bottom: 14px;
+  }
+
+  .digest-body-text {
+    font-size: 13px;
+    line-height: 1.55;
   }
 
   .calc-shortcut-banner {

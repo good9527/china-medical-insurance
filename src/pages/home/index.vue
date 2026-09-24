@@ -9,9 +9,9 @@
         <view class="hero-left-title">
           <view class="hero-badge-pill clickable" @click="showSourceModal = true" title="点击查看底图数据来源与审图号合规声明">
             <span class="pulse-dot"></span>
-            <text class="badge-txt">天地图官方矢量配准 · 审图号 GS（2026）4921号</text>
-            <text class="count-txt">全国 380 空间实体全域配准</text>
-            <text class="source-link-tag">数据来源与合规说明 ↗</text>
+            <text class="badge-txt"><text class="desk-only">天地图官方矢量配准 · </text>审图号 GS（2026）4921号</text>
+            <text class="count-txt"><text class="desk-only">全国 </text>380 空间实体全域配准</text>
+            <text class="source-link-tag">合规声明 ↗</text>
           </view>
           <view class="hero-title-row">
             <text class="hero-h1">全国医保统筹区空间全景地图</text>
@@ -349,24 +349,36 @@
           <!-- 核心待遇指标卡片矩阵 (内地统筹区) -->
           <view class="dock-metrics-grid" v-if="!activeCity.isSpecialRegion && activeCity.hasInsuranceData !== false">
             <view class="dm-item">
-              <text class="dm-label">职工三级住院报销</text>
+              <view class="dm-head">
+                <text class="dm-label">职工三级住院</text>
+                <text class="dm-badge badge-blue">大病统筹</text>
+              </view>
               <text class="dm-val text-blue font-mono">{{ Math.round((activeCity.empInpatientRatio || 0) * 100) }}%</text>
-              <text class="dm-sub">起付门槛 ¥{{ activeCity.empInpatientDed }}</text>
+              <text class="dm-sub">起付线 ¥{{ activeCity.empInpatientDed }} · 超额按比报</text>
             </view>
             <view class="dm-item">
-              <text class="dm-label">职工门诊共济封顶</text>
+              <view class="dm-head">
+                <text class="dm-label">职工门诊共济</text>
+                <text class="dm-badge badge-indigo">门诊小病</text>
+              </view>
               <text class="dm-val font-mono">{{ formatCap(activeCity.empOutpatientCap || 0) }}</text>
-              <text class="dm-sub">年度统筹支付限额</text>
+              <text class="dm-sub">年门诊统筹最高可报额</text>
             </view>
             <view class="dm-item">
-              <text class="dm-label">居民三级住院统筹</text>
+              <view class="dm-head">
+                <text class="dm-label">居民三级住院</text>
+                <text class="dm-badge badge-emerald">老人儿童</text>
+              </view>
               <text class="dm-val text-emerald font-mono">{{ Math.round((activeCity.resInpatientRatio || 0) * 100) }}%</text>
-              <text class="dm-sub">大病最高 {{ Math.round((activeCity.catastrophicMaxRatio || 0) * 100) }}%</text>
+              <text class="dm-sub">大病二次最高报 {{ Math.round((activeCity.catastrophicMaxRatio || 0) * 100) }}%</text>
             </view>
             <view class="dm-item">
-              <text class="dm-label">退休在职倾斜上浮</text>
+              <view class="dm-head">
+                <text class="dm-label">退休倾斜上浮</text>
+                <text class="dm-badge badge-amber">尊老优待</text>
+              </view>
               <text class="dm-val text-amber font-mono">+{{ Math.round((activeCity.retireeBonusRatio || 0) * 100) }}%</text>
-              <text class="dm-sub" :title="activeCity.docNumber">依据: {{ activeCity.docNumber }}</text>
+              <text class="dm-sub" :title="activeCity.docNumber">退休比在职多报 · 关照长者</text>
             </view>
           </view>
 
@@ -1148,6 +1160,11 @@ function switchTab(url: string) {
 .hero-badge-pill.clickable:hover .source-link-tag {
   border-color: #93c5fd;
   box-shadow: 0 1px 4px rgba(37, 99, 235, 0.15);
+}
+
+.desk-only { display: inline; }
+@media (max-width: 767px) {
+  .desk-only { display: none !important; }
 }
 
 /* 赋予国家级配准实时生命力的双重雷达脉冲呼吸灯 */
@@ -1970,7 +1987,7 @@ function switchTab(url: string) {
 
 .dm-item {
   background: #f8fafc;
-  border: 1px solid #f1f5f9;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
   padding: 8px 12px;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1983,9 +2000,29 @@ function switchTab(url: string) {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.dm-label { font-size: 11px; color: #64748b; display: block; }
-.dm-val { font-size: 15px; font-weight: 900; color: #0f172a; margin-top: 1px; display: block; }
-.dm-sub { font-size: 10px; color: #94a3b8; margin-top: 1px; display: block; }
+.dm-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.dm-label { font-size: 11px; color: #64748b; }
+.dm-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+
+.badge-blue { background: #eff6ff; color: #2563eb; }
+.badge-indigo { background: #e0e7ff; color: #4338ca; }
+.badge-emerald { background: #ecfdf5; color: #059669; }
+.badge-amber { background: #fffbeb; color: #b45309; }
+
+.dm-val { font-size: 15px; font-weight: 900; color: #0f172a; margin-top: 2px; display: block; }
+.dm-sub { font-size: 10.5px; color: #64748b; margin-top: 2px; display: block; line-height: 1.35; }
 
 .text-blue { color: #2563eb !important; }
 .text-emerald { color: #059669 !important; }
