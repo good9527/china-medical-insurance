@@ -369,10 +369,66 @@ body.modal-open {
   overflow: hidden !important;
 }
 
+/* ==================== 现代微科技硬件光标系统 (0 运行时开销) ==================== */
+@media (pointer: fine) {
+  html, body, page, uni-app, uni-page-body, .page-wrapper {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 2L15 12L9.5 13L6.5 19L3 2Z' fill='%230f172a' stroke='%23ffffff' stroke-width='1.5' stroke-linejoin='round'/%3E%3Ccircle cx='9.5' cy='13' r='1.4' fill='%2338bdf8'/%3E%3C/svg%3E") 3 2, default !important;
+  }
+
+  button, 
+  a, 
+  .clickable, 
+  .interactive-item, 
+  .elastic-btn,
+  .nav-tab,
+  .dim-chip,
+  .bench-item,
+  .preset-pill,
+  .preset-chip,
+  .seg-item,
+  .switch-pill,
+  .dock-btn,
+  .bci-act-pill,
+  .action-btn,
+  .city-path,
+  .contact-pill,
+  .contact-item,
+  .community-row,
+  .suggest-item,
+  .col-sortable,
+  .sort-dropdown-trigger,
+  .dropdown-trigger,
+  .cyber-dropdown-trigger,
+  .dropdown-item,
+  .menu-item,
+  .sub-seg-btn,
+  .id-card,
+  .treat-btn,
+  .bento-tile,
+  .s-card,
+  .bento-rank-card,
+  .podium-card,
+  .voucher-gen-btn,
+  .copy-voucher-btn,
+  .modal-close-round,
+  .modal-close-btn,
+  .collapse-trigger,
+  .map-reset-btn {
+    cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none'%3E%3Cpath d='M3 2L14 11L8.8 12.2L6 17.5L3 2Z' fill='%230284c7' stroke='%23ffffff' stroke-width='1.6' stroke-linejoin='round'/%3E%3Ccircle cx='15' cy='15' r='3.5' stroke='%230284c7' stroke-width='1.2' fill='rgba(2,132,199,0.15)'/%3E%3Ccircle cx='15' cy='15' r='1' fill='%230284c7'/%3E%3C/svg%3E") 3 2, pointer !important;
+  }
+
+  /* 地图平移画板保留专业的空间抓取光标 */
+  .svg-viewport {
+    cursor: grab !important;
+  }
+  .svg-viewport:active {
+    cursor: grabbing !important;
+  }
+}
+
 /* 全局 QQ 弹弹交互基础类与按压反馈 */
 button, .elastic-btn, .interactive-item {
   position: relative;
-  cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   transition: transform 0.22s var(--spring-bounce), box-shadow 0.22s ease, background-color 0.2s ease, border-color 0.2s ease !important;
   will-change: transform;

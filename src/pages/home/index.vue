@@ -443,14 +443,14 @@
         </view>
       </view>
 
-      <!-- 底部平台四大服务板块直通 (第4级瀑布流浮现) -->
-      <view class="quick-service-section anim-cascade-4">
+      <!-- 底部平台四大服务板块直通 (静雅稳健，无冗余入场动画) -->
+      <view class="quick-service-section">
         <view class="service-block-header">
           <text class="sb-title">全国医保便民公共服务直通</text>
           <text class="sb-sub">数据均来自于各省市医保局及政府公开发布的正式文件与办事规程</text>
         </view>
         <view class="service-cards-grid">
-          <view class="s-card anim-card-1" @click="switchTab('/pages/index/index')">
+          <view class="s-card" @click="switchTab('/pages/index/index')">
             <view class="s-ico ico-calc">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="8" y1="14" x2="8" y2="14.01"></line><line x1="12" y1="14" x2="12" y2="14.01"></line><line x1="16" y1="14" x2="16" y2="14.01"></line></svg>
             </view>
@@ -459,7 +459,7 @@
             <text class="s-link">立即测算 ➔</text>
           </view>
 
-          <view class="s-card anim-card-2" @click="switchTab('/pages/policy/index')">
+          <view class="s-card" @click="switchTab('/pages/policy/index')">
             <view class="s-ico ico-policy">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line></svg>
             </view>
@@ -468,7 +468,7 @@
             <text class="s-link">查阅公文 ➔</text>
           </view>
 
-          <view class="s-card anim-card-3" @click="switchTab('/pages/ranking/index')">
+          <view class="s-card" @click="switchTab('/pages/ranking/index')">
             <view class="s-ico ico-rank">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
             </view>
@@ -477,7 +477,7 @@
             <text class="s-link">进入对决 ➔</text>
           </view>
 
-          <view class="s-card anim-card-4" @click="switchTab('/pages/service/index')">
+          <view class="s-card" @click="switchTab('/pages/service/index')">
             <view class="s-ico ico-service">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 14 14"></polyline></svg>
             </view>
@@ -1131,23 +1131,6 @@ function switchTab(url: string) {
 
 .anim-cascade-3 {
   animation: stageCardReveal 0.58s cubic-bezier(0.16, 1, 0.3, 1) 0.16s both;
-}
-
-.anim-cascade-4 {
-  animation: cascadeFadeIn 0.52s cubic-bezier(0.16, 1, 0.3, 1) 0.24s both;
-}
-
-.anim-card-1 {
-  animation: cascadeFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.26s both;
-}
-.anim-card-2 {
-  animation: cascadeFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.31s both;
-}
-.anim-card-3 {
-  animation: cascadeFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.36s both;
-}
-.anim-card-4 {
-  animation: cascadeFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.41s both;
 }
 
 /* 英雄区控制台 */
