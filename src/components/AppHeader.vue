@@ -113,7 +113,7 @@
         </view>
       </view>
     </view>
-    <!-- 全局快捷联系作者与数据合作弹窗 (H5 环境下 Teleport 至 body，彻底脱离父级 sticky/backdrop-filter 包含块，解决居中和侧边露白漏洞) -->
+    <!-- 全局快捷联系作者与数据合作弹窗 (H5 环境下 Teleport 至 body，彻底脱离父级 sticky/backdrop-filter 包含块) -->
     <!-- #ifdef H5 -->
     <teleport to="body">
       <view class="contact-modal-mask" v-if="showContactModal" @click="showContactModal = false">
@@ -121,78 +121,97 @@
           <view class="modal-head">
             <view class="head-brand">
               <AppLogo size="sm" />
-              <text class="modal-title">联系作者 / 公文反馈与交流</text>
+              <view class="brand-text-col">
+                <text class="modal-title">联系作者 · 医保数据合作与公文交流</text>
+                <text class="modal-badge-sub">国家医保政策开源协同 · 覆盖 348 统筹区</text>
+              </view>
             </view>
-            <text class="modal-close-btn" @click="showContactModal = false">✕</text>
+            <view class="modal-close-round" @click="showContactModal = false">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="close-x-svg">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </view>
           </view>
 
           <view class="modal-body">
-            <text class="modal-desc">
-              欢迎就全国 348 统筹区公开政策文件、待遇估算规则或公文勘误直接联系我们：
-            </text>
+            <view class="modal-intro-pill">
+              <span class="intro-dot"></span>
+              <text class="intro-txt">欢迎就地方最新政策变动、报销算法公文或勘误建议直接交流：</text>
+            </view>
 
-            <view class="modal-contact-list">
-              <view class="m-contact-item" @click="copyInfo(SITE_CONFIG.email, '邮箱')">
-                <view class="m-icon mail-bg">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                    <polyline points="22,6 12,13 2,6"></polyline>
-                  </svg>
+            <view class="contact-bento-grid">
+              <!-- 1. 官方反馈邮箱 -->
+              <view class="bento-tile tile-mail" @click="copyInfo(SITE_CONFIG.email, '邮箱')">
+                <view class="tile-head">
+                  <view class="tile-icon-box box-mail">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-svg">
+                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                      <polyline points="22,6 12,13 2,6"></polyline>
+                    </svg>
+                  </view>
+                  <text class="tile-chip chip-mail">点击复制</text>
                 </view>
-                <view class="m-info">
-                  <text class="m-k">官方反馈邮箱</text>
-                  <text class="m-v font-mono">{{ SITE_CONFIG.email }}</text>
-                </view>
-                <text class="m-copy-chip">复制</text>
+                <text class="tile-label">官方反馈邮箱</text>
+                <text class="tile-val font-mono">{{ SITE_CONFIG.email }}</text>
               </view>
 
-              <view class="m-contact-item" @click="copyInfo(SITE_CONFIG.wechat, '微信号')">
-                <view class="m-icon wx-bg">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
-                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                  </svg>
+              <!-- 2. 个人微信 -->
+              <view class="bento-tile tile-wx" @click="copyInfo(SITE_CONFIG.wechat, '微信号')">
+                <view class="tile-head">
+                  <view class="tile-icon-box box-wx">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-svg">
+                      <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                    </svg>
+                  </view>
+                  <text class="tile-chip chip-wx">点击复制</text>
                 </view>
-                <view class="m-info">
-                  <text class="m-k">个人微信</text>
-                  <text class="m-v">{{ SITE_CONFIG.wechat }}</text>
-                </view>
-                <text class="m-copy-chip">复制</text>
+                <text class="tile-label">作者个人微信</text>
+                <text class="tile-val font-mono">{{ SITE_CONFIG.wechat }}</text>
               </view>
 
-              <view class="m-contact-item" @click="copyInfo(SITE_CONFIG.officialAccount, '公众号名称')">
-                <view class="m-icon gzh-bg">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="12" y1="16" x2="12" y2="12"></line>
-                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                  </svg>
+              <!-- 3. 微信公众号 -->
+              <view class="bento-tile tile-gzh" @click="copyInfo(SITE_CONFIG.officialAccount, '公众号名称')">
+                <view class="tile-head">
+                  <view class="tile-icon-box box-gzh">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-svg">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="12" y1="16" x2="12" y2="12"></line>
+                      <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                  </view>
+                  <text class="tile-chip chip-gzh">点击复制</text>
                 </view>
-                <view class="m-info">
-                  <text class="m-k">微信公众号</text>
-                  <text class="m-v">{{ SITE_CONFIG.officialAccount }}</text>
-                </view>
-                <text class="m-copy-chip">复制</text>
+                <text class="tile-label">微信公众号</text>
+                <text class="tile-val">{{ SITE_CONFIG.officialAccount }}</text>
               </view>
 
-              <!-- 政策纠错与公文提报直通入口 (便于手机端和电脑端用户随时直达) -->
-              <view class="m-contact-item corr-entry-item" @click="navTo('/pages/correction/index'); showContactModal = false">
-                <view class="m-icon corr-bg">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                    <path d="m9 12 2 2 4-4"></path>
-                  </svg>
+              <!-- 4. 政策纠错与公文提报直通入口 -->
+              <view class="bento-tile tile-corr" @click="navTo('/pages/correction/index'); showContactModal = false">
+                <view class="tile-head">
+                  <view class="tile-icon-box box-corr">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-svg">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                      <path d="m9 12 2 2 4-4"></path>
+                    </svg>
+                  </view>
+                  <text class="tile-chip chip-corr">立即前往 ↗</text>
                 </view>
-                <view class="m-info">
-                  <text class="m-k">公文勘误与政策纠错</text>
-                  <text class="m-v">进入政策纠错提报通道</text>
-                </view>
-                <text class="m-copy-chip corr-chip">立即进入 ↗</text>
+                <text class="tile-label">公文勘误与政策纠错</text>
+                <text class="tile-val text-purple">进入协同纠错通道</text>
               </view>
             </view>
 
             <view class="modal-foot">
-              <text class="m-dev-tag">开发者：{{ SITE_CONFIG.author }}</text>
-              <text class="m-repo-link" @click="openRepo">GitHub 仓库 ↗</text>
+              <view class="foot-author-badge">
+                <text class="foot-author-txt">项目维护者：{{ SITE_CONFIG.author }}</text>
+              </view>
+              <view class="foot-repo-btn" @click="openRepo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="repo-svg">
+                  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                </svg>
+                <text class="foot-repo-txt">开源代码仓库 ↗</text>
+              </view>
             </view>
           </view>
         </view>
@@ -205,78 +224,97 @@
         <view class="modal-head">
           <view class="head-brand">
             <AppLogo size="sm" />
-            <text class="modal-title">联系作者 / 公文反馈与交流</text>
+            <view class="brand-text-col">
+              <text class="modal-title">联系作者 · 医保数据合作与公文交流</text>
+              <text class="modal-badge-sub">国家医保政策开源协同 · 覆盖 348 统筹区</text>
+            </view>
           </view>
-          <text class="modal-close-btn" @click="showContactModal = false">✕</text>
+          <view class="modal-close-round" @click="showContactModal = false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="close-x-svg">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </view>
         </view>
 
         <view class="modal-body">
-          <text class="modal-desc">
-            欢迎就全国 348 统筹区公开政策文件、待遇估算规则或公文勘误直接联系我们：
-          </text>
+          <view class="modal-intro-pill">
+            <span class="intro-dot"></span>
+            <text class="intro-txt">欢迎就地方最新政策变动、报销算法公文或勘误建议直接交流：</text>
+          </view>
 
-          <view class="modal-contact-list">
-            <view class="m-contact-item" @click="copyInfo(SITE_CONFIG.email, '邮箱')">
-              <view class="m-icon mail-bg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                  <polyline points="22,6 12,13 2,6"></polyline>
-                </svg>
+          <view class="contact-bento-grid">
+            <!-- 1. 官方反馈邮箱 -->
+            <view class="bento-tile tile-mail" @click="copyInfo(SITE_CONFIG.email, '邮箱')">
+              <view class="tile-head">
+                <view class="tile-icon-box box-mail">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-svg">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
+                </view>
+                <text class="tile-chip chip-mail">点击复制</text>
               </view>
-              <view class="m-info">
-                <text class="m-k">官方反馈邮箱</text>
-                <text class="m-v font-mono">{{ SITE_CONFIG.email }}</text>
-              </view>
-              <text class="m-copy-chip">复制</text>
+              <text class="tile-label">官方反馈邮箱</text>
+              <text class="tile-val font-mono">{{ SITE_CONFIG.email }}</text>
             </view>
 
-            <view class="m-contact-item" @click="copyInfo(SITE_CONFIG.wechat, '微信号')">
-              <view class="m-icon wx-bg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
-                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-                </svg>
+            <!-- 2. 个人微信 -->
+            <view class="bento-tile tile-wx" @click="copyInfo(SITE_CONFIG.wechat, '微信号')">
+              <view class="tile-head">
+                <view class="tile-icon-box box-wx">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-svg">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                  </svg>
+                </view>
+                <text class="tile-chip chip-wx">点击复制</text>
               </view>
-              <view class="m-info">
-                <text class="m-k">个人微信</text>
-                <text class="m-v">{{ SITE_CONFIG.wechat }}</text>
-              </view>
-              <text class="m-copy-chip">复制</text>
+              <text class="tile-label">作者个人微信</text>
+              <text class="tile-val font-mono">{{ SITE_CONFIG.wechat }}</text>
             </view>
 
-            <view class="m-contact-item" @click="copyInfo(SITE_CONFIG.officialAccount, '公众号名称')">
-              <view class="m-icon gzh-bg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="16" x2="12" y2="12"></line>
-                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                </svg>
+            <!-- 3. 微信公众号 -->
+            <view class="bento-tile tile-gzh" @click="copyInfo(SITE_CONFIG.officialAccount, '公众号名称')">
+              <view class="tile-head">
+                <view class="tile-icon-box box-gzh">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-svg">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  </svg>
+                </view>
+                <text class="tile-chip chip-gzh">点击复制</text>
               </view>
-              <view class="m-info">
-                <text class="m-k">微信公众号</text>
-                <text class="m-v">{{ SITE_CONFIG.officialAccount }}</text>
-              </view>
-              <text class="m-copy-chip">复制</text>
+              <text class="tile-label">微信公众号</text>
+              <text class="tile-val">{{ SITE_CONFIG.officialAccount }}</text>
             </view>
 
-            <!-- 政策纠错与公文提报直通入口 (便于手机端和电脑端用户随时直达) -->
-            <view class="m-contact-item corr-entry-item" @click="navTo('/pages/correction/index'); showContactModal = false">
-              <view class="m-icon corr-bg">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="m-svg">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                  <path d="m9 12 2 2 4-4"></path>
-                </svg>
+            <!-- 4. 政策纠错与公文提报直通入口 -->
+            <view class="bento-tile tile-corr" @click="navTo('/pages/correction/index'); showContactModal = false">
+              <view class="tile-head">
+                <view class="tile-icon-box box-corr">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="tile-svg">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    <path d="m9 12 2 2 4-4"></path>
+                  </svg>
+                </view>
+                <text class="tile-chip chip-corr">立即前往 ↗</text>
               </view>
-              <view class="m-info">
-                <text class="m-k">公文勘误与政策纠错</text>
-                <text class="m-v">进入政策纠错提报通道</text>
-              </view>
-              <text class="m-copy-chip corr-chip">立即进入 ↗</text>
+              <text class="tile-label">公文勘误与政策纠错</text>
+              <text class="tile-val text-purple">进入协同纠错通道</text>
             </view>
           </view>
 
           <view class="modal-foot">
-            <text class="m-dev-tag">开发者：{{ SITE_CONFIG.author }}</text>
-            <text class="m-repo-link" @click="openRepo">GitHub 仓库 ↗</text>
+            <view class="foot-author-badge">
+              <text class="foot-author-txt">项目维护者：{{ SITE_CONFIG.author }}</text>
+            </view>
+            <view class="foot-repo-btn" @click="openRepo">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="repo-svg">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+              </svg>
+              <text class="foot-repo-txt">开源代码仓库 ↗</text>
+            </view>
           </view>
         </view>
       </view>
@@ -305,6 +343,19 @@ watch(showContactModal, (val) => {
     }
   }
 });
+
+// 支持按 ESC 键平滑关闭弹窗
+if (typeof window !== 'undefined') {
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape' && showContactModal.value) {
+      showContactModal.value = false;
+    }
+  };
+  window.addEventListener('keydown', handleKeyDown);
+  onUnmounted(() => {
+    window.removeEventListener('keydown', handleKeyDown);
+  });
+}
 
 onUnmounted(() => {
   if (typeof document !== 'undefined') {
@@ -557,7 +608,7 @@ function openRepo() {
   font-weight: 500;
 }
 
-/* 弹窗遮罩与卡片 (全屏沉浸式无死角暗色遮罩) */
+/* 弹窗遮罩与卡片 (电影级深邃渐进多层散焦，彻底融化背景割裂感) */
 .contact-modal-mask {
   position: fixed;
   top: 0;
@@ -566,16 +617,16 @@ function openRepo() {
   bottom: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(15, 23, 42, 0.52);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: radial-gradient(ellipse at 50% 50%, rgba(15, 23, 42, 0.82) 0%, rgba(8, 12, 24, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 999999;
   padding: 16px;
   box-sizing: border-box;
-  animation: modalFadeIn 0.22s ease-out;
+  animation: modalFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes modalFadeIn {
@@ -585,90 +636,168 @@ function openRepo() {
 
 .contact-modal-card {
   width: 100%;
-  max-width: 440px;
+  max-width: 520px;
   background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 25px 60px -12px rgba(15, 23, 42, 0.35), 0 0 1px rgba(15, 23, 42, 0.2);
-  border: 1px solid rgba(226, 232, 240, 0.85);
+  border-radius: 20px;
+  box-shadow: 0 36px 90px -16px rgba(15, 23, 42, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(226, 232, 240, 0.9);
   overflow: hidden;
-  animation: cardSlideUp 0.26s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: cardSlideUp 0.28s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes cardSlideUp {
-  from { opacity: 0; transform: scale(0.96) translateY(12px); }
+  from { opacity: 0; transform: scale(0.96) translateY(14px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
 }
 
+/* 弹窗头部 (科技深蓝微光渐变，沉稳大气) */
 .modal-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px;
-  border-bottom: 1px solid #f1f5f9;
-  background: #f8fafc;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  color: #ffffff;
 }
 
 .head-brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+}
+
+.brand-text-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .modal-title {
   font-size: 15px;
   font-weight: 800;
-  color: #0f172a;
+  color: #ffffff;
+  letter-spacing: -0.2px;
 }
 
-.modal-close-btn {
-  font-size: 15px;
+.modal-badge-sub {
+  font-size: 11px;
   color: #94a3b8;
-  cursor: pointer;
-  padding: 4px;
+  letter-spacing: 0.2px;
 }
 
-.modal-close-btn:hover {
-  color: #0f172a;
-}
-
-.modal-body {
-  padding: 18px;
-}
-
-.modal-desc {
-  font-size: 12px;
-  color: #64748b;
-  line-height: 1.5;
-  margin-bottom: 14px;
-  display: block;
-}
-
-.modal-contact-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.m-contact-item {
+.modal-close-round {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 10px 12px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
+  justify-content: center;
   cursor: pointer;
-  transition: all 0.18s ease;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
-.m-contact-item:hover {
-  background: #eff6ff;
+.modal-close-round:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: rotate(90deg);
+}
+
+.close-x-svg {
+  width: 14px;
+  height: 14px;
+  stroke: #ffffff;
+}
+
+/* 弹窗主体 */
+.modal-body {
+  padding: 18px 20px;
+}
+
+.modal-intro-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.intro-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #2563eb;
+  flex-shrink: 0;
+}
+
+.intro-txt {
+  font-size: 11.5px;
+  color: #475569;
+  line-height: 1.4;
+}
+
+/* 2x2 Bento 科技卡片网格 */
+.contact-bento-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.bento-tile {
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+  position: relative;
+  overflow: hidden;
+}
+
+.bento-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px -2px rgba(15, 23, 42, 0.08);
+}
+
+.tile-mail {
+  background: linear-gradient(135deg, #f0f7ff 0%, #ffffff 100%);
   border-color: #bfdbfe;
 }
 
-.m-icon {
-  width: 32px;
-  height: 32px;
+.tile-wx {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
+  border-color: #bbf7d0;
+}
+
+.tile-gzh {
+  background: linear-gradient(135deg, #fffbeb 0%, #ffffff 100%);
+  border-color: #fde68a;
+}
+
+.tile-corr {
+  background: linear-gradient(135deg, #faf5ff 0%, #ffffff 100%);
+  border-color: #e9d5ff;
+}
+
+.tile-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2px;
+}
+
+.tile-icon-box {
+  width: 30px;
+  height: 30px;
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -676,71 +805,109 @@ function openRepo() {
   flex-shrink: 0;
 }
 
-.mail-bg { background: #dbeafe; color: #2563eb; }
-.wx-bg { background: #dcfce7; color: #16a34a; }
-.gzh-bg { background: #fef3c7; color: #d97706; }
-.corr-bg { background: #ede9fe; color: #7c3aed; }
-.corr-chip { background: #7c3aed !important; color: #ffffff !important; border-color: #6d28d9 !important; }
+.box-mail { background: #dbeafe; color: #2563eb; }
+.box-wx { background: #dcfce7; color: #16a34a; }
+.box-gzh { background: #fef3c7; color: #d97706; }
+.box-corr { background: #ede9fe; color: #7c3aed; }
 
-.m-svg {
-  width: 16px;
-  height: 16px;
+.tile-svg {
+  width: 15px;
+  height: 15px;
 }
 
-.m-info {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
+.tile-chip {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  line-height: 1.4;
 }
 
-.m-k {
-  font-size: 11px;
+.chip-mail { background: #eff6ff; color: #2563eb; border: 1px solid #bfdbfe; }
+.chip-wx { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+.chip-gzh { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+.chip-corr { background: #7c3aed; color: #ffffff; }
+
+.tile-label {
+  font-size: 11.5px;
   color: #64748b;
+  font-weight: 600;
 }
 
-.m-v {
+.tile-val {
   font-size: 13px;
   font-weight: 700;
   color: #0f172a;
-  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text-purple {
+  color: #7c3aed !important;
 }
 
 .font-mono {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
-.m-copy-chip {
-  font-size: 11px;
-  color: #2563eb;
-  background: #ffffff;
-  border: 1px solid #bfdbfe;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-weight: 600;
-  flex-shrink: 0;
-}
-
+/* 底部铭牌栏 */
 .modal-foot {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 16px;
-  padding-top: 12px;
+  padding-top: 14px;
   border-top: 1px solid #f1f5f9;
-  font-size: 12px;
 }
 
-.m-dev-tag {
+.foot-author-badge {
+  display: inline-flex;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  padding: 3px 8px;
+  border-radius: 6px;
+}
+
+.foot-author-txt {
+  font-size: 11px;
   color: #64748b;
   font-weight: 600;
 }
 
-.m-repo-link {
-  color: #2563eb;
-  font-weight: 600;
+.foot-repo-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #0f172a;
+  color: #ffffff;
   cursor: pointer;
+  transition: all 0.18s ease;
 }
+
+.foot-repo-btn:hover {
+  background: #1e293b;
+}
+
+.repo-svg {
+  width: 12px;
+  height: 12px;
+}
+
+.foot-repo-txt {
+  font-size: 11.5px;
+  font-weight: 600;
+}
+
+@media (max-width: 580px) {
+  .contact-bento-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
 
 @media (max-width: 767px) {
   .desktop-sub {

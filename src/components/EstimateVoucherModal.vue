@@ -710,8 +710,9 @@ function handleExportImage() {
 .voucher-modal-mask {
   position: fixed;
   inset: 0;
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(4px);
+  background: radial-gradient(ellipse at 50% 50%, rgba(15, 23, 42, 0.82) 0%, rgba(8, 12, 24, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   z-index: 9999;
   display: flex;
   align-items: center;
@@ -725,11 +726,12 @@ function handleExportImage() {
   max-width: 680px;
   max-height: 90vh;
   border-radius: 16px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 25px 60px -10px rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: modalPop 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes modalPop {
@@ -745,8 +747,8 @@ function handleExportImage() {
 
 .modal-head {
   padding: 14px 20px;
-  background: #f8fafc;
-  border-bottom: 1px solid #e2e8f0;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -761,13 +763,13 @@ function handleExportImage() {
 .modal-icon {
   width: 18px;
   height: 18px;
-  color: #0284c7;
+  color: #38bdf8;
 }
 
 .modal-title {
   font-size: 15px;
   font-weight: 700;
-  color: #0f172a;
+  color: #ffffff;
 }
 
 .modal-close-btn {
@@ -777,15 +779,16 @@ function handleExportImage() {
   align-items: center;
   justify-content: center;
   border-radius: 6px;
-  color: #64748b;
+  color: #94a3b8;
   font-size: 16px;
   cursor: pointer;
+  background: rgba(255, 255, 255, 0.08);
   transition: all 0.15s;
 }
 
 .modal-close-btn:hover {
-  background: #e2e8f0;
-  color: #0f172a;
+  background: rgba(255, 255, 255, 0.18);
+  color: #ffffff;
 }
 
 .voucher-scroll-area {
@@ -795,14 +798,47 @@ function handleExportImage() {
   background: #f1f5f9;
 }
 
-/* 凭证实体卡片 (官方正式质感) */
+/* 凭证实体卡片 (官方正式质感与防伪底纹) */
 .voucher-sheet {
-  background: #ffffff;
+  background-color: #ffffff;
+  background-image: 
+    radial-gradient(rgba(2, 132, 199, 0.045) 1px, transparent 1px),
+    linear-gradient(to right, rgba(2, 132, 199, 0.02) 1px, transparent 1px);
+  background-size: 20px 20px, 40px 40px;
   border-radius: 12px;
   padding: 24px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(2, 132, 199, 0.12);
   border: 1px solid #e2e8f0;
   position: relative;
+  overflow: hidden;
+}
+
+.voucher-sheet::before {
+  content: "全国医保 · 估算凭据参考";
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-22deg);
+  font-size: 34px;
+  font-weight: 900;
+  color: rgba(2, 132, 199, 0.038);
+  letter-spacing: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  z-index: 0;
+}
+
+.voucher-header,
+.voucher-code-bar,
+.voucher-info-grid,
+.voucher-bill-table,
+.voucher-policy-source,
+.voucher-memo-list,
+.voucher-disclaimer-box,
+.voucher-footer-meta {
+  position: relative;
+  z-index: 1;
 }
 
 .voucher-header {

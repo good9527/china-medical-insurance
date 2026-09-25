@@ -891,6 +891,14 @@ function scrollToReceipt() {
     duration: 350,
     offsetTop: -16
   });
+  // #ifdef H5
+  try {
+    const el = document.querySelector('.receipt-card');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  } catch (_) {}
+  // #endif
 }
 
 function syncCityFromStorage() {
@@ -2372,7 +2380,7 @@ svg {
   }
 
   .content-box {
-    padding: 12px 12px calc(110px + env(safe-area-inset-bottom)) !important;
+    padding: 12px 12px calc(145px + env(safe-area-inset-bottom)) !important;
   }
 
   .mobile-calc-float-bar {
@@ -2383,13 +2391,14 @@ svg {
     bottom: calc(56px + env(safe-area-inset-bottom));
     left: 12px;
     right: 12px;
-    background: rgba(15, 23, 42, 0.94);
+    background: rgba(15, 23, 42, 0.92);
     color: #ffffff;
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 10px 14px;
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    padding: 9px 12px 9px 14px;
     border-radius: 9999rpx;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.28), 0 0 0 1px rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow: 0 16px 36px -6px rgba(15, 23, 42, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.08);
     z-index: 990;
     cursor: pointer;
     box-sizing: border-box;
@@ -2421,18 +2430,20 @@ svg {
     align-items: baseline;
     gap: 2px;
     white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
 
   .float-currency {
     font-size: 12px;
-    color: #60a5fa;
+    color: #38bdf8;
     font-weight: 700;
   }
 
   .float-amount {
     font-size: 17px;
     font-weight: 800;
-    color: #60a5fa;
+    color: #38bdf8;
+    font-variant-numeric: tabular-nums;
   }
 
   .float-ratio {
@@ -2440,6 +2451,7 @@ svg {
     color: #93c5fd;
     font-weight: 600;
     white-space: nowrap;
+    font-variant-numeric: tabular-nums;
   }
 
   .float-bar-right {
@@ -2449,17 +2461,18 @@ svg {
   }
 
   .float-voucher-tag {
-    background: #0284c7;
+    background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%);
     color: #ffffff;
-    padding: 4px 9px;
+    padding: 5px 11px;
     border-radius: 9999rpx;
-    font-size: 11px;
+    font-size: 11.5px;
     font-weight: 700;
     margin-right: 6px;
     display: flex;
     align-items: center;
-    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.4);
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.45);
     white-space: nowrap;
+    transition: transform 0.15s ease;
 
     &:active {
       transform: scale(0.95);
@@ -2468,13 +2481,18 @@ svg {
 
   .float-cta {
     font-size: 11px;
-    font-weight: 700;
-    color: #ffffff;
-    background: #2563eb;
-    padding: 5px 10px;
+    font-weight: 600;
+    color: #cbd5e1;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 5px 9px;
     border-radius: 9999rpx;
     white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+    transition: background 0.15s ease;
+
+    &:active {
+      background: rgba(255, 255, 255, 0.22);
+    }
   }
 }
 

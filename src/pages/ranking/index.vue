@@ -2665,7 +2665,7 @@ const filteredBattleMetrics = computed(() => {
   z-index: 3;
   background: #ffffff;
   border-right: 1px solid #e2e8f0;
-  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.06);
+  box-shadow: 6px 0 16px -4px rgba(15, 23, 42, 0.12);
 }
 
 .b-thead-tr th.col-city {
@@ -2678,7 +2678,7 @@ const filteredBattleMetrics = computed(() => {
   z-index: 6;
   background: #f8fafc;
   border-right: 1px solid #e2e8f0;
-  box-shadow: 4px 0 8px -2px rgba(0, 0, 0, 0.06);
+  box-shadow: 6px 0 16px -4px rgba(15, 23, 42, 0.12);
 }
 
 /* 右侧粘性固定列：操作按钮列在滑动时不丢失 */
@@ -3326,15 +3326,19 @@ const filteredBattleMetrics = computed(() => {
 .metric-title { font-size: 13px; font-weight: 800; color: #1e293b; }
 
 .diff-badge {
-  padding: 2px 8px;
-  border-radius: 4px;
+  padding: 3px 10px;
+  border-radius: 9999px;
   font-size: 11px;
   font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
-.diff-blue { background: #eff6ff; color: #2563eb; }
-.diff-orange { background: #fff7ed; color: #ea580c; }
-.diff-equal { background: #f1f5f9; color: #64748b; }
+.diff-blue { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.diff-orange { background: #fff7ed; color: #c2410c; border: 1px solid #fed7aa; }
+.diff-equal { background: #f8fafc; color: #64748b; border: 1px solid #e2e8f0; }
 .diff-neutral { background: #f8fafc; color: #475569; border: 1px solid #e2e8f0; }
 .metric-exp { font-size: 11px; color: #94a3b8; line-height: 1.3; max-width: 340px; }
 

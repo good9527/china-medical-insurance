@@ -94,7 +94,7 @@
 
         <!-- 标杆城市快速触达 -->
         <view class="benchmark-quick-bar">
-          <text class="bench-label">标杆统筹区：</text>
+          <text class="bench-label">快速寻址：</text>
           <view class="bench-chips">
             <text class="bench-item" @click="focusCityByCode('440300')">深圳市 91.6</text>
             <text class="bench-item" @click="focusCityByCode('320100')">南京市 82.3</text>
@@ -102,6 +102,10 @@
             <text class="bench-item" @click="focusCityByCode('440100')">广州市 79.1</text>
             <text class="bench-item" @click="focusCityByCode('310100')">上海市 77.3</text>
             <text class="bench-item" @click="focusCityByCode('110100')">北京市 75.8</text>
+            <text class="bench-item" @click="focusCityByCode('610100')">西安市 74.5</text>
+            <text class="bench-item" @click="focusCityByCode('510100')">成都市 73.8</text>
+            <text class="bench-item" @click="focusCityByCode('330100')">杭州市 76.1</text>
+            <text class="bench-item" @click="focusCityByCode('420100')">武汉市 74.2</text>
           </view>
         </view>
       </view>
@@ -121,8 +125,16 @@
               <text class="bci-metric-name">{{ metricLegend.title }}：</text>
               <text class="bci-metric-val font-mono">{{ getMetricDisplayVal(hoveredCity) }}</text>
             </view>
-            <view class="bci-sub-row">
-              <text class="bci-hint">轻触或点击锁定该统筹区 ➔</text>
+            <view class="bci-actions-row" v-if="hoveredCity.hasInsuranceData !== false && !hoveredCity.isSpecialRegion">
+              <view class="bci-act-pill" @click.stop="navToPolicy(hoveredCity.cityCode)">
+                <text class="act-txt">政策库 ↗</text>
+              </view>
+              <view class="bci-act-pill act-primary" @click.stop="navToEstimate(hoveredCity.cityCode)">
+                <text class="act-txt">去测算 ↗</text>
+              </view>
+            </view>
+            <view class="bci-sub-row" v-else>
+              <text class="bci-hint">属地专属医疗卫生保障体系</text>
             </view>
           </view>
           <view class="brief-card-inner brief-default" v-else>
@@ -1589,6 +1601,55 @@ function switchTab(url: string) {
   font-size: 12.5px;
   font-weight: 800;
   color: #0284c7;
+}
+
+.bci-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.bci-act-pill {
+  flex: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px 6px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.bci-act-pill:hover {
+  background: #e2e8f0;
+  border-color: #94a3b8;
+}
+
+.bci-act-pill.act-primary {
+  background: #eff6ff;
+  border-color: #93c5fd;
+}
+
+.bci-act-pill.act-primary:hover {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+
+.bci-act-pill.act-primary:hover .act-txt {
+  color: #ffffff;
+}
+
+.act-txt {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.bci-act-pill.act-primary .act-txt {
+  color: #2563eb;
 }
 
 .bci-sub-row {
