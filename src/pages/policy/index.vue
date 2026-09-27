@@ -150,6 +150,18 @@
         </view>
       </view>
 
+      <!-- 30秒大白话政策速览卡片 (Bento 四宫格瓦片，直击老百姓最关心的4大痛点) -->
+      <view class="plain-bento-grid mb-20">
+        <view class="bento-tile" v-for="(card, bIdx) in plainLanguageCards" :key="bIdx">
+          <view class="bento-head">
+            <text class="bento-badge" :class="card.tagClass">{{ card.tag }}</text>
+            <text class="bento-title">{{ card.title }}</text>
+          </view>
+          <text class="bento-summary">{{ card.summary }}</text>
+          <text class="bento-detail">{{ card.detail }}</text>
+        </view>
+      </view>
+
       <!-- 门诊与住院待遇卡片 -->
       <view class="benefits-grid">
         <!-- 门诊待遇卡片 -->
@@ -319,6 +331,15 @@
               </view>
               <view class="doc-btn btn-search" @click="searchDocByNumber(doc.docNumber, doc.title)">
                 <view class="doc-btn-inner"><text class="doc-btn-txt">文号精准核验</text><svg class="btn-micro-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></view>
+              </view>
+              <view class="doc-btn btn-num" @click="copyDocNumber(doc.docNumber)">
+                <view class="doc-btn-inner">
+                  <text class="doc-btn-txt">复制文号</text>
+                  <svg class="btn-micro-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                </view>
               </view>
               <view class="doc-btn btn-copy" @click="copyDocUrl(doc.officialUrl)">
                 <view class="doc-btn-inner">
@@ -525,6 +546,84 @@ const policyOneSentenceDigest = computed(() => {
     const parts = [t3Str, catStr, comm].filter(Boolean);
     return parts.join('；') + '。';
   }
+});
+
+// 30秒大白话政策速览四宫格模型 (提炼老百姓最关切的核心就医利益)
+const plainLanguageCards = computed(() => {
+  const pkg = currentPkg.value;
+  if (!pkg) return [];
+  const isEmp = currentType.value === 'employee';
+  
+  // 1. 门诊指南
+  const commOut = pkg.outpatient.tierBenefits.community;
+  const t3Out = pkg.outpatient.tierBenefits.tier3;
+  const commRatio = commOut ? Math.round(commOut.reimbursementRatio * 100) : 0;
+  const outDed = pkg.outpatient.annualDeductible ?? 0;
+  
+  const card1 = {
+    title: '看门诊去哪更划算？',
+    tag: '门诊指北',
+    tagClass: 'bento-blue',
+    summary: commRatio > 0 
+      ? `首选基层社区/卫生院，报销比例高达 ${commRatio}%` 
+      : '优先选择定点医疗机构规范就医',
+    detail: t3Out && t3Out.reimbursementRatio > 0 
+      ? `社区报销 ${commRatio}%，三甲医院报销 ${Math.round(t3Out.reimbursementRatio * 100)}%（${outDed === 0 ? '0元起报' : '满¥' + outDed + '起报'}）`
+      : isEmp 
+        ? `职工门诊共济保障，基层报销高达 ${commRatio}%，高级别医院比例略低`
+        : `居民门诊重点保障基层社区，大医院普通门诊多不予统筹`
+  };
+
+  // 2. 住院起步
+  const commIn = pkg.inpatient.tierBenefits.community;
+  const t3In = pkg.inpatient.tierBenefits.tier3;
+  const minDed = commIn?.deductible ?? 200;
+  const maxDed = t3In?.deductible ?? 1000;
+  
+  const card2 = {
+    title: '住院起步花多少能报？',
+    tag: '住院起付',
+    tagClass: 'bento-emerald',
+    summary: `基层起付 ¥${minDed} 起，三级重点医院 ¥${maxDed}`,
+    detail: pkg.inpatient.repeatedDeductibleRule 
+      ? `${pkg.inpatient.repeatedDeductibleRule.slice(0, 30)}...` 
+      : '一年内多次住院起付线享阶梯递减或按次扣除'
+  };
+
+  // 3. 生大病上限
+  const inCap = pkg.inpatient.annualCap || 0;
+  const inCapStr = inCap >= 9999999 ? '基本统筹上不封顶' : `基本统筹保至 ¥${(inCap / 10000).toFixed(0)}万`;
+  const catTiers = pkg.catastrophic?.tiers || [];
+  const maxCatRatio = catTiers.length > 0 ? Math.max(...catTiers.map(t => t.ratio)) : 0;
+  const catMax = Math.round(maxCatRatio * 100);
+  
+  const card3 = {
+    title: '生大病最高能报多少？',
+    tag: '大病保障',
+    tagClass: 'bento-purple',
+    summary: `${inCapStr}，大病保险无缝接力`,
+    detail: catMax > 0 
+      ? `超基本医保封顶线后，大病保险自动二次报销最高可达 ${catMax}%`
+      : '医保设多重保障体系，含大病保险/大额互助专项托底'
+  };
+
+  // 4. 优待照顾
+  const retireeBonus = pkg.inpatient.tierBenefits.tier3?.retireeRatioBonus || 0;
+  const retireePct = Math.round(retireeBonus * 100);
+  
+  const card4 = {
+    title: isEmp ? '退休人员享什么优待？' : '异地就医怎么报？',
+    tag: isEmp ? '退休倾斜' : '异地报销',
+    tagClass: 'bento-amber',
+    summary: isEmp 
+      ? (retireePct > 0 ? `住院/门诊报销比例优待提高 +${retireePct}%` : '退休起付线更低，享优待倾斜')
+      : '跨省就医先备案，联网医院出院直结',
+    detail: isEmp 
+      ? '国家医保对退休人员给予普惠倾斜，起付线更低、报销比例更高'
+      : '国家医保App一分钟跨省备案，回老家或随子女居住直接刷卡结算'
+  };
+
+  return [card1, card2, card3, card4];
 });
 
 // 门诊起付线文案（精确区分【按年度累计起付】与【按就医诊次起付】及退休优待）
@@ -767,6 +866,15 @@ function searchDocByNumber(docNumber: string, title: string) {
   }
 }
 
+function copyDocNumber(docNumber: string) {
+  uni.setClipboardData({
+    data: docNumber,
+    success: () => {
+      uni.showToast({ title: '发文字号已复制: ' + docNumber, icon: 'none' });
+    }
+  });
+}
+
 function copyDocUrl(url: string) {
   uni.setClipboardData({
     data: url,
@@ -780,6 +888,10 @@ onMounted(() => {
   if (typeof window !== 'undefined') {
     window.addEventListener('click', () => {
       openDropdown.value = null;
+    });
+    window.addEventListener('app-escape-key', () => {
+      openDropdown.value = null;
+      showSearchModal.value = false;
     });
   }
   syncCityFromStorage();
@@ -1329,6 +1441,101 @@ onShow(() => {
 .mt-16 { margin-top: 16px; }
 .mt-12 { margin-top: 12px; }
 
+/* 30秒大白话速览 Bento 矩阵 */
+.plain-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .plain-bento-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 540px) {
+  .plain-bento-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.bento-tile {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:hover {
+    border-color: #93c5fd;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.08);
+  }
+}
+
+.bento-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.bento-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  line-height: 1.2;
+}
+
+.bento-blue {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.bento-emerald {
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #a7f3d0;
+}
+
+.bento-purple {
+  background: #faf5ff;
+  color: #7e22ce;
+  border: 1px solid #e9d5ff;
+}
+
+.bento-amber {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.bento-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.bento-summary {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #2563eb;
+  line-height: 1.45;
+  margin-bottom: 4px;
+}
+
+.bento-detail {
+  font-size: 11.5px;
+  color: #64748b;
+  line-height: 1.45;
+}
+
 /* 待遇双栏 */
 .benefits-grid {
   display: grid;
@@ -1693,6 +1900,10 @@ onShow(() => {
 .btn-copy { background: #f8fafc; border: 1px solid #e2e8f0; }
 .btn-copy:hover { background: #f1f5f9; }
 .btn-copy .doc-btn-txt { color: #475569; }
+
+.btn-num { background: #fdf4ff; border: 1px solid #f5d0fe; }
+.btn-num:hover { background: #fae8ff; }
+.btn-num .doc-btn-txt { color: #a21caf; }
 
 .doc-btn-inner {
   display: inline-flex;

@@ -15,8 +15,42 @@ onHide(() => {
 onMounted(() => {
   if (typeof window !== 'undefined') {
     initAntigravityCanvas();
+    initGlobalShortcuts();
   }
 });
+
+function initGlobalShortcuts() {
+  if (typeof window === 'undefined') return;
+
+  window.addEventListener('keydown', (e: KeyboardEvent) => {
+    // 1. 全局快捷键 '/' 唤起搜索 / 费用输入框
+    if (e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+      const activeEl = document.activeElement;
+      const isInput = activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA' || (activeEl as HTMLElement).isContentEditable);
+      if (!isInput) {
+        e.preventDefault();
+        const targetInput = document.querySelector<HTMLInputElement>(
+          '.search-input, .city-search-input, .hotline-search-input, .main-amount-input, input[type="text"], input[type="digit"]'
+        );
+        if (targetInput) {
+          targetInput.focus();
+          if (targetInput.select) {
+            targetInput.select();
+          }
+        }
+      }
+    }
+
+    // 2. 全局快捷键 'Escape' 关闭下拉浮层或取消焦点
+    if (e.key === 'Escape') {
+      const activeEl = document.activeElement as HTMLElement | null;
+      if (activeEl && (activeEl.tagName === 'INPUT' || activeEl.tagName === 'TEXTAREA')) {
+        activeEl.blur();
+      }
+      window.dispatchEvent(new CustomEvent('app-escape-key'));
+    }
+  });
+}
 
 function initAntigravityCanvas() {
   if (document.getElementById('antigravity-bg-canvas')) return;

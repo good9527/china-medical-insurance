@@ -251,7 +251,7 @@
                 class="main-amount-input" 
                 v-model="form.totalCost" 
                 placeholder="0"
-                @input="triggerCalculation"
+                @input="onCostInput"
               />
               <text class="currency-unit">元</text>
             </view>
@@ -262,10 +262,34 @@
                 class="preset-pill" 
                 v-for="amt in quickAmounts" 
                 :key="amt"
-                :class="{ active: form.totalCost === String(amt) }"
+                :class="{ active: form.totalCost === String(amt) && !selectedScenarioId }"
                 @click="setQuickCost(amt)"
               >
                 <text class="pill-text">{{ formatQuickPill(amt) }}</text>
+              </view>
+            </view>
+
+            <!-- 典型临床就医场景智能一键代入 -->
+            <view class="scenario-lead-row">
+              <view class="scenario-lead-left">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" class="sc-svg">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+                <text class="scenario-lead-txt">常见病种手术临床场景一键代入：</text>
+              </view>
+            </view>
+
+            <view class="scenario-chips-scroll">
+              <view 
+                class="scenario-chip" 
+                v-for="sc in medicalScenarios" 
+                :key="sc.id"
+                :class="{ active: selectedScenarioId === sc.id }"
+                @click="applyScenario(sc)"
+              >
+                <text class="sc-badge">{{ sc.badge }}</text>
+                <text class="sc-name">{{ sc.name }}</text>
+                <text class="sc-price font-mono">¥{{ (sc.totalCost / 10000 >= 1 ? (sc.totalCost / 10000 + '万') : sc.totalCost) }}</text>
               </view>
             </view>
           </view>
@@ -705,8 +729,14 @@ function toggleRetiree() {
   triggerCalculation();
 }
 
+function onCostInput() {
+  selectedScenarioId.value = null;
+  triggerCalculation();
+}
+
 function setQuickCost(val: number) {
   triggerHaptic();
+  selectedScenarioId.value = null;
   form.totalCost = String(val);
   triggerCalculation();
 }
@@ -722,6 +752,87 @@ const hospitalTiers: { tier: HospitalTier; name: string; shortName: string }[] =
   { tier: 'community', name: '社区服务中心 / 诊所', shortName: '社区诊所' }
 ];
 const selectedHospitalIndex = ref(0);
+
+// 典型临床就医场景预设模型
+interface MedicalScenario {
+  id: string;
+  name: string;
+  badge: string;
+  treatmentType: 'inpatient' | 'outpatient';
+  hospitalTier: HospitalTier;
+  totalCost: number;
+  nonInsuranceCost: number;
+  insuranceType?: 'employee' | 'resident';
+}
+
+const medicalScenarios: MedicalScenario[] = [
+  {
+    id: 'cataract',
+    name: '白内障超声乳化',
+    badge: '日间手术',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier2',
+    totalCost: 8000,
+    nonInsuranceCost: 1200
+  },
+  {
+    id: 'appendicitis',
+    name: '急性阑尾炎微创',
+    badge: '普外住院',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier2',
+    totalCost: 12000,
+    nonInsuranceCost: 1500
+  },
+  {
+    id: 'stent',
+    name: '冠脉支架微创植入',
+    badge: '介入重点',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3_top',
+    totalCost: 35000,
+    nonInsuranceCost: 3000
+  },
+  {
+    id: 'child_pneumonia',
+    name: '儿童支原体肺炎',
+    badge: '儿科住院',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    totalCost: 6000,
+    nonInsuranceCost: 600
+  },
+  {
+    id: 'fever_clinic',
+    name: '门诊发热化验开药',
+    badge: '社区/门诊',
+    treatmentType: 'outpatient',
+    hospitalTier: 'community',
+    totalCost: 600,
+    nonInsuranceCost: 50
+  }
+];
+
+const selectedScenarioId = ref<string | null>(null);
+
+function applyScenario(sc: MedicalScenario) {
+  triggerHaptic();
+  selectedScenarioId.value = sc.id;
+  form.treatmentType = sc.treatmentType;
+  form.totalCost = String(sc.totalCost);
+  form.nonInsuranceCost = sc.nonInsuranceCost > 0 ? String(sc.nonInsuranceCost) : '';
+  
+  const tierIdx = hospitalTiers.findIndex(h => h.tier === sc.hospitalTier);
+  if (tierIdx !== -1) {
+    selectedHospitalIndex.value = tierIdx;
+  }
+  
+  if (sc.insuranceType) {
+    form.insuranceType = sc.insuranceType;
+  }
+  
+  triggerCalculation();
+}
 
 const remoteOptions = [
   { value: 'local', label: '本地定点医院就医' },
@@ -927,6 +1038,10 @@ onMounted(() => {
   if (typeof window !== 'undefined') {
     window.addEventListener('click', () => {
       openDropdown.value = null;
+    });
+    window.addEventListener('app-escape-key', () => {
+      openDropdown.value = null;
+      showVoucherModal.value = false;
     });
   }
   syncCityFromStorage();
@@ -1642,6 +1757,113 @@ svg {
   font-weight: 600;
   white-space: nowrap;
 }
+
+/* 典型就医临床场景滚动胶囊 */
+.scenario-lead-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-bottom: 6px;
+}
+
+.scenario-lead-left {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.sc-svg {
+  color: #0284c7;
+  flex-shrink: 0;
+}
+
+.scenario-lead-txt {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 600;
+}
+
+.scenario-chips-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 9999px;
+  }
+}
+
+.scenario-chip {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+
+  &:hover {
+    background: #f0fdf4;
+    border-color: #86efac;
+  }
+
+  &.active {
+    background: #f0fdf4;
+    border-color: #10b981;
+    box-shadow: 0 0 0 1px #10b981, 0 2px 6px rgba(16, 185, 129, 0.12);
+
+    .sc-badge {
+      background: #10b981;
+      color: #ffffff;
+    }
+
+    .sc-name {
+      color: #065f46;
+      font-weight: 700;
+    }
+
+    .sc-price {
+      color: #047857;
+      font-weight: 700;
+    }
+  }
+}
+
+.sc-badge {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #e2e8f0;
+  color: #475569;
+  font-weight: 600;
+  transition: all 0.18s ease;
+}
+
+.sc-name {
+  font-size: 12px;
+  color: #334155;
+  font-weight: 600;
+  transition: color 0.18s ease;
+}
+
+.sc-price {
+  font-size: 11.5px;
+  color: #059669;
+  font-weight: 700;
+}
+
 
 /* 高级自费折叠面板 */
 .advanced-collapse-card {

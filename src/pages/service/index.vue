@@ -229,6 +229,87 @@
         </view>
       </view>
 
+      <!-- 异地就医【三要三不要】避坑指南 -->
+      <view class="card mt-20">
+        <view class="card-head">
+          <view class="head-left">
+            <text class="card-head-title">跨省异地就医【三要三不要】核心避坑指南</text>
+          </view>
+          <view class="badge-pill badge-emerald">
+            <text class="badge-txt">国家医保直结权威指引</text>
+          </view>
+        </view>
+
+        <view class="dos-donts-grid">
+          <!-- 三要 -->
+          <view class="guide-box box-dos">
+            <view class="box-badge badge-do">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" class="box-icon">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <text class="box-badge-txt">“三要” · 顺利直接结算</text>
+            </view>
+            <view class="guide-item-list">
+              <view class="guide-item">
+                <text class="item-tag tag-green">01</text>
+                <view class="item-text-group">
+                  <text class="item-title">要先提前备案</text>
+                  <text class="item-desc">就医或住院前，通过“国家医保服务平台”App/微信小程序在线备案，绝大多数统筹区即开即生效。</text>
+                </view>
+              </view>
+              <view class="guide-item">
+                <text class="item-tag tag-green">02</text>
+                <view class="item-text-group">
+                  <text class="item-title">要持医保码/社保卡就医</text>
+                  <text class="item-desc">挂号、检查、住院登记与出院结算时，务必出示国家医保电子凭证或全国社保卡，实现系统联网即时减免。</text>
+                </view>
+              </view>
+              <view class="guide-item">
+                <text class="item-tag tag-green">03</text>
+                <view class="item-text-group">
+                  <text class="item-title">要选全国联网定点医院</text>
+                  <text class="item-desc">优先选择就医地已接入全国异地联网结算系统的定点医疗机构，目前全国二级以上公立医院已基本全覆盖。</text>
+                </view>
+              </view>
+            </view>
+          </view>
+
+          <!-- 三不要 -->
+          <view class="guide-box box-donts">
+            <view class="box-badge badge-dont">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" class="box-icon">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+              <text class="box-badge-txt">“三不要” · 避坑降点自费</text>
+            </view>
+            <view class="guide-item-list">
+              <view class="guide-item">
+                <text class="item-tag tag-rose">01</text>
+                <view class="item-text-group">
+                  <text class="item-title">不要出院结账后再备案</text>
+                  <text class="item-desc">未备案直接全自费结账出院，一般无法在医院补刷卡直结，须回参保地跑腿手工报销，且面临 10%~20% 政策降点。</text>
+                </view>
+              </view>
+              <view class="guide-item">
+                <text class="item-tag tag-rose">02</text>
+                <view class="item-text-group">
+                  <text class="item-title">不要随意选择全自费身份</text>
+                  <text class="item-desc">门诊或住院登记时切勿按“纯自费”办理，一旦定为纯自费，后续医保目录比对与发票分割手续极其繁琐。</text>
+                </view>
+              </view>
+              <view class="guide-item">
+                <text class="item-tag tag-rose">03</text>
+                <view class="item-text-group">
+                  <text class="item-title">不要轻信任何收费代办中介</text>
+                  <text class="item-desc">国家异地就医直接结算备案全程 100% 免费公开，切勿向非法黄牛或中介付费代办，谨防个人社保信息泄露。</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+
       <!-- ============================================================ -->
       <!-- 板块二：医保热线与官网服务入口 (直接无缝在下方展示，顺畅下翻) -->
       <!-- ============================================================ -->
@@ -574,8 +655,24 @@ const currentCityHotline = computed<CityHotlineDisplay | undefined>(() => {
 
 function callPhone(tel: string) {
   if (!tel) return;
+  const cleanTel = tel.replace(/[^0-9]/g, '');
+  // #ifdef H5
+  if (typeof window !== 'undefined') {
+    try {
+      const a = document.createElement('a');
+      a.href = `tel:${cleanTel || tel}`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      return;
+    } catch {
+      window.location.href = `tel:${cleanTel || tel}`;
+      return;
+    }
+  }
+  // #endif
   uni.makePhoneCall({
-    phoneNumber: tel,
+    phoneNumber: cleanTel || tel,
     fail: () => {
       uni.showToast({ title: `请拨打: ${tel}`, icon: 'none' });
     }
@@ -596,6 +693,14 @@ function openPortal(url: string) {
 }
 
 onMounted(() => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener('click', () => {
+      openDropdown.value = null;
+    });
+    window.addEventListener('app-escape-key', () => {
+      openDropdown.value = null;
+    });
+  }
   try {
     const targetCityCode = uni.getStorageSync('selected_policy_city_code') || uni.getStorageSync('selected_medical_city_code');
     if (targetCityCode && targetCityCode !== currentCityOption.value.cityCode) {
@@ -1082,6 +1187,115 @@ onMounted(() => {
   font-size: 12px;
   color: #475569;
   line-height: 1.5;
+}
+
+/* 异地就医三要三不要 */
+.dos-donts-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-top: 14px;
+}
+
+@media (max-width: 768px) {
+  .dos-donts-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.guide-box {
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.box-dos {
+  background: #f0fdf4;
+  border: 1.5px solid #bbf7d0;
+}
+
+.box-donts {
+  background: #fff1f2;
+  border: 1.5px solid #fecdd3;
+}
+
+.box-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  width: fit-content;
+  margin-bottom: 14px;
+}
+
+.badge-do {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #86efac;
+}
+
+.badge-dont {
+  background: #ffe4e6;
+  color: #be123c;
+  border: 1px solid #fda4af;
+}
+
+.box-icon {
+  flex-shrink: 0;
+}
+
+.guide-item-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.guide-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.item-tag {
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 6px;
+  border-radius: 4px;
+  line-height: 1.2;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.tag-green {
+  background: #16a34a;
+  color: #ffffff;
+}
+
+.tag-rose {
+  background: #e11d48;
+  color: #ffffff;
+}
+
+.item-text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.item-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.item-desc {
+  font-size: 12px;
+  color: #475569;
+  line-height: 1.45;
 }
 
 /* 热线板块标题 */
