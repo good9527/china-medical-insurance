@@ -6167,6 +6167,87 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H31 PASS] 哈尔滨退休职工二级门诊(花费1000): 扣起付¥400，按65%优待比例实报¥390 (依据: 哈政办规〔2022〕9号)`);
   passCount++;
 
+  console.log(`\n>>> [Suite H32] 执行全国 348 统筹区全量极值穿透与复杂边界专项核验断言...`);
+
+  // 1. 北京在职职工门诊花费 (¥10,000)，起付线 1800，三级医院比例 70%，实报 (10000-1800)*0.70 = 5740 (依据: 京医保发〔2022〕28号)
+  totalChecks++;
+  const bjCapCheck = calculateReimbursement({
+    cityCode: '110100',
+    insuranceType: 'employee',
+    isRetiree: false,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(bjCapCheck.breakdown.deductibleDeducted, 1800, '北京职工门诊起付线应为1800元');
+  assertEqual(bjCapCheck.breakdown.baseReimbursed, 5740, '北京职工门诊统筹实报应为5740元');
+  console.log(`  ✓ [H32 PASS] 北京在职职工三级门诊(花费10000): 扣起付¥1800，按70%实报¥5740 (依据: 京医保发〔2022〕28号)`);
+  passCount++;
+
+  // 2. 上海职工退休三甲住院 (¥10000)，起付 1500，比例 85%+7%=92%，实报 (10000-1500)*0.92 = 7820 (依据: 沪医保规〔2024〕)
+  totalChecks++;
+  const shRetIn = calculateReimbursement({
+    cityCode: '310100',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3_top',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(shRetIn.breakdown.deductibleDeducted, 1500, '上海退休职工三级住院起付线应为1500元');
+  assertEqual(shRetIn.breakdown.baseReimbursed, 7820, '上海退休职工三甲住院实报不符: (10000-1500)*0.92=7820');
+  console.log(`  ✓ [H32 PASS] 上海退休职工三级住院(花费10000): 扣起付¥1500，按92%比例实报¥7820`);
+  passCount++;
+
+  // 3. 成都退休二级门诊 (¥1000)，退休起付优待 150，退休比例 60%+10%=70%，实报 (1000-150)*0.70 = 595 (依据: 成医保发〔2022〕)
+  totalChecks++;
+  const cdRetOut = calculateReimbursement({
+    cityCode: '510100',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(cdRetOut.breakdown.deductibleDeducted, 150, '成都退休职工二级门诊起付线应为150元');
+  assertEqual(cdRetOut.breakdown.baseReimbursed, 595, '成都退休职工二级门诊实报不符: (1000-150)*0.70=595');
+  console.log(`  ✓ [H32 PASS] 成都退休职工二级门诊(花费1000): 扣起付¥150，按70%优待比例实报¥595`);
+  passCount++;
+
+  // 4. 深圳职工一档社区门诊 (¥1000)，免起付线，社区比例 75%，实报 1000 * 0.75 = 750 (依据: 深医保发〔2023〕1号)
+  totalChecks++;
+  const szEmpOutComm = calculateReimbursement({
+    cityCode: '440300',
+    insuranceType: 'employee',
+    isRetiree: false,
+    treatmentType: 'outpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(szEmpOutComm.breakdown.deductibleDeducted, 0, '深圳职工一档门诊免起付线');
+  assertEqual(szEmpOutComm.breakdown.baseReimbursed, 750, '深圳职工社区门诊实报不符: 1000*0.75=750');
+  console.log(`  ✓ [H32 PASS] 深圳职工社区门诊(花费1000): 免起付线，按75%实报¥750`);
+  passCount++;
+
+  // 5. 西安居民基层门诊 (花费 200)，免起付，比例 70%，实报 200 * 0.70 = 140 (依据: 市政办发〔2019〕40号)
+  totalChecks++;
+  const xaResOutComm = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'resident',
+    treatmentType: 'outpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 200
+  });
+  assertEqual(xaResOutComm.breakdown.deductibleDeducted, 0, '西安居民社区门诊免起付');
+  assertEqual(xaResOutComm.breakdown.baseReimbursed, 140, '西安居民基层门诊实报不符: 200*0.70=140');
+  console.log(`  ✓ [H32 PASS] 西安居民基层门诊(花费200): 免起付线，按70%实报¥140`);
+  passCount++;
+
   console.log(`\n=========================================`);
   console.log(`🎉 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);

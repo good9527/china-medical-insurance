@@ -123,7 +123,7 @@ export function calculateReimbursement(request: CalculateRequest): CalculateResu
     if (request.insuranceType === 'employee') {
       // 职工大额医疗补助：当基本统筹达到40万封顶线后，超出符合政策部分由大额互助按90%报销
       if (reimbursableBase * effectiveRatio > annualCap) {
-        const excessCost = reimbursableBase - (annualCap / effectiveRatio);
+        const excessCost = effectiveRatio > 0 ? (reimbursableBase - (annualCap / effectiveRatio)) : 0;
         if (excessCost > 0) {
           const catRatio = catRule.tiers[0]?.ratio ?? 0.90;
           catastrophicReimbursed = Math.round(excessCost * catRatio * 100) / 100;
