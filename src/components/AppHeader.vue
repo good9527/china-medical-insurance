@@ -344,11 +344,14 @@ watch(showContactModal, (val) => {
   }
 });
 
-// 支持按 ESC 键平滑关闭弹窗
+// 支持按 ESC 键平滑关闭弹窗及触发全局 escape 联动
 if (typeof window !== 'undefined') {
   const handleKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Escape' && showContactModal.value) {
-      showContactModal.value = false;
+    if (e.key === 'Escape') {
+      if (showContactModal.value) {
+        showContactModal.value = false;
+      }
+      window.dispatchEvent(new CustomEvent('app-escape-key'));
     }
   };
   window.addEventListener('keydown', handleKeyDown);

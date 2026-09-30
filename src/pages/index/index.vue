@@ -570,7 +570,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, onUnmounted } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import AppFooter from '../../components/AppFooter.vue';
@@ -1034,17 +1034,32 @@ function syncCityFromStorage() {
   triggerCalculation();
 }
 
+function handleWindowClick() {
+  openDropdown.value = null;
+}
+
+function handleEscapeKey() {
+  openDropdown.value = null;
+  showVoucherModal.value = false;
+}
+
 onMounted(() => {
   if (typeof window !== 'undefined') {
-    window.addEventListener('click', () => {
-      openDropdown.value = null;
-    });
-    window.addEventListener('app-escape-key', () => {
-      openDropdown.value = null;
-      showVoucherModal.value = false;
-    });
+    window.addEventListener('click', handleWindowClick);
+    window.addEventListener('app-escape-key', handleEscapeKey);
   }
   syncCityFromStorage();
+});
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('click', handleWindowClick);
+    window.removeEventListener('app-escape-key', handleEscapeKey);
+    if (animationFrameId && typeof cancelAnimationFrame !== 'undefined') {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+  }
 });
 
 onShow(() => {

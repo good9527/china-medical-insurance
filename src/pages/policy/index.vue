@@ -370,7 +370,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { onShow, onPageScroll } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import AppFooter from '../../components/AppFooter.vue';
@@ -884,17 +884,28 @@ function copyDocUrl(url: string) {
   });
 }
 
+function handlePolicyWindowClick() {
+  openDropdown.value = null;
+}
+
+function handlePolicyEscapeKey() {
+  openDropdown.value = null;
+  showSearchModal.value = false;
+}
+
 onMounted(() => {
   if (typeof window !== 'undefined') {
-    window.addEventListener('click', () => {
-      openDropdown.value = null;
-    });
-    window.addEventListener('app-escape-key', () => {
-      openDropdown.value = null;
-      showSearchModal.value = false;
-    });
+    window.addEventListener('click', handlePolicyWindowClick);
+    window.addEventListener('app-escape-key', handlePolicyEscapeKey);
   }
   syncCityFromStorage();
+});
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('click', handlePolicyWindowClick);
+    window.removeEventListener('app-escape-key', handlePolicyEscapeKey);
+  }
 });
 
 onShow(() => {

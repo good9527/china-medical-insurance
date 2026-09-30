@@ -9,7 +9,12 @@
       <view class="popover-arrow"></view>
       <view class="popover-header">
         <text class="popover-title">{{ title }}</text>
-        <text class="popover-close" @click.stop="isOpen = false">✕</text>
+        <view class="popover-close" @click.stop="isOpen = false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="popover-close-svg">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </view>
       </view>
       <text class="popover-body">{{ text }}</text>
       <view class="popover-example" v-if="example">
@@ -41,15 +46,27 @@ function handleGlobalClick() {
   }
 }
 
+function handleEscapeKey() {
+  if (isOpen.value) {
+    isOpen.value = false;
+  }
+}
+
 onMounted(() => {
   if (typeof document !== 'undefined') {
     document.addEventListener('click', handleGlobalClick);
+  }
+  if (typeof window !== 'undefined') {
+    window.addEventListener('app-escape-key', handleEscapeKey);
   }
 });
 
 onUnmounted(() => {
   if (typeof document !== 'undefined') {
     document.removeEventListener('click', handleGlobalClick);
+  }
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('app-escape-key', handleEscapeKey);
   }
 });
 </script>
@@ -165,13 +182,23 @@ onUnmounted(() => {
 
 .popover-close {
   color: #94a3b8;
-  font-size: 11px;
   cursor: pointer;
-  padding: 0 2px;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.15s ease;
 }
 
 .popover-close:hover {
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.popover-close-svg {
+  width: 12px;
+  height: 12px;
 }
 
 .popover-body {

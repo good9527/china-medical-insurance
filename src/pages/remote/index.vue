@@ -245,15 +245,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import AppFooter from '../../components/AppFooter.vue';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
-
-onMounted(() => {
-  uni.switchTab({ url: '/pages/service/index' });
-});
 
 const openDropdown = ref<string | null>(null);
 
@@ -334,13 +330,27 @@ const currentCity = computed(() => {
 const currentType = ref<'employee' | 'resident'>('employee');
 const remotePolicy = computed(() => currentCity.value[currentType.value].remoteMedical);
 
+function handleRemoteWindowClick() {
+  openDropdown.value = null;
+}
+
+function handleRemoteEscapeKey() {
+  openDropdown.value = null;
+}
+
 onMounted(() => {
   if (typeof window !== 'undefined') {
-    window.addEventListener('click', () => {
-      openDropdown.value = null;
-    });
+    window.addEventListener('click', handleRemoteWindowClick);
+    window.addEventListener('app-escape-key', handleRemoteEscapeKey);
   }
   syncCityFromStorage();
+});
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('click', handleRemoteWindowClick);
+    window.removeEventListener('app-escape-key', handleRemoteEscapeKey);
+  }
 });
 
 onShow(() => {

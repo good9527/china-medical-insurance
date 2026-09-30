@@ -1013,7 +1013,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { onPageScroll, onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import AppFooter from '../../components/AppFooter.vue';
@@ -1060,14 +1060,34 @@ const showMethodology = ref(false);
 // 榜单展示布局：'cards' (政策卡片流) | 'table' (全维宽表)
 const displayLayout = ref<'cards' | 'table'>('table');
 
+function handleRankingWindowClick() {
+  openDropdown.value = null;
+}
+
+function handleRankingEscapeKey() {
+  openDropdown.value = null;
+  showMethodology.value = false;
+}
+
 onMounted(() => {
   try {
     // #ifdef H5
-    if (typeof window !== 'undefined' && window.innerWidth < 768) {
-      displayLayout.value = 'cards';
+    if (typeof window !== 'undefined') {
+      if (window.innerWidth < 768) {
+        displayLayout.value = 'cards';
+      }
+      window.addEventListener('click', handleRankingWindowClick);
+      window.addEventListener('app-escape-key', handleRankingEscapeKey);
     }
     // #endif
   } catch {}
+});
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('click', handleRankingWindowClick);
+    window.removeEventListener('app-escape-key', handleRankingEscapeKey);
+  }
 });
 
 // 三大人群分类：'overall' | 'employee' | 'resident'

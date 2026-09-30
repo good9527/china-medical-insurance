@@ -460,8 +460,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
-import { onPageScroll } from '@dcloudio/uni-app';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { onPageScroll, onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import AppFooter from '../../components/AppFooter.vue';
 import { provinceList, getCitiesByProvinceCode, getCityData } from '../../data/provinces';
@@ -692,15 +692,15 @@ function openPortal(url: string) {
   // #endif
 }
 
-onMounted(() => {
-  if (typeof window !== 'undefined') {
-    window.addEventListener('click', () => {
-      openDropdown.value = null;
-    });
-    window.addEventListener('app-escape-key', () => {
-      openDropdown.value = null;
-    });
-  }
+function handleServiceWindowClick() {
+  openDropdown.value = null;
+}
+
+function handleServiceEscapeKey() {
+  openDropdown.value = null;
+}
+
+function syncCityFromStorage() {
   try {
     const targetCityCode = uni.getStorageSync('selected_policy_city_code') || uni.getStorageSync('selected_medical_city_code');
     if (targetCityCode && targetCityCode !== currentCityOption.value.cityCode) {
@@ -718,6 +718,25 @@ onMounted(() => {
   } catch (e) {
     console.error(e);
   }
+}
+
+onMounted(() => {
+  if (typeof window !== 'undefined') {
+    window.addEventListener('click', handleServiceWindowClick);
+    window.addEventListener('app-escape-key', handleServiceEscapeKey);
+  }
+  syncCityFromStorage();
+});
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('click', handleServiceWindowClick);
+    window.removeEventListener('app-escape-key', handleServiceEscapeKey);
+  }
+});
+
+onShow(() => {
+  syncCityFromStorage();
 });
 </script>
 

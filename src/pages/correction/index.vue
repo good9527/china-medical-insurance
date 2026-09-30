@@ -448,7 +448,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import AppFooter from '../../components/AppFooter.vue';
 import { SITE_CONFIG } from '../../config/site';
@@ -830,8 +831,7 @@ ${d.quote}
   // #endif
 }
 
-onMounted(() => {
-  loadMyRecords();
+function syncCityFromStorage() {
   try {
     const targetCityCode = uni.getStorageSync('selected_policy_city_code') || uni.getStorageSync('selected_medical_city_code');
     if (targetCityCode && targetCityCode !== currentCityOption.value.cityCode) {
@@ -849,6 +849,34 @@ onMounted(() => {
   } catch (e) {
     console.error(e);
   }
+}
+
+function handleCorrectionWindowClick() {
+  openDropdown.value = null;
+}
+
+function handleCorrectionEscapeKey() {
+  openDropdown.value = null;
+}
+
+onMounted(() => {
+  loadMyRecords();
+  if (typeof window !== 'undefined') {
+    window.addEventListener('click', handleCorrectionWindowClick);
+    window.addEventListener('app-escape-key', handleCorrectionEscapeKey);
+  }
+  syncCityFromStorage();
+});
+
+onUnmounted(() => {
+  if (typeof window !== 'undefined') {
+    window.removeEventListener('click', handleCorrectionWindowClick);
+    window.removeEventListener('app-escape-key', handleCorrectionEscapeKey);
+  }
+});
+
+onShow(() => {
+  syncCityFromStorage();
 });
 </script>
 

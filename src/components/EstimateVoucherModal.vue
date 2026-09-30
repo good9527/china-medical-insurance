@@ -13,7 +13,12 @@
           </svg>
           <text class="modal-title">医保报销预估凭据单</text>
         </view>
-        <view class="modal-close-btn" @click="close">✕</view>
+        <view class="modal-close-btn" @click="close">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="modal-close-svg">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </view>
       </view>
 
       <!-- 凭据单主体 (用于视觉展示和打印输出) -->
