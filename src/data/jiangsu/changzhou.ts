@@ -17,6 +17,17 @@ export const changzhouCityData: CityInsuranceData = {
   // 官方规范性红头文件与政府公开溯源凭证
   sourceDocs: [
     {
+      docId: 'cz-medical-insurance-adjust-2024',
+      title: '常州市医疗保障局关于公布常州市基本医疗保障待遇动态调整标准的通知',
+      docNumber: '常医保发〔2024〕26号',
+      issuingDept: ['常州市医疗保障局', '常州市财政局'],
+      publishDate: '2024-11-15',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.changzhou.gov.cn/',
+      summaryQuote: '深入实施医疗保障待遇清单制度：规范职工医保门诊共济与退休倾斜标准，在职门诊起付线600元、退休优待起付线400元；持续保障分级诊疗，基层一级及以下医疗机构职工门诊报销80%（退休85%），住院报销政策范围内覆盖率稳步提升。'
+    },
+    {
       docId: 'cz-employee-outpatient-reform-2022',
       title: '常州市人民政府办公室印发关于进一步健全常州市职工基本医疗保险门诊共济保障机制的实施方案的通知',
       docNumber: '常政办发〔2022〕91号',

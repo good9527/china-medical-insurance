@@ -37,6 +37,17 @@ export const hengyangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.hengyang.gov.cn/zwgk/zcjd/202208/t20220820_1562910.html',
       summaryQuote: '住院起付标准：基层医疗机构200元、一级400元、二级600元、市属三级1200元、省属三级1500元。职工医保统筹支付比例一级92%、二级90%、三级85%（退休人员增加2%）。城乡居民医保住院起付标准相同，统筹支付比例基层85%、一级82%、二级80%、市属三级65%、省属三级60%。同年度同级别第二次及以上住院起付标准减半。职工统筹年度最高支付限额15万元。'
+    },
+    {
+      docId: 'hy-resident-notice-2024',
+      title: '衡阳市医疗保障局关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '衡医保发〔2024〕15号',
+      issuingDept: ['衡阳市医疗保障局', '国家税务总局衡阳市税务局'],
+      publishDate: '2024-09-15',
+      effectiveDate: '2024-09-15',
+      status: 'active',
+      officialUrl: 'http://ybj.hengyang.gov.cn/zwgk/zcfg/202409/t20240918_189210.html',
+      summaryQuote: '稳步提升城乡居民医疗保障水平，全面落实基层门诊统筹政策，基层医疗机构免起付线报销70%（限额420元）。巩固住院和门诊慢特病待遇，大病保险起付线1.5万元，实现基本医保与大病医疗协同保障。'
     }
   ],
 
@@ -93,7 +104,7 @@ export const hengyangCityData: CityInsuranceData = {
   // 城乡居民医保待遇
   resident: {
     outpatient: {
-      sourceDocId: 'hy-inpatient-regulations-2023',
+      sourceDocId: 'hy-resident-notice-2024',
       annualDeductible: 0,
       annualCap: 420,
       tierBenefits: {

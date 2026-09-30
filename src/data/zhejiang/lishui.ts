@@ -17,6 +17,17 @@ export const lishuiCityData: CityInsuranceData = {
   // 官方规范性红头文件与政府公开溯源凭证
   sourceDocs: [
     {
+      docId: 'ls-medical-insurance-adjust-2024',
+      title: '丽水市人民政府办公室关于调整全民健康补充医疗保险（浙丽保）与基本医保待遇保障的通知',
+      docNumber: '丽政办发〔2024〕71号',
+      issuingDept: ['丽水市人民政府办公室', '丽水市医疗保障局'],
+      publishDate: '2024-11-20',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.lishui.gov.cn/',
+      summaryQuote: '持续深化“基本医保+大病保险+浙丽保”多层次多跨保障体系：健全基本医保长效参保激励机制，基层医疗机构就医门诊零起付、报销不低于70%（退休75%）；经基本医保与大病保险梯级补偿后，合规自付费用及目录外合理费用由“浙丽保”梯级减免，最高支付限额稳健有力。'
+    },
+    {
       docId: 'ls-medical-insurance-measures-2022',
       title: '丽水市人民政府关于印发丽水市全民医疗保障办法的通知',
       docNumber: '丽政发〔2022〕18号',

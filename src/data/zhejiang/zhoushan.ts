@@ -17,6 +17,17 @@ export const zhoushanCityData: CityInsuranceData = {
   // 官方规范性红头文件与政府公开溯源凭证
   sourceDocs: [
     {
+      docId: 'zs-medical-insurance-adjust-2024',
+      title: '舟山市医疗保障局 舟山市财政局关于公布2024-2025年度基本医疗保障待遇标准的通知',
+      docNumber: '舟医保发〔2024〕28号',
+      issuingDept: ['舟山市医疗保障局', '舟山市财政局'],
+      publishDate: '2024-10-15',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.zhoushan.gov.cn/',
+      summaryQuote: '进一步优化海岛医保保障水平：在职职工三级定点医疗机构及定点药店门诊统筹支付比例调整为52%（退休57%），二级60%，基层68%；综合提升城乡居民住院及门诊待遇，未成年人及儿童基层门诊报销比例优化提升。'
+    },
+    {
       docId: 'zs-medical-insurance-measures-2022',
       title: '舟山市医疗保障办法',
       docNumber: '舟政发〔2022〕16号',
@@ -51,10 +62,10 @@ export const zhoushanCityData: CityInsuranceData = {
         community: { tierName: '基层社区卫生服务中心/海岛卫生院', deductible: 0, reimbursementRatio: 0.68, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.68, retireeRatioBonus: 0.05 },
         tier2: { tierName: '二级定点医院', deductible: 400, reimbursementRatio: 0.60, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级定点综合医院', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '重点三甲医疗机构', deductible: 400, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
+        tier3: { tierName: '三级定点综合医院', deductible: 400, reimbursementRatio: 0.52, retireeRatioBonus: 0.05 },
+        tier3_top: { tierName: '重点三甲医疗机构', deductible: 400, reimbursementRatio: 0.52, retireeRatioBonus: 0.05 }
       },
-      note: '基层海岛社区医疗机构全面免门诊起付线直接按68%（退休73%）报销；二级医院在职起付400元（退休200元），二级报销60%（退休65%），三级报销50%（退休55%）。年度限额8000元。'
+      note: '基层海岛社区医疗机构免门诊起付线直接按68%（退休73%）报销；二级医院在职起付400元（退休200元），二级报销60%（退休65%），三级定点机构及药店报销52%（退休57%）。年度限额8000元。'
     },
     inpatient: {
       sourceDocId: 'zs-medical-insurance-inpatient-2023',

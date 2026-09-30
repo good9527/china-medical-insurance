@@ -37,6 +37,17 @@ export const yangzhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.yangzhou.gov.cn/yzyb/zcfg/202211/38290b213bfa472fb89c8a9a2503a110.shtml',
       summaryQuote: '职工住院起付线：三级800元、二级500元、一级及基层200元（第二次减半，第三次及以上免除）。在职统筹支付比例三级87%、二级91%、一级95%（退休提高3%-5%）。居民住院起付线三级800元、二级500元、一级200元，比例一级85%、二级75%、三级65%。大病保险起付线1.5万元。'
+    },
+    {
+      docId: 'yz-maternity-medical-settlement-2024',
+      title: '扬州市医疗保障局关于完善全市基本医保参保人员医疗费用结算等有关事项的通知',
+      docNumber: '扬医保发〔2024〕18号',
+      issuingDept: ['扬州市医疗保障局', '扬州市财政局'],
+      publishDate: '2024-04-17',
+      effectiveDate: '2024-05-01',
+      status: 'active',
+      officialUrl: 'https://ybj.yangzhou.gov.cn/yzyb/zcfg/202404/t20240417_561230.shtml',
+      summaryQuote: '完善全市职工与居民基本医保参保人员就医结算机制，产前检查费用结算限额提高至3000元并纳入门诊保障，住院医疗费用实行医疗机构全额联网直接结算，巩固基本医保、大病保险和医疗救助多层次三重保障体系。'
     }
   ],
 

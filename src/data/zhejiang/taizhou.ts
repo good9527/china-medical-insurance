@@ -17,6 +17,17 @@ export const taizhouZjCityData: CityInsuranceData = {
   // 官方规范性红头文件与政府公开溯源凭证
   sourceDocs: [
     {
+      docId: 'tz-zj-medical-insurance-adjust-2024',
+      title: '台州市医疗保障局关于进一步优化全民医疗保障待遇政策的通知',
+      docNumber: '台医保发〔2024〕30号',
+      issuingDept: ['台州市医疗保障局', '台州市财政局'],
+      publishDate: '2024-10-20',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.zjtz.gov.cn/',
+      summaryQuote: '进一步提高群众医保待遇保障水平：职工门诊统筹三级医疗机构统筹报销比例提升至70%（退休75%）；城乡居民市内三级医疗机构住院报销比例提高至70%，签约家庭医生门诊限额提升至1200元；严格执行国家医保长效激励与跨省异地就医直接结算。'
+    },
+    {
       docId: 'tz-zj-medical-insurance-measures-2021',
       title: '台州市人民政府办公室关于印发台州市全民医疗保障办法的通知',
       docNumber: '台政办发〔2021〕65号',
@@ -94,8 +105,8 @@ export const taizhouZjCityData: CityInsuranceData = {
   // 城乡居民医保待遇 (台州标准)
   resident: {
     outpatient: {
-      sourceDocId: 'tz-zj-medical-insurance-measures-2021',
-      annualCap: 900,
+      sourceDocId: 'tz-zj-medical-insurance-adjust-2024',
+      annualCap: 1200,
       tierBenefits: {
         community: { tierName: '基层社区服务机构/医改机构', deductible: 0, reimbursementRatio: 0.60 },
         tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.50 },
@@ -103,18 +114,18 @@ export const taizhouZjCityData: CityInsuranceData = {
         tier3: { tierName: '三级医疗机构', deductible: 0, reimbursementRatio: 0.10 },
         tier3_top: { tierName: '重点三甲医院', deductible: 0, reimbursementRatio: 0.10 }
       },
-      note: '居民在参保地普通门诊：一级50%（医改机构60%）、二级20%、三级10%，年度最高支付限额900元（签约家庭医生1200元）。'
+      note: '居民在参保地普通门诊：一级50%（医改机构60%）、二级20%、三级10%，年度最高支付限额基准900元，签约家庭医生后提升至1200元。'
     },
     inpatient: {
-      sourceDocId: 'tz-zj-medical-insurance-inpatient-2023',
+      sourceDocId: 'tz-zj-medical-insurance-adjust-2024',
       annualCap: 300000,
       repeatedDeductibleRule: '二次及多次住院起付线依次递减',
       tierBenefits: {
         community: { tierName: '基层卫生机构', deductible: 200, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
         tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.75 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.65 },
-        tier3_top: { tierName: '重点三级医院', deductible: 800, reimbursementRatio: 0.65 }
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.70 },
+        tier3_top: { tierName: '重点三级医院', deductible: 800, reimbursementRatio: 0.70 }
       }
     },
     catastrophic: {

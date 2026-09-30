@@ -17,6 +17,17 @@ export const suzhouCityData: CityInsuranceData = {
   // 官方规范性红头文件与政府公开溯源凭证
   sourceDocs: [
     {
+      docId: 'sz-medical-insurance-adjust-2024',
+      title: '苏州市医疗保障局关于公布苏州市基本医疗保险待遇标准的通知',
+      docNumber: '苏医保发〔2024〕18号',
+      issuingDept: ['苏州市医疗保障局', '苏州市财政局'],
+      publishDate: '2024-11-20',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.suzhou.gov.cn/',
+      summaryQuote: '规范苏州市基本医疗保险住院与门诊待遇标准：在职职工住院4万元以下统筹基金按90%结付（退休人员按95%结付），4万元以上按95%结付；城乡居民在基层及一级医疗机构普通门诊报销比例优化为65%，学生儿童各级定点医疗机构门诊统筹比例统一为65%。'
+    },
+    {
       docId: 'sz-employee-outpatient-reform-2022',
       title: '苏州市人民政府办公室关于印发苏州市职工基本医疗保险门诊共济保障机制实施细则（试行）的通知',
       docNumber: '苏府办〔2022〕207号',
@@ -90,16 +101,16 @@ export const suzhouCityData: CityInsuranceData = {
   // 城乡居民医保待遇 (苏州标准)
   resident: {
     outpatient: {
-      sourceDocId: 'sz-medical-insurance-inpatient-2023',
+      sourceDocId: 'sz-medical-insurance-adjust-2024',
       annualCap: 1200,
       tierBenefits: {
-        community: { tierName: '基层社区卫生服务机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.50 },
-        tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.40 },
-        tier3_top: { tierName: '省属三甲医院', deductible: 200, reimbursementRatio: 0.40 }
+        community: { tierName: '基层社区卫生服务机构', deductible: 0, reimbursementRatio: 0.65 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.65 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.40 },
+        tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.35 },
+        tier3_top: { tierName: '省属三甲医院', deductible: 200, reimbursementRatio: 0.35 }
       },
-      note: '居民门诊统筹向基层倾斜，基层免起付报销60%，年限额1200元。'
+      note: '居民门诊统筹向基层倾斜，基层及一级机构免起付报销65%（学生儿童统一65%），二级机构40%，三级机构35%，年限额1200元。'
     },
     inpatient: {
       sourceDocId: 'sz-medical-insurance-inpatient-2023',

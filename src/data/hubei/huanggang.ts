@@ -37,6 +37,17 @@ export const huanggangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.hg.gov.cn/zwgk/zcjd/202210/t20221025_179210.html',
       summaryQuote: '统筹区内职工医保住院起付标准：一级及以下300元、二级500元、三级700元。统筹支付比例一级92%、二级88%、三级85%（退休人员增加2%）。城乡居民医保住院起付标准一级200元、二级500元、三级900元，支付比例一级85%、二级75%、三级60%。职工统筹基金年度最高支付限额15万元。'
+    },
+    {
+      docId: 'hg-unified-medical-insurance-2024',
+      title: '黄冈市基本医疗保险市级统筹实施办法',
+      docNumber: '黄政规〔2024〕1号',
+      issuingDept: ['黄冈市人民政府', '黄冈市医疗保障局'],
+      publishDate: '2024-01-01',
+      effectiveDate: '2024-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.hg.gov.cn/zwgk/zcfg/202401/t20240105_218902.html',
+      summaryQuote: '全市职工基本医保和城乡居民基本医保实现制度政策统一、待遇标准统一、基金管理统一。维持职工住院起付线一级300元、二级500元、三级700元及居民报销比例梯次，全面推进医保市级统筹与按病组分值付费。'
     }
   ],
 

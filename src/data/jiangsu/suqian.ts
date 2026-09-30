@@ -37,6 +37,17 @@ export const suqianCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.suqian.gov.cn/ybj/zcfg/202211/8ec54972e60c4aa387e37603c14dcb12.shtml',
       summaryQuote: '职工住院起付线：三级800元、二级500元、一级及基层200元（当年第二次住院起付线减半，第三次及以上免除）。统筹支付比例三级87%、二级91%、一级95%（退休提高3%-5%）。居民住院起付线三级800元、二级500元、一级200元，比例一级85%、二级75%、三级65%。大病保险起付线1.5万元。'
+    },
+    {
+      docId: 'sq-insurance-payment-reform-2024',
+      title: '宿迁市医疗保障局 宿迁市财政局关于修订宿迁市基本医疗保险付费办法的通知',
+      docNumber: '宿医保发〔2024〕30号',
+      issuingDept: ['宿迁市医疗保障局', '宿迁市财政局'],
+      publishDate: '2024-07-15',
+      effectiveDate: '2024-08-01',
+      status: 'active',
+      officialUrl: 'https://ybj.suqian.gov.cn/ybj/zcfg/202407/8ec54972e60c4aa387e37603c14dcb30.shtml',
+      summaryQuote: '进一步深化医保总额预算与按病种分值付费，巩固参保人员基本医疗保障权益。普通门诊在职起付650元（退休500元），二级报销65%（退休70%）、三级60%（退休65%），大病保险起付线1.5万元。'
     }
   ],
 

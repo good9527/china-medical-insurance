@@ -48,6 +48,17 @@ export const taizhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.taizhou.gov.cn/',
       summaryQuote: '泰政办发〔2019〕105号明确：城乡居民医保门诊统筹起付标准每次30元（基层卫生服务站/村卫生室免起付），政策范围内支付比例为50%，个人年度内累计最高报销限额为500元。'
+    },
+    {
+      docId: 'tz-employee-outpatient-2024',
+      title: '泰州市医疗保障局关于调整部分定点医药机构职工基本医疗保险门诊统筹限额与经办管理的通知',
+      docNumber: '泰医保发〔2024〕16号',
+      issuingDept: ['泰州市医疗保障局', '泰州市财政局'],
+      publishDate: '2024-05-18',
+      effectiveDate: '2024-06-01',
+      status: 'active',
+      officialUrl: 'https://ybj.taizhou.gov.cn/art/2024/05/20/art_57392_412356.html',
+      summaryQuote: '持续巩固职工医保门诊共济保障水平，门诊年度最高支付限额在职9000元，退休9000元。基层医疗机构报销75%（退休80%）、二级医疗机构65%（退休70%），大病保险起付线1.5万元。'
     }
   ],
 

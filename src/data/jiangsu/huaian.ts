@@ -37,6 +37,17 @@ export const huaianCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.huaian.gov.cn/col/4666_845209/art/16712345/16712345.html',
       summaryQuote: '职工住院起付线：三级800元、二级500元、一级及基层200元（二次减半，三次免除）。统筹支付比例三级87%、二级91%、一级95%（退休提高3%-5%）。居民住院起付线三级800元、二级500元、一级200元，比例一级85%、二级75%、三级65%。大病保险起付线1.5万元。'
+    },
+    {
+      docId: 'ha-resident-insurance-2024',
+      title: '淮安市医疗保障局关于印发基本医疗保险待遇标准与经办服务规程的通知',
+      docNumber: '淮医保发〔2024〕28号',
+      issuingDept: ['淮安市医疗保障局', '淮安市财政局'],
+      publishDate: '2024-08-10',
+      effectiveDate: '2024-09-01',
+      status: 'active',
+      officialUrl: 'https://ylbzj.huaian.gov.cn/',
+      summaryQuote: '规范全市基本医疗保险待遇标准，巩固住院待遇水平，一级及基层医疗机构报销85%、二级医疗机构75%、三级医疗机构65%。职工门诊统筹基层报销75%（退休85%），大病保险起付线1.5万元，长护险与生育医疗保障稳步衔接。'
     }
   ],
 

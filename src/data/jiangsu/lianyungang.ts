@@ -37,6 +37,17 @@ export const lianyungangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.lyg.gov.cn/art/2022/11/20/art_50280_3970123.html',
       summaryQuote: '职工住院起付线：三级800元、二级500元、一级及基层200元（当年第二次住院起付线减半，第三次及以上免除）。统筹支付比例三级87%、二级91%、一级95%（退休提高3%-5%）。居民住院起付线三级800元、二级500元、一级200元，比例一级85%、二级75%、三级65%。大病保险起付线1.5万元。'
+    },
+    {
+      docId: 'lyg-catastrophic-adjust-2024',
+      title: '连云港市医疗保障局 连云港市财政局关于调整大病保险有关政策的通知',
+      docNumber: '连医保〔2024〕79号',
+      issuingDept: ['连云港市医疗保障局', '连云港市财政局'],
+      publishDate: '2024-07-29',
+      effectiveDate: '2024-08-01',
+      status: 'active',
+      officialUrl: 'https://ybj.lyg.gov.cn/art/2024/07/31/art_50280_4218902.html',
+      summaryQuote: '自2024年8月1日起，连云港市城乡居民大病保险起付标准调整为1.6万元。大病保险报销比例：1.6万元至8万元报销60%，8万元至15万元报销70%，15万元以上报销80%。'
     }
   ],
 
@@ -115,12 +126,12 @@ export const lianyungangCityData: CityInsuranceData = {
     },
     catastrophic: {
       name: '连云港市城乡居民大病保险',
-      deductible: 15000,
+      deductible: 16000,
       annualCap: 300000,
       tiers: [
-        { minAmount: 15000, maxAmount: 50000, ratio: 0.60 },
-        { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
-        { minAmount: 100000, ratio: 0.80 }
+        { minAmount: 16000, maxAmount: 80000, ratio: 0.60 },
+        { minAmount: 80000, maxAmount: 150000, ratio: 0.70 },
+        { minAmount: 150000, ratio: 0.80 }
       ]
     },
     remoteMedical: {

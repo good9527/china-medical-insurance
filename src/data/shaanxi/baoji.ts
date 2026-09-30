@@ -26,6 +26,17 @@ export const baojiCityData: CityInsuranceData = {
       summaryQuote: '参保职工在定点医药机构普通门诊就诊，医保基金起付标准为50元/次。一个自然月内只收取1次起付标准，一个年度内收取起付标准的次数累计不超过4次。支付比例：一级医疗机构及定点药店在职60%、退休65%；二级医疗机构在职55%、退休60%；三级医疗机构在职50%、退休55%。年度最高支付限额：在职职工500元/年，退休职工900元/年，不结转。'
     },
     {
+      docId: 'bj-resident-inpatient-adjust-2024',
+      title: '宝鸡市医疗保障局 宝鸡市财政局 国家税务总局宝鸡市税务局关于做好2024-2025年度城乡居民基本医疗保险参保缴费及待遇保障工作的通知',
+      docNumber: '宝医保发〔2024〕38号',
+      issuingDept: ['宝鸡市医疗保障局', '宝鸡市财政局', '国家税务总局宝鸡市税务局'],
+      publishDate: '2024-09-15',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.baoji.gov.cn/',
+      summaryQuote: '进一步提升城乡居民基本医保保障水平：普通门诊统筹年度最高支付限额统一调整提高为100元/人/年；一级定点医疗机构住院起付标准为200元（学生儿童100元），报销比例90%；二级医疗机构起付线600元，报销80%；三级医疗机构起付线1500元，报销65%；基本医保统筹基金年度最高支付限额13万元；城乡居民大病保险起付线1万元，年最高支付限额30万元。'
+    },
+    {
       docId: 'bj-resident-inpatient-adjust-2022-66',
       title: '宝鸡市医疗保障局 宝鸡市财政局关于调整城乡居民基本医疗保险有关政策的通知',
       docNumber: '宝医保发〔2022〕66号',
@@ -94,9 +105,9 @@ export const baojiCityData: CityInsuranceData = {
 
   resident: {
     outpatient: {
-      sourceDocId: 'bj-resident-inpatient-adjust-2022-66',
+      sourceDocId: 'bj-resident-inpatient-adjust-2024',
       annualDeductible: 0,
-      annualCap: 80, // 宝鸡市城乡居民普通门诊统筹年度最高支付限额为 80 元/人
+      annualCap: 100, // 宝鸡市城乡居民普通门诊统筹年度最高支付限额统一提高为 100 元/人
       tierBenefits: {
         community: { tierName: '定点村卫生室/社区服务站', deductible: 0, reimbursementRatio: 0.60 },
         tier1: { tierName: '定点乡镇卫生院/社区服务中心', deductible: 0, reimbursementRatio: 0.50 },
@@ -104,15 +115,15 @@ export const baojiCityData: CityInsuranceData = {
         tier3: { tierName: '三级医疗机构（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 },
         tier3_top: { tierName: '三级甲等医院（普通门诊未覆盖）', deductible: 0, reimbursementRatio: 0.00 }
       },
-      note: '居民门诊统筹限定在基层定点机构：村卫生室/社区站报销60%（日限额30元），镇卫生院/社区中心报销50%（日限额50元），每人每年最高支付限额80元（部分试点区县100元）。两病专项用药报销60%，限额300元（双病600元）。'
+      note: '居民门诊统筹限定在基层定点机构：村卫生室/社区站报销60%，镇卫生院/社区中心报销50%，每人每年最高支付限额统一为100元。两病专项用药报销60%，单病种限额300元（双病600元）。'
     },
     inpatient: {
-      sourceDocId: 'bj-resident-inpatient-adjust-2022-66',
+      sourceDocId: 'bj-resident-inpatient-adjust-2024',
       annualCap: 130000, // 宝鸡市城乡居民基本医疗保险统筹基金年度最高支付限额13万元
       repeatedDeductibleRule: '参保人在同级别定点医疗机构住院，按规定执行起付标准；分级诊疗转诊差额补齐起付线。',
       tierBenefits: {
         community: { tierName: '基层医疗机构及乡镇卫生院', deductible: 150, reimbursementRatio: 0.90 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.90 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.90 },
         tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.80 },
         tier3: { tierName: '三级定点医疗机构', deductible: 1500, reimbursementRatio: 0.65 },
         tier3_top: { tierName: '重点三甲综合医院', deductible: 1500, reimbursementRatio: 0.65 }

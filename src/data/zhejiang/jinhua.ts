@@ -17,6 +17,17 @@ export const jinhuaCityData: CityInsuranceData = {
   // 官方规范性红头文件与政府公开溯源凭证
   sourceDocs: [
     {
+      docId: 'jh-medical-insurance-adjust-2026',
+      title: '金华市医疗保障局关于调整金华市基本医疗保险部分待遇标准的通知',
+      docNumber: '金医保发〔2026〕4号',
+      issuingDept: ['金华市医疗保障局', '金华市财政局'],
+      publishDate: '2026-03-05',
+      effectiveDate: '2026-04-01',
+      status: 'active',
+      officialUrl: 'https://ybj.jinhua.gov.cn/',
+      summaryQuote: '根据浙江省完善医疗保障待遇清单最新规程（浙医保联发〔2025〕19号），优化门诊统筹保障标准：市内基层定点医疗机构普通门诊报销比例在职70%、退休75%；城乡居民医保基层定点门诊报销比例提高至55%；签约家庭医生在基层就医额外提高5个百分点，山区基层卫生院额外提高10个百分点。'
+    },
+    {
       docId: 'jh-medical-insurance-measures-2021',
       title: '金华市基本医疗保险办法',
       docNumber: '金政发〔2021〕27号',
@@ -93,7 +104,7 @@ export const jinhuaCityData: CityInsuranceData = {
   // 城乡居民医保待遇 (金华标准)
   resident: {
     outpatient: {
-      sourceDocId: 'jh-medical-insurance-measures-2021',
+      sourceDocId: 'jh-medical-insurance-adjust-2026',
       annualCap: 1000,
       tierBenefits: {
         community: { tierName: '基层社区服务机构', deductible: 0, reimbursementRatio: 0.55 },
@@ -102,7 +113,7 @@ export const jinhuaCityData: CityInsuranceData = {
         tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.30 },
         tier3_top: { tierName: '重点三甲医院', deductible: 200, reimbursementRatio: 0.30 }
       },
-      note: '居民基层门诊免起付线报销55%（签约家庭医生提高至60%），限额1000元。'
+      note: '居民基层门诊免起付线报销55%（签约家庭医生提高至60%，山区基层卫生院提高至65%），限额1000元。'
     },
     inpatient: {
       sourceDocId: 'jh-medical-insurance-inpatient-2023',

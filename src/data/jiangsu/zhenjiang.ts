@@ -48,6 +48,17 @@ export const zhenjiangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.zhenjiang.gov.cn/',
       summaryQuote: '镇医保〔2020〕89号明确：参保人员在本人定点的社区卫生服务机构（含中心及其下属站）或乡镇卫生院（含村卫生室）发生的医保制度内普通门急诊医疗费用，医保基金支付比例为50%，年度内基金支付最高限额为1000元。'
+    },
+    {
+      docId: 'zj-resident-notice-2024',
+      title: '镇江市医疗保障局关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '镇医保〔2024〕38号',
+      issuingDept: ['镇江市医疗保障局', '国家税务总局镇江市税务局'],
+      publishDate: '2024-10-15',
+      effectiveDate: '2024-10-15',
+      status: 'active',
+      officialUrl: 'https://ybj.zhenjiang.gov.cn/',
+      summaryQuote: '稳步提升城乡居民医疗保障水平，巩固住院和门诊统筹待遇，支持职工医保个人账户家庭共济缴纳城乡居民医保费，确保基本医保与大病保险一体化结算。'
     }
   ],
 

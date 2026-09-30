@@ -47,6 +47,17 @@ export const ankangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://www.ankang.gov.cn/Content-2276128.html',
       summaryQuote: '城乡居民门诊在基层医疗卫生机构就医基金支付50%~60%，年度限额100元/人，两病门诊用药限额300元。住院起付线一级医疗机构200元（报销80%），二级医疗机构600元（报销70%），三级医疗机构2000元（报销60%）。统筹基金年最高支付限额12万元。城乡居民大病保险起付线10000元，1-5万元报销60%，5-10万元报销70%，10万元以上报销80%，最高限额30万元。'
+    },
+    {
+      docId: 'ak-resident-notice-2024',
+      title: '安康市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '安医保发〔2024〕35号',
+      issuingDept: ['安康市医疗保障局', '安康市财政局', '国家税务总局安康市税务局'],
+      publishDate: '2024-09-12',
+      effectiveDate: '2024-09-12',
+      status: 'active',
+      officialUrl: 'https://www.ankang.gov.cn/Content-2689123.html',
+      summaryQuote: '巩固城乡居民基本医保参保与住院待遇水平，继续执行城乡居民住院基层一级起付线200元报销80%、二级起付线600元报销70%、三级起付线2000元报销60%标准。全面落实门诊两病与慢特病用药保障和大病保险倾斜救助。'
     }
   ],
 

@@ -17,6 +17,17 @@ export const jiaxingCityData: CityInsuranceData = {
   // 官方规范性红头文件与政府公开溯源凭证
   sourceDocs: [
     {
+      docId: 'jx-medical-insurance-adjust-2024',
+      title: '嘉兴市医疗保障局 嘉兴市财政局关于调整基本医疗保险门诊与大病保障待遇标准的通知',
+      docNumber: '嘉医保发〔2024〕36号',
+      issuingDept: ['嘉兴市医疗保障局', '嘉兴市财政局'],
+      publishDate: '2024-10-18',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.jiaxing.gov.cn/',
+      summaryQuote: '提升城乡居民医保门诊与住院保障水平：城乡居民普通门诊统筹年度最高支付限额提升至2400元/年；基层医疗机构门诊报销比例55%（慢病签约65%）、二级45%、三级35%；居民基层医疗机构住院政策报销比例提高至90%；大病保险起付线由2万元降低至1.5万元，报销比例稳定在70%以上。'
+    },
+    {
       docId: 'jx-medical-insurance-measures-2022',
       title: '嘉兴市基本医疗保险办法',
       docNumber: '嘉政发〔2022〕20号',
@@ -93,37 +104,37 @@ export const jiaxingCityData: CityInsuranceData = {
   // 城乡居民医保待遇 (嘉兴标准)
   resident: {
     outpatient: {
-      sourceDocId: 'jx-medical-insurance-measures-2022',
-      annualCap: 1200,
+      sourceDocId: 'jx-medical-insurance-adjust-2024',
+      annualCap: 2400,
       tierBenefits: {
-        community: { tierName: '基层社区服务机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.60 },
-        tier2: { tierName: '二级医疗机构', deductible: 200, reimbursementRatio: 0.50 },
-        tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.40 },
-        tier3_top: { tierName: '重点三甲医院', deductible: 200, reimbursementRatio: 0.40 }
+        community: { tierName: '基层社区服务机构', deductible: 0, reimbursementRatio: 0.55 },
+        tier1: { tierName: '一级医疗机构', deductible: 0, reimbursementRatio: 0.55 },
+        tier2: { tierName: '二级医疗机构', deductible: 200, reimbursementRatio: 0.45 },
+        tier3: { tierName: '三级医疗机构', deductible: 200, reimbursementRatio: 0.35 },
+        tier3_top: { tierName: '重点三甲医院', deductible: 200, reimbursementRatio: 0.35 }
       },
-      note: '居民基层门诊免起付线报销60%，限额1200元。'
+      note: '居民基层门诊在社区卫生服务中心报销55%（签约慢病65%），二级机构报销45%，三级及其他机构报销35%；普通门诊年度最高支付限额提高为2400元。'
     },
     inpatient: {
-      sourceDocId: 'jx-medical-insurance-inpatient-2023',
+      sourceDocId: 'jx-medical-insurance-adjust-2024',
       annualCap: 300000,
       repeatedDeductibleRule: '二次及多次住院起付线依次递减',
       tierBenefits: {
-        community: { tierName: '基层社区卫生院', deductible: 200, reimbursementRatio: 0.85 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
+        community: { tierName: '基层社区卫生院', deductible: 200, reimbursementRatio: 0.90 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.90 },
         tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.75 },
         tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.65 },
         tier3_top: { tierName: '重点三甲医院', deductible: 800, reimbursementRatio: 0.65 }
       }
     },
     catastrophic: {
-      sourceDocId: 'jx-medical-insurance-inpatient-2023',
+      sourceDocId: 'jx-medical-insurance-adjust-2024',
       name: '嘉兴市城乡居民大病保险',
-      deductible: 20000,
+      deductible: 15000,
       annualCap: 400000,
       tiers: [
-        { minAmount: 20000, maxAmount: 50000, ratio: 0.60 },
-        { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
+        { minAmount: 15000, maxAmount: 50000, ratio: 0.70 },
+        { minAmount: 50000, maxAmount: 100000, ratio: 0.75 },
         { minAmount: 100000, ratio: 0.80 }
       ]
     },

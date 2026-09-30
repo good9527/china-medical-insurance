@@ -17,6 +17,17 @@ export const quzhouCityData: CityInsuranceData = {
   // 官方规范性红头文件与政府公开溯源凭证
   sourceDocs: [
     {
+      docId: 'qz-medical-insurance-adjust-2024',
+      title: '衢州市医疗保障局 衢州市财政局 国家税务总局衢州市税务局关于公布2024-2025年度城乡居民基本医疗保险筹资与待遇保障标准的通知',
+      docNumber: '衢医保联发〔2024〕13号',
+      issuingDept: ['衢州市医疗保障局', '衢州市财政局', '国家税务总局衢州市税务局'],
+      publishDate: '2024-10-25',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.qz.gov.cn/',
+      summaryQuote: '全面落实医疗保障待遇清单制度：健全市级统筹机制，全市参保人员在市内定点医疗机构就医免除多余转诊限制；规范职工与居民住院、门诊报销标准，居民基层门诊限额保持1800元，住院政策报销比例一级85%、二级75%、三级65%，大病保险起付标准1.8万元。'
+    },
+    {
       docId: 'qz-medical-insurance-measures-2020',
       title: '衢州市医疗保障暂行办法',
       docNumber: '衢政发〔2020〕26号',
