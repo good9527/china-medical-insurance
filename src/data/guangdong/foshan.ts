@@ -31,6 +31,17 @@ export const foshanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://fssi.foshan.gov.cn/zwgk/zcfg/202312/t20231215_241908.shtml',
       summaryQuote: '职工医保住院起付线：一级及以下250元、二级500元、三级1000元；报销比例在职一级95%、二级91%、三级87%（退休人员分别为97%、93%、89%）。基本医保年度封顶60万元。居民住院起付线同级，报销比例一级90%、二级85%、三级75%。大病保险起付线1.5万元，报销比例60%-80%，年度限额40万元。'
+    },
+    {
+      docId: 'fs-resident-notice-2024',
+      title: '佛山市医疗保障局等部门贯彻落实广东省做好2024-2025年度基本医疗保障有关工作的通知',
+      docNumber: '佛医保发〔2024〕22号',
+      issuingDept: ["佛山市医疗保障局","佛山市财政局","国家税务总局佛山市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://fssi.foshan.gov.cn/zwgk/zcfg/202409/t20240929_251829.shtml',
+      summaryQuote: '依据粤医保发〔2024〕26号及粤医保规〔2024〕9号，稳定基本医保住院待遇水平，落实辅助生殖技术纳保，强化大病保险倾斜救助，健全参保激励长效机制。'
     }
   ],
 

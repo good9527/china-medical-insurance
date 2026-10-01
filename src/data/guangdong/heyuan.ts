@@ -31,6 +31,17 @@ export const heyuanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.heyuan.gov.cn/hysylbzj/zwgk/zcfg/202312/t20231226_231908.shtml',
       summaryQuote: '职工住院起付线：一级及以下200元、二级500元、三级800元；在职支付比例一级90%、二级85%、三级80%（退休人员各项提高3%）。居民住院起付线同级，支付比例一级85%、二级78%、三级68%。基本统筹年度限额50万元，大病最高35万元。'
+    },
+    {
+      docId: 'hy-resident-notice-2024',
+      title: '河源市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '河医保发〔2024〕20号',
+      issuingDept: ["河源市医疗保障局","河源市财政局","国家税务总局河源市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.heyuan.gov.cn/zwgk/zcfg/202409/t20240929_182930.html',
+      summaryQuote: '依据粤医保发〔2024〕26号文件，稳妥做好居民医保待遇衔接，落实大病保险倾斜政策，推进异地就医结算信息化便利服务。'
     }
   ],
 

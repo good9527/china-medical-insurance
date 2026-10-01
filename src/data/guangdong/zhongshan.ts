@@ -31,6 +31,17 @@ export const zhongshanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.zs.gov.cn/ybj/zwgk/zcfg/202311/t20231130_239108.shtml',
       summaryQuote: '职工住院起付线：一级及以下400元、二级600元、三级800元；统账结合参保人报销比例在职三级90%、二级92%、一级95%（退休人员分别为92%、94%、97%）。居民住院起付线同级，支付比例一级90%、二级85%、三级75%。大病保险起付线1.5万元，分段报销60%-80%，年度封顶40万元。'
+    },
+    {
+      docId: 'zs-resident-notice-2024',
+      title: '中山市医疗保障局关于印发中山市做好2024-2025年度基本医疗保障工作方案的通知',
+      docNumber: '中医保发〔2024〕19号',
+      issuingDept: ["中山市医疗保障局","中山市财政局","国家税务总局中山市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.zs.gov.cn/zwgk/zcfg/202409/t20240929_192840.html',
+      summaryQuote: '落实粤医保发〔2024〕26号文件，稳定居民住院与普通门诊待遇，执行广东省基本医保参保长效机制，优化异地联网直接结算便民流程。'
     }
   ],
 

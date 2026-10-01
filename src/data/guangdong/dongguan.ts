@@ -31,6 +31,17 @@ export const dongguanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://dgyb.dg.gov.cn/zwgk/zcfg/202311/t20231125_219084.shtml',
       summaryQuote: '市内住院起付标准：一级500元、二级800元、三级1300元；统账结合职工报销比例在职三级85%、二级90%、一级95%（退休人员各级分别上浮3%至5%）。居民住院起付线同级，报销比例在职三级75%、二级80%、一级85%。大病保险起付线1.2万元，分段报销60%-85%，年度封顶40万元。'
+    },
+    {
+      docId: 'dg-resident-notice-2024',
+      title: '东莞市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '东医保发〔2024〕18号',
+      issuingDept: ["东莞市医疗保障局","东莞市财政局","国家税务总局东莞市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://dghsa.dg.gov.cn/zwgk/zcfg/202409/t20240929_261820.html',
+      summaryQuote: '贯彻粤医保发〔2024〕26号文件，巩固城乡居民医疗保险待遇，稳步提升门诊共济与重特大疾病精准保障水平，实施辅助生殖医保报销政策。'
     }
   ],
 

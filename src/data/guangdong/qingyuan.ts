@@ -31,6 +31,17 @@ export const qingyuanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.gdqy.gov.cn/channel/qysylbzj/zwgk/zcfg/202312/t20231228_231908.shtml',
       summaryQuote: '职工住院起付线：基层卫生机构300元、一级500元、二级800元、三级1200元；在职支付比例一级92%、二级88%、三级82%（退休人员各项提高3%）。居民住院起付线同级，支付比例一级85%、二级78%、三级68%。基本统筹年度限额55万元，大病最高40万元。'
+    },
+    {
+      docId: 'qy-resident-notice-2024',
+      title: '清远市医疗保障局等部门关于做好2024-2025年度基本医疗保障有关工作的通知',
+      docNumber: '清医保发〔2024〕22号',
+      issuingDept: ["清远市医疗保障局","清远市财政局","国家税务总局清远市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.qingyuan.gov.cn/zwgk/zcfg/202409/t20240929_184910.html',
+      summaryQuote: '全面贯彻粤医保发〔2024〕26号部署，保持居民医保住院政策范围内报销比例稳定，强化门诊慢特病待遇保障，推进个账近亲属共济。'
     }
   ],
 

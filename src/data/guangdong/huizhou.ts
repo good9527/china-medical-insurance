@@ -31,6 +31,17 @@ export const huizhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://hzyb.huizhou.gov.cn/zwgk/zcfg/202312/t20231210_231908.shtml',
       summaryQuote: '职工医保市内住院起付标准：一级200元、二级400元、三级800元；连续缴费满6个月后，市内定点医疗机构统筹报销比例统一为95%（退休人员96%）。居民住院起付线同级，报销比例一级90%、二级80%、三级70%。大病保险起付线1万元，分段报销60%-80%，年度封顶40万元。'
+    },
+    {
+      docId: 'hz-resident-notice-2024',
+      title: '惠州市医疗保障局等部门关于做好2024-2025年度基本医疗保障工作的通知',
+      docNumber: '惠医保发〔2024〕25号',
+      issuingDept: ["惠州市医疗保障局","惠州市财政局","国家税务总局惠州市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.huizhou.gov.cn/zwgk/zcfg/202409/t20240929_182910.html',
+      summaryQuote: '依据粤医保发〔2024〕26号部署，巩固住院政策范围内70%报销水平，落实大病保险梯次倾斜，支持参保人使用职工个账共济缴纳居民保费。'
     }
   ],
 

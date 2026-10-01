@@ -31,6 +31,17 @@ export const zhaoqingCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.zhaoqing.gov.cn/zqybj/zwgk/zcfg/202312/t20231220_231908.shtml',
       summaryQuote: '职工住院起付线：一级及以下300元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级84%（退休人员分别为95%、91%、87%）。居民住院起付线同级，支付比例一级88%、二级80%、三级70%。基本医保年度限额60万元，大病保险最高40万元。'
+    },
+    {
+      docId: 'zq-resident-notice-2024',
+      title: '肇庆市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '肇医保发〔2024〕20号',
+      issuingDept: ["肇庆市医疗保障局","肇庆市财政局","国家税务总局肇庆市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.zhaoqing.gov.cn/zwgk/zcfg/202409/t20240929_173920.html',
+      summaryQuote: '按照粤医保发〔2024〕26号统一部署，巩固城乡居民医保门诊与住院保障水平，推进大病保险兜底减负，全面推广个账家庭共济绑定。'
     }
   ],
 

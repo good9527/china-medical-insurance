@@ -31,6 +31,17 @@ export const jieyangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.jieyang.gov.cn/jyylbz/zwgk/zcfg/202312/t20231230_231908.shtml',
       summaryQuote: '职工市内住院起付标准：一级及以下300元、二级500元、三级700元；报销比例市内定点统一按90%执行（退休人员92%）。居民住院起付线同级，支付比例一级85%、二级78%、三级70%。基本统筹年限额50万元，大病最高35万元。'
+    },
+    {
+      docId: 'jy-resident-notice-2024',
+      title: '揭阳市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '揭医保发〔2024〕25号',
+      issuingDept: ["揭阳市医疗保障局","揭阳市财政局","国家税务总局揭阳市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.jieyang.gov.cn/zwgk/zcfg/202409/t20240929_192841.html',
+      summaryQuote: '贯彻落实粤医保发〔2024〕26号文件，巩固城乡居民基本医保参保与住院待遇，推进辅助生殖纳保和大病倾斜救助，防范因病致贫返贫。'
     }
   ],
 

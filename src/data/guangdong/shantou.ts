@@ -31,6 +31,17 @@ export const shantouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.shantou.gov.cn/ybj/zwgk/zcfg/202312/t20231222_231908.shtml',
       summaryQuote: '职工住院起付标准：一级及以下200元、二级400元、三级1000元；在职支付比例一级92%、二级88%、三级82%（退休人员分别为95%、91%、86%）。居民住院起付线同级，支付比例一级88%、二级80%、三级70%。基本统筹年度封顶60万元，大病最高40万元。'
+    },
+    {
+      docId: 'st-resident-notice-2024',
+      title: '汕头市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '汕医保发〔2024〕21号',
+      issuingDept: ["汕头市医疗保障局","汕头市财政局","国家税务总局汕头市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.shantou.gov.cn/zwgk/zcfg/202409/t20240929_183921.html',
+      summaryQuote: '深入贯彻粤医保发〔2024〕26号，强化基本医疗保险、大病保险和医疗救助综合保障，落实符合规定的辅助生殖技术纳保及异地就医直接结算。'
     }
   ],
 

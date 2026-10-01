@@ -31,6 +31,17 @@ export const meizhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.meizhou.gov.cn/sylbzj/zwgk/zcfg/202312/t20231225_231908.shtml',
       summaryQuote: '职工住院起付线：一级及以下200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级82%（退休人员各项提高3%）。居民住院起付线同级，支付比例一级85%、二级78%、三级68%。基本统筹年度限额50万元，大病最高35万元。'
+    },
+    {
+      docId: 'mz-resident-notice-2024',
+      title: '梅州市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '梅医保发〔2024〕19号',
+      issuingDept: ["梅州市医疗保障局","梅州市财政局","国家税务总局梅州市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.meizhou.gov.cn/zwgk/zcfg/202409/t20240929_174910.html',
+      summaryQuote: '严格落实粤医保发〔2024〕26号文件，持续稳固门诊与住院待遇保障，落实大病保险倾斜救助，提升异地就医直接结算率。'
     }
   ],
 

@@ -31,6 +31,17 @@ export const shaoguanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.sg.gov.cn/zwgk/zcfg/202312/t20231226_231908.shtml',
       summaryQuote: '职工住院起付线：一级及未定级200元、二级500元、三级1000元；在职支付比例一级90%、二级85%、三级80%（退休人员各项提高3%）。居民住院起付线同级，支付比例一级85%、二级78%、三级68%。基本统筹年限额55万元，大病最高40万元。'
+    },
+    {
+      docId: 'sg-resident-notice-2024',
+      title: '韶关市医疗保障局等部门转发做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '韶医保发〔2024〕18号',
+      issuingDept: ["韶关市医疗保障局","韶关市财政局","国家税务总局韶关市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.shaoguan.gov.cn/zwgk/zcfg/202409/t20240929_163910.html',
+      summaryQuote: '落实粤医保发〔2024〕26号通知要求，稳定基本医疗保险待遇水平，提升大病保险精准保障功能，健全门诊共济长效机制。'
     }
   ],
 

@@ -31,6 +31,17 @@ export const yunfuCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.yunfu.gov.cn/ybj/zwgk/zcfg/202312/t20231228_231908.shtml',
       summaryQuote: '职工住院起付线：一级及以下200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级82%（退休人员各项提高3%）。居民住院起付线同级，支付比例一级85%、二级78%、三级68%。基本统筹年限额50万元，大病最高35万元。'
+    },
+    {
+      docId: 'yf-resident-notice-2024',
+      title: '云浮市医疗保障局等部门关于做好2024-2025年度基本医疗保障有关工作的通知',
+      docNumber: '云医保发〔2024〕18号',
+      issuingDept: ["云浮市医疗保障局","云浮市财政局","国家税务总局云浮市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.yunfu.gov.cn/zwgk/zcfg/202409/t20240929_163920.html',
+      summaryQuote: '依据粤医保发〔2024〕26号，稳步提高城乡居民门诊统筹及大病保险待遇保障效能，全面落实参保长效激励与个账家庭共济政策。'
     }
   ],
 

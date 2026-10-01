@@ -31,6 +31,17 @@ export const shanweiCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.shanwei.gov.cn/swybj/zwgk/zcfg/202312/t20231225_231908.shtml',
       summaryQuote: '职工市内住院起付标准：一级及以下300元、二级600元、三级800元；报销比例在职一级95%、二级90%、三级85%（退休人员对应提高2%）。居民住院起付线同级，支付比例一级85%、二级78%、三级68%。基本统筹年限额50万元，大病最高35万元。'
+    },
+    {
+      docId: 'sw-resident-notice-2024',
+      title: '汕尾市医疗保障局等部门转发关于做好2024-2025年度基本医疗保障有关工作的通知',
+      docNumber: '汕医保发〔2024〕18号',
+      issuingDept: ["汕尾市医疗保障局","汕尾市财政局","国家税务总局汕尾市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.shanwei.gov.cn/zwgk/zcfg/202409/t20240929_173921.html',
+      summaryQuote: '深入落实粤医保发〔2024〕26号及粤医保规〔2024〕9号精神，巩固住院与普通门诊待遇，完善大病救助机制，推动参保长效激励。'
     }
   ],
 
