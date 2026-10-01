@@ -32,6 +32,17 @@ export const tonglingData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.tl.gov.cn/zcfg/gfxwj/6910245.html',
       summaryQuote: '居民基层普通门诊免起付线，报销60%，限额150元。居民住院起付线一级200元、二级500元、三级800元，支付比例对应85%、80%、70%，年度限额30万元。职工住院起付线一级200元、二级400元、三级600元，在职报销94%、92%、90%，退休提高3个百分点，职工医保限额30万元，大病救助最高支付50万元。'
+    },
+    {
+      docId: 'tl-resident-notice-2024',
+      title: '铜陵市医疗保障局等部门关于做好2024-2025年城乡居民基本医疗保障有关工作的通知',
+      docNumber: '铜医保发〔2024〕16号',
+      issuingDept: ["铜陵市医疗保障局","铜陵市财政局"],
+      publishDate: '2024-12-28',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.tongling.gov.cn/zcfg/gfxwj/1938472.html',
+      summaryQuote: '依据皖医保发〔2024〕9号，落实城乡居民门诊统筹及大病保险待遇政策，参保地基层机构门诊报销60%，统筹年度限额150元，居民基本医保封顶30万元，推进异地就医即时联网结算。'
     }
   ],
 

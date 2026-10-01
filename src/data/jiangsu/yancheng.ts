@@ -37,6 +37,17 @@ export const yanchengCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.yancheng.gov.cn/art/2023/4/20/art_2056_4120987.html',
       summaryQuote: '职工住院起付线：三级800元、二级500元、一级及基层200元（二次住院起付线减半，三次免除）。职工统筹支付比例三级87%、二级91%、一级95%（退休增加3%-5%）。居民住院起付线三级800元、二级500元、一级200元，比例一级85%、二级75%、三级65%。大病保险起付线1.5万元。'
+    },
+    {
+      docId: 'yc-chronic-outpatient-2024',
+      title: '盐城市医疗保障局关于优化城乡居民门诊慢特病与待遇保障政策的通知',
+      docNumber: '盐医保发〔2024〕22号',
+      issuingDept: ['盐城市医疗保障局', '盐城市财政局'],
+      publishDate: '2024-06-18',
+      effectiveDate: '2024-07-01',
+      status: 'active',
+      officialUrl: 'https://ybj.yancheng.gov.cn/art/2024/06/20/art_2056_4231890.html',
+      summaryQuote: '规范全市城乡居民门诊保障待遇，一级机构支付70%、二级60%、三级50%，统筹最高支付限额3000元。巩固基本医保住院待遇与大病保险一体化结算。'
     }
   ],
 

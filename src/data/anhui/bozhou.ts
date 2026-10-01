@@ -32,6 +32,17 @@ export const bozhouData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.bozhou.gov.cn/zcfg/gfxwj/5184920.html',
       summaryQuote: '居民基层普通门诊免起付线，报销55%，限额150元。居民住院起付线一级200元、二级500元、三级800元，支付比例对应85%、80%、70%，限额30万元。职工住院起付线一级200元、二级400元、三级600元，在职报销94%、92%、90%，退休提高3个百分点，职工医保限额30万元，大病救助最高支付50万元。'
+    },
+    {
+      docId: 'bz-resident-notice-2024',
+      title: '亳州市医疗保障局关于落实安徽省城乡居民基本医疗保险待遇政策有关工作的通知',
+      docNumber: '亳医保发〔2024〕16号',
+      issuingDept: ["亳州市医疗保障局","亳州市财政局"],
+      publishDate: '2024-12-28',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.bozhou.gov.cn/zcfg/gfxwj/2481920.html',
+      summaryQuote: '全面落实皖医保发〔2024〕9号规定，统一普通门诊统筹及大病保险待遇，基层医疗卫生机构普通门诊报销60%、限额150元，基本医保年度限额30万元，大病限额30万元。'
     }
   ],
 

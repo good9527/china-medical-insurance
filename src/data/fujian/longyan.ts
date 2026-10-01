@@ -32,6 +32,17 @@ export const longyanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.longyan.gov.cn/xxgk/zfxxgkzl/zfxxgkml/zcfg/202311/t20231128_2076192.htm',
       summaryQuote: '居民医保普通门诊在基层医疗卫生机构免起付线，报销50%，年度限额400元。城乡居民住院起付线基层100元、一级300元、二级500元、三级800元，政策范围内报销比例对应90%、85%、75%、60%，统筹年度封顶10万元。职工住院起付线基层200元、一级400元、二级600元、三级800元，在职报销95%、92%、88%、85%，退休提高3个百分点，职工医保统筹加大额互助限额50万元。'
+    },
+    {
+      docId: 'ly-resident-notice-2024',
+      title: '龙岩市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '龙医保〔2024〕30号',
+      issuingDept: ['龙岩市医疗保障局', '龙岩市财政局', '国家税务总局龙岩市税务局'],
+      publishDate: '2024-09-21',
+      effectiveDate: '2024-09-21',
+      status: 'active',
+      officialUrl: 'http://ybj.longyan.gov.cn/xxgk/zfxxgkzl/zfxxgkml/zcfg/202409/t20240926_2183921.htm',
+      summaryQuote: '深入贯彻落实闽医保〔2024〕70号文件部署，巩固提升城乡居民医保门诊与住院待遇水平，落实生育医疗费用门诊保障，优化跨省异地就医直接结算便民服务。'
     }
   ],
 

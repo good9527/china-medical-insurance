@@ -37,6 +37,17 @@ export const xuzhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.xz.gov.cn/zwgk/002002/20231125/8921345.html',
       summaryQuote: '居民门诊年度政策范围内医疗费用最高支付限额提高至1200元（签约家庭医生1800元）。居民住院起付线：一级及社区300元、二级700元、三级医疗机构1500元；报销比例一级85%、二级75%、三级65%。年度内多次住院起付线依次递减100元，各级别最低限额为一级100元、二级300元、三级1100元。基本医保年度最高支付限额25万元。'
+    },
+    {
+      docId: 'xz-resident-notice-2024',
+      title: '关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '徐医保发〔2024〕48号',
+      issuingDept: ['徐州市医疗保障局', '徐州市财政局', '国家税务总局徐州市税务局'],
+      publishDate: '2024-10-15',
+      effectiveDate: '2024-10-15',
+      status: 'active',
+      officialUrl: 'https://ybj.xz.gov.cn/zwgk/002002/202410/t20241018_912345.html',
+      summaryQuote: '巩固城乡居民医疗保障水平，全面落实门诊统筹与两病慢特病保障，支持使用职工个人账户家庭共济缴纳居民医保费，确保基本医保与大病保险一体化联网直接结算。'
     }
   ],
 

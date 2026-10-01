@@ -32,6 +32,17 @@ export const zhangzhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.zhangzhou.gov.cn/cms/html/zzsylbzj/2023-11-20/1789452310.html',
       summaryQuote: '居民医保普通门诊在基层公立机构报销75%，每次起付10元（基药免起付），年度封顶300元。城乡居民住院起付线基层100元、一级300元、二级500元、三级800元，报销比例90%、85%、75%、60%，统筹限额10万元。职工住院起付线基层200元、一级400元、二级600元、三级800元，在职报销95%、92%、88%、85%，退休提高3个百分点，职工医保统筹加大额互助限额50万元。'
+    },
+    {
+      docId: 'zz-resident-notice-2024',
+      title: '漳州市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '漳医保〔2024〕40号',
+      issuingDept: ['漳州市医疗保障局', '漳州市财政局', '国家税务总局漳州市税务局'],
+      publishDate: '2024-09-25',
+      effectiveDate: '2024-09-25',
+      status: 'active',
+      officialUrl: 'http://ybj.zhangzhou.gov.cn/cms/html/zzsylbzj/2024-09-28/1938491234.html',
+      summaryQuote: '深入贯彻落实闽医保〔2024〕70号文件，稳步提升城乡居民医疗保障水平，全面落实门诊共济与高血压糖尿病专项保障，实现基本医保与大病保险一体化联网直接结算。'
     }
   ],
 

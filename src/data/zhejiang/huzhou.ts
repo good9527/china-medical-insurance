@@ -37,6 +37,17 @@ export const huzhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.huzhou.gov.cn/art/2023/11/28/art_1229207903_58941235.html',
       summaryQuote: '职工住院起付线：三级800元、二级500元、一级及基层200元（第二次减半，第三次及以上免除）。职工统筹支付比例三级85%、二级89%、基层93%（退休人员增加4%）。基本统筹限额40万元。居民住院起付线三级800元、二级500元、一级200元，比例一级85%、二级75%、三级65%。大病保险起付线2万元。'
+    },
+    {
+      docId: 'hz-grassroots-insurance-2024',
+      title: '关于发挥医保支付杠杆作用促进基层医疗卫生高质量发展实施办法的通知',
+      docNumber: '湖政办发〔2023〕59号/湖医保发〔2024〕15号',
+      issuingDept: ['湖州市人民政府办公室', '湖州市医疗保障局'],
+      publishDate: '2023-12-28',
+      effectiveDate: '2024-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.huzhou.gov.cn/art/2024/01/05/art_1229207903_5912890.html',
+      summaryQuote: '自2024年1月1日起施行，加大医保基金对基层医疗卫生机构支付倾斜力度，职工门诊基层报销60%（退休65%），巩固居民基层住院报销85%标准，支持家庭医生签约与连续就医转诊减免待遇。'
     }
   ],
 

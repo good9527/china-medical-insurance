@@ -37,6 +37,17 @@ export const ningboCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.ningbo.gov.cn/art/2023/3/15/art_1229048877_58941234.html',
       summaryQuote: '职工住院起付线：三级1200元、其他600元、社区300元；年度内多次住院起付线按所住最高等级标准计算一次（不超过1200元）。统筹支付比例三级在职86%（退休90%）、二级在职90%（退休93%）、基层95%（退休97%）。基本医疗保险统筹最高支付限额30万元。居民住院起付线同上，报销比例一级85%、二级75%、三级65%。大病保险起付线2万元，分段报销60%-85%。'
+    },
+    {
+      docId: 'nb-outpatient-cap-upgrade-2024',
+      title: '宁波市医疗保障局关于进一步调整优化基本医疗保险待遇政策的通知',
+      docNumber: '甬医保发〔2023〕52号/2024执行规程',
+      issuingDept: ['宁波市医疗保障局', '宁波市财政局'],
+      publishDate: '2023-12-20',
+      effectiveDate: '2024-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.ningbo.gov.cn/art/2023/12/25/art_1229048877_5912345.html',
+      summaryQuote: '自2024年1月1日起，宁波市城乡居民基本医保参保人员年度普通门诊统筹最高支付限额由4000元提高至5000元。基层医疗卫生机构门诊慢特病政策范围内基金支付比例优化提升至65%。'
     }
   ],
 

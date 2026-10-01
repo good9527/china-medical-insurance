@@ -31,6 +31,17 @@ export const liangshanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.lsz.gov.cn/zwgk/zcfg/202311/t20231125_229871.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级400元、三级700元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级100元、二级250元、三级550元，支付比例一级88%、二级80%、三级68%（少数民族自治州倾斜优待）。大病保险起付线11500元，支付比例60%-75%。'
+    },
+    {
+      docId: 'lsz-resident-outpatient-2026',
+      title: '关于进一步规范全省城乡居民基本医疗保险普通门诊统筹待遇保障政策的通知',
+      docNumber: '川医保规〔2026〕5号',
+      issuingDept: ['四川省医疗保障局', '四川省财政厅'],
+      publishDate: '2026-09-15',
+      effectiveDate: '2026-11-01',
+      status: 'active',
+      officialUrl: 'http://ybj.lsz.gov.cn/zwgk/zcfg/202609/t20260920_210467.shtml',
+      summaryQuote: '自2026年11月1日起施行，基层医疗卫生机构不设起付线，统筹基金支付比例统一为60%，支付限额最高可达每人每年400元。健全门诊共济与民族自治州医疗保障扶持体系。'
     }
   ],
 

@@ -37,6 +37,17 @@ export const wuxiCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.wuxi.gov.cn/doc/2023/06/18/3950123.shtml',
       summaryQuote: '职工住院起付线：三级在职950元/退休750元、二级在职750元/退休600元、一级400元、社区300元（第二次减半，第三次及以上为25%）。在职统筹支付比例三级88%、二级92%、一级95%（退休人员加3%）。居民住院起付线三级800元、二级600元、一级300元，报销比例一级85%、二级75%、三级65%。职工基本统筹限额30万元。'
+    },
+    {
+      docId: 'wx-resident-notice-2024',
+      title: '无锡市医疗保障局关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '锡医保发〔2024〕25号',
+      issuingDept: ['无锡市医疗保障局', '无锡市财政局', '国家税务总局无锡市税务局'],
+      publishDate: '2024-09-15',
+      effectiveDate: '2024-09-15',
+      status: 'active',
+      officialUrl: 'https://ybj.wuxi.gov.cn/doc/2024/09/18/4123567.shtml',
+      summaryQuote: '稳步提升城乡居民医疗保障水平，巩固住院与门诊共济统筹待遇，将产前检查费用纳入门诊保障，全面推进职工医保个人账户家庭共济与异地就医直接结算。'
     }
   ],
 

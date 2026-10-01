@@ -32,6 +32,17 @@ export const ningdeCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.ningde.gov.cn/zwgk/zfxxgk/zfxxgkml/zcfg/202312/t20231201_1837482.htm',
       summaryQuote: '城乡居民普通门诊免起付线，在基层定点医疗卫生机构报销50%，年度限额400元。城乡居民住院起付线基层100元、一级300元、二级500元、三级800元，政策范围内报销比例对应90%、85%、75%、60%，统筹年度限额10万元。职工住院起付线基层200元、一级400元、二级600元、三级800元，在职报销95%、92%、88%、85%，退休提高3个百分点，职工医保统筹加大额互助限额50万元。'
+    },
+    {
+      docId: 'nd-resident-notice-2024',
+      title: '宁德市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '宁医保〔2024〕35号',
+      issuingDept: ['宁德市医疗保障局', '宁德市财政局', '国家税务总局宁德市税务局'],
+      publishDate: '2024-09-24',
+      effectiveDate: '2024-09-24',
+      status: 'active',
+      officialUrl: 'http://ybj.ningde.gov.cn/zwgk/zfxxgk/zfxxgkml/zcfg/202409/t20240928_1938201.htm',
+      summaryQuote: '落实闽医保〔2024〕70号文件精神，稳步提升居民医保普通门诊及住院报销水平，切实兜牢基本民生底线，推进异地就医直接结算全流程便民服务。'
     }
   ],
 

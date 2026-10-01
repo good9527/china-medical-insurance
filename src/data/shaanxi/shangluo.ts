@@ -47,6 +47,17 @@ export const shangluoCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://www.shangluo.gov.cn/ybj/info/1032/3494.htm',
       summaryQuote: '市内居民住院起付线：乡镇卫生院/社区服务中心100元，一级300元，二级400元，三级500元。报销比例：一级医院不低于80%，二级75%，三级70%。基本医疗保险年度最高支付限额13万元。大病保险起付线10000元，1-3万元按60%、3-10万元按70%、10万元以上按80%报销，最高封顶线30万元。跨省异地转诊人员和异地急诊抢救人员住院在本地比例基础上下调10个百分点；跨省非急诊且未转诊的其他临时外出就医人员住院下调15个百分点。'
+    },
+    {
+      docId: 'sl-resident-notice-2024',
+      title: '商洛市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '商医保发〔2024〕42号',
+      issuingDept: ['商洛市医疗保障局', '商洛市财政局', '国家税务总局商洛市税务局'],
+      publishDate: '2024-09-20',
+      effectiveDate: '2024-09-20',
+      status: 'active',
+      officialUrl: 'https://www.shangluo.gov.cn/ybj/info/1032/4512.htm',
+      summaryQuote: '稳步提升城乡居民医疗保障水平，全面落实住院及门诊用药保障。继续执行乡镇卫生院起付线100元、一级300元、二级400元、三级500元标准；大病保险起付线1万元，分段报销60%、70%、80%，最高限额30万元。'
     }
   ],
 

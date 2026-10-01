@@ -32,6 +32,17 @@ export const fuyangData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.fy.gov.cn/zcfg/gfxwj/8184920.html',
       summaryQuote: '居民基层普通门诊免起付线，报销55%，年度限额250元。居民住院起付线一级200元、二级500元、三级800元，支付比例对应85%、80%、70%，限额30万元。职工住院起付线一级200元、二级400元、三级600元，在职报销94%、92%、90%，退休提高3个百分点，职工医保限额30万元，大病救助最高支付50万元。'
+    },
+    {
+      docId: 'fy-resident-notice-2024',
+      title: '阜阳市医疗保障局关于落实安徽省基本医疗保险和大病保险待遇政策的通知',
+      docNumber: '阜医保发〔2024〕17号',
+      issuingDept: ["阜阳市医疗保障局","阜阳市财政局"],
+      publishDate: '2024-12-28',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.fuyang.gov.cn/zcfg/gfxwj/2158392.html',
+      summaryQuote: '全面贯彻皖医保发〔2024〕9号文件精神，规范城乡居民普通门诊统筹，基层机构报销60%、限额150元，统筹基金年度最高支付限额30万元，大病保险起付线以上分段报销、限额30万元。'
     }
   ],
 

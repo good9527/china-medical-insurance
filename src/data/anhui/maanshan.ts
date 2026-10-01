@@ -32,6 +32,17 @@ export const maanshanData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.mas.gov.cn/zcfg/gfxwj/7184201.html',
       summaryQuote: '居民门诊免起付线，基层报销55%，年度限额150元。居民住院起付线一级200元、二级500元、三级800元，支付比例对应85%、80%、70%，年度最高限额30万元。职工住院起付线一级200元、二级400元、三级600元，在职报销94%、92%、90%，退休提高3个百分点，职工医保限额30万元，大病救助最高支付50万元。'
+    },
+    {
+      docId: 'mas-resident-notice-2024',
+      title: '马鞍山市医疗保障局等部门转发关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '马医保发〔2024〕16号',
+      issuingDept: ["马鞍山市医疗保障局","马鞍山市财政局"],
+      publishDate: '2024-12-28',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.maanshan.gov.cn/zcfg/gfxwj/7295104.html',
+      summaryQuote: '全面落实皖医保发〔2024〕9号《安徽省城乡居民基本医疗保险和大病保险待遇保障政策》，基层定点医疗机构普通门诊报销60%、限额150元，居民基本医保统筹封顶30万元，大病保险年度支付限额提升至30万元。'
     }
   ],
 

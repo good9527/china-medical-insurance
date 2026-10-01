@@ -32,6 +32,17 @@ export const sanmingCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.sm.gov.cn/xxgk/zfxxgkzl/zfxxgkml/zcfg/202311/t20231130_1965823.htm',
       summaryQuote: '居民医保普通门诊在基层医疗卫生机构免起付线，报销50%，年度限额400元。城乡居民住院起付线基层100元、一级300元、二级500元、三级800元，政策范围内报销比例对应90%、85%、75%、60%，统筹年度限额10万元。职工住院起付线基层200元、一级400元、二级600元、三级800元，在职报销95%、92%、88%、85%，退休提高3个百分点，统筹加大额互助最高支付50万元。'
+    },
+    {
+      docId: 'sm-resident-notice-2024',
+      title: '三明市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '明医保〔2024〕35号',
+      issuingDept: ['三明市医疗保障局', '三明市财政局', '国家税务总局三明市税务局'],
+      publishDate: '2024-09-22',
+      effectiveDate: '2024-09-22',
+      status: 'active',
+      officialUrl: 'http://ybj.sm.gov.cn/xxgk/zfxxgkzl/zfxxgkml/zcfg/202409/t20240926_2019871.htm',
+      summaryQuote: '深入推进三明医改成果转化，全面落实城乡居民门诊统筹与两病用药保障，巩固住院报销待遇，大病保险起付线1.5万元并对低收入困难群众落实梯次倾斜救助。'
     }
   ],
 

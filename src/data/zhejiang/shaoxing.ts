@@ -37,6 +37,17 @@ export const shaoxingCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.sx.gov.cn/art/2022/12/15/art_1229248234_58941235.html',
       summaryQuote: '职工住院起付线：三级800元、二级500元、基层及一级200元（当年第二次减半，第三次及以上免除）。统筹支付比例三级86%、二级90%、基层95%（退休提高3%-5%）。统筹基金最高支付限额40万元。居民住院起付线三级800元、二级500元、一级200元，比例一级85%、二级75%、三级65%。大病保险起付线2万元。'
+    },
+    {
+      docId: 'sx-medical-insurance-rules-2024',
+      title: '关于印发《绍兴市医疗保障实施细则》的通知',
+      docNumber: '绍市医保〔2024〕54号',
+      issuingDept: ['绍兴市医疗保障局', '绍兴市财政局'],
+      publishDate: '2024-12-31',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.sx.gov.cn/art/2024/12/31/art_1229248234_5923456.html',
+      summaryQuote: '全市统一规范基本医疗保险与大病保险待遇，符合大病保险支付范围的费用，住院起付标准调整为18000元，支付比例为70%，最高支付限额40万元；医疗救助对象起付标准减半且报销比例提高至80%。'
     }
   ],
 
@@ -118,14 +129,12 @@ export const shaoxingCityData: CityInsuranceData = {
       }
     },
     catastrophic: {
-      sourceDocId: 'sx-medical-insurance-policy-notice',
+      sourceDocId: 'sx-medical-insurance-rules-2024',
       name: '绍兴市城乡居民大病保险',
-      deductible: 20000,
+      deductible: 18000,
       annualCap: 400000,
       tiers: [
-        { minAmount: 20000, maxAmount: 50000, ratio: 0.60 },
-        { minAmount: 50000, maxAmount: 100000, ratio: 0.70 },
-        { minAmount: 100000, ratio: 0.80 }
+        { minAmount: 18000, ratio: 0.70 }
       ]
     },
     remoteMedical: {

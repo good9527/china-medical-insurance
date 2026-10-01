@@ -31,6 +31,17 @@ export const neijiangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.neijiang.gov.cn/zwgk/zcfg/202311/t20231120_229871.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级450元、三级800元；在职支付比例一级92%、二级88%、三级84%（退休人员各项提高3%）。居民住院起付线一级100元、二级300元、三级650元，支付比例一级85%、二级77%、三级65%。大病保险起付线13000元，支付比例60%-75%。'
+    },
+    {
+      docId: 'nj-resident-outpatient-2026',
+      title: '关于进一步规范全省城乡居民基本医疗保险普通门诊统筹待遇保障政策的通知',
+      docNumber: '川医保规〔2026〕5号',
+      issuingDept: ['四川省医疗保障局', '四川省财政厅'],
+      publishDate: '2026-09-15',
+      effectiveDate: '2026-11-01',
+      status: 'active',
+      officialUrl: 'http://ybj.neijiang.gov.cn/zwgk/zcfg/202609/t20260920_210459.shtml',
+      summaryQuote: '自2026年11月1日起施行，基层医疗卫生机构不设起付线，统筹基金支付比例统一为60%，支付限额最高可达每人每年400元。健全门诊共济与慢性病保障体系。'
     }
   ],
 

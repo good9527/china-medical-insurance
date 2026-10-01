@@ -32,6 +32,17 @@ export const chizhouData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.chizhou.gov.cn/zcfg/gfxwj/7184920.html',
       summaryQuote: '居民基层普通门诊免起付线，报销55%，限额150元。居民住院起付线一级200元、二级500元、三级800元，支付比例对应85%、80%、70%，限额30万元。职工住院起付线一级200元、二级400元、三级600元，在职报销94%、92%、90%，退休提高3个百分点，职工医保限额30万元，大病救助最高支付50万元。'
+    },
+    {
+      docId: 'czh-resident-notice-2024',
+      title: '池州市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '池医保发〔2024〕15号',
+      issuingDept: ["池州市医疗保障局","池州市财政局"],
+      publishDate: '2024-12-28',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.chizhou.gov.cn/zcfg/gfxwj/2591023.html',
+      summaryQuote: '依据皖医保发〔2024〕9号，落实城乡居民门诊统筹及大病保险待遇，基层机构免起付线报销60%、限额150元，统筹年度限额30万元，大病保险年度支付限额提升至30万元。'
     }
   ],
 

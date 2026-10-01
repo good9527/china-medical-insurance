@@ -32,6 +32,17 @@ export const putianCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.putian.gov.cn/zwgk/zcfg/202311/t20231128_1876542.htm',
       summaryQuote: '城乡居民普通门诊免起付线，基层定点医疗机构报销50%，年度封顶400元。城乡居民住院起付线基层150元、一级300元、二级600元、三级900元，政策范围内报销比例对应90%、85%、75%、60%，统筹年度封顶10万元。职工住院起付线基层300元、一级500元、二级700元、三级900元，在职报销95%、92%、88%、85%，退休提高3个百分点，职工医保统筹加大额互助限额50万元。'
+    },
+    {
+      docId: 'pt-resident-notice-2024',
+      title: '莆田市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '莆医保〔2024〕36号',
+      issuingDept: ['莆田市医疗保障局', '莆田市财政局', '国家税务总局莆田市税务局'],
+      publishDate: '2024-09-20',
+      effectiveDate: '2024-09-20',
+      status: 'active',
+      officialUrl: 'http://ybj.putian.gov.cn/zwgk/zcfg/202409/t20240925_1928341.htm',
+      summaryQuote: '依据闽医保〔2024〕70号文件精神，巩固城乡居民基本医保参保与住院待遇水平，政策范围内基金支付比例保持在70%左右，产前检查费用纳入门诊保障，全面推进职工医保个人账户家庭共济。'
     }
   ],
 

@@ -32,6 +32,17 @@ export const nanpingCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.np.gov.cn/cms/html/npsylbzj/2023-11-25/1938475821.html',
       summaryQuote: '城乡居民普通门诊免起付线，基层定点医疗机构报销50%，年度封顶400元。城乡居民住院起付线基层100元、一级300元、二级500元、三级800元，政策范围内报销比例对应90%、85%、75%、60%，统筹年度限额10万元。职工住院起付线基层200元、一级400元、二级600元、三级800元，在职报销95%、92%、88%、85%，退休提高3个百分点，统筹加大额补助限额50万元。'
+    },
+    {
+      docId: 'np-resident-notice-2024',
+      title: '南平市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '南医保〔2024〕28号',
+      issuingDept: ['南平市医疗保障局', '南平市财政局', '国家税务总局南平市税务局'],
+      publishDate: '2024-09-22',
+      effectiveDate: '2024-09-22',
+      status: 'active',
+      officialUrl: 'http://ybj.np.gov.cn/cms/html/npsylbzj/2024-09-28/2048591823.html',
+      summaryQuote: '依据闽医保〔2024〕70号文件精神，巩固城乡居民基本医保参保与住院待遇水平，政策范围内基金支付比例稳定在70%左右，产前检查费用纳入门诊保障，全面推进职工医保个人账户家庭共济。'
     }
   ],
 
