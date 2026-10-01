@@ -31,6 +31,17 @@ export const jiaozuoCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.jiaozuo.gov.cn/zwgk/zcfg/202310/t20231023_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级500元、三级1000元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'jz-resident-notice-2024',
+      title: '焦作市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '焦医保办〔2024〕28号',
+      issuingDept: ["焦作市医疗保障局","焦作市财政局","国家税务总局焦作市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.jiaozuo.gov.cn/zcfg/202409/t20240928_193821.html',
+      summaryQuote: '落实豫医保办〔2024〕64号文件部署，巩固门诊与住院保障待遇，确保大病保险精准倾斜，持续提升医保公共服务可及性与便捷度。'
     }
   ],
 

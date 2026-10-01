@@ -31,6 +31,17 @@ export const luoyangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.ly.gov.cn/zwgk/zcfg/202310/t20231025_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级900元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级500元、三级1000元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'ly-resident-notice-2024',
+      title: '洛阳市医疗保障局关于印发洛阳市落实河南省2024年城乡居民基本医疗保障工作方案的通知',
+      docNumber: '洛医保办〔2024〕36号',
+      issuingDept: ["洛阳市医疗保障局","洛阳市财政局","国家税务总局洛阳市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.ly.gov.cn/zcfg/202409/t20240927_189201.html',
+      summaryQuote: '贯彻豫医保办〔2024〕64号文件，持续巩固居民住院政策范围内70%报销水平，切实提高大病保险精准保障能力，全面落实职工医保个人账户近亲属家庭共济。'
     }
   ],
 

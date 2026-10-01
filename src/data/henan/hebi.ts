@@ -31,6 +31,17 @@ export const hebiCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.hebi.gov.cn/zwgk/zcfg/202310/t20231023_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级450元、三级750元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级450元、三级900元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'hb-resident-notice-2024',
+      title: '鹤壁市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '鹤医保办〔2024〕25号',
+      issuingDept: ["鹤壁市医疗保障局","鹤壁市财政局","国家税务总局鹤壁市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.hebi.gov.cn/zcfg/202409/t20240927_174920.html',
+      summaryQuote: '深入落实豫医保办〔2024〕64号通知要求，巩固居民医保政策范围内报销比例，推动生育门诊检查纳入门诊保障，全面推进个人账户家庭共济。'
     }
   ],
 

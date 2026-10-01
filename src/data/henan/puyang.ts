@@ -31,6 +31,17 @@ export const puyangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.puyang.gov.cn/zwgk/zcfg/202310/t20231023_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级500元、三级1000元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'py-resident-notice-2024',
+      title: '濮阳市医疗保障局等部门转发关于做好2024年城乡居民基本医疗保障工作的通知',
+      docNumber: '濮医保办〔2024〕26号',
+      issuingDept: ["濮阳市医疗保障局","濮阳市财政局","国家税务总局濮阳市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.puyang.gov.cn/zcfg/202409/t20240927_174910.html',
+      summaryQuote: '依据豫医保办〔2024〕64号精神，健全城乡居民基本医疗保障机制，落实产前检查费用纳入门诊统筹保障政策，提升大病救助兜底效能。'
     }
   ],
 

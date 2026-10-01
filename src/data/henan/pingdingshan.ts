@@ -31,6 +31,17 @@ export const pingdingshanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.pds.gov.cn/zwgk/zcfg/202310/t20231023_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级500元、三级1000元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'pds-resident-notice-2024',
+      title: '平顶山市医疗保障局等部门做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '平医保办〔2024〕29号',
+      issuingDept: ["平顶山市医疗保障局","平顶山市财政局","国家税务总局平顶山市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.pds.gov.cn/zcfg/202409/t20240928_192841.html',
+      summaryQuote: '严格落实豫医保办〔2024〕64号规定，稳步提高城乡居民医保统筹待遇保障效能，大病保险分段精准施策，强化困难群众救助托底功能。'
     }
   ],
 

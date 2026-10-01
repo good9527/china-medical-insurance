@@ -31,6 +31,17 @@ export const xuchangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.xuchang.gov.cn/zwgk/zcfg/202310/t20231023_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级500元、三级1000元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'xc-resident-notice-2024',
+      title: '许昌市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '许医保办〔2024〕29号',
+      issuingDept: ["许昌市医疗保障局","许昌市财政局","国家税务总局许昌市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.xuchang.gov.cn/zcfg/202409/t20240928_184912.html',
+      summaryQuote: '贯彻豫医保办〔2024〕64号文件，稳固城乡居民医疗保险待遇水平，统筹基金与大病保险梯次衔接，扩大职工医保个账共济使用范围。'
     }
   ],
 

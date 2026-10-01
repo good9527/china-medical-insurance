@@ -31,6 +31,17 @@ export const xinxiangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.xinxiang.gov.cn/zwgk/zcfg/202310/t20231023_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级500元、三级1000元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'xx-resident-notice-2024',
+      title: '新乡市医疗保障局等部门关于做好2024年城乡居民基本医疗保障有关工作的通知',
+      docNumber: '新医保办〔2024〕32号',
+      issuingDept: ["新乡市医疗保障局","新乡市财政局","国家税务总局新乡市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.xinxiang.gov.cn/zcfg/202409/t20240928_182910.html',
+      summaryQuote: '全面贯彻豫医保办〔2024〕64号，巩固城乡居民住院保障水平，政策范围内报销比例稳定在70%左右，积极推进个人账户共济与线上结算服务。'
     }
   ],
 

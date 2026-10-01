@@ -31,6 +31,17 @@ export const sanmenxiaCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.smx.gov.cn/zwgk/zcfg/202310/t20231023_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级450元、三级750元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级450元、三级900元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'smx-resident-notice-2024',
+      title: '三门峡市医疗保障局等部门关于做好2024-2025年城乡居民基本医疗保障工作的通知',
+      docNumber: '三医保办〔2024〕28号',
+      issuingDept: ["三门峡市医疗保障局","三门峡市财政局","国家税务总局三门峡市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.smx.gov.cn/zcfg/202409/t20240927_184910.html',
+      summaryQuote: '严格遵循豫医保办〔2024〕64号部署，巩固基本医保住院待遇，落实大病保险倾斜救助政策，提高异地就医直接结算率。'
     }
   ],
 

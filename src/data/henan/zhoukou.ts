@@ -31,6 +31,17 @@ export const zhoukouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.zhoukou.gov.cn/zwgk/zcfg/202310/t20231025_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级500元、三级1000元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'zk-resident-notice-2024',
+      title: '周口市医疗保障局等部门关于做好2024年城乡居民基本医疗保障有关工作的通知',
+      docNumber: '周医保办〔2024〕31号',
+      issuingDept: ["周口市医疗保障局","周口市财政局","国家税务总局周口市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.zhoukou.gov.cn/zcfg/202409/t20240927_193840.html',
+      summaryQuote: '全面落实豫医保办〔2024〕64号文件要求，巩固居民医保住院待遇水平，推进产前检查费纳入门诊保障，落实职工医保个账近亲属共济。'
     }
   ],
 

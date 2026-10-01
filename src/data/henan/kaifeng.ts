@@ -31,6 +31,17 @@ export const kaifengCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.kaifeng.gov.cn/zwgk/zcfg/202311/t20231120_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级500元、三级1000元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'kf-resident-notice-2024',
+      title: '开封市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '汴医保办〔2024〕32号',
+      issuingDept: ["开封市医疗保障局","开封市财政局","国家税务总局开封市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.kaifeng.gov.cn/zwgk/zcfg/202409/t20240928_228941.shtml',
+      summaryQuote: '贯彻落实豫医保办〔2024〕64号文件精神，稳定城乡居民医保门诊与住院待遇水平，落实产前检查费用纳入门诊保障，优化跨省异地就医直接结算便民服务。'
     }
   ],
 

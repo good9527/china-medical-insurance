@@ -31,6 +31,17 @@ export const shangqiuCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.shangqiu.gov.cn/zwgk/zcfg/202310/t20231023_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级500元、三级1000元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'sq-resident-notice-2024',
+      title: '商丘市医疗保障局等部门关于做好2024年城乡居民基本医疗保障工作的通知',
+      docNumber: '商医保办〔2024〕30号',
+      issuingDept: ["商丘市医疗保障局","商丘市财政局","国家税务总局商丘市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.shangqiu.gov.cn/zcfg/202409/t20240928_174928.html',
+      summaryQuote: '深入贯彻落实豫医保办〔2024〕64号通知，确保居民医保政策范围内基金支付水平稳定，加强大病医疗救助兜底保障功能。'
     }
   ],
 

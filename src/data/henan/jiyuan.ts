@@ -31,6 +31,17 @@ export const jiyuanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.jiyuan.gov.cn/zwgk/zcfg/202310/t20231023_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级450元、三级750元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级450元、三级900元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'jy-resident-notice-2024',
+      title: '济源产城融合示范区医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '济医保办〔2024〕22号',
+      issuingDept: ["济源产城融合示范区医疗保障局","济源产城融合示范区财政金融局","国家税务总局济源产城融合示范区税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.jiyuan.gov.cn/zcfg/202409/t20240928_153920.html',
+      summaryQuote: '深入落实豫医保办〔2024〕64号文件精神，提升城乡居民医保门诊统筹待遇保障效能，巩固大病保险与救助保障水平，优化异地直接结算。'
     }
   ],
 

@@ -31,6 +31,17 @@ export const nanyangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.nanyang.gov.cn/zwgk/zcfg/202311/t20231125_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级500元、三级1000元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'ny-resident-notice-2024',
+      title: '南阳市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '宛医保办〔2024〕38号',
+      issuingDept: ["南阳市医疗保障局","南阳市财政局","国家税务总局南阳市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.nanyang.gov.cn/zcfg/202409/t20240928_219382.html',
+      summaryQuote: '依据豫医保办〔2024〕64号精神，稳定提升城乡居民参保群众医保待遇，完善门诊保障与大病保险机制，全面推广家庭共济绑定与使用。'
     }
   ],
 

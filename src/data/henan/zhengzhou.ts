@@ -37,6 +37,17 @@ export const zhengzhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.zhengzhou.gov.cn/zcjd/5987123.jhtml',
       summaryQuote: '职工住院起付线：乡级200元、市级二级300元、市级三级600元、省级三甲900元；在职职工报销比例乡级95%、一二级95%、市级三级90%、省级三甲88%（退休人员分别按97%、97%、95%、93%报销）。基本统筹年度封顶15万元。居民住院起付线：基层150元、二级600元、三级1200元、省级三甲2000元；分段报销二级75%、三级70%、省级三甲65%，基本统筹年封顶15万元。'
+    },
+    {
+      docId: 'zz-resident-notice-2024',
+      title: '郑州市医疗保障局 财政局 税务局转发关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '郑医保办〔2024〕38号',
+      issuingDept: ["郑州市医疗保障局","郑州市财政局","国家税务总局郑州市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'https://ybj.zhengzhou.gov.cn/zcfg/7281920.jhtml',
+      summaryQuote: '依据豫医保办〔2024〕64号部署，巩固城乡居民住院待遇水平，推进产前检查门诊保障报销50%以上，全面拓展职工基本医保个人账户家庭共济至近亲属。'
     }
   ],
 

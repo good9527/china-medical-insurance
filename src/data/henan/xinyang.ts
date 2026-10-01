@@ -31,6 +31,17 @@ export const xinyangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.xinyang.gov.cn/zwgk/zcfg/202310/t20231023_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级500元、三级1000元，支付比例一级85%、二级75%、三级65%。大病保险起付线15000元，支付比例60%-80%。'
+    },
+    {
+      docId: 'xy-resident-notice-2024',
+      title: '信阳市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '信医保办〔2024〕33号',
+      issuingDept: ["信阳市医疗保障局","信阳市财政局","国家税务总局信阳市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.xinyang.gov.cn/zcfg/202409/t20240928_183920.html',
+      summaryQuote: '落实豫医保办〔2024〕64号工作部署，稳步提升居民门诊及住院报销水平，切实防范化解因病致贫返贫风险，推进异地就医直接结算。'
     }
   ],
 
