@@ -37,6 +37,17 @@ export const suizhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.suizhou.gov.cn/zwgk/zcjd/202312/t20231225_1069213.html',
       summaryQuote: '随政发〔2023〕21号自2024年1月1日起施行：职工住院起付标准一级400元、二级600元、三级800元；甲类费用基金支付比例一级95%、二级93%、三级91%。居民住院起付标准一级200元、二级500元、三级900元；甲类费用基金支付比例一级90%、二级80%、三级70%。乙类费用个人先行自付10%后再按比例报销。职工基本统筹年度限额15万元。'
+    },
+    {
+      docId: 'sz-resident-notice-2024',
+      title: '随州市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '随医保发〔2024〕18号',
+      issuingDept: ["随州市医疗保障局","随州市财政局","国家税务总局随州市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.suizhou.gov.cn/zwgk/zcfg/202409/t20240929_174910.html',
+      summaryQuote: '依据医保发〔2024〕19号文件，稳妥做好居民医保待遇衔接，落实大病保险倾斜政策，推进异地就医结算信息化便利服务。'
     }
   ],
 

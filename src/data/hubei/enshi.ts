@@ -48,6 +48,17 @@ export const enshiCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.enshi.gov.cn/',
       summaryQuote: '恩施州政规〔2023〕2号明确：城乡居民医保门诊统筹年度最高支付限额调整为350元，在基层医疗卫生机构按50%比例报销。住院起付标准一级医疗机构300元、二级医疗机构500元、三级医疗机构1000元；政策范围内支付比例一级85%、二级75%、三级60%。居民医保统筹基金年度最高支付限额为15万元。'
+    },
+    {
+      docId: 'es-resident-notice-2024',
+      title: '恩施土家族苗族自治州医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '恩施州医保发〔2024〕22号',
+      issuingDept: ["恩施州医疗保障局","恩施州财政局","国家税务总局恩施州税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.enshi.gov.cn/zwgk/zcfg/202409/t20240929_182930.html',
+      summaryQuote: '深入落实医保发〔2024〕19号精神，巩固提升少数民族自治州医保待遇保障水平，落实生育医疗门诊报销和大病救助兜底。'
     }
   ],
 

@@ -37,6 +37,17 @@ export const xiaoganCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.xiaogan.gov.cn/zwgk/zcjd/202311/t20231125_958102.html',
       summaryQuote: '孝感市职工医保住院起付标准：一级医院400元（二次350元）、二级医院400元（二次350元）、三级医院500元（二次400元）。统筹支付比例一级92%、二级90%、三级88%。城乡居民医保住院起付标准：一级200元（二次100元）、二级400元（二次200元）、三级800元（二次400元），支付比例一级85%、二级75%、三级60%。基本统筹年最高支付限额15万元。'
+    },
+    {
+      docId: 'xg-resident-notice-2024',
+      title: '孝感市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '孝感医保发〔2024〕21号',
+      issuingDept: ["孝感市医疗保障局","孝感市财政局","国家税务总局孝感市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.xiaogan.gov.cn/zwgk/zcfg/202409/t20240929_183921.html',
+      summaryQuote: '依据医保发〔2024〕19号，持续筑牢基本医保、大病保险和医疗救助三重保障网，强化门诊慢特病服务保障与异地就医直接结算。'
     }
   ],
 

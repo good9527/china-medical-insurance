@@ -37,6 +37,17 @@ export const jingmenCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.jingmen.gov.cn/art/2023/11/20/art_8392_99812.html',
       summaryQuote: '荆门市职工医保住院起付标准：一级定点医疗机构200元、二级定点医疗机构500元、三级定点医疗机构900元。统筹基金支付比例一级90%、二级88%、三级85%（退休人员增加2%）。城乡居民医保住院起付标准相同，统筹支付比例一级85%、二级75%、三级65%。年度基本统筹最高支付限额15万元。'
+    },
+    {
+      docId: 'jm-resident-notice-2024',
+      title: '荆门市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '荆医保发〔2024〕16号',
+      issuingDept: ["荆门市医疗保障局","荆门市财政局","国家税务总局荆门市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.jingmen.gov.cn/zwgk/zcfg/202409/t20240929_192840.html',
+      summaryQuote: '落实国家及省统一部署，稳步提高城乡居民门诊统筹及大病保险待遇保障效能，大病保险精准倾斜，深化职工医保个账家庭共济。'
     }
   ],
 

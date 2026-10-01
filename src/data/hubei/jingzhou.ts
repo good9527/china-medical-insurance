@@ -37,6 +37,17 @@ export const jingzhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.jingzhou.gov.cn/zwgk/zcjd/202310/t20231020_812930.html',
       summaryQuote: '统筹区内住院起付标准：一级医疗机构300元、二级医疗机构800元、三级医疗机构1200元。在职职工政策范围内报销比例一级90%、二级85%、三级82%，退休人员相应增加3个百分点。居民医保住院起付标准：一级200元、二级500元、三级900元，支付比例一级85%、二级75%、三级60%。职工统筹基金年度最高支付限额16万元。'
+    },
+    {
+      docId: 'jz-resident-notice-2024',
+      title: '荆州市医疗保障局等部门转发做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '荆医保发〔2024〕25号',
+      issuingDept: ["荆州市医疗保障局","荆州市财政局","国家税务总局荆州市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.jingzhou.gov.cn/zwgk/zcfg/202409/t20240929_163910.html',
+      summaryQuote: '落实国家及省文件要求，保持居民医保住院政策范围内报销比例稳定，强化门诊慢特病待遇保障，推进个账近亲属共济。'
     }
   ],
 

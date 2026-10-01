@@ -37,6 +37,17 @@ export const xiantaoCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.xiantao.gov.cn/zwgk/zcjd/202311/t20231128_459201.html',
       summaryQuote: '统筹区内职工住院起付标准：一级医疗机构100元、二级医疗机构400元、三级医疗机构500元。统筹支付比例一级92%、二级88%、三级85%（退休人员增加2%）。城乡居民医保住院起付标准一级100元、二级400元、三级500元，支付比例一级88%、二级75%、三级60%。职工基本统筹年度最高支付限额15万元。'
+    },
+    {
+      docId: 'xt-resident-notice-2024',
+      title: '仙桃市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '仙医保发〔2024〕15号',
+      issuingDept: ["仙桃市医疗保障局","仙桃市财政局","国家税务总局仙桃市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.xiantao.gov.cn/zwgk/zcfg/202409/t20240929_173921.html',
+      summaryQuote: '按照国家医保发〔2024〕19号文件要求，确保居民医保住院政策范围内报销比例稳定在70%左右，大病保险精准倾斜，深化个账家庭共济。'
     }
   ],
 

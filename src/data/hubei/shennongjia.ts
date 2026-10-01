@@ -37,6 +37,17 @@ export const shennongjiaCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.snj.gov.cn/zwgk/zcjd/202311/t20231118_428190.html',
       summaryQuote: '林区内住院起付标准：一级医疗机构200元、二级医疗机构400元、三级医疗机构800元。职工医保统筹支付比例一级90%、二级88%、三级85%（退休人员增加2%）。城乡居民医保住院起付标准一级200元、二级400元、三级800元，支付比例一级88%、二级75%、三级60%。职工统筹基金年度最高支付限额15万元。'
+    },
+    {
+      docId: 'snj-resident-notice-2024',
+      title: '神农架林区医疗保障局等部门关于做好2024-2025年度基本医疗保障有关工作的通知',
+      docNumber: '神医保发〔2024〕12号',
+      issuingDept: ["神农架林区医疗保障局","神农架林区财政局","国家税务总局神农架林区税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.snj.gov.cn/zwgk/zcfg/202409/t20240929_163920.html',
+      summaryQuote: '落实国家及省文件要求，保持林区居民医保住院政策范围内报销比例稳定，强化门诊慢特病待遇保障，推进异地直接结算。'
     }
   ],
 

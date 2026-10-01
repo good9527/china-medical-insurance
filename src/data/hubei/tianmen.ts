@@ -37,6 +37,17 @@ export const tianmenCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.tianmen.gov.cn/zwgk/zcjd/202311/t20231128_439201.html',
       summaryQuote: '统筹区内职工住院起付标准：一级医疗机构200元、二级医疗机构500元、三级医疗机构900元。统筹支付比例一级90%、二级88%、三级85%（退休人员增加2%）。城乡居民医保住院起付标准一级200元、二级500元、三级900元，支付比例一级85%、二级75%、三级60%。职工统筹基金年度最高支付限额15万元。'
+    },
+    {
+      docId: 'tm-resident-notice-2024',
+      title: '天门市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '天医保发〔2024〕14号',
+      issuingDept: ["天门市医疗保障局","天门市财政局","国家税务总局天门市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.tianmen.gov.cn/zwgk/zcfg/202409/t20240929_192841.html',
+      summaryQuote: '依据医保发〔2024〕19号，稳步提高城乡居民门诊统筹及大病保险待遇保障效能，全面落实参保长效激励与个账家庭共济政策。'
     }
   ],
 

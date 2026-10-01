@@ -37,6 +37,17 @@ export const yichangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.yichang.gov.cn/content-21-50123-1.html',
       summaryQuote: '宜府办发〔2023〕51号明确自2024年1月1日起施行：住院起付线一级200元、二级500元、三级1000元，年度内住院2次及以上的起付标准减半。统筹基金政策范围内支付比例一级92%、二级90%、三级88%（退休人员增加2%）。职工基本统筹年度最高支付限额为15万元，超过部分进入大额医疗保险补助。城乡居民医保住院起付标准一级200元、二级500元、三级1000元，报销比例一级85%、二级75%、三级60%。'
+    },
+    {
+      docId: 'yc-resident-notice-2024',
+      title: '宜昌市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '宜医保发〔2024〕18号',
+      issuingDept: ["宜昌市医疗保障局","宜昌市财政局","国家税务总局宜昌市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.yichang.gov.cn/zwgk/zcfg/202409/t20240929_182910.html',
+      summaryQuote: '依据国家医保发〔2024〕19号，稳定城乡居民医保门诊与住院待遇水平，推进产前检查费纳入门诊保障，落实职工医保个账家庭共济近亲属绑定。'
     }
   ],
 

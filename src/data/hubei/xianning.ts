@@ -37,6 +37,17 @@ export const xianningCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.xianning.gov.cn/zwgk/zcjd/202312/t20231205_301928.html',
       summaryQuote: '统筹区内职工医保住院起付标准：一级定点医疗机构200元、二级定点医疗机构500元、三级定点医疗机构900元。统筹支付比例一级88%、二级86%、三级82%（退休人员增加2%）。城乡居民医保住院起付标准：一级200元、二级500元、三级900元，支付比例一级85%、二级75%、三级60%。职工统筹基金年度最高支付限额15万元。'
+    },
+    {
+      docId: 'xn-resident-notice-2024',
+      title: '咸宁市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '咸医保发〔2024〕19号',
+      issuingDept: ["咸宁市医疗保障局","咸宁市财政局","国家税务总局咸宁市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.xianning.gov.cn/zwgk/zcfg/202409/t20240929_184910.html',
+      summaryQuote: '全面贯彻落实医保发〔2024〕19号，巩固居民医保住院与普通门诊待遇，完善大病救助机制，推动参保长效激励。'
     }
   ],
 

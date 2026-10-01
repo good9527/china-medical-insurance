@@ -37,6 +37,17 @@ export const ezhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.ezhou.gov.cn/zwgk/zcjd/202312/t20231228_501923.html',
       summaryQuote: '统筹区内住院起付标准：乡镇卫生院100元、一级医院300元、二级医院500元、三级医院800元，年度内住院二次及以上起付标准减半（乡镇及一级除外）。在职职工统筹支付比例一级90%、二级88%、三级85%（退休人员增加2%）。城乡居民医保住院起付标准相同，支付比例一级90%、二级75%、三级60%。职工统筹基金年度最高支付限额按参保年限逐年提升（满3年最高30万元）。'
+    },
+    {
+      docId: 'ez-resident-notice-2024',
+      title: '鄂州市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '鄂州医保发〔2024〕15号',
+      issuingDept: ["鄂州市医疗保障局","鄂州市财政局","国家税务总局鄂州市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.ezhou.gov.cn/zwgk/zcfg/202409/t20240929_173920.html',
+      summaryQuote: '贯彻落实医保发〔2024〕19号文件精神，巩固居民住院政策范围内70%报销水平，加强大病保险梯次减负，推进异地直接结算。'
     }
   ],
 
