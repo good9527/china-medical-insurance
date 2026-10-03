@@ -32,6 +32,17 @@ export const xingtaiData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.xingtai.gov.cn/art/2023/5/22/art_1435_16781.html',
       summaryQuote: '居民普通门诊不设起付线，村卫生室报销90%（年限额70元），乡镇卫生院报销80%（年限额400元）。居民住院起付线：一级200元、二级600元、三级1200元，支付比例对应为85%、75%、60%，年度限额15万元；职工住院起付线一级200元、二级500元、三级800元，在职支付比例93%、88%、85%，退休提高3个百分点，职工医保年度限额20万元，大额补助50万元。'
+    },
+    {
+      docId: 'xt-resident-notice-2024',
+      title: '邢台市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '邢医保发〔2024〕16号',
+      issuingDept: ["邢台市医疗保障局","邢台市财政局","国家税务总局邢台市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.xingtai.gov.cn/zwgk/zcfg/202409/t20240929_183921.html',
+      summaryQuote: '落实冀医保发〔2024〕7号要求，坚持医保待遇稳健提升，推进产前检查纳入门诊保障，落实职工医保个账近亲属共济与异地直接结算。'
     }
   ],
 

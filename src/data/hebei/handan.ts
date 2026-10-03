@@ -32,6 +32,17 @@ export const handanData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.hd.gov.cn/art/2023/4/15/art_1720_19281.html',
       summaryQuote: '职工住院起付线：三级800元、二级600元、一级400元；报销比例分别为85%、88%、93%，退休人员报销比例增加3个百分点，职工医保年度限额20万元，大额救助最高支付50万元。城乡居民门诊免起付线报销50%，限额75元；居民住院起付线三级1200元、二级800元（县级500元）、一级400元、乡镇100元，报销比例对应60%、75%、85%、90%，年度限额15万元。'
+    },
+    {
+      docId: 'hd-resident-notice-2024',
+      title: '邯郸市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '邯医保字〔2024〕15号',
+      issuingDept: ["邯郸市医疗保障局","邯郸市财政局","国家税务总局邯郸市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.hd.gov.cn/zwgk/zcfg/202409/t20240929_173920.html',
+      summaryQuote: '依据冀医保发〔2024〕7号文件部署，稳步提升城乡居民门诊统筹待遇，巩固住院待遇水平，落实连续参保激励加大病保险封顶线政策。'
     }
   ],
 

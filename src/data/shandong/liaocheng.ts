@@ -31,6 +31,17 @@ export const liaochengCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.liaocheng.gov.cn/zwgk/zcfg/202310/t20231026_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级450元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级100元、二级350元、三级750元，支付比例一级85%、二级76%、三级66%。大病保险起付线14000元，支付比例60%-75%。'
+    },
+    {
+      docId: 'lc-resident-notice-2024',
+      title: '聊城市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '聊医保发〔2024〕21号',
+      issuingDept: ["聊城市医疗保障局","聊城市财政局","国家税务总局聊城市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.liaocheng.gov.cn/zwgk/zcfg/202409/t20240928_163920.html',
+      summaryQuote: '依据鲁医保发〔2024〕33号，稳步提高城乡居民门诊统筹及大病保险待遇保障效能，全面落实参保长效激励与个账家庭共济政策。'
     }
   ],
 

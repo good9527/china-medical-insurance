@@ -31,6 +31,17 @@ export const binzhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.binzhou.gov.cn/zwgk/zcfg/202310/t20231024_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级450元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级100元、二级350元、三级750元，支付比例一级85%、二级76%、三级66%。大病保险起付线14000元，支付比例60%-75%。'
+    },
+    {
+      docId: 'bz-resident-notice-2024',
+      title: '滨州市医疗保障局等部门转发关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '滨医保发〔2024〕17号',
+      issuingDept: ["滨州市医疗保障局","滨州市财政局","国家税务总局滨州市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.binzhou.gov.cn/zwgk/zcfg/202409/t20240928_182910.html',
+      summaryQuote: '严格遵循鲁医保发〔2024〕33号，稳定基本医保住院待遇水平，大病保险精准倾斜救助，提升异地就医直接结算率。'
     }
   ],
 

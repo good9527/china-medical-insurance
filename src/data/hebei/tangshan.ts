@@ -32,6 +32,17 @@ export const tangshanData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.tangshan.gov.cn/art/2023/1/12/art_2210_18921.html',
       summaryQuote: '职工住院起付线：三级医疗机构900元、二级500元、一级200元；在职支付比例三级85%、二级88%、一级92%，退休人员支付比例增加3个百分点；多次住院每次起付线递减100元；年度封顶15万元，大额补助最高支付50万元。居民住院起付线：三级1200元、二级700元、一级200元、乡镇100元，支付比例对应为60%、75%、90%、90%，年度限额30万元。'
+    },
+    {
+      docId: 'ts-resident-notice-2024',
+      title: '唐山市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '唐医保规〔2024〕6号',
+      issuingDept: ["唐山市医疗保障局","唐山市财政局","国家税务总局唐山市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'https://ybj.tangshan.gov.cn/zwgk/zcfg/202409/t20240929_192841.html',
+      summaryQuote: '依据冀医保发〔2024〕7号健全基本医保参保长效机制，巩固住院政策范围内70%报销水平，实施产前检查门诊保障，执行连续参保与零报销大病保险激励政策。'
     }
   ],
 

@@ -32,6 +32,17 @@ export const qinhuangdaoData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.qhd.gov.cn/art/2023/3/20/art_1582_17643.html',
       summaryQuote: '城乡居民普通门诊起付线50元，报销比例50%，年度限额65元（大学生门诊免起付线、报销60%、限额400元）。居民住院起付线：一级（含乡镇社区）100元、二级500元、三级1500元；报销比例分别为90%、75%、60%，居民基本医保年度限额15万元，大病保险年度限额40万元，累计最高报销55万元。'
+    },
+    {
+      docId: 'qhd-resident-notice-2024',
+      title: '秦皇岛市医疗保障局等部门贯彻落实河北省健全基本医疗保险参保长效机制的通知',
+      docNumber: '秦医保发〔2024〕12号',
+      issuingDept: ["秦皇岛市医疗保障局","秦皇岛市财政局","国家税务总局秦皇岛市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.qhd.gov.cn/zwgk/zcfg/202409/t20240929_182910.html',
+      summaryQuote: '全面贯彻冀医保发〔2024〕7号，稳定居民医保住院与门诊统筹待遇，落实大病保险最高支付限额长效激励机制，深化职工医保个账家庭共济。'
     }
   ],
 

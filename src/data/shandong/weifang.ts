@@ -31,6 +31,17 @@ export const weifangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.weifang.gov.cn/zwgk/zcfg/202310/t20231020_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级93%、二级90%、三级86%（退休人员各项提高3%）。居民住院起付线一级150元、二级400元、三级800元，支付比例一级85%、二级75%、三级65%。大病保险起付线14000元，支付比例60%-75%。'
+    },
+    {
+      docId: 'wf-resident-notice-2024',
+      title: '潍坊市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '潍医保发〔2024〕22号',
+      issuingDept: ["潍坊市医疗保障局","潍坊市财政局","国家税务总局潍坊市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.weifang.gov.cn/zwgk/zcfg/202409/t20240928_173920.html',
+      summaryQuote: '深入落实鲁医保发〔2024〕33号通知，巩固城乡居民医疗保险待遇，提高住院分娩生育医疗费用保障水平，优化异地直接结算。'
     }
   ],
 

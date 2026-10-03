@@ -31,6 +31,17 @@ export const yantaiCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.yantai.gov.cn/zwgk/zcfg/202310/t20231022_221908.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级93%、二级90%、三级86%（退休人员各项提高3%）。居民住院起付线：一级300元、二级500元、三级800元（第二次减半，第三次及以上每次100元）；二档及学生儿童比例一级90%、二级72%、三级60%（一档为一级90%、二级58%、三级45%）。居民基本限额16万元，大病保险起付线14000元，支付比例60%-75%，封顶40万元。'
+    },
+    {
+      docId: 'yt-resident-notice-2024',
+      title: '烟台市医疗保障局等部门转发做好全省2024年城乡居民基本医疗保障有关工作的通知',
+      docNumber: '烟医保发〔2024〕20号',
+      issuingDept: ["烟台市医疗保障局","烟台市财政局","国家税务总局烟台市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.yantai.gov.cn/zwgk/zcfg/202409/t20240928_192840.html',
+      summaryQuote: '按照鲁医保发〔2024〕33号文件要求，确保居民医保住院政策范围内报销比例稳定在70%左右，加强大病精准倾斜，拓展职工个账家庭共济。'
     }
   ],
 

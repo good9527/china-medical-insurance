@@ -31,6 +31,17 @@ export const taianCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.taian.gov.cn/zwgk/zcfg/202311/t20231120_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级450元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级400元、三级750元，支付比例一级85%、二级75%、三级65%。大病保险起付线14000元，支付比例60%-75%。'
+    },
+    {
+      docId: 'ta-resident-notice-2024',
+      title: '泰安市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '泰医保发〔2024〕18号',
+      issuingDept: ["泰安市医疗保障局","泰安市财政局","国家税务总局泰安市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.taian.gov.cn/zwgk/zcfg/202409/t20240928_183921.html',
+      summaryQuote: '依据鲁医保发〔2024〕33号，稳妥做好居民医保待遇衔接，落实大病保险倾斜政策，推进异地就医结算信息化便利服务。'
     }
   ],
 

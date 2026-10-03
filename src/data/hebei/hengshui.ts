@@ -32,6 +32,17 @@ export const hengshuiData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.hengshui.gov.cn/art/2023/6/20/art_1420_19124.html',
       summaryQuote: '居民门诊不设起付线，报销比例50%，年度限额100元。居民住院起付线：一级200元、二级600元、三级1200元，报销比例85%、75%、60%，年度限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销92%、88%、85%，退休人员增加3个百分点，职工医保限额20万元，大额补助50万元。'
+    },
+    {
+      docId: 'hs-resident-notice-2024',
+      title: '衡水市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '衡医保发〔2024〕15号',
+      issuingDept: ["衡水市医疗保障局","衡水市财政局","国家税务总局衡水市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.hengshui.gov.cn/zwgk/zcfg/202409/t20240929_173921.html',
+      summaryQuote: '依据冀医保发〔2024〕7号，稳妥做好居民医保待遇衔接，落实大病保险连续参保激励，推进异地就医结算信息化便利服务。'
     }
   ],
 

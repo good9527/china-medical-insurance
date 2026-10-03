@@ -32,6 +32,17 @@ export const dingzhouData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.dzs.gov.cn/art/2023/5/25/art_1420_18921.html',
       summaryQuote: '居民门诊不设起付线，报销50%，年度最高限额100元。居民住院起付线一级200元、二级500元、三级1200元，报销比例对应85%、75%、60%，限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销92%、88%、85%，退休提高3个百分点，限额20万元，大额救助50万元。'
+    },
+    {
+      docId: 'dz-resident-notice-2024',
+      title: '定州市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '定医保发〔2024〕9号',
+      issuingDept: ["定州市医疗保障局","定州市财政局","国家税务总局定州市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.dingzhou.gov.cn/zwgk/zcfg/202409/t20240929_163920.html',
+      summaryQuote: '依据冀医保发〔2024〕7号，巩固省直管县居民基本医保参保与住院待遇，推进产前检查费纳入门诊保障，落实职工个账家庭共济。'
     }
   ],
 

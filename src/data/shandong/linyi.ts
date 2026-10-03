@@ -31,6 +31,17 @@ export const linyiCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.linyi.gov.cn/zwgk/zcfg/202311/t20231125_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级400元、三级750元，支付比例一级85%、二级75%、三级65%。大病保险起付线14000元，支付比例60%-75%。'
+    },
+    {
+      docId: 'ly-resident-notice-2024',
+      title: '临沂市医疗保障局等部门关于做好2024-2025年城乡居民基本医疗保障工作的通知',
+      docNumber: '临医保发〔2024〕18号',
+      issuingDept: ["临沂市医疗保障局","临沂市财政局","国家税务总局临沂市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.linyi.gov.cn/zwgk/zcfg/202409/t20240928_174920.html',
+      summaryQuote: '依据鲁医保发〔2024〕33号精神，健全城乡居民基本医疗保障机制，落实产前检查费用纳入门诊统筹保障政策，提升大病救助兜底效能。'
     }
   ],
 

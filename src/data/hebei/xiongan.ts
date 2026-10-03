@@ -32,6 +32,17 @@ export const xionganData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.xiongan.gov.cn/2023-04/15/c_121179432.htm',
       summaryQuote: '居民医保普通门诊一级及以下报销90%，二级及以上报销75%，二档缴费取消起付线；居民住院起付线一级200元、二级500元、三级1000元，报销比例对应90%、80%、65%，年度最高限额20万-25万元。大病保险起付线1.3万元，报销比例60%-80%。'
+    },
+    {
+      docId: 'xa-resident-notice-2024',
+      title: '河北雄安新区公共服务局关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '冀雄公服发〔2024〕12号',
+      issuingDept: ["河北雄安新区管委会公共服务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://xiongan.gov.cn/zwgk/zcfg/202409/t20240929_183910.html',
+      summaryQuote: '深入落实冀医保发〔2024〕7号政策措施，高质量推进雄安新区基本医保与大病保险待遇保障，落实京雄医保同城化与直接结算。'
     }
   ],
 

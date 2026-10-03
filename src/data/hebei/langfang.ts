@@ -32,6 +32,17 @@ export const langfangData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.lf.gov.cn/art/2023/7/20/art_1420_19315.html',
       summaryQuote: '居民门诊取消起付线，报销50%（连续参保满3年提高至60%），年度限额80元。居民住院起付线：一级200元、二级600元、三级1200元，报销比例对应85%、75%、60%，限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销93%、88%、85%，退休人员增加3个百分点，职工医保限额20万元，大额补助50万元。'
+    },
+    {
+      docId: 'lf-resident-notice-2024',
+      title: '廊坊市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '廊医保发〔2024〕16号',
+      issuingDept: ["廊坊市医疗保障局","廊坊市财政局","国家税务总局廊坊市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.lf.gov.cn/zwgk/zcfg/202409/t20240929_182930.html',
+      summaryQuote: '严格遵循冀医保发〔2024〕7号，稳定基本医疗保险待遇水平，提升大病保险精准保障功能，推进京津冀医保协同与免备案结算。'
     }
   ],
 

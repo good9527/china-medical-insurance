@@ -32,6 +32,17 @@ export const zhangjiakouData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.zjk.gov.cn/art/2023/6/30/art_1420_19102.html',
       summaryQuote: '居民住院起付线：一级及以下300元、二级800元、三级1500元；报销比例分别为90%、75%、60%，年度限额15万元，大病最高报销30万元。职工住院起付线一级200元、二级500元、三级800元，在职报销比例92%、88%、85%，退休提高3个百分点，职工医保年度限额20万元，大额补助50万元。'
+    },
+    {
+      docId: 'zjk-resident-notice-2024',
+      title: '张家口市医疗保障局等部门做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '张医保发〔2024〕14号',
+      issuingDept: ["张家界市医疗保障局","张家界市财政局","国家税务总局张家界市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.zjk.gov.cn/zwgk/zcfg/202409/t20240929_184910.html',
+      summaryQuote: '按照冀医保发〔2024〕7号统一部署，确保居民住院政策范围内基金支付比例稳定在70%左右，大病保险精准倾斜，深化个账家庭共济。'
     }
   ],
 

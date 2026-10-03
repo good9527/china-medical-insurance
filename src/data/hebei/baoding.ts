@@ -32,6 +32,17 @@ export const baodingData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.baoding.gov.cn/art/2021/12/25/art_1320_17492.html',
       summaryQuote: '职工住院起付线：三级医疗机构800元、二级500元、一级200元；在职支付比例分别为85%、88%、92%，退休人员支付比例上浮3个百分点，职工医保年度统筹限额20万元，大额医疗补助限额50万元。城乡居民门诊报销比例提高至60%；居民住院起付线三级1200元、二级600元、一级200元，报销比例对应60%、75%、85%，年度限额15万元。'
+    },
+    {
+      docId: 'bd-resident-notice-2024',
+      title: '保定市医疗保障局等部门关于做好2024-2025年度基本医疗保障有关工作的通知',
+      docNumber: '保医保发〔2024〕20号',
+      issuingDept: ["保定市医疗保障局","保定市财政局","国家税务总局保定市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.baoding.gov.cn/zwgk/zcfg/202409/t20240929_192810.html',
+      summaryQuote: '深入落实冀医保发〔2024〕7号精神，巩固居民医保政策范围内报销比例，健全参保长效激励与大病倾斜救助，防范因病致贫返贫。'
     }
   ],
 

@@ -31,6 +31,17 @@ export const ziboCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.zibo.gov.cn/zwgk/zcfg/202310/t20231025_214829.shtml',
       summaryQuote: '职工住院起付线：一级300元、二级500元、三级800元；在职支付比例一级92%、二级90%、三级86%（退休人员各项提高3%）。居民住院起付线一级150元、二级400元、三级800元，支付比例一级85%、二级75%、三级65%。大病保险起付线14000元，支付比例60%-75%。'
+    },
+    {
+      docId: 'zb-resident-notice-2024',
+      title: '淄博市医疗保障局等部门关于做好全市2024年城乡居民基本医疗保障有关工作的通知',
+      docNumber: '淄医保发〔2024〕18号',
+      issuingDept: ["淄博市医疗保障局","淄博市财政局","国家税务总局淄博市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.zibo.gov.cn/zwgk/zcfg/202409/t20240928_192841.shtml',
+      summaryQuote: '依据鲁医保发〔2024〕33号部署，巩固住院政策范围内70%报销水平，实施产前检查门诊保障，优化大病保险筹资与梯次倾斜救助。'
     }
   ],
 

@@ -31,6 +31,17 @@ export const zaozhuangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.zaozhuang.gov.cn/zwgk/zcfg/202309/t20230926_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级500元、三级800元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级150元、二级400元、三级750元，支付比例一级85%、二级75%、三级65%。大病保险起付线14000元，支付比例60%-75%。'
+    },
+    {
+      docId: 'zz-resident-notice-2024',
+      title: '枣庄市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '枣医保发〔2024〕15号',
+      issuingDept: ["枣庄市医疗保障局","枣庄市财政局","国家税务总局枣庄市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.zaozhuang.gov.cn/zwgk/zcfg/202409/t20240928_182910.html',
+      summaryQuote: '贯彻落实鲁医保发〔2024〕33号文件精神，稳步提升门诊保障水平向基层医疗机构倾斜，持续完善两病门诊用药保障机制。'
     }
   ],
 

@@ -31,6 +31,17 @@ export const hezeCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.heze.gov.cn/zwgk/zcfg/202311/t20231125_219084.shtml',
       summaryQuote: '职工住院起付线：一级200元、二级450元、三级750元；在职支付比例一级92%、二级88%、三级85%（退休人员各项提高3%）。居民住院起付线一级100元、二级350元、三级750元，支付比例一级85%、二级76%、三级66%。大病保险起付线14000元，支付比例60%-75%。'
+    },
+    {
+      docId: 'hz-resident-notice-2024',
+      title: '菏泽市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '菏医保发〔2024〕25号',
+      issuingDept: ["菏泽市医疗保障局","菏泽市财政局","国家税务总局菏泽市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.heze.gov.cn/zwgk/zcfg/202409/t20240928_192810.html',
+      summaryQuote: '按照鲁医保发〔2024〕33号统一部署，确保居民住院政策范围内基金支付比例稳定在70%左右，大病保险精准倾斜，防范因病致贫返贫。'
     }
   ],
 

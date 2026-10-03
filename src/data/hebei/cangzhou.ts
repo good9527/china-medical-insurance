@@ -32,6 +32,17 @@ export const cangzhouData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.cangzhou.gov.cn/art/2023/5/15/art_2210_19201.html',
       summaryQuote: '城乡居民普通门诊不设起付线，报销比例50%，年度限额150元；居民住院起付线：一级200元、二级600元、三级1200元，支付比例对应为85%、75%、60%，年度限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销92%、88%、85%，退休人员报销比例提高3个百分点，年度限额20万元，大额补助50万元。'
+    },
+    {
+      docId: 'cz-resident-notice-2024',
+      title: '沧州市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '沧医保发〔2024〕18号',
+      issuingDept: ["沧州市医疗保障局","沧州市财政局","国家税务总局沧州市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.cangzhou.gov.cn/zwgk/zcfg/202409/t20240929_174920.html',
+      summaryQuote: '贯彻落实冀医保发〔2024〕7号文件，持续稳固门诊与住院待遇保障，落实大病保险倾斜救助，提升异地就医直接结算率。'
     }
   ],
 

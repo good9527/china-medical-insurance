@@ -32,6 +32,17 @@ export const xinjiData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.xinji.gov.cn/art/2023/6/15/art_1420_18963.html',
       summaryQuote: '居民门诊不设起付线，报销比例50%，年度限额100元。居民住院起付线一级200元、二级500元、三级1200元，报销比例85%、75%、60%，年度限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销92%、88%、85%，退休提高3个百分点，职工医保限额20万元，大额救助50万元。'
+    },
+    {
+      docId: 'xj-resident-notice-2024',
+      title: '辛集市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '辛医保发〔2024〕10号',
+      issuingDept: ["辛集市医疗保障局","辛集市财政局","国家税务总局辛集市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.xinji.gov.cn/zwgk/zcfg/202409/t20240929_182910.html',
+      summaryQuote: '落实冀医保发〔2024〕7号部署，保持居民医保住院政策范围内报销比例稳定，强化门诊慢特病待遇保障，推进大病倾斜兜底。'
     }
   ],
 
