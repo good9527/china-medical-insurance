@@ -32,6 +32,17 @@ export const xuanchengData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.xuancheng.gov.cn/zcfg/gfxwj/3894201.html',
       summaryQuote: '居民基层普通门诊免起付线，报销60%，限额150元。居民住院起付线一级200元、二级500元、三级800元，支付比例对应85%、80%、70%，限额30万元。职工住院起付线一级200元、二级400元、三级600元，在职报销94%、92%、90%，退休提高3个百分点，职工医保限额30万元，大病救助最高支付50万元。'
+    },
+    {
+      docId: 'xc-resident-notice-2024',
+      title: '宣城市医疗保障局关于印发宣城市贯彻落实安徽省基本医疗保险待遇保障政策实施意见的通知',
+      docNumber: '宣医保发〔2024〕16号',
+      issuingDept: ["宣城市医疗保障局","宣城市财政局"],
+      publishDate: '2024-12-28',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.xuancheng.gov.cn/zcfg/gfxwj/9059123.html',
+      summaryQuote: '贯彻落实皖医保发〔2024〕9号新规，确保基层医疗卫生机构普通门诊报销比例达到60%、限额150元，居民基本医保统筹封顶30万元，大病保险最高支付30万元。'
     }
   ],
 

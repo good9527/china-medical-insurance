@@ -37,6 +37,17 @@ export const nanjingCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.nanjing.gov.cn/njybj/202112/t20211218_3214567.html',
       summaryQuote: '基本医疗保险住院起付线：一级300元、二级500元、三级1000元（第二次减半，第三次及以上免除）。职工住院报销比例三级在职88%（退休93%）、二级92%、一级95%；统筹基金最高支付限额36万元。居民住院起付线同上，报销比例一级90%、二级85%、三级65%，年度最高支付限额为36万元。大病保险起付线为1.5万元，不设封顶线。'
+    },
+    {
+      docId: 'nj-resident-notice-2024',
+      title: '南京市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '宁医保发〔2024〕16号',
+      issuingDept: ["南京市医疗保障局","南京市财政局","国家税务总局南京市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.nanjing.gov.cn/njybj/202409/t20240929_182910.html',
+      summaryQuote: '巩固城乡居民医保门诊与住院待遇水平，推进产前检查费纳入门诊保障，落实职工医保个账家庭共济，优化跨省异地就医直接结算。'
     }
   ],
 

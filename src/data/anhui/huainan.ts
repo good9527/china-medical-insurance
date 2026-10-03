@@ -32,6 +32,17 @@ export const huainanData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.huainan.gov.cn/zcfg/gfxwj/6893041.html',
       summaryQuote: '居民基层普通门诊免起付线，报销60%，限额200元。居民住院起付线一级200元、二级500元、三级800元，支付比例对应85%、80%、70%，限额30万元。职工住院起付线一级200元、二级400元、三级600元，在职报销94%、92%、90%，退休提高3个百分点，职工医保限额30万元，大病救助最高支付50万元。'
+    },
+    {
+      docId: 'hn-resident-notice-2024',
+      title: '淮南市医疗保障局等部门关于做好2024-2025年城乡居民基本医疗保障有关工作的通知',
+      docNumber: '淮医保发〔2024〕18号',
+      issuingDept: ["淮南市医疗保障局","淮南市财政局"],
+      publishDate: '2024-12-28',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.huainan.gov.cn/zcfg/gfxwj/8729104.html',
+      summaryQuote: '依据皖医保发〔2024〕9号，落实城乡居民门诊统筹及大病保险待遇政策，参保地基层机构门诊报销60%，统筹年度限额150元，居民基本医保封顶30万元。'
     }
   ],
 

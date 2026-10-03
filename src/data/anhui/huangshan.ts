@@ -32,6 +32,17 @@ export const huangshanData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.huangshan.gov.cn/zcfg/gfxwj/9184201.html',
       summaryQuote: '居民基层门诊免起付线，报销50%，限额150元。居民住院起付线一级200元、二级500元、三级800元，支付比例对应85%、80%、70%，限额30万元。职工住院起付线一级200元、二级400元、三级600元，在职报销94%、92%、90%，退休提高3个百分点，职工医保限额30万元，大病救助最高支付50万元。'
+    },
+    {
+      docId: 'hs-resident-notice-2024',
+      title: '黄山市医疗保障局 财政局关于贯彻落实安徽省城乡居民基本医疗保险待遇政策的通知',
+      docNumber: '黄医保发〔2024〕15号',
+      issuingDept: ["黄山市医疗保障局","黄山市财政局"],
+      publishDate: '2024-12-28',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.huangshan.gov.cn/zcfg/gfxwj/8948120.html',
+      summaryQuote: '依据皖医保发〔2024〕9号《安徽省城乡居民基本医疗保险和大病保险待遇保障政策》，统一普通门诊待遇，基层定点医疗机构报销60%、限额150元，统筹年度限额30万元。'
     }
   ],
 

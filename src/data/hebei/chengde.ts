@@ -32,6 +32,17 @@ export const chengdeData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.chengde.gov.cn/art/2022/4/15/art_1120_18632.html',
       summaryQuote: '居民住院起付线：一级（含乡镇卫生院）200元、二级600元、三级1200元；报销比例分别为85%、75%、60%，年度最高支付限额15万元，大病最高支付30万元。职工住院起付线一级200元、二级500元、三级800元，在职报销92%、88%、85%，退休人员报销比例提高3个百分点，基本医保年度限额20万元，大额救助最高支付50万元。'
+    },
+    {
+      docId: 'cd-resident-notice-2024',
+      title: '承德市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '承医保发〔2024〕16号',
+      issuingDept: ["承德市医疗保障局","承德市财政局","国家税务总局承德市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.chengde.gov.cn/art/2024/9/29/art_1120_192841.html',
+      summaryQuote: '依据冀医保发〔2024〕7号健全基本医保参保长效机制，巩固住院政策范围内70%报销水平，实施产前检查门诊保障，执行大病保险长效激励政策。'
     }
   ],
 

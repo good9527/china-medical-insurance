@@ -32,6 +32,17 @@ export const wuhuData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.wuhu.gov.cn/zcfg/gfxwj/8451204.html',
       summaryQuote: '城乡居民基层门诊免起付线，报销60%，限额150元。居民住院起付线一级200元、二级500元、三级800元，报销比例对应85%、80%、70%，年度限额30万元。职工住院起付线一级200元、二级400元、三级600元，在职报销94%、92%、90%，退休提高3个百分点，限额30万元，大病互助最高支付50万元。'
+    },
+    {
+      docId: 'wh-resident-notice-2024',
+      title: '芜湖市医疗保障局等部门贯彻落实安徽省城乡居民基本医疗保险和大病保险待遇保障政策的通知',
+      docNumber: '芜医保发〔2024〕18号',
+      issuingDept: ["芜湖市医疗保障局","芜湖市财政局"],
+      publishDate: '2024-12-28',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.wuhu.gov.cn/zcfg/gfxwj/8591024.html',
+      summaryQuote: '严格执行皖医保发〔2024〕9号文件标准，基层定点医疗机构门诊免起付线报销60%、限额150元，居民医保统筹封顶30万元，大病保险年度支付限额提升至30万元。'
     }
   ],
 
