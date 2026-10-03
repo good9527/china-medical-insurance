@@ -37,6 +37,17 @@ export const zhuzhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.zhuzhou.gov.cn/c16723/20231128/i1982310.html',
       summaryQuote: '住院起付标准：基层医疗卫生机构200元、一级500元、二级800元、三级1200元、省部属2000元。在职职工统筹支付比例：一级92%、二级90%、三级85%、省部属80%，退休人员增加2%。居民医保住院支付比例：基层85%、一级82%、二级80%、三级65%、省部属60%。同年度内同级别第二次及以上住院起付标准减半。职工统筹年度限额15万元，大额救助最高50万元。'
+    },
+    {
+      docId: 'zz-resident-notice-2024',
+      title: '株洲市医疗保障局等部门关于做好2025年度城乡居民基本医疗保险参保缴费及待遇保障有关工作的通知',
+      docNumber: '株医保发〔2024〕19号',
+      issuingDept: ["株洲市医疗保障局","株洲市财政局","国家税务总局株洲市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.zhuzhou.gov.cn/c16723/20240928/i2049182.html',
+      summaryQuote: '依据湘医保发〔2024〕41号及湘医保发〔2024〕35号部署，巩固城乡居民住院政策范围内70%报销水平，落实生育医疗费用门诊保障，优化跨省异地就医直接结算。'
     }
   ],
 

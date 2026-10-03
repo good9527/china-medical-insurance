@@ -32,6 +32,17 @@ export const jiujiangData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.jiujiang.gov.cn/zwgk/zcfg/202305/t20230522_6019241.html',
       summaryQuote: '居民基层普通门诊免起付线，报销65%，限额150元。居民住院起付线一级100元、二级400元、三级600元，支付比例对应90%、80%、65%，限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销95%、90%、85%，退休提高3个百分点，职工医保限额15万元，大病救助最高支付50万元。'
+    },
+    {
+      docId: 'jj-resident-notice-2024',
+      title: '九江市医疗保障局等部门转发做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '九医保发〔2024〕19号',
+      issuingDept: ["九江市医疗保障局","九江市财政局","国家税务总局九江市税务局"],
+      publishDate: '2024-09-25',
+      effectiveDate: '2024-09-25',
+      status: 'active',
+      officialUrl: 'http://ybj.jiujiang.gov.cn/zwgk/zcfg/202409/t20240928_192840.html',
+      summaryQuote: '按照赣医保发〔2024〕7号文件要求，确保居民医保住院政策范围内报销比例稳定在70%左右，加强大病精准倾斜，拓展职工个账家庭共济。'
     }
   ],
 

@@ -37,6 +37,17 @@ export const zhangjiajieCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.zjj.gov.cn/c672/20231128/i201934.html',
       summaryQuote: '住院起付标准：基层机构200元、一级500元、二级800元、三级1100元、省部属2000元。职工医保统筹支付比例基层93%、一级92%、二级90%、三级85%、省部属80%（退休人员增加2%）。城乡居民医保住院起付标准基层200元、一级500元、二级800元、三级1200元、省部属2000元，统筹支付比例分别为85%、82%、80%、65%、60%。同年度同级别第二次及以上住院起付标准减半。职工统筹年度最高支付限额15万元。'
+    },
+    {
+      docId: 'zjj-resident-notice-2024',
+      title: '张家界市医疗保障局等部门关于做好2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '张医保发〔2024〕18号',
+      issuingDept: ["张家界市医疗保障局","张家界市财政局","国家税务总局张家界市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.zjj.gov.cn/zwgk/zcfg/202409/t20240928_174920.html',
+      summaryQuote: '深入贯彻落实湘医保发〔2024〕41号通知，确保居民医保政策范围内基金支付水平稳定，加强大病医疗救助兜底保障功能。'
     }
   ],
 

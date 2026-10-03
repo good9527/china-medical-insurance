@@ -32,6 +32,17 @@ export const ganzhouData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.ganzhou.gov.cn/gzyb/c102283/202306/2504958c213448fdb09349880adbf1b3.shtml',
       summaryQuote: '居民医保普通门诊在基层定点机构不设起付线，政策范围内报销65%，年度最高支付限额150元。居民住院起付线一级100元、二级400元、三级600元，报销比例90%、80%、65%，封顶15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销95%、90%、85%，退休提高3个百分点，职工医保统筹最高支付10万元，大病补助最高支付50万元。'
+    },
+    {
+      docId: 'gz-resident-notice-2024',
+      title: '赣州市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '赣市医保发〔2024〕18号',
+      issuingDept: ["赣州市医疗保障局","赣州市财政局","国家税务总局赣州市税务局"],
+      publishDate: '2024-09-25',
+      effectiveDate: '2024-09-25',
+      status: 'active',
+      officialUrl: 'http://ybj.ganzhou.gov.cn/zwgk/zcfg/202409/t20240928_219382.html',
+      summaryQuote: '全面贯彻赣医保发〔2024〕7号部署，保持居民医保住院政策范围内报销比例稳定在70%左右，强化门诊慢特病待遇保障，推进个账近亲属共济。'
     }
   ],
 

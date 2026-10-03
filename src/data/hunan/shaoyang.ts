@@ -37,6 +37,17 @@ export const shaoyangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.shaoyang.gov.cn/zwgk/zcjd/202311/t20231128_1682910.html',
       summaryQuote: '住院起付标准：基层医疗机构200元、一级500元、二级800元、三级1200元、省部属2000元。在职职工统筹支付比例：基层93%、一级92%、二级90%、三级85%、省部属80%，退休人员分别提高2个百分点。城乡居民医保住院支付比例：基层85%、一级82%、二级80%、三级65%、省部属60%。同年度同级别第二次及以上住院起付线减半。职工统筹基金年度最高支付限额15万元，大额救助最高50万元。'
+    },
+    {
+      docId: 'sy-resident-notice-2024',
+      title: '邵阳市医疗保障局等部门关于做好2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '邵医保发〔2024〕22号',
+      issuingDept: ["邵阳市医疗保障局","邵阳市财政局","国家税务总局邵阳市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.shaoyang.gov.cn/zwgk/zcfg/202409/t20240928_183921.html',
+      summaryQuote: '严格遵循湘医保发〔2024〕41号，坚持基本医疗保险兜底功能，稳步提高城乡居民门诊统筹及大病保险待遇保障效能，大病保险精准倾斜。'
     }
   ],
 

@@ -32,6 +32,17 @@ export const jianData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.jian.gov.cn/news-show-13491.html',
       summaryQuote: '居民医保普通门诊在基层医疗卫生机构不设起付线，报销65%，年度限额150元。城乡居民住院起付线一级100元、二级400元、三级600元，报销比例90%、80%、65%，年度封顶15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销95%、90%、85%，退休人员各段提高3个百分点，职工统筹加互助年度最高支付50万元。'
+    },
+    {
+      docId: 'ja-resident-notice-2024',
+      title: '吉安市医疗保障局等部门关于做好2024-2025年城乡居民基本医疗保障工作的通知',
+      docNumber: '吉医保发〔2024〕15号',
+      issuingDept: ["吉安市医疗保障局","吉安市财政局","国家税务总局吉安市税务局"],
+      publishDate: '2024-09-25',
+      effectiveDate: '2024-09-25',
+      status: 'active',
+      officialUrl: 'http://ybj.jian.gov.cn/zwgk/zcfg/202409/t20240928_174920.html',
+      summaryQuote: '依据赣医保发〔2024〕7号精神，健全城乡居民基本医疗保障机制，落实产前检查费用纳入门诊统筹保障政策，提升大病救助兜底效能。'
     }
   ],
 

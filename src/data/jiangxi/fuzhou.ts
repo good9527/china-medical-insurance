@@ -32,6 +32,17 @@ export const fuzhouData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.jxfz.gov.cn/art/2023/7/3/art_4123_4021893.html',
       summaryQuote: '城乡居民普通门诊统筹在基层定点机构不设起付线，政策范围内报销65%，年度最高支付150元。居民住院起付线一级100元、二级400元、三级600元，报销比例90%、80%、65%，年度封顶15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销95%、90%、85%，退休提高3个百分点，职工医保统筹加互助年度最高支付50万元。'
+    },
+    {
+      docId: 'fz-resident-notice-2024',
+      title: '抚州市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '抚医保发〔2024〕17号',
+      issuingDept: ["抚州市医疗保障局","抚州市财政局","国家税务总局抚州市税务局"],
+      publishDate: '2024-09-25',
+      effectiveDate: '2024-09-25',
+      status: 'active',
+      officialUrl: 'http://ybj.jxfz.gov.cn/zwgk/zcfg/202409/t20240928_163920.html',
+      summaryQuote: '依据赣医保发〔2024〕7号，稳步提高城乡居民门诊统筹及大病保险待遇保障效能，全面落实参保长效激励与个账家庭共济政策。'
     }
   ],
 

@@ -37,6 +37,17 @@ export const yongzhouCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.yzcity.gov.cn/zwgk/zcjd/202311/t20231128_176291.html',
       summaryQuote: '统筹区内住院起付标准：基层机构200元、一级500元、二级800元、三级1100元、省部属2000元。职工医保统筹支付比例基层93%、一级92%、二级90%、三级85%、省部属80%（退休人员增加2%）。城乡居民医保住院起付标准基层200元、一级500元、二级800元、三级1200元、省部属2000元，统筹支付比例分别为85%、82%、80%、65%、60%。同级别第二次及以上住院起付标准减半。职工统筹年度最高支付限额15万元。'
+    },
+    {
+      docId: 'yz-resident-notice-2024',
+      title: '永州市医疗保障局等部门关于做好2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '永医保发〔2024〕20号',
+      issuingDept: ["永州市医疗保障局","永州市财政局","国家税务总局永州市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.yongzhou.gov.cn/zwgk/zcfg/202409/t20240928_173921.html',
+      summaryQuote: '依据湘医保发〔2024〕41号精神，健全城乡居民基本医疗保障机制，落实产前检查费用纳入门诊统筹保障政策，提升大病救助兜底效能。'
     }
   ],
 

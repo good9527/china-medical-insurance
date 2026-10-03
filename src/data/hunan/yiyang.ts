@@ -37,6 +37,17 @@ export const yiyangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.yiyang.gov.cn/zwgk/zcjd/202311/t20231128_948210.html',
       summaryQuote: '住院起付标准：基层机构200元、一级500元、二级800元、三级1100元、省部属2000元。职工医保统筹支付比例基层93%、一级92%、二级90%、三级85%、省部属80%（退休人员增加2%）。城乡居民医保住院起付标准基层200元、一级500元、二级800元、三级1200元、省部属2000元，统筹支付比例分别为85%、82%、80%、65%、60%。同级别第二次及以上住院起付标准减半。职工统筹年度最高支付限额15万元。'
+    },
+    {
+      docId: 'yy-resident-notice-2024',
+      title: '益阳市医疗保障局等部门关于做好2025年度城乡居民基本医疗保险有关工作的通知',
+      docNumber: '益医保发〔2024〕19号',
+      issuingDept: ["益阳市医疗保障局","益阳市财政局","国家税务总局益阳市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.yiyang.gov.cn/zwgk/zcfg/202409/t20240928_182930.html',
+      summaryQuote: '落实湘医保发〔2024〕41号文件，坚持医保待遇稳健提升，持续推进产前检查纳入门诊保障，落实职工医保个账近亲属共济待遇。'
     }
   ],
 

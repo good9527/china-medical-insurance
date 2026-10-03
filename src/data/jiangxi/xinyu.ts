@@ -32,6 +32,17 @@ export const xinyuData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.xinyu.gov.cn/zwgk/zcfg/202305/t20230522_5184920.html',
       summaryQuote: '居民基层普通门诊免起付线，报销65%，限额150元。居民住院起付线一级100元、二级400元、三级600元，支付比例对应90%、80%、65%，限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销95%、90%、85%，退休提高3个百分点，职工医保限额15万元，大病救助最高支付50万元。'
+    },
+    {
+      docId: 'xy-resident-notice-2024',
+      title: '新余市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '余医保发〔2024〕15号',
+      issuingDept: ["新余市医疗保障局","新余市财政局","国家税务总局新余市税务局"],
+      publishDate: '2024-09-25',
+      effectiveDate: '2024-09-25',
+      status: 'active',
+      officialUrl: 'http://ybj.xinyu.gov.cn/zwgk/zcfg/202409/t20240928_173920.html',
+      summaryQuote: '深入落实赣医保发〔2024〕7号通知，巩固城乡居民医疗保险待遇，提高住院分娩生育医疗费用保障水平，优化异地直接结算。'
     }
   ],
 

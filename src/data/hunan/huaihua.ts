@@ -37,6 +37,17 @@ export const huaihuaCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.huaihua.gov.cn/zwgk/zcjd/202312/t20231202_196291.html',
       summaryQuote: '统筹区内住院起付标准：基层机构200元、一级500元、二级800元、三级1100元、省部属2000元。职工医保统筹支付比例基层93%、一级92%、二级90%、三级85%、省部属80%（退休人员增加2%）。城乡居民医保住院起付标准基层200元、一级500元、二级800元、三级1200元、省部属2000元，统筹支付比例分别为85%、82%、80%、65%、60%。同级别第二次及以上住院起付标准减半。职工统筹年度最高支付限额15万元。'
+    },
+    {
+      docId: 'hh-resident-notice-2024',
+      title: '怀化市医疗保障局等部门关于做好2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '怀医保发〔2024〕22号',
+      issuingDept: ["怀化市医疗保障局","怀化市财政局","国家税务总局怀化市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.huaihua.gov.cn/zwgk/zcfg/202409/t20240928_183910.html',
+      summaryQuote: '全面贯彻湘医保发〔2024〕41号部署，保持居民医保住院政策范围内报销比例稳定，强化门诊慢特病待遇保障，推进个账近亲属共济。'
     }
   ],
 

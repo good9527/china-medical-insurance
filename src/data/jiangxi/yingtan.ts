@@ -32,6 +32,17 @@ export const yingtanData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.yingtan.gov.cn/zwgk/zcfg/202305/t20230522_5891042.html',
       summaryQuote: '居民基层普通门诊免起付线，报销65%，限额150元。居民住院起付线一级100元、二级400元、三级600元，支付比例对应90%、80%、65%，限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销95%、90%、85%，退休提高3个百分点，职工医保限额15万元，大病救助最高支付50万元。'
+    },
+    {
+      docId: 'yt-resident-notice-2024',
+      title: '鹰潭市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '鹰医保发〔2024〕16号',
+      issuingDept: ["鹰潭市医疗保障局","鹰潭市财政局","国家税务总局鹰潭市税务局"],
+      publishDate: '2024-09-25',
+      effectiveDate: '2024-09-25',
+      status: 'active',
+      officialUrl: 'http://ybj.yingtan.gov.cn/zwgk/zcfg/202409/t20240928_183921.html',
+      summaryQuote: '依据赣医保发〔2024〕7号，稳妥做好居民医保待遇衔接，落实大病保险倾斜政策，推进异地就医结算信息化便利服务。'
     }
   ],
 

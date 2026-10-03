@@ -37,6 +37,17 @@ export const xiangtanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.xiangtan.gov.cn/zwgk/zcjd/202311/t20231130_1120934.html',
       summaryQuote: '住院起付标准：基层卫生院200元、一级400元、二级600元、三级1200元。职工医保统筹支付比例一级92%、二级90%、三级85%（退休人员增加2%）。城乡居民医保住院起付标准基层200元、一级500元、二级800元、三级1200元，统筹支付比例分别为85%、82%、80%、65%。年度内同级别第二次及以上住院起付标准减半。职工基本统筹年度限额15万元。'
+    },
+    {
+      docId: 'xt-resident-notice-2024',
+      title: '湘潭市医疗保障局等部门关于做好2025年度城乡居民基本医疗保险有关工作的通知',
+      docNumber: '潭医保发〔2024〕18号',
+      issuingDept: ["湘潭市医疗保障局","湘潭市财政局","国家税务总局湘潭市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.xiangtan.gov.cn/zwgk/zcfg/202409/t20240928_192840.html',
+      summaryQuote: '贯彻落实湘医保发〔2024〕41号通知精神，稳定居民住院与普通门诊待遇，强化大病保险精准倾斜，深化职工医保个人账户近亲属共济。'
     }
   ],
 

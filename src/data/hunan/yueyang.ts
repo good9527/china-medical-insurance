@@ -37,6 +37,17 @@ export const yueyangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.yueyang.gov.cn/zwgk/zcjd/202311/t20231122_1762910.html',
       summaryQuote: '统筹区内住院起付标准：基层机构200元、一级500元、二级800元、三级1100元、省部属1600元。职工医保统筹支付比例基层93%、一级92%、二级90%、三级85%、省部属80%（退休人员增加2%）。城乡居民医保住院起付标准基层200元、一级500元、二级800元、三级1200元、省部属2000元，统筹支付比例分别为85%、82%、80%、65%、60%。第二次及以上住院起付标准减半。职工统筹年度最高支付限额15万元。'
+    },
+    {
+      docId: 'yy-resident-notice-2024',
+      title: '岳阳市医疗保障局等部门关于做好2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '岳医保发〔2024〕21号',
+      issuingDept: ["岳阳市医疗保障局","岳阳市财政局","国家税务总局岳阳市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.yueyang.gov.cn/zwgk/zcfg/202409/t20240928_192810.html',
+      summaryQuote: '依据湘医保发〔2024〕41号，持续筑牢基本医保、大病保险和医疗救助三重保障网，强化门诊慢特病服务保障与异地就医直接结算。'
     }
   ],
 

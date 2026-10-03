@@ -32,6 +32,17 @@ export const jingdezhenData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.jdz.gov.cn/zwgk/zcfg/202305/t20230522_5184920.html',
       summaryQuote: '居民基层普通门诊免起付线，报销65%，限额150元。居民住院起付线一级100元、二级400元、三级600元，支付比例对应90%、80%、65%，限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销95%、90%、85%,退休提高3个百分点，职工医保限额15万元，大病救助最高支付50万元。'
+    },
+    {
+      docId: 'jdz-resident-notice-2024',
+      title: '景德镇市医疗保障局等部门贯彻落实做好2024-2025年城乡居民基本医疗保障有关工作的通知',
+      docNumber: '景医保发〔2024〕15号',
+      issuingDept: ["景德镇市医疗保障局","景德镇市财政局","国家税务总局景德镇市税务局"],
+      publishDate: '2024-09-25',
+      effectiveDate: '2024-09-25',
+      status: 'active',
+      officialUrl: 'http://ybj.jdz.gov.cn/zwgk/zcfg/202409/t20240928_5281920.html',
+      summaryQuote: '依据赣医保发〔2024〕7号部署，巩固居民住院政策范围内70%报销水平，落实符合规定的产前检查门诊保障，统筹安排大病保险资金。'
     }
   ],
 

@@ -32,6 +32,17 @@ export const shangraoData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.zgsr.gov.cn/zcfg/202306/t20230630_5182914.html',
       summaryQuote: '城乡居民普通门诊统筹基层定点机构无起付线，报销65%，年度最高支付限额150元。居民住院起付线一级100元、二级400元、三级600元，报销比例90%、80%、65%，年度封顶15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销95%、90%、85%，退休提高3个百分点，职工医保统筹加互助年度最高支付50万元。'
+    },
+    {
+      docId: 'sr-resident-notice-2024',
+      title: '上饶市医疗保障局等部门转发关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '饶医保发〔2024〕18号',
+      issuingDept: ["上饶市医疗保障局","上饶市财政局","国家税务总局上饶市税务局"],
+      publishDate: '2024-09-25',
+      effectiveDate: '2024-09-25',
+      status: 'active',
+      officialUrl: 'http://ybj.zgsr.gov.cn/zwgk/zcfg/202409/t20240928_182910.html',
+      summaryQuote: '严格遵循赣医保发〔2024〕7号，稳定基本医保住院待遇水平，大病保险精准倾斜救助，提升异地就医直接结算率。'
     }
   ],
 

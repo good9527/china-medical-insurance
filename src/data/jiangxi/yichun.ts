@@ -32,6 +32,17 @@ export const yichunData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.yichun.gov.cn/ycsylbzj/zcfg/202306/11d13fcae66948bb9211c472f8833b91.shtml',
       summaryQuote: '居民医保普通门诊在定点基层及一级机构无起付线，报销65%，年度封顶150元。城乡居民住院起付线一级100元、二级400元、三级600元，报销比例对应90%、80%、65%，年度封顶15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销95%、90%、85%，退休提高3个百分点，职工医保统筹限额10万元，大病补助最高支付50万元。'
+    },
+    {
+      docId: 'yc-resident-notice-2024',
+      title: '宜春市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '宜医保字〔2024〕18号',
+      issuingDept: ["宜春市医疗保障局","宜春市财政局","国家税务总局宜春市税务局"],
+      publishDate: '2024-09-25',
+      effectiveDate: '2024-09-25',
+      status: 'active',
+      officialUrl: 'http://ybj.yichun.gov.cn/zwgk/zcfg/202409/t20240928_184910.html',
+      summaryQuote: '落实赣医保发〔2024〕7号文件要求，巩固居民医保住院待遇水平，推进产前检查费纳入门诊保障，落实职工医保个账近亲属共济。'
     }
   ],
 
