@@ -32,6 +32,17 @@ export const baoshanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.baoshan.gov.cn/zwgk/zcfg/202311/t20231126_1289123.html',
       summaryQuote: '居民门诊在定点基层机构免起付线，报销50%，年度限额400元。城乡居民住院起付线一级100元、二级400元、三级800元，政策范围内报销比例对应85%、75%、60%，统筹年度限额6万元。职工住院起付线一级200元、二级500元、三级1200元，在职报销91%、88%、85%，退休提高4个百分点。'
+    },
+    {
+      docId: 'bs-resident-notice-2024',
+      title: '保山市医疗保障局等部门转发做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '保医保发〔2024〕14号',
+      issuingDept: ["保山市医疗保障局","保山市财政局","国家税务总局保山市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.baoshan.gov.cn/zwgk/zcfg/202409/t20240929_173920.html',
+      summaryQuote: '按照省医保统一部署，确保居民医保住院政策范围内报销比例稳定在70%左右，加强大病精准倾斜，推进异地就医直接结算。'
     }
   ],
 

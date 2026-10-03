@@ -32,6 +32,17 @@ export const nujiangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.nujiang.gov.cn/zwgk/zcfg/202311/t20231126_1289123.html',
       summaryQuote: '居民门诊在定点基层机构免起付线，报销50%，年度限额400元。城乡居民住院起付线一级100元、二级400元、三级800元，政策范围内报销比例对应85%、75%、60%，统筹年度限额6万元。职工住院起付线一级200元、二级500元、三级1200元，在职报销91%、88%、85%，退休提高4个百分点。'
+    },
+    {
+      docId: 'nj-resident-notice-2024',
+      title: '怒江傈僳族自治州医疗保障局等部门做好2024-2025年度基本医疗保障有关工作的通知',
+      docNumber: '怒医保发〔2024〕14号',
+      issuingDept: ["怒江州医疗保障局","怒江州财政局","国家税务总局怒江州税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.nujiang.gov.cn/zwgk/zcfg/202409/t20240929_163920.html',
+      summaryQuote: '依据国家及省文件要求，切实防范化解因病致贫返贫风险，强化高峡峡谷区大病医疗救助兜底保障功能。'
     }
   ],
 

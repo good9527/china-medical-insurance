@@ -32,6 +32,17 @@ export const yuxiCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.yuxi.gov.cn/zwgk/zcfg/202311/t20231126_1289123.html',
       summaryQuote: '居民门诊在定点基层机构免起付线，报销50%，年度限额400元。城乡居民住院起付线一级100元、二级400元、三级800元，政策范围内报销比例对应85%、75%、60%，统筹年度限额6万元。职工住院起付线一级200元、二级500元、三级1200元，在职报销91%、88%、85%，退休提高4个百分点。'
+    },
+    {
+      docId: 'yx-resident-notice-2024',
+      title: '玉溪市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '玉医保发〔2024〕15号',
+      issuingDept: ["玉溪市医疗保障局","玉溪市财政局","国家税务总局玉溪市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.yuxi.gov.cn/zwgk/zcfg/202409/t20240929_182910.html',
+      summaryQuote: '贯彻落实全省医疗保障政策部署，稳步提升门诊保障水平向基层医疗机构倾斜，持续完善两病门诊用药保障机制。'
     }
   ],
 
