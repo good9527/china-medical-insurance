@@ -532,7 +532,8 @@ const policyOneSentenceDigest = computed(() => {
   const pkg = currentPkg.value;
   if (!pkg) return '';
   if (currentType.value === 'employee') {
-    const capStr = pkg.outpatient.annualCap === 0 ? '普通门诊统筹上不封顶' : `普通门诊统筹年度最高可报 ¥${pkg.outpatient.annualCap.toLocaleString()}（起付线 ¥${pkg.outpatient.annualDeductible}）`;
+    const dedStr = pkg.outpatient.annualDeductible !== undefined ? `（起付线 ¥${pkg.outpatient.annualDeductible}）` : '';
+    const capStr = pkg.outpatient.annualCap === 0 ? '普通门诊统筹上不封顶' : `普通门诊统筹年度最高可报 ¥${pkg.outpatient.annualCap.toLocaleString()}${dedStr}`;
     const t3 = pkg.inpatient.tierBenefits.tier3;
     const t3Str = t3 ? `三级定点医院住院报销 ${Math.round(t3.reimbursementRatio * 100)}%（起付线 ¥${t3.deductible}）` : '';
     const bonus = t3?.retireeRatioBonus ? `退休人员住院比例再上浮 +${Math.round(t3.retireeRatioBonus * 100)}% 优待` : '';
@@ -541,7 +542,8 @@ const policyOneSentenceDigest = computed(() => {
   } else {
     const t3 = pkg.inpatient.tierBenefits.tier3;
     const t3Str = t3 ? `三级定点医院住院按 ${Math.round(t3.reimbursementRatio * 100)}% 报销（起付线 ¥${t3.deductible}）` : '';
-    const catStr = pkg.catastrophic ? `大病保险二次报销比例最高达 ${Math.round(pkg.catastrophic.maxRatio * 100)}%` : '大病保险政策兜底';
+    const maxRatio = pkg.catastrophic?.tiers?.length ? Math.max(...pkg.catastrophic.tiers.map(t => t.ratio)) : 0;
+    const catStr = maxRatio > 0 ? `大病保险二次报销比例最高达 ${Math.round(maxRatio * 100)}%` : '大病保险政策兜底';
     const comm = pkg.inpatient.tierBenefits.community ? `基层医疗机构报销 ${Math.round(pkg.inpatient.tierBenefits.community.reimbursementRatio * 100)}%` : '';
     const parts = [t3Str, catStr, comm].filter(Boolean);
     return parts.join('；') + '。';

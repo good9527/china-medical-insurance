@@ -131,7 +131,7 @@ export function writeMarkdownReport(stat: PolicyHealthStat, targetPath: string):
 
   md += `\n## 3. 待重点复核与政策演进预警清单\n\n`;
   if (stat.attentionCities.length === 0) {
-    md += `> ✅ **太棒了！全网 344 个统筹区、${stat.totalSourceDocs} 份官方公文均符合最新格式与溯源规范，暂无异常！**\n\n`;
+    md += `> ✅ **太棒了！全网 ${stat.totalCities} 个统筹区、${stat.totalSourceDocs} 份官方公文均符合最新格式与溯源规范，暂无异常！**\n\n`;
   } else {
     md += `共发现 ${stat.attentionCities.length} 项建议跟进项：\n\n`;
     for (const item of stat.attentionCities) {
@@ -142,7 +142,7 @@ export function writeMarkdownReport(stat: PolicyHealthStat, targetPath: string):
   md += `\n## 4. 长期监控更新规范（管理员操作守则）\n`;
   md += `1. **定期巡检**：每月或季度执行 \`npm run monitor:policies\`，生成最新政策健康大盘；\n`;
   md += `2. **新政入库**：当某地医保局发布最新政策（如门诊共济限额调整）时，修改对应城市数据文件，更新 \`sourceDocs\`、发文字号、条款摘录与 \`lastUpdated\`；\n`;
-  md += `3. **全量回归**：更新任何数据后执行 \`npm run check:all\`，确保数据规范性与 6800+ 项自动化测算断言 100% 通过。\n`;
+  md += `3. **全量回归**：更新任何数据后执行 \`npm run check:all\`，确保数据规范性与 7100+ 项自动化测算断言 100% 通过。\n`;
 
   fs.writeFileSync(targetPath, md, 'utf-8');
 }

@@ -4,7 +4,7 @@ import { allCities } from '../data';
 import type { CityInsuranceData } from '../data/types';
 
 /**
- * 全国 344 个统筹区医保政策官网长效更新抓取与监控流水线
+ * 全国 348 个统筹区医保政策官网长效更新抓取与监控流水线
  * 遵循国家医疗保障局（NHSA）信息公开及各省市医保政务网标准规范
  */
 
@@ -31,7 +31,7 @@ export function runPolicyUpdatePipeline(): {
 } {
   const now = new Date().toISOString();
   console.log(`\n======================================================`);
-  console.log(`🌐 启动全国 344 个统筹区医保官网长效更新与政策抓取管道`);
+  console.log(`🌐 启动全国 ${allCities.length} 个统筹区医保官网长效更新与政策抓取管道`);
   console.log(`⏰ 执行时间: ${now.slice(0, 19).replace('T', ' ')}`);
   console.log(`======================================================\n`);
 
@@ -46,7 +46,9 @@ export function runPolicyUpdatePipeline(): {
     let latestTitle = '';
 
     for (const doc of docs) {
-      const year = parseInt((doc.publishDate || doc.effectiveDate || '2020').slice(0, 4), 10);
+      const pYear = parseInt((doc.publishDate || '2020').slice(0, 4), 10);
+      const eYear = parseInt((doc.effectiveDate || '2020').slice(0, 4), 10);
+      const year = Math.max(pYear, eYear);
       if (year >= maxYear) {
         maxYear = year;
         latestTitle = doc.title;
@@ -97,7 +99,7 @@ export function savePipelineReport(report: ReturnType<typeof runPolicyUpdatePipe
     fs.mkdirSync(dir, { recursive: true });
   }
 
-  let md = `# 全国 344 个统筹区医保官网长效监控与政策更新大盘\n\n`;
+  let md = `# 全国 ${report.totalCities} 个统筹区医保官网长效监控与政策更新大盘\n\n`;
   md += `> **最近管道核验执行日**：${report.timestamp.slice(0, 10)}  \n`;
   md += `> **纳管统筹区全集**：全国 31 个省级行政区 · **${report.totalCities} 个地级市及统筹区** (100% 全域覆盖)  \n`;
   md += `> **政策时效分布**：🟢 2024~2026年现行活跃新政 **${report.freshCities}** 个 (${((report.freshCities/report.totalCities)*100).toFixed(1)}%) | 🟡 2022~2023年深化规程 **${report.stableCities}** 个 | 🔴 需跟进更新 **${report.needUpdateCities}** 个\n\n`;

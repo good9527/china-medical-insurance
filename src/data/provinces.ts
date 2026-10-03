@@ -542,6 +542,6 @@ export function getCitiesByProvinceCode(provinceCode: string): CityOption[] {
 }
 
 // 获取具体城市的政策数据实体
-export function getCityData(cityCode: string): CityInsuranceData | undefined {
-  return getCityDataByCode(cityCode) || allCities[0];
+export function getCityData(cityCode?: string): CityInsuranceData {
+  return (cityCode ? getCityDataByCode(cityCode) : undefined) || allCities[0];
 }

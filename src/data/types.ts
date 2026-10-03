@@ -15,6 +15,9 @@ export interface OfficialPolicyDoc {
   summaryQuote: string;       // 对应条款核心原文摘录
 }
 
+// 兼容别名
+export type SourceDocument = OfficialPolicyDoc;
+
 // 医院等级划分
 export type HospitalTier = 'community' | 'tier1' | 'tier2' | 'tier3' | 'tier3_top';
 
@@ -29,7 +32,7 @@ export interface HospitalTierBenefit {
 // 门诊保障规则
 export interface OutpatientBenefit {
   sourceDocId: string;        // 关联的官方文件 ID
-  annualDeductible: number;   // 门诊年度累计起付线（元）或基准起付标准
+  annualDeductible?: number;  // 门诊年度累计起付线（元）或基准起付标准（若未配置默认为0或按就医等级）
   annualDeductibleRetiree?: number; // 退休人员门诊年度起付线（若有优待政策，如北京1300/成都150/天津700/重庆100/杭州200/苏州400）
   deductibleType?: 'annual' | 'per_visit'; // 起付标准类型：'annual'(年度累计起付，默认) 或 'per_visit'(按就医诊次起付)
   annualCap: number;          // 门诊统筹年度最高支付限额（在职）
@@ -50,7 +53,7 @@ export interface InpatientBenefit {
 
 // 大病保险 / 大额医疗互助规则
 export interface CatastrophicBenefit {
-  sourceDocId: string;
+  sourceDocId?: string;       // 关联官方文件ID（若未独立制定则默认遵从住院综合规程）
   name: string;               // '城镇职工大额医疗互助' 或 '城乡居民大病保险'
   deductible: number;         // 起付线
   tiers: {

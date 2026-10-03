@@ -228,13 +228,13 @@
             </view>
 
             <!-- 门诊政策提醒 -->
-            <view class="policy-notice" v-if="form.treatmentType === 'outpatient'">
+            <view class="policy-notice" v-if="form.treatmentType === 'outpatient' && currentCityData">
               <text class="notice-badge">门诊政策提醒</text>
               <text class="notice-content" v-if="form.insuranceType === 'employee'">
-                {{ currentCityData.cityName }}职工门诊共济：{{ currentCityData.employee.outpatient.annualDeductible > 0 ? ('年起付线 ¥' + currentCityData.employee.outpatient.annualDeductible + (currentCityData.employee.outpatient.annualDeductibleRetiree ? '（退休优待¥' + currentCityData.employee.outpatient.annualDeductibleRetiree + '）；' : '；')) : '0元起付直接报销；' }}{{ currentCityData.employee.outpatient.annualCap >= 9999999 ? '门诊不设最高封顶线（上不封顶）。' : ('在职年封顶 ¥' + currentCityData.employee.outpatient.annualCap + '，退休年封顶 ¥' + (currentCityData.employee.outpatient.annualCapRetiree || currentCityData.employee.outpatient.annualCap) + '。') }}
+                {{ currentCityData.cityName }}职工门诊共济：{{ (currentCityData.employee.outpatient.annualDeductible || 0) > 0 ? ('年起付线 ¥' + currentCityData.employee.outpatient.annualDeductible + (currentCityData.employee.outpatient.annualDeductibleRetiree ? '（退休优待¥' + currentCityData.employee.outpatient.annualDeductibleRetiree + '）；' : '；')) : '0元起付直接报销；' }}{{ currentCityData.employee.outpatient.annualCap >= 9999999 ? '门诊不设最高封顶线（上不封顶）。' : ('在职年封顶 ¥' + currentCityData.employee.outpatient.annualCap + '，退休年封顶 ¥' + (currentCityData.employee.outpatient.annualCapRetiree || currentCityData.employee.outpatient.annualCap) + '。') }}
               </text>
               <text class="notice-content" v-else>
-                {{ currentCityData.cityName }}居民门诊统筹：年封顶额度 ¥{{ currentCityData.resident.outpatient.annualCap }}/人，{{ currentCityData.resident.outpatient.annualDeductible > 0 ? ('年起付标准 ¥' + currentCityData.resident.outpatient.annualDeductible + '；') : '定点基层机构免起付线即时结算。' }}
+                {{ currentCityData.cityName }}居民门诊统筹：年封顶额度 ¥{{ currentCityData.resident.outpatient.annualCap }}/人，{{ (currentCityData.resident.outpatient.annualDeductible || 0) > 0 ? ('年起付标准 ¥' + currentCityData.resident.outpatient.annualDeductible + '；') : '定点基层机构免起付线即时结算。' }}
               </text>
             </view>
           </view>
@@ -434,12 +434,12 @@
                   <text class="flow-val font-mono">¥{{ (parseFloat(form.totalCost) || 0).toLocaleString() }}</text>
                 </view>
 
-                <view class="flow-row" v-if="result.breakdown.nonInsuranceDeducted > 0">
+                <view class="flow-row" v-if="(result.breakdown.nonInsuranceCost + (result.breakdown.classBPriorPay || 0)) > 0">
                   <view class="flow-row-name">
                     <text class="flow-step-num num-sub">-</text>
                     <text class="flow-label">自费/乙类先行自付</text>
                   </view>
-                  <text class="flow-val text-dim font-mono">- ¥{{ result.breakdown.nonInsuranceDeducted.toLocaleString() }}</text>
+                  <text class="flow-val text-dim font-mono">- ¥{{ ((result.breakdown.nonInsuranceCost || 0) + (result.breakdown.classBPriorPay || 0)).toLocaleString() }}</text>
                 </view>
 
                 <view class="flow-row">

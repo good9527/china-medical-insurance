@@ -6248,6 +6248,99 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H32 PASS] 西安居民基层门诊(花费200): 免起付线，按70%实报¥140`);
   passCount++;
 
+  console.log(`\n>>> [Suite H33] 执行 2025-2026 最新全网政策与参保长效激励专项前沿测算断言...`);
+
+  // 1. 天津居民门诊 (花费1200): 扣起付¥600，按55%实报¥330 (依据: 津政办规〔2024〕13号, 津医保发〔2021〕88号)
+  totalChecks++;
+  const tjResOut2025 = calculateReimbursement({
+    cityCode: '120100',
+    insuranceType: 'resident',
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 1200
+  });
+  assertEqual(tjResOut2025.breakdown.deductibleDeducted, 600, '天津居民门诊起付线应为600元');
+  assertEqual(tjResOut2025.breakdown.baseReimbursed, 330, '天津居民门诊一级机构实报不符: (1200-600)*0.55=330');
+  console.log(`  ✓ [H33 PASS] 天津居民门诊(花费1200): 扣起付¥600，按55%实报¥330 (依据: 津政办规〔2024〕13号)`);
+  passCount++;
+
+  // 2. 台州居民三级住院 (花费10000): 扣起付¥800，按2025新政70%实报¥6440 (依据: 台医保发〔2024〕30号)
+  totalChecks++;
+  const tzResIn2025 = calculateReimbursement({
+    cityCode: '331000',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(tzResIn2025.breakdown.deductibleDeducted, 800, '台州居民三级住院起付线应为800元');
+  assertEqual(tzResIn2025.breakdown.baseReimbursed, 6440, '台州居民三级住院实报不符: (10000-800)*0.70=6440');
+  console.log(`  ✓ [H33 PASS] 台州居民三级住院(花费10000): 扣起付¥800，按70%实报¥6440 (依据: 台医保发〔2024〕30号)`);
+  passCount++;
+
+  // 3. 合肥居民二级住院 (花费10000): 扣起付¥500，按85%实报¥8075 (依据: 合医保发〔2024〕19号, 皖医保发〔2024〕9号)
+  totalChecks++;
+  const hfResIn2025 = calculateReimbursement({
+    cityCode: '340100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(hfResIn2025.breakdown.deductibleDeducted, 500, '合肥居民二级住院起付线应为500元');
+  assertEqual(hfResIn2025.breakdown.baseReimbursed, 8075, '合肥居民二级住院实报不符: (10000-500)*0.85=8075');
+  console.log(`  ✓ [H33 PASS] 合肥居民二级住院(花费10000): 扣起付¥500，按85%实报¥8075 (依据: 合医保发〔2024〕19号)`);
+  passCount++;
+
+  // 4. 贵阳居民基层门诊 (花费300): 免起付，按50%实报¥150 (依据: 筑医保发〔2024〕18号, 黔医保发〔2025〕16号)
+  totalChecks++;
+  const gyResOut2025 = calculateReimbursement({
+    cityCode: '520100',
+    insuranceType: 'resident',
+    treatmentType: 'outpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 300
+  });
+  assertEqual(gyResOut2025.breakdown.deductibleDeducted, 0, '贵阳居民基层门诊免起付');
+  assertEqual(gyResOut2025.breakdown.baseReimbursed, 150, '贵阳居民基层门诊实报不符: 300*0.50=150');
+  console.log(`  ✓ [H33 PASS] 贵阳居民基层门诊(花费300): 免起付，按50%实报¥150 (依据: 黔医保发〔2025〕16号)`);
+  passCount++;
+
+  // 5. 石家庄居民二级住院 (花费10000): 扣起付¥800，按75%实报¥6900 (依据: 石医保发〔2024〕42号, 冀医保发〔2024〕7号)
+  totalChecks++;
+  const sjzResIn2025 = calculateReimbursement({
+    cityCode: '130100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(sjzResIn2025.breakdown.deductibleDeducted, 800, '石家庄居民二级住院起付线应为800元');
+  assertEqual(sjzResIn2025.breakdown.baseReimbursed, 6900, '石家庄居民二级住院实报不符: (10000-800)*0.75=6900');
+  console.log(`  ✓ [H33 PASS] 石家庄居民二级住院(花费10000): 扣起付¥800，按75%实报¥6900 (依据: 冀医保发〔2024〕7号)`);
+  passCount++;
+
+  // 6. 南宁退休职工三级门诊 (花费1000): 扣起付¥300，按55%优待比例实报¥385 (依据: 南府规〔2022〕31号, 桂医保规〔2024〕2号)
+  totalChecks++;
+  const nnRetOut2025 = calculateReimbursement({
+    cityCode: '450100',
+    insuranceType: 'employee',
+    isRetiree: true,
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(nnRetOut2025.breakdown.deductibleDeducted, 300, '南宁退休职工三级门诊起付线应为300元');
+  assertEqual(nnRetOut2025.breakdown.baseReimbursed, 385, '南宁退休职工三级门诊实报不符: (1000-300)*0.55=385');
+  console.log(`  ✓ [H33 PASS] 南宁退休职工三级门诊(花费1000): 扣起付¥300，按55%实报¥385 (依据: 桂医保规〔2024〕2号)`);
+  passCount++;
+
   console.log(`\n=========================================`);
   console.log(`🎉 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);

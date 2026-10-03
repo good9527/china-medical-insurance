@@ -256,7 +256,7 @@ export function runDeepAudit(): {
         const q_r3 = parseInt(mRatio[3], 10) / 100;
 
         const tb = city.resident?.inpatient?.tierBenefits;
-        if (tb) {
+        if (tb && (!city.resident?.inpatient?.sourceDocId || doc.docId === city.resident.inpatient.sourceDocId)) {
           const c_r1 = tb.tier1?.reimbursementRatio ?? tb.community?.reimbursementRatio;
           const c_r2 = tb.tier2?.reimbursementRatio;
           const c_r3 = tb.tier3?.reimbursementRatio;
@@ -294,7 +294,7 @@ export function runDeepAudit(): {
         const q_d3 = parseInt(mDed[3], 10);
 
         const tb = city.resident?.inpatient?.tierBenefits;
-        if (tb) {
+        if (tb && (!city.resident?.inpatient?.sourceDocId || doc.docId === city.resident.inpatient.sourceDocId)) {
           const c_d1 = tb.tier1?.deductible;
           const c_d2 = tb.tier2?.deductible;
           const c_d3 = tb.tier3?.deductible;

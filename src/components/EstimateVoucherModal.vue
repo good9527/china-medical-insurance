@@ -290,9 +290,10 @@ function close() {
   emit('close');
 }
 
-function formatMoney(num: number): string {
-  if (typeof num !== 'number' || isNaN(num)) return '0';
-  return num.toLocaleString('zh-CN', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+function formatMoney(num: number | string): string {
+  const n = typeof num === 'string' ? parseFloat(num) : num;
+  if (typeof n !== 'number' || isNaN(n)) return '0';
+  return n.toLocaleString('zh-CN', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
 }
 
 // 凭据编号

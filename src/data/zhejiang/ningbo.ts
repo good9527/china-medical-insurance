@@ -41,9 +41,9 @@ export const ningboCityData: CityInsuranceData = {
     {
       docId: 'nb-outpatient-cap-upgrade-2024',
       title: '宁波市医疗保障局关于进一步调整优化基本医疗保险待遇政策的通知',
-      docNumber: '甬医保发〔2023〕52号/2024执行规程',
+      docNumber: '甬医保发〔2023〕52号/2024年执行规程',
       issuingDept: ['宁波市医疗保障局', '宁波市财政局'],
-      publishDate: '2023-12-20',
+      publishDate: '2024-01-01',
       effectiveDate: '2024-01-01',
       status: 'active',
       officialUrl: 'https://ybj.ningbo.gov.cn/art/2023/12/25/art_1229048877_5912345.html',

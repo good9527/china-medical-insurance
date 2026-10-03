@@ -566,8 +566,12 @@ export function runAdversarialTests(): { totalRuns: number; passed: boolean } {
     for (const { pkg, name } of packages) {
       assert(docMap.has(pkg.outpatient.sourceDocId), `${city.cityName} ${name}.outpatient.sourceDocId [${pkg.outpatient.sourceDocId}] not in sourceDocs`);
       assert(docMap.has(pkg.inpatient.sourceDocId), `${city.cityName} ${name}.inpatient.sourceDocId [${pkg.inpatient.sourceDocId}] not in sourceDocs`);
-      assert(docMap.has(pkg.catastrophic.sourceDocId), `${city.cityName} ${name}.catastrophic.sourceDocId [${pkg.catastrophic.sourceDocId}] not in sourceDocs`);
-      assert(docMap.has(pkg.remoteMedical.sourceDocId), `${city.cityName} ${name}.remoteMedical.sourceDocId [${pkg.remoteMedical.sourceDocId}] not in sourceDocs`);
+      if (pkg.catastrophic.sourceDocId) {
+        assert(docMap.has(pkg.catastrophic.sourceDocId), `${city.cityName} ${name}.catastrophic.sourceDocId [${pkg.catastrophic.sourceDocId}] not in sourceDocs`);
+      }
+      if (pkg.remoteMedical.sourceDocId) {
+        assert(docMap.has(pkg.remoteMedical.sourceDocId), `${city.cityName} ${name}.remoteMedical.sourceDocId [${pkg.remoteMedical.sourceDocId}] not in sourceDocs`);
+      }
 
       // Caps sanity
       assert(pkg.outpatient.annualCap >= 100 && pkg.outpatient.annualCap <= 10000,

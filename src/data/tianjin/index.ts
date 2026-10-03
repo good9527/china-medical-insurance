@@ -48,6 +48,17 @@ export const tianjinCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.tj.gov.cn/zwgk_70/zcwj/202112/t20211210_5742111.html',
       summaryQuote: '城乡居民医保门诊起付线为600元，连续参保人员门诊年报销封顶线为5000元。大病保险起付线按人均可支配收入50%确定（约2.8万元），政策范围内分段报销60%、70%，医疗救助对象取消封顶线。'
+    },
+    {
+      docId: 'tj-resident-long-term-incentive-2024',
+      title: '关于健全本市基本医疗保险参保长效机制若干措施的通知',
+      docNumber: '津政办规〔2024〕13号/津医保局发〔2024〕56号',
+      issuingDept: ['天津市人民政府办公厅', '天津市医疗保障局'],
+      publishDate: '2024-09-20',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.tj.gov.cn/zwgk_70/zcfg/202409/t20240925_6723411.html',
+      summaryQuote: '自2025年起建立基本医疗保险参保长效机制，对连续参保人员提高门（急）诊最高支付限额至5000元，大病保险倾斜支付，巩固居民基本医保财政补助与动态待遇保障水平。'
     }
   ],
 

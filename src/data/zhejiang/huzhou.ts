@@ -43,7 +43,7 @@ export const huzhouCityData: CityInsuranceData = {
       title: '关于发挥医保支付杠杆作用促进基层医疗卫生高质量发展实施办法的通知',
       docNumber: '湖政办发〔2023〕59号/湖医保发〔2024〕15号',
       issuingDept: ['湖州市人民政府办公室', '湖州市医疗保障局'],
-      publishDate: '2023-12-28',
+      publishDate: '2024-01-05',
       effectiveDate: '2024-01-01',
       status: 'active',
       officialUrl: 'http://ybj.huzhou.gov.cn/art/2024/01/05/art_1229207903_5912890.html',

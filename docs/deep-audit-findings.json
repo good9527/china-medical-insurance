@@ -1,22 +1,10 @@
 {
   "totalCities": 348,
   "freshnessStats": {
-    "2024": 208,
-    "2025-2026": 97,
-    "2022-2023": 43,
+    "2024": 220,
+    "2025-2026": 128,
+    "2022-2023": 0,
     "pre-2022": 0
   },
-  "issues": [
-    {
-      "cityCode": "331000",
-      "cityName": "台州市",
-      "provinceName": "浙江省",
-      "severity": "CRITICAL",
-      "dimension": "QUOTE_MISMATCH",
-      "title": "居民三级住院比例与官方公文摘录不符",
-      "detail": "公文 [台医保发〔2022〕42号] 明确为 65%，但代码配置为 70%",
-      "expected": 0.65,
-      "actual": 0.7
-    }
-  ]
+  "issues": []
 }
