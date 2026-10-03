@@ -32,6 +32,17 @@ export const mudanjiangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.mdj.gov.cn/zwgk/zcfg/202311/t20231128_1294812.html',
       summaryQuote: '居民门诊在基层定点机构免起付线，报销50%，年度限额200元。城乡居民住院起付线一级200元、二级450元、三级700元，政策范围内报销比例对应85%、75%、60%，统筹年度限额10万元。职工住院起付线一级240元、二级480元、三级720元，在职报销95%、92%、88%，退休提高2个百分点。'
+    },
+    {
+      docId: 'mdj-resident-notice-2024',
+      title: '牡丹江市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '牡医保发〔2024〕16号',
+      issuingDept: ["牡丹江市医疗保障局","牡丹江市财政局","国家税务总局牡丹江市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.mudanjiang.gov.cn/zwgk/zcfg/202409/t20240929_182910.html',
+      summaryQuote: '落实黑医保发〔2024〕45号通知，巩固居民住院政策范围内70%报销水平，实施产前检查门诊保障，强化大病精准救助。'
     }
   ],
 

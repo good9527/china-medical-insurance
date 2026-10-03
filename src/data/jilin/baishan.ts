@@ -32,6 +32,17 @@ export const baishanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.cbs.gov.cn/zwgk/zcfg/202311/t20231126_1194812.html',
       summaryQuote: '居民门诊在基层定点机构免起付线，报销50%，年度限额200元。城乡居民住院起付线一级200元、二级500元、三级800元，政策范围内报销比例对应85%、75%、60%，统筹年度限额10万元。职工住院起付线一级300元、二级500元、三级800元，在职报销92%、88%、85%，退休提高3个百分点。'
+    },
+    {
+      docId: 'bs-resident-notice-2024',
+      title: '白山市医疗保障局等部门关于做好2025年度城乡居民基本医疗保险工作的通知',
+      docNumber: '白医保发〔2024〕17号',
+      issuingDept: ["白山市医疗保障局","白山市财政局","国家税务总局白山市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.cbs.gov.cn/zwgk/zcfg/202409/t20240928_192810.html',
+      summaryQuote: '依据吉医保联〔2024〕22号文件部署，稳妥做好居民医保待遇衔接，落实大病保险倾斜政策，推进异地就医直接结算。'
     }
   ],
 

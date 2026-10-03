@@ -32,6 +32,17 @@ export const hegangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.hegang.gov.cn/zwgk/zcfg/202311/t20231126_1289123.html',
       summaryQuote: '居民门诊在基层定点机构免起付线，报销50%，年度限额200元。城乡居民住院起付线一级200元、二级450元、三级700元，政策范围内报销比例对应85%、75%、60%，统筹年度限额10万元。职工住院起付线一级240元、二级480元、三级720元，在职报销95%、92%、88%，退休提高2个百分点。'
+    },
+    {
+      docId: 'hg-resident-notice-2024',
+      title: '鹤岗市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '鹤医保发〔2024〕14号',
+      issuingDept: ["鹤岗市医疗保障局","鹤岗市财政局","国家税务总局鹤岗市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.hegang.gov.cn/zwgk/zcfg/202409/t20240929_184910.html',
+      summaryQuote: '依据黑医保发〔2024〕45号文件精神，健全城乡居民基本医疗保障机制，落实产前检查费用纳入门诊保障，提升大病救助兜底效能。'
     }
   ],
 

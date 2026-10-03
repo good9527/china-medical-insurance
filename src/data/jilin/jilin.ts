@@ -32,6 +32,17 @@ export const jilinCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.jlcity.gov.cn/zwgk/zcfg/202311/t20231125_1239482.html',
       summaryQuote: '城乡居民普通门诊统筹定点基层机构免起付线，报销50%，年度限额200元。居民住院起付线一级200元、二级500元、三级900元，政策范围内报销比例一级85%、二级75%、三级60%，统筹年度限额10万元。职工住院起付线一级300元、二级500元、三级800元，在职报销92%、88%、85%，退休提高3个百分点。'
+    },
+    {
+      docId: 'jl-resident-notice-2024',
+      title: '吉林市医疗保障局等部门转发关于做好2025年度城乡居民基本医疗保险参保缴费工作的通知',
+      docNumber: '吉市医保发〔2024〕18号',
+      issuingDept: ["吉林市医疗保障局","吉林市财政局","国家税务总局吉林市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.jlcity.gov.cn/zwgk/zcfg/202409/t20240928_1389120.html',
+      summaryQuote: '落实吉医保联〔2024〕22号通知，巩固提升城乡居民医保门诊与住院待遇水平，落实大病保险精准倾斜，全面拓展个账家庭共济。'
     }
   ],
 

@@ -32,6 +32,17 @@ export const anshanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.anshan.gov.cn/zwgk/zcfg/202311/t20231126_1594812.html',
       summaryQuote: '居民普通门诊在基层定点机构免起付线，报销50%，年度封顶200元。城乡居民住院起付线一级200元、二级400元、三级800元，政策范围内报销比例对应85%、75%、60%，统筹年度限额10万元。职工住院起付线一级300元、二级500元、三级800元，在职报销92%、88%、85%，退休提高3个百分点，职工统筹加大额互助最高支付50万元。'
+    },
+    {
+      docId: 'as-resident-notice-2024',
+      title: '鞍山市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '鞍医保发〔2024〕18号',
+      issuingDept: ["鞍山市医疗保障局","鞍山市财政局","国家税务总局鞍山市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.anshan.gov.cn/zwgk/zcfg/202409/t20240929_1689120.html',
+      summaryQuote: '依据辽医保发〔2024〕14号及国家文件部署，巩固住院政策范围内70%报销水平，实施产前检查门诊保障，优化大病保险倾斜救助，拓展职工个账家庭共济。'
     }
   ],
 

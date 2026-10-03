@@ -32,6 +32,17 @@ export const heiheCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.heihe.gov.cn/zwgk/zcfg/202311/t20231126_1289123.html',
       summaryQuote: '居民门诊在基层定点机构免起付线，报销50%，年度限额200元。城乡居民住院起付线一级200元、二级450元、三级700元，政策范围内报销比例对应85%、75%、60%，统筹年度限额10万元。职工住院起付线一级240元、二级480元、三级720元，在职报销95%、92%、88%，退休提高2个百分点。'
+    },
+    {
+      docId: 'hh-resident-notice-2024',
+      title: '黑河市医疗保障局等部门做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '黑市医保发〔2024〕16号',
+      issuingDept: ["黑河市医疗保障局","黑河市财政局","国家税务总局黑河市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.heihe.gov.cn/zwgk/zcfg/202409/t20240929_173921.html',
+      summaryQuote: '依据黑医保发〔2024〕45号，筑牢边境统筹区基本医保、大病保险和医疗救助三重保障网，深化个账家庭共济。'
     }
   ],
 

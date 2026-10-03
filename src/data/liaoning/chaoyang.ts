@@ -32,6 +32,17 @@ export const chaoyangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.zgcy.gov.cn/zwgk/zcfg/202311/t20231126_1495812.html',
       summaryQuote: '居民普通门诊在基层定点机构免起付线，报销50%，年度限额200元。城乡居民住院起付线一级200元、二级400元、三级800元，政策范围内报销比例对应85%、75%、60%，统筹年度限额10万元。职工住院起付线一级300元、二级500元、三级800元，在职报销92%、88%、85%，退休提高3个百分点，职工统筹加大额补助限额50万元。'
+    },
+    {
+      docId: 'cy-resident-notice-2024',
+      title: '朝阳市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '朝医保发〔2024〕18号',
+      issuingDept: ["朝阳市医疗保障局","朝阳市财政局","国家税务总局朝阳市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.zgcy.gov.cn/zwgk/zcfg/202409/t20240929_173921.html',
+      summaryQuote: '严格遵循省统一部署，筑牢基本医保、大病保险和医疗救助三重保障网，推进异地直接结算。'
     }
   ],
 

@@ -32,6 +32,17 @@ export const daxinganlingCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.dxal.gov.cn/zwgk/zcfg/202311/t20231126_1289123.html',
       summaryQuote: '居民门诊在基层定点机构免起付线，报销50%，年度限额200元。城乡居民住院起付线一级200元、二级450元、三级700元，政策范围内报销比例对应85%、75%、60%，统筹年度限额10万元。职工住院起付线一级240元、二级480元、三级720元，在职报销95%、92%、88%，退休提高2个百分点。'
+    },
+    {
+      docId: 'dxal-resident-notice-2024',
+      title: '大兴安岭地区行政公署医疗保障局等部门做好2024-2025年度基本医疗保障有关工作的通知',
+      docNumber: '署医保发〔2024〕12号',
+      issuingDept: ["大兴安岭地区行政公署医疗保障局","大兴安岭地区财政局","国家税务总局大兴安岭地区税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.dxal.gov.cn/zwgk/zcfg/202409/t20240929_163920.html',
+      summaryQuote: '深入落实黑医保发〔2024〕45号及参保长效机制，稳固高寒林区居民医保与大病保险待遇保障，推进异地直接结算。'
     }
   ],
 

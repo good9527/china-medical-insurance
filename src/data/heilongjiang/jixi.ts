@@ -32,6 +32,17 @@ export const jixiCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.jixi.gov.cn/zwgk/zcfg/202311/t20231126_1289123.html',
       summaryQuote: '居民门诊在基层定点机构免起付线，报销50%，年度限额200元。城乡居民住院起付线一级200元、二级450元、三级700元，政策范围内报销比例对应85%、75%、60%，统筹年度限额10万元。职工住院起付线一级240元、二级480元、三级720元，在职报销95%、92%、88%，退休提高2个百分点。'
+    },
+    {
+      docId: 'jx-resident-notice-2024',
+      title: '鸡西市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '鸡医保发〔2024〕17号',
+      issuingDept: ["鸡西市医疗保障局","鸡西市财政局","国家税务总局鸡西市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.jixi.gov.cn/zwgk/zcfg/202409/t20240929_192810.html',
+      summaryQuote: '深入落实黑医保发〔2024〕45号，坚持医保待遇稳健提升，推进产前检查纳入门诊保障，落实职工医保个账近亲属共济待遇。'
     }
   ],
 

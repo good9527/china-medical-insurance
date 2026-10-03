@@ -32,6 +32,17 @@ export const daqingCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.daqing.gov.cn/zwgk/zcfg/202311/t20231126_1289123.html',
       summaryQuote: '居民门诊在基层定点机构免起付线，报销50%，年度限额200元。城乡居民住院起付线一级200元、二级450元、三级700元，政策范围内报销比例对应85%、75%、60%，统筹年度限额10万元。职工住院起付线一级240元、二级480元、三级720元，在职报销95%、92%、88%，退休提高2个百分点。'
+    },
+    {
+      docId: 'dq-resident-notice-2024',
+      title: '大庆市医疗保障局等部门关于做好2024-2025年度基本医疗保障工作的通知',
+      docNumber: '庆医保发〔2024〕16号',
+      issuingDept: ["大庆市医疗保障局","大庆市财政局","国家税务总局大庆市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.daqing.gov.cn/zwgk/zcfg/202409/t20240929_183921.html',
+      summaryQuote: '按照黑医保发〔2024〕45号及健全长效机制要求，保持居民医保住院政策范围内报销比例稳定，强化门诊慢特病待遇保障。'
     }
   ],
 

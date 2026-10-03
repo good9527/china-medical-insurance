@@ -32,6 +32,17 @@ export const shuangyashanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.shuangyashan.gov.cn/zwgk/zcfg/202311/t20231126_1289123.html',
       summaryQuote: '居民门诊在基层定点机构免起付线，报销50%，年度限额200元。城乡居民住院起付线一级200元、二级450元、三级700元，政策范围内报销比例对应85%、75%、60%，统筹年度限额10万元。职工住院起付线一级240元、二级480元、三级720元，在职报销95%、92%、88%，退休提高2个百分点。'
+    },
+    {
+      docId: 'sys-resident-notice-2024',
+      title: '双鸭山市医疗保障局等部门做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '双医保发〔2024〕15号',
+      issuingDept: ["双鸭山市医疗保障局","双鸭山市财政局","国家税务总局双鸭山市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.shuangyashan.gov.cn/zwgk/zcfg/202409/t20240929_174920.html',
+      summaryQuote: '严格遵循黑医保发〔2024〕45号，稳定基本医保住院待遇水平，大病保险精准倾斜救助，提升异地就医直接结算率。'
     }
   ],
 

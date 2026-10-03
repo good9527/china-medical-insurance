@@ -32,6 +32,17 @@ export const qitaiheCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.qth.gov.cn/zwgk/zcfg/202311/t20231126_1289123.html',
       summaryQuote: '居民门诊在基层定点机构免起付线，报销50%，年度限额200元。城乡居民住院起付线一级200元、二级450元、三级700元，政策范围内报销比例对应85%、75%、60%，统筹年度限额10万元。职工住院起付线一级240元、二级480元、三级720元，在职报销95%、92%、88%，退休提高2个百分点。'
+    },
+    {
+      docId: 'qth-resident-notice-2024',
+      title: '七台河市医疗保障局等部门关于做好2024-2025年度基本医疗保障有关工作的通知',
+      docNumber: '七医保发〔2024〕14号',
+      issuingDept: ["七台河市医疗保障局","七台河市财政局","国家税务总局七台河市税务局"],
+      publishDate: '2024-09-28',
+      effectiveDate: '2024-09-28',
+      status: 'active',
+      officialUrl: 'http://ybj.qitaihe.gov.cn/zwgk/zcfg/202409/t20240929_183910.html',
+      summaryQuote: '稳妥做好居民医保待遇衔接，落实大病保险倾斜政策，推进异地就医结算信息化便利服务。'
     }
   ],
 
