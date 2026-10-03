@@ -32,6 +32,17 @@ export const chongzuoCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.chongzuo.gov.cn/zwgk/zcfg/202311/t20231130_1384912.html',
       summaryQuote: '居民普通门诊在基层定点机构免起付线，报销60%，年度限额200元。城乡居民住院起付线一级100元、二级300元、三级600元，政策范围内报销比例对应90%、75%、60%，统筹年度限额15万元。职工住院起付线一级200元、二级400元、三级800元，在职报销92%、90%、85%，退休提高3个百分点，职工医保统筹加大额补助最高支付50万元。'
+    },
+    {
+      docId: 'cz-resident-notice-2024',
+      title: '崇左市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '崇医保发〔2024〕18号',
+      issuingDept: ["崇左市医疗保障局","崇左市财政局","国家税务总局崇左市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.chongzuo.gov.cn/zwgk/zcfg/202409/t20240929_192841.html',
+      summaryQuote: '落实自治区医保文件精神，筑牢边境统筹区基本医保、大病保险和医疗救助三重保障，实施产前检查门诊保障与职工个账共济。'
     }
   ],
 

@@ -32,6 +32,17 @@ export const beihaiCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.beihai.gov.cn/zwgk/zcfg/202312/t20231205_2674918.html',
       summaryQuote: '居民普通门诊在基层定点机构免起付线，报销75%，年度限额300元。二级及以上定点机构报销65%。城乡居民住院起付线一级100元、二级300元、三级600元，政策范围内报销比例对应90%、75%、60%，统筹限额15万元。职工住院起付线一级200元、二级400元、三级800元，在职报销92%、90%、85%，退休提高3个百分点，职工医保统筹加大额补助限额50万元。'
+    },
+    {
+      docId: 'bh-resident-notice-2024',
+      title: '北海市医疗保障局关于进一步调整优化职工门诊共济与居民基本医疗保障政策的通知',
+      docNumber: '北医保规〔2024〕6号',
+      issuingDept: ["北海市医疗保障局","北海市财政局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.beihai.gov.cn/zwgk/zcfg/202409/t20240929_183921.html',
+      summaryQuote: '落实桂医保规〔2024〕2号及相关政策，提升基层普通门诊保障效能，扩大职工医保个账共济范围，强化大病保险兜底减负。'
     }
   ],
 

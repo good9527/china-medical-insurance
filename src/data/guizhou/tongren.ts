@@ -32,6 +32,17 @@ export const tongrenCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.trs.gov.cn/zwgk/zcfg/202311/t20231126_1289123.html',
       summaryQuote: '居民门诊在定点基层机构免起付线，报销60%，年度限额200元。城乡居民住院起付线一级100元、二级400元、三级800元，政策范围内报销比例对应85%、75%、60%，统筹年度限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销94%、90%、85%，退休提高3个百分点。'
+    },
+    {
+      docId: 'tr-resident-notice-2024',
+      title: '铜仁市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '铜医保发〔2024〕15号',
+      issuingDept: ["铜仁市医疗保障局","铜仁市财政局","国家税务总局铜仁市税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.tongren.gov.cn/zwgk/zcfg/202409/t20240928_192810.html',
+      summaryQuote: '稳妥做好居民医保待遇衔接，落实大病保险倾斜政策，推进异地就医结算信息化便利服务，兜牢民生底线。'
     }
   ],
 

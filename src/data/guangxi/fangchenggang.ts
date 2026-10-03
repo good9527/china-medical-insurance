@@ -32,6 +32,17 @@ export const fangchenggangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.fcgs.gov.cn/zwgk/zcfg/202311/t20231126_1394812.html',
       summaryQuote: '居民普通门诊在基层定点机构免起付线，报销60%，年度封顶200元。城乡居民住院起付线一级100元、二级300元、三级600元，政策范围内报销比例对应90%、75%、60%，统筹年度限额15万元。职工住院起付线一级200元、二级400元、三级800元，在职报销92%、90%、85%，退休提高3个百分点，职工统筹加大额补助限额50万元。'
+    },
+    {
+      docId: 'fcg-resident-notice-2024',
+      title: '防城港市医疗保障局等部门做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '防医保发〔2024〕15号',
+      issuingDept: ["防城港市医疗保障局","防城港市财政局","国家税务总局防城港市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.fangchenggang.gov.cn/zwgk/zcfg/202409/t20240929_192810.html',
+      summaryQuote: '深入落实自治区医保局文件精神，保持边境口岸城市居民住院政策范围内基金支付比例稳定在70%左右，完善大病精准救助。'
     }
   ],
 

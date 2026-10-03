@@ -32,6 +32,17 @@ export const guilinCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.guilin.gov.cn/zwgk/zcfg/202311/t20231126_2478129.html',
       summaryQuote: '居民普通门诊在基层定点机构免起付线，报销60%，年度限额200元。城乡居民住院起付线一级100元、二级300元、三级600元，报销比例90%、75%、60%，年度限额15万元。职工住院起付线一级200元、二级400元、三级800元，在职报销92%、90%、85%，退休提高3个百分点，职工医保统筹加大额互助最高支付50万元。'
+    },
+    {
+      docId: 'gl-resident-notice-2024',
+      title: '桂林市医疗保障局关于贯彻落实广西职工门诊统筹及城乡居民基本医疗保障有关工作的通知',
+      docNumber: '市政医保发〔2024〕19号',
+      issuingDept: ["桂林市医疗保障局","桂林市财政局","国家税务总局桂林市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.guilin.gov.cn/zwgk/zcfg/202409/t20240929_182910.html',
+      summaryQuote: '全面贯彻桂医保规〔2024〕2号精神，稳步提升门诊共济保障水平，健全大病保险倾斜救助，推进异地就医直接结算。'
     }
   ],
 

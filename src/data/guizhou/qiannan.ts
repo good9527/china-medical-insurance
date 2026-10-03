@@ -32,6 +32,17 @@ export const qiannanCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.qiannan.gov.cn/zwgk/zcfg/202311/t20231126_1289123.html',
       summaryQuote: '居民门诊在定点基层机构免起付线，报销60%，年度限额200元。城乡居民住院起付线一级100元、二级400元、三级800元，政策范围内报销比例对应85%、75%、60%，统筹年度限额15万元。职工住院起付线一级200元、二级500元、三级800元，在职报销94%、90%、85%，退休提高3个百分点。'
+    },
+    {
+      docId: 'qn-resident-notice-2024',
+      title: '黔南布依族苗族自治州医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障工作的通知',
+      docNumber: '黔南医保发〔2024〕17号',
+      issuingDept: ["黔南州医疗保障局","黔南州财政局","国家税务总局黔南州税务局"],
+      publishDate: '2024-09-26',
+      effectiveDate: '2024-09-26',
+      status: 'active',
+      officialUrl: 'http://ybj.qiannan.gov.cn/zwgk/zcfg/202409/t20240928_182930.html',
+      summaryQuote: '落实省医保文件要求，巩固居民医保住院待遇水平，推进产前检查费纳入门诊保障，落实职工医保个账近亲属共济。'
     }
   ],
 

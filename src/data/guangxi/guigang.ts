@@ -32,6 +32,17 @@ export const guigangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.gxgg.gov.cn/zwgk/zcfg/202311/t20231126_1895612.html',
       summaryQuote: '居民普通门诊在基层定点机构免起付线，报销60%，年度限额200元。城乡居民住院起付线一级100元、二级300元、三级600元，政策范围内报销比例对应90%、75%、60%，统筹年度限额15万元。职工住院起付线一级200元、二级400元、三级800元，在职报销92%、90%、85%，退休提高3个百分点，职工统筹加大额补助限额50万元。'
+    },
+    {
+      docId: 'gg-resident-notice-2024',
+      title: '贵港市医疗保障局等部门关于做好2024-2025年度城乡居民基本医疗保障有关工作的通知',
+      docNumber: '贵医保发〔2024〕16号',
+      issuingDept: ["贵港市医疗保障局","贵港市财政局","国家税务总局贵港市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.guigang.gov.cn/zwgk/zcfg/202409/t20240929_174920.html',
+      summaryQuote: '贯彻自治区统一部署，强化基本医疗保险、大病保险和医疗救助综合保障，推进异地就医直接结算便民服务。'
     }
   ],
 

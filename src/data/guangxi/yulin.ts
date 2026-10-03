@@ -32,6 +32,17 @@ export const yulinGuangxiCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.yulin.gov.cn/zwgk/zcfg/202311/t20231130_1584912.html',
       summaryQuote: '居民普通门诊在基层定点机构免起付线，报销60%，年度限额200元。城乡居民住院起付线一级100元、二级300元、三级600元，政策范围内报销比例对应90%、75%、60%，统筹年度限额15万元。职工住院起付线一级200元、二级400元、三级800元，在职报销92%、90%、85%，退休提高3个百分点，职工统筹加大额补助限额50万元。'
+    },
+    {
+      docId: 'yl-resident-notice-2024',
+      title: '玉林市医疗保障局等部门关于做好2024-2025年城乡居民基本医疗保障工作的通知',
+      docNumber: '玉医保发〔2024〕18号',
+      issuingDept: ["玉林市医疗保障局","玉林市财政局","国家税务总局玉林市税务局"],
+      publishDate: '2024-09-27',
+      effectiveDate: '2024-09-27',
+      status: 'active',
+      officialUrl: 'http://ybj.yulin.gov.cn/zwgk/zcfg/202409/t20240929_182930.html',
+      summaryQuote: '按照自治区文件要求，确保居民医保住院政策范围内报销比例稳定在70%左右，大病保险精准倾斜，深化个账家庭共济。'
     }
   ],
 
