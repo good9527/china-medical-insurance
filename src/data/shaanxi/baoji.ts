@@ -63,7 +63,8 @@ export const baojiCityData: CityInsuranceData = {
   employee: {
     outpatient: {
       sourceDocId: 'bj-employee-outpatient-2022-54',
-      annualDeductible: 50, // 按次50元（月计1次，年最多收4次即200元）
+      annualDeductible: 50,
+      deductibleType: 'per_visit',
       annualCap: 500,       // 宝鸡在职职工普通门诊限额500元/年
       annualCapRetiree: 900,// 宝鸡退休人员普通门诊限额900元/年
       tierBenefits: {
@@ -73,7 +74,7 @@ export const baojiCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 50, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '三甲重点医院', deductible: 50, reimbursementRatio: 0.50, retireeRatioBonus: 0.05 }
       },
-      note: '参保职工门诊就医每次起付50元（一个自然月只收1次，年累计不超过4次）。在职报销比例：一级60%、二级55%、三级50%，退休人员上浮5%。在职年度限额500元，退休年度限额900元。'
+      note: '依据《宝鸡市职工基本医疗保险门诊共济保障实施办法（试行）》（宝政办发〔2022〕54号）：普通门诊按次起付50元/次（一个自然月只收1次，年累计不超过4次）。在职报销比例：一级60%、二级55%、三级50%，退休人员上浮5个百分点。在职年度限额500元，退休年度限额900元。'
     },
     inpatient: {
       sourceDocId: 'bj-employee-inpatient-policy-2020',

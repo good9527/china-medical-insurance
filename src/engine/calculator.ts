@@ -2,7 +2,8 @@ import type {
   CalculateRequest,
   CalculateResult,
   CityInsuranceData,
-  OfficialPolicyDoc
+  OfficialPolicyDoc,
+  HospitalTierBenefit
 } from '../data/types';
 import { getCityDataByCode } from '../data';
 
@@ -36,12 +37,14 @@ export function calculateReimbursement(request: CalculateRequest): CalculateResu
   let annualCap = 0;
   let sourceDocId = '';
   let tierName = '';
+  let currentTierBenefit: HospitalTierBenefit | undefined;
   const policyNotes: string[] = [];
 
   if (request.treatmentType === 'outpatient') {
     const outRule = pkg.outpatient;
     sourceDocId = outRule.sourceDocId;
     const tierBenefit = outRule.tierBenefits[request.hospitalTier];
+    currentTierBenefit = tierBenefit;
     tierName = tierBenefit?.tierName || '门诊定点医疗机构';
 
     // 优先采用该级别医疗机构设定的具体起付线；若未单独设定则采用统筹区统一门诊起付线
@@ -73,6 +76,7 @@ export function calculateReimbursement(request: CalculateRequest): CalculateResu
     const inRule = pkg.inpatient;
     sourceDocId = inRule.sourceDocId;
     const tierBenefit = inRule.tierBenefits[request.hospitalTier];
+    currentTierBenefit = tierBenefit;
     tierName = tierBenefit?.tierName || '住院定点医疗机构';
 
     deductible = tierBenefit?.deductible ?? 500;
@@ -110,8 +114,36 @@ export function calculateReimbursement(request: CalculateRequest): CalculateResu
   const deductibleDeducted = Math.min(eligibleCost, deductible);
   const reimbursableBase = Math.max(0, eligibleCost - deductibleDeducted);
 
-  let baseReimbursed = Math.round(reimbursableBase * effectiveRatio * 100) / 100;
-  if (baseReimbursed > annualCap) {
+  let baseReimbursed = 0;
+  if (request.treatmentType === 'inpatient' && currentTierBenefit?.costRanges && currentTierBenefit.costRanges.length > 0) {
+    // 存在分段累进报销阶梯（如西安市城镇职工住院等现行公文规程）
+    for (const range of currentTierBenefit.costRanges) {
+      if (eligibleCost <= range.minAmount) continue;
+      const rangeCap = range.maxAmount ?? Infinity;
+      const lower = Math.max(range.minAmount, deductible);
+      if (eligibleCost <= lower) continue;
+      const upper = Math.min(eligibleCost, rangeCap);
+      const spanCost = upper - lower;
+      if (spanCost <= 0) continue;
+
+      let rRatio = range.ratio;
+      if (isRetiree) {
+        if (typeof range.retireeRatio === 'number') {
+          rRatio = range.retireeRatio;
+        } else if (range.retireeRatioBonus) {
+          rRatio += range.retireeRatioBonus;
+        }
+      }
+      const segmentEffectiveRatio = Math.round(rRatio * remoteFactor * 1000) / 1000;
+      baseReimbursed += spanCost * segmentEffectiveRatio;
+    }
+    baseReimbursed = Math.round(baseReimbursed * 100) / 100;
+  } else {
+    baseReimbursed = Math.round(reimbursableBase * effectiveRatio * 100) / 100;
+  }
+
+  const reachedCap = baseReimbursed >= annualCap;
+  if (reachedCap) {
     policyNotes.push(`已达到医保统筹基金年度封顶线 ¥${annualCap.toLocaleString()}`);
     baseReimbursed = annualCap;
   }
@@ -121,11 +153,13 @@ export function calculateReimbursement(request: CalculateRequest): CalculateResu
   const catRule = pkg.catastrophic;
   if (request.treatmentType === 'inpatient' && catRule) {
     if (request.insuranceType === 'employee') {
-      // 职工大额医疗补助：当基本统筹达到40万封顶线后，超出符合政策部分由大额互助按90%报销
-      if (reimbursableBase * effectiveRatio > annualCap) {
-        const excessCost = effectiveRatio > 0 ? (reimbursableBase - (annualCap / effectiveRatio)) : 0;
+      // 职工大额医疗补助：当基本统筹达到40万封顶线后，超出符合政策部分由大额互助按规定比例报销
+      if (reachedCap) {
+        const catRatio = catRule.tiers[0]?.ratio ?? 0.95;
+        const standardEffectiveRatio = effectiveRatio > 0 ? effectiveRatio : 0.90;
+        const costToHitCap = standardEffectiveRatio > 0 ? (annualCap / standardEffectiveRatio) : annualCap;
+        const excessCost = Math.max(0, reimbursableBase - costToHitCap);
         if (excessCost > 0) {
-          const catRatio = catRule.tiers[0]?.ratio ?? 0.90;
           catastrophicReimbursed = Math.round(excessCost * catRatio * 100) / 100;
           if (catRule.annualCap) {
             catastrophicReimbursed = Math.min(catastrophicReimbursed, catRule.annualCap);

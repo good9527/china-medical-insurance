@@ -20,14 +20,25 @@ export const xianyangCityData: CityInsuranceData = {
   sourceDocs: [
     {
       docId: 'xy-employee-outpatient-official',
-      title: '咸阳市职工医保门诊共济机制改革政策细则及官方问答',
+      title: '关于印发〈咸阳市城镇职工基本医疗保险普通门诊统筹实施细则〉的通知',
       docNumber: '咸医保发〔2022〕46号',
       issuingDept: ['咸阳市医疗保障局', '咸阳市财政局'],
-      publishDate: '2023-01-01',
+      publishDate: '2022-09-07',
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'https://ybj.xianyang.gov.cn/xwzx/xwdt/202302/t20230221_1599168.html',
-      summaryQuote: '门诊统筹起付线为260元/年；政策范围内报销比例：一级（含社区及卫生院）70%、二级60%、三级50%，退休人员相应提高5%；在职职工年报销封顶线为1500元，退休职工年报销封顶线为1700元。'
+      summaryQuote: '依据“咸阳医保”官方微信公众号及医保局实施细则发布：门诊统筹起付线为260元/年；政策范围内报销比例：一级（含社区及卫生院）70%、二级60%、三级50%，退休人员相应提高5个百分点（一级75%、二级65%、三级55%）；在职职工年报销封顶线为1500元，退休职工年报销封顶线为1700元。'
+    },
+    {
+      docId: 'xy-employee-inpatient-official',
+      title: '咸阳市人民政府办公室关于印发咸阳市城镇职工基本医疗保险市级统筹实施细则的通知及现行经办标准',
+      docNumber: '咸政办发〔2019〕60号及现行经办规程',
+      issuingDept: ['咸阳市人民政府办公室', '咸阳市医疗保障局', '咸阳市财政局'],
+      publishDate: '2019-12-20',
+      effectiveDate: '2020-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.xianyang.gov.cn/zfxxgk/fdzdgknr/zcwj/zcfg1/202412/t20241231_1894800.html',
+      summaryQuote: '依据“咸阳医保”官方微信公众号及经办规程公布标准：职工住院起付标准为一级医院160元、二级医院550元、三级医院1200元。统筹基金支付比例：一级医疗机构在职92%（退休人员96%）；二级医疗机构在职90%（退休人员94%）；三级医疗机构在职88%（退休人员92%）。年度基本统筹基金最高支付限额35万元。'
     },
     {
       docId: 'xy-medical-adjust-2024-48',
@@ -81,7 +92,7 @@ export const xianyangCityData: CityInsuranceData = {
       note: '自然年度内门诊累计满 260 元起付线后启动报销，在职每年最高限额 1500 元，退休人员限额 1700 元。'
     },
     inpatient: {
-      sourceDocId: 'xy-employee-outpatient-official',
+      sourceDocId: 'xy-employee-inpatient-official',
       annualCap: 350000,
       tierBenefits: {
         community: { tierName: '基层社区/乡镇卫生院', deductible: 160, reimbursementRatio: 0.92, retireeRatioBonus: 0.04 },

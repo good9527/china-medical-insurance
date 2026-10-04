@@ -360,7 +360,24 @@ export function runCalculatorTests() {
     const expectedEligible = total - nonInsurance - expectedClassBPrior;       // 21600
     const tierDed = city.employee.inpatient.tierBenefits.tier2.deductible;
     const expectedDedDeducted = Math.min(expectedEligible, tierDed);
-    const expectedBaseReimbursed = Math.round((expectedEligible - expectedDedDeducted) * city.employee.inpatient.tierBenefits.tier2.reimbursementRatio * 100) / 100;
+    const t2Benefit = city.employee.inpatient.tierBenefits.tier2;
+    let expectedBaseReimbursed = 0;
+    if (t2Benefit.costRanges && t2Benefit.costRanges.length > 0) {
+      for (const range of t2Benefit.costRanges) {
+        if (expectedEligible <= range.minAmount) continue;
+        const rangeCap = range.maxAmount ?? Infinity;
+        const lower = Math.max(range.minAmount, tierDed);
+        if (expectedEligible <= lower) continue;
+        const upper = Math.min(expectedEligible, rangeCap);
+        const span = upper - lower;
+        if (span > 0) {
+          expectedBaseReimbursed += span * range.ratio;
+        }
+      }
+      expectedBaseReimbursed = Math.round(expectedBaseReimbursed * 100) / 100;
+    } else {
+      expectedBaseReimbursed = Math.round((expectedEligible - expectedDedDeducted) * t2Benefit.reimbursementRatio * 100) / 100;
+    }
 
     assertEqual(resCatalog.breakdown.nonInsuranceCost, nonInsurance, `${city.cityName} 丙类自费金额不符`);
     assertEqual(resCatalog.breakdown.classBCost, classB, `${city.cityName} 乙类发生费用不符`);
@@ -6423,7 +6440,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H34 PASS] 济南居民三级住院(花费10000): 扣法定起付¥1000，实报¥6300 (70%比例，依据: 济医保发〔2024〕25号)`);
   passCount++;
 
-  console.log(`\n>>> [Suite H35] 执行陕西省统筹区现行公文穿透精校与百度权威基准核验断言...`);
+  console.log(`\n>>> [Suite H35] 执行陕西省统筹区现行公文穿透精校与官方权威基准核验断言...`);
 
   // 1. 西安在职职工三级普通住院 (花费10000): 扣起付¥650，按88%比例实报¥8228 (依据: 市医保发〔2022〕75号及经办标准)
   totalChecks++;
@@ -6439,6 +6456,38 @@ export function runCalculatorTests() {
   assertEqual(xaEmpIn3.breakdown.deductibleDeducted, 650, '西安职工三级普通住院起付线应为650元');
   assertEqual(xaEmpIn3.breakdown.baseReimbursed, 8228, '西安职工三级住院在职实报不符: (10000-650)*0.88=8228');
   console.log(`  ✓ [H35 PASS] 西安在职职工三级住院(花费10000): 扣起付¥650，按88%实报¥8228 (依据: 市医保发〔2022〕75号及经办标准)`);
+  passCount++;
+
+  // 1.1 西安在职职工三级普通住院 (花费20000跨档分段累进): 650-10000按88%(=8228)，10000-20000按91%(=9100)，实报¥17328
+  totalChecks++;
+  const xaEmpIn3_20k = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 20000,
+    isRetiree: false
+  });
+  assertEqual(xaEmpIn3_20k.breakdown.deductibleDeducted, 650, '西安职工三级普通住院起付线应为650元');
+  assertEqual(xaEmpIn3_20k.breakdown.baseReimbursed, 17328, '西安职工三级住院20000元分段累进实报不符: 8228+9100=17328');
+  console.log(`  ✓ [H35 PASS] 西安在职职工三级住院(花费20000): 分段累进实报¥17328 (88%+91%跨档)`);
+  passCount++;
+
+  // 1.2 西安在职职工三级普通住院 (花费60000跨三档分段累进): 8228(1万内)+36400(1-5万@91%)+9500(5-6万@95%)=¥54128
+  totalChecks++;
+  const xaEmpIn3_60k = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 60000,
+    isRetiree: false
+  });
+  assertEqual(xaEmpIn3_60k.breakdown.deductibleDeducted, 650, '西安职工三级普通住院起付线应为650元');
+  assertEqual(xaEmpIn3_60k.breakdown.baseReimbursed, 54128, '西安职工三级住院60000元分段累进实报不符: 8228+36400+9500=54128');
+  console.log(`  ✓ [H35 PASS] 西安在职职工三级住院(花费60000): 三档分段累进实报¥54128 (88%+91%+95%)`);
   passCount++;
 
   // 2. 西安退休职工三级特等医院住院 (花费10000): 扣起付¥850，按91%比例实报¥8326.5
@@ -6504,9 +6553,56 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H35 PASS] 咸阳退休职工三级住院(花费10000): 扣起付¥1200，按92%实报¥8096`);
   passCount++;
 
+  // 6. 咸阳在职职工门诊统筹 (花费1000): 扣起付¥260，三级按50%实报¥370 (依据: 咸医保发〔2022〕46号)
+  totalChecks++;
+  const xyEmpOut3 = calculateReimbursement({
+    cityCode: '610400',
+    insuranceType: 'employee',
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 1000,
+    isRetiree: false
+  });
+  assertEqual(xyEmpOut3.breakdown.deductibleDeducted, 260, '咸阳在职职工门诊起付线应为260元');
+  assertEqual(xyEmpOut3.breakdown.baseReimbursed, 370, '咸阳在职职工门诊三级实报不符: (1000-260)*0.50=370');
+  console.log(`  ✓ [H35 PASS] 咸阳在职职工门诊(花费1000): 扣起付¥260，三级按50%实报¥370 (依据: 咸医保发〔2022〕46号)`);
+  passCount++;
+
+  // 7. 咸阳退休职工门诊统筹 (花费1000): 扣起付¥260，三级按55%优待比例实报¥407
+  totalChecks++;
+  const xyEmpOut3Ret = calculateReimbursement({
+    cityCode: '610400',
+    insuranceType: 'employee',
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 1000,
+    isRetiree: true
+  });
+  assertEqual(xyEmpOut3Ret.breakdown.deductibleDeducted, 260, '咸阳退休职工门诊起付线应为260元');
+  assertEqual(xyEmpOut3Ret.breakdown.baseReimbursed, 407, '咸阳退休职工门诊三级实报不符: (1000-260)*0.55=407');
+  console.log(`  ✓ [H35 PASS] 咸阳退休职工门诊(花费1000): 扣起付¥260，三级按55%实报¥407`);
+  passCount++;
+
+  // 8. 宝鸡在职职工门诊统筹 (花费1000): 按次起付¥50，三级按50%实报¥475 (依据: 宝政办发〔2022〕54号)
+  totalChecks++;
+  const bjEmpOut3 = calculateReimbursement({
+    cityCode: '610300',
+    insuranceType: 'employee',
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 1000,
+    isRetiree: false
+  });
+  assertEqual(bjEmpOut3.breakdown.deductibleDeducted, 50, '宝鸡在职职工门诊起付线应为50元/次');
+  assertEqual(bjEmpOut3.breakdown.baseReimbursed, 475, '宝鸡在职职工门诊三级实报不符: (1000-50)*0.50=475');
+  console.log(`  ✓ [H35 PASS] 宝鸡在职职工门诊(花费1000): 扣起付¥50，三级按50%实报¥475 (依据: 宝政办发〔2022〕54号)`);
+  passCount++;
 
   console.log(`\n=========================================`);
-  console.log(`🎉 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
+  console.log(`[PASS] 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);
 }
 

@@ -21,12 +21,22 @@ export type SourceDocument = OfficialPolicyDoc;
 // 医院等级划分
 export type HospitalTier = 'community' | 'tier1' | 'tier2' | 'tier3' | 'tier3_top';
 
+// 费用分段累进报销阶梯定义
+export interface CostRangeTier {
+  minAmount: number;         // 分段起始金额（政策范围内合规费用）
+  maxAmount?: number;        // 分段截止金额（若无上限则留空或省略）
+  ratio: number;             // 在职报销比例 (0~1)
+  retireeRatioBonus?: number;// 退休上浮比例 (如 0.03)
+  retireeRatio?: number;     // 退休指定比例 (若直接指定则优先使用)
+}
+
 // 医院等级待遇参数
 export interface HospitalTierBenefit {
   tierName: string;           // 医院级别名称，如 '三级医疗机构'
   deductible: number;         // 起付线（元）
   reimbursementRatio: number; // 统筹报销比例 (0~1)，如 0.65
   retireeRatioBonus?: number; // 退休人员上浮比例，如 0.05 (增加5%)
+  costRanges?: CostRangeTier[]; // 分段累进比例阶梯（如西安市等统筹区分段报销）
 }
 
 // 门诊保障规则

@@ -35,7 +35,7 @@ export const xianCityData: CityInsuranceData = {
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.xa.gov.cn/wsdt/bszn/1877601888153145345.html',
-      summaryQuote: '职工医保参保人员在定点医疗机构住院，起付标准：社区/一级医疗机构200元，二级医疗机构400元，三级医疗机构650元，三级特等医疗机构850元。统筹基金支付比例：一级医疗机构在职92%（退休95%），二级医疗机构在职90%（退休93%），三级及三级特等医疗机构在职88%（退休91%）。参保人员在一个自然年度内多次住院，起付标准逐次降低：一级医院200/150/100/四次及以上0元；二级医院400/300/150/四次及以上0元；三级医院650/550/350/四次及以上0元；三级特等医院850/800/550/四次及以上0元。统筹基金最高支付限额为40万元。'
+      summaryQuote: '职工医保参保人员在定点医疗机构住院，起付标准：社区/一级医疗机构200元，二级医疗机构400元，三级医疗机构650元，三级特等医疗机构850元。统筹基金支付比例实行分段累进报销：起付线至1万元在职一级92%/二级90%/三级及三特88%（退休95%/93%/91%）；1万元至5万元在职一级95%/二级95%/三级及三特91%（退休97%/95%/94%）；5万元以上统筹基金支付比例统一为95%。参保人员在一个自然年度内多次住院，起付标准逐次降低。统筹基金最高支付限额为40万元，超出部分由城镇职工大额医疗补助保险按95%支付，不设封顶线。'
     },
     {
       docId: 'xa-resident-basic-2019-40',
@@ -122,42 +122,66 @@ export const xianCityData: CityInsuranceData = {
           tierName: '社区卫生服务机构/乡镇卫生院',
           deductible: 200,
           reimbursementRatio: 0.92,
-          retireeRatioBonus: 0.03
+          retireeRatioBonus: 0.03,
+          costRanges: [
+            { minAmount: 0, maxAmount: 10000, ratio: 0.92, retireeRatio: 0.95 },
+            { minAmount: 10000, maxAmount: 50000, ratio: 0.95, retireeRatio: 0.97 },
+            { minAmount: 50000, ratio: 0.95, retireeRatio: 0.95 }
+          ]
         },
         tier1: {
           tierName: '一级医疗机构',
           deductible: 200,
           reimbursementRatio: 0.92,
-          retireeRatioBonus: 0.03
+          retireeRatioBonus: 0.03,
+          costRanges: [
+            { minAmount: 0, maxAmount: 10000, ratio: 0.92, retireeRatio: 0.95 },
+            { minAmount: 10000, maxAmount: 50000, ratio: 0.95, retireeRatio: 0.97 },
+            { minAmount: 50000, ratio: 0.95, retireeRatio: 0.95 }
+          ]
         },
         tier2: {
           tierName: '二级医疗机构',
           deductible: 400,
           reimbursementRatio: 0.90,
-          retireeRatioBonus: 0.03
+          retireeRatioBonus: 0.03,
+          costRanges: [
+            { minAmount: 0, maxAmount: 10000, ratio: 0.90, retireeRatio: 0.93 },
+            { minAmount: 10000, maxAmount: 50000, ratio: 0.95, retireeRatio: 0.95 },
+            { minAmount: 50000, ratio: 0.95, retireeRatio: 0.95 }
+          ]
         },
         tier3: {
           tierName: '三级医疗机构',
           deductible: 650,
           reimbursementRatio: 0.88,
-          retireeRatioBonus: 0.03
+          retireeRatioBonus: 0.03,
+          costRanges: [
+            { minAmount: 0, maxAmount: 10000, ratio: 0.88, retireeRatio: 0.91 },
+            { minAmount: 10000, maxAmount: 50000, ratio: 0.91, retireeRatio: 0.94 },
+            { minAmount: 50000, ratio: 0.95, retireeRatio: 0.95 }
+          ]
         },
         tier3_top: {
           tierName: '三级特等医院(交大一附院/西京/唐都/省人医等)',
           deductible: 850,
           reimbursementRatio: 0.88,
-          retireeRatioBonus: 0.03
+          retireeRatioBonus: 0.03,
+          costRanges: [
+            { minAmount: 0, maxAmount: 10000, ratio: 0.88, retireeRatio: 0.91 },
+            { minAmount: 10000, maxAmount: 50000, ratio: 0.91, retireeRatio: 0.94 },
+            { minAmount: 50000, ratio: 0.95, retireeRatio: 0.95 }
+          ]
         }
       }
     },
     catastrophic: {
       sourceDocId: 'xa-employee-inpatient-basic',
       name: '城镇职工大额医疗补助',
-      deductible: 0, // 基本统筹超限后无缝衔接
+      deductible: 0, // 基本统筹40万超限后由大额医疗补助接续支付95%，不设封顶线
       tiers: [
-        { minAmount: 400000, ratio: 0.90 } // 超过40万部分由大额补助支付90%
-      ],
-      annualCap: 500000
+        { minAmount: 400000, ratio: 0.95 }
+      ]
     },
     remoteMedical: {
       sourceDocId: 'xa-remote-medical-2022',
