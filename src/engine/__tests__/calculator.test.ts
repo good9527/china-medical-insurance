@@ -6423,6 +6423,87 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H34 PASS] 济南居民三级住院(花费10000): 扣法定起付¥1000，实报¥6300 (70%比例，依据: 济医保发〔2024〕25号)`);
   passCount++;
 
+  console.log(`\n>>> [Suite H35] 执行陕西省统筹区现行公文穿透精校与百度权威基准核验断言...`);
+
+  // 1. 西安在职职工三级普通住院 (花费10000): 扣起付¥650，按88%比例实报¥8228 (依据: 市医保发〔2022〕75号及经办标准)
+  totalChecks++;
+  const xaEmpIn3 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    isRetiree: false
+  });
+  assertEqual(xaEmpIn3.breakdown.deductibleDeducted, 650, '西安职工三级普通住院起付线应为650元');
+  assertEqual(xaEmpIn3.breakdown.baseReimbursed, 8228, '西安职工三级住院在职实报不符: (10000-650)*0.88=8228');
+  console.log(`  ✓ [H35 PASS] 西安在职职工三级住院(花费10000): 扣起付¥650，按88%实报¥8228 (依据: 市医保发〔2022〕75号及经办标准)`);
+  passCount++;
+
+  // 2. 西安退休职工三级特等医院住院 (花费10000): 扣起付¥850，按91%比例实报¥8326.5
+  totalChecks++;
+  const xaEmpIn3TopRet = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3_top',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    isRetiree: true
+  });
+  assertEqual(xaEmpIn3TopRet.breakdown.deductibleDeducted, 850, '西安职工三级特等住院起付线应为850元');
+  assertEqual(xaEmpIn3TopRet.breakdown.baseReimbursed, 8326.5, '西安职工三特住院退休实报不符: (10000-850)*0.91=8326.5');
+  console.log(`  ✓ [H35 PASS] 西安退休职工三特住院(花费10000): 扣起付¥850，按91%实报¥8326.5`);
+  passCount++;
+
+  // 3. 杨凌示范区居民三级医院住院 (花费10000): 扣法定起付¥800，按75%实报¥6900 (依据: 杨医保发〔2022〕18号)
+  totalChecks++;
+  const ylResIn3 = calculateReimbursement({
+    cityCode: '610403',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(ylResIn3.breakdown.deductibleDeducted, 800, '杨凌示范区居民三级住院起付线应为800元');
+  assertEqual(ylResIn3.breakdown.baseReimbursed, 6900, '杨凌示范区居民三级住院实报不符: (10000-800)*0.75=6900');
+  console.log(`  ✓ [H35 PASS] 杨凌示范区居民三级住院(花费10000): 扣法定起付¥800，按75%实报¥6900 (依据: 杨医保发〔2022〕18号)`);
+  passCount++;
+
+  // 4. 咸阳在职职工三级医院住院 (花费10000): 扣起付¥1200，按88%比例实报¥7744 (依据: 咸政办发〔2019〕60号及细则)
+  totalChecks++;
+  const xyEmpIn3 = calculateReimbursement({
+    cityCode: '610400',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    isRetiree: false
+  });
+  assertEqual(xyEmpIn3.breakdown.deductibleDeducted, 1200, '咸阳在职职工三级住院起付线应为1200元');
+  assertEqual(xyEmpIn3.breakdown.baseReimbursed, 7744, '咸阳职工三级住院在职实报不符: (10000-1200)*0.88=7744');
+  console.log(`  ✓ [H35 PASS] 咸阳在职职工三级住院(花费10000): 扣起付¥1200，按88%实报¥7744`);
+  passCount++;
+
+  // 5. 咸阳退休职工三级医院住院 (花费10000): 扣起付¥1200，按92%优待比例实报¥8096
+  totalChecks++;
+  const xyEmpIn3Ret = calculateReimbursement({
+    cityCode: '610400',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    isRetiree: true
+  });
+  assertEqual(xyEmpIn3Ret.breakdown.deductibleDeducted, 1200, '咸阳退休职工三级住院起付线应为1200元');
+  assertEqual(xyEmpIn3Ret.breakdown.baseReimbursed, 8096, '咸阳职工三级住院退休实报不符: (10000-1200)*0.92=8096');
+  console.log(`  ✓ [H35 PASS] 咸阳退休职工三级住院(花费10000): 扣起付¥1200，按92%实报¥8096`);
+  passCount++;
+
 
   console.log(`\n=========================================`);
   console.log(`🎉 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);

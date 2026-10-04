@@ -134,8 +134,8 @@ export function runEmpiricalChallengerTests(): { totalChecks: number; passed: bo
   // SECTION 3: Resident Catastrophic Cap Saturation & Saturation Invariants
   // --------------------------------------------------------------------------
   console.log('--- Section 3: Resident Catastrophic Cap Clamping & Notes Audit ---');
-  const cappedCities = ['610500', '610800', '610600', '610700', '610900', '611000']; // 渭南, 榆林, 延安, 汉中, 安康, 商洛
-  const uncappedCities = ['610100', '610400', '610300', '610200', '610403']; // 西安, 咸阳, 宝鸡, 铜川, 杨凌
+  const cappedCities = ['610500', '610800', '610600', '610700', '610900', '611000', '610100', '610400', '610300', '610200', '610403']; // 渭南, 榆林, 延安, 汉中, 安康, 商洛, 西安, 咸阳, 宝鸡, 铜川, 杨凌
+  const uncappedCities: string[] = [];
 
   // Capped cities checks
   for (const cityCode of cappedCities) {
@@ -271,30 +271,30 @@ export function runEmpiricalChallengerTests(): { totalChecks: number; passed: bo
     assert(resAbove.breakdown.totalReimbursed > 0, `Shangluo ${tier} reimbursed should be > 0`);
   }
 
-  // Xi'an resident outpatient: Tier 2 (50), Tier 3 (100)
-  const xaT2 = calculateReimbursement({
+  // Xi'an resident outpatient: Community (70%), Tier 1 (60%), 0 deductible
+  const xaComm = calculateReimbursement({
     cityCode: '610100',
     insuranceType: 'resident',
     treatmentType: 'outpatient',
-    hospitalTier: 'tier2',
+    hospitalTier: 'community',
     remoteStatus: 'local',
     totalCost: 150
   });
   checks++;
-  assert(xaT2.breakdown.deductibleDeducted === 50, `Xi'an resident tier2 outpatient ded deducted should be 50, got ${xaT2.breakdown.deductibleDeducted}`);
-  assert(xaT2.breakdown.baseReimbursed === 50, `Xi'an resident tier2 outpatient reimbursed should be (150-50)*0.5 = 50, got ${xaT2.breakdown.baseReimbursed}`);
+  assert(xaComm.breakdown.deductibleDeducted === 0, `Xi'an resident community outpatient ded deducted should be 0, got ${xaComm.breakdown.deductibleDeducted}`);
+  assert(xaComm.breakdown.baseReimbursed === 105, `Xi'an resident community outpatient reimbursed should be 150*0.7 = 105, got ${xaComm.breakdown.baseReimbursed}`);
 
-  const xaT3 = calculateReimbursement({
+  const xaT1 = calculateReimbursement({
     cityCode: '610100',
     insuranceType: 'resident',
     treatmentType: 'outpatient',
-    hospitalTier: 'tier3',
+    hospitalTier: 'tier1',
     remoteStatus: 'local',
-    totalCost: 250
+    totalCost: 200
   });
   checks++;
-  assert(xaT3.breakdown.deductibleDeducted === 100, `Xi'an resident tier3 outpatient ded deducted should be 100, got ${xaT3.breakdown.deductibleDeducted}`);
-  assert(xaT3.breakdown.baseReimbursed === 60, `Xi'an resident tier3 outpatient reimbursed should be (250-100)*0.4 = 60, got ${xaT3.breakdown.baseReimbursed}`);
+  assert(xaT1.breakdown.deductibleDeducted === 0, `Xi'an resident tier1 outpatient ded deducted should be 0, got ${xaT1.breakdown.deductibleDeducted}`);
+  assert(xaT1.breakdown.baseReimbursed === 120, `Xi'an resident tier1 outpatient reimbursed should be 200*0.6 = 120, got ${xaT1.breakdown.baseReimbursed}`);
 
   console.log('✓ Section 5 Passed: Tier-specific deductibles accurately penetrate and override package defaults.\n');
 

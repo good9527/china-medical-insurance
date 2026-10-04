@@ -131,6 +131,7 @@ export const yanglingCityData: CityInsuranceData = {
   resident: {
     outpatient: {
       sourceDocId: 'yl-resident-basic-2022',
+      annualDeductible: 0,
       annualCap: 150,
       tierBenefits: {
         community: { tierName: '定点村卫生室/社区卫生服务站', deductible: 0, reimbursementRatio: 0.60 },
@@ -143,14 +144,14 @@ export const yanglingCityData: CityInsuranceData = {
     },
     inpatient: {
       sourceDocId: 'yl-resident-basic-2022',
-      annualCap: 150000, // 杨凌居民基本医保年度统筹基金住院最高支付限额15万元
+      annualCap: 130000, // 依据杨医保发〔2022〕18号，示范区居民基本医保年度最高支付限额13万元
       repeatedDeductibleRule: '参保人在一个自然年度内多次住院，起付线按规定执行。',
       tierBenefits: {
-        community: { tierName: '基层医疗机构/乡镇卫生院', deductible: 500, reimbursementRatio: 0.90 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 500, reimbursementRatio: 0.90 },
-        tier2: { tierName: '二级定点医院(公立900元/民营700元)', deductible: 900, reimbursementRatio: 0.85 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 1500, reimbursementRatio: 0.75 },
-        tier3_top: { tierName: '市级重点三甲医院', deductible: 1500, reimbursementRatio: 0.75 }
+        community: { tierName: '基层医疗机构/乡镇卫生院', deductible: 100, reimbursementRatio: 0.90 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.90 },
+        tier2: { tierName: '二级定点医院(公立400元)', deductible: 400, reimbursementRatio: 0.85 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.75 },
+        tier3_top: { tierName: '市级重点三甲医院', deductible: 800, reimbursementRatio: 0.75 }
       }
     },
     catastrophic: {

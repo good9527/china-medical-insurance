@@ -28,14 +28,14 @@ export const xianCityData: CityInsuranceData = {
     },
     {
       docId: 'xa-employee-inpatient-basic',
-      title: '西安市人民政府办公厅关于印发《西安市城镇职工基本医疗保险实施细则》的通知',
-      docNumber: '市政办发〔2017〕72号',
-      issuingDept: ['西安市人民政府办公厅', '西安市医疗保障局'],
-      publishDate: '2017-08-15',
-      effectiveDate: '2017-09-01',
+      title: '西安市医疗保障局关于明确城镇职工基本医疗保险住院待遇标准的通知及现行经办规程',
+      docNumber: '市医保发〔2022〕75号及经办标准',
+      issuingDept: ['西安市医疗保障局', '西安市财政局'],
+      publishDate: '2022-12-15',
+      effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.xa.gov.cn/wsdt/bszn/1877601888153145345.html',
-      summaryQuote: '职工医保参保人员在定点医疗机构住院，起付标准：社区/一级医疗机构200元，二级医疗机构500元，三级医疗机构1200元。统筹基金支付比例：一级医疗机构在职90%（退休94%），二级医疗机构在职85%（退休90%），三级医疗机构在职80%（退休85%）。统筹基金最高支付限额为40万元。'
+      summaryQuote: '职工医保参保人员在定点医疗机构住院，起付标准：社区/一级医疗机构200元，二级医疗机构400元，三级医疗机构650元，三级特等医疗机构850元。统筹基金支付比例：一级医疗机构在职92%（退休95%），二级医疗机构在职90%（退休93%），三级及三级特等医疗机构在职88%（退休91%）。参保人员在一个自然年度内多次住院，起付标准逐次降低：一级医院200/150/100/四次及以上0元；二级医院400/300/150/四次及以上0元；三级医院650/550/350/四次及以上0元；三级特等医院850/800/550/四次及以上0元。统筹基金最高支付限额为40万元。'
     },
     {
       docId: 'xa-resident-basic-2019-40',
@@ -116,37 +116,37 @@ export const xianCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'xa-employee-inpatient-basic',
       annualCap: 400000, // 基本医保年封顶 40 万元
-      repeatedDeductibleRule: '同一自然年度内多次住院，起付线每次递减20%，但最低不得低于一级医院标准。',
+      repeatedDeductibleRule: '参保人员在一个自然年度内多次住院，起付线逐次降低：一级医院200/150/100/四次及以上0元；二级医院400/300/150/四次及以上0元；三级医院650/550/350/四次及以上0元；三级特等医院850/800/550/四次及以上0元。',
       tierBenefits: {
         community: {
           tierName: '社区卫生服务机构/乡镇卫生院',
           deductible: 200,
-          reimbursementRatio: 0.90,
-          retireeRatioBonus: 0.04
+          reimbursementRatio: 0.92,
+          retireeRatioBonus: 0.03
         },
         tier1: {
           tierName: '一级医疗机构',
           deductible: 200,
-          reimbursementRatio: 0.90,
-          retireeRatioBonus: 0.04
+          reimbursementRatio: 0.92,
+          retireeRatioBonus: 0.03
         },
         tier2: {
           tierName: '二级医疗机构',
-          deductible: 500,
-          reimbursementRatio: 0.85,
-          retireeRatioBonus: 0.05
+          deductible: 400,
+          reimbursementRatio: 0.90,
+          retireeRatioBonus: 0.03
         },
         tier3: {
           tierName: '三级医疗机构',
-          deductible: 1200,
-          reimbursementRatio: 0.80,
-          retireeRatioBonus: 0.05
+          deductible: 650,
+          reimbursementRatio: 0.88,
+          retireeRatioBonus: 0.03
         },
         tier3_top: {
-          tierName: '三甲重点医院(西京/唐都/交大一二附等)',
-          deductible: 1200,
-          reimbursementRatio: 0.80,
-          retireeRatioBonus: 0.05
+          tierName: '三级特等医院(交大一附院/西京/唐都/省人医等)',
+          deductible: 850,
+          reimbursementRatio: 0.88,
+          retireeRatioBonus: 0.03
         }
       }
     },

@@ -81,14 +81,14 @@ export const xianyangCityData: CityInsuranceData = {
       note: '自然年度内门诊累计满 260 元起付线后启动报销，在职每年最高限额 1500 元，退休人员限额 1700 元。'
     },
     inpatient: {
-      sourceDocId: 'xy-resident-inpatient-regulations',
+      sourceDocId: 'xy-employee-outpatient-official',
       annualCap: 350000,
       tierBenefits: {
-        community: { tierName: '基层社区/乡镇卫生院', deductible: 160, reimbursementRatio: 0.90, retireeRatioBonus: 0.04 },
-        tier1: { tierName: '一级医疗机构', deductible: 160, reimbursementRatio: 0.90, retireeRatioBonus: 0.04 },
-        tier2: { tierName: '二级医疗机构', deductible: 550, reimbursementRatio: 0.85, retireeRatioBonus: 0.05 },
-        tier3: { tierName: '三级医疗机构', deductible: 1200, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
-        tier3_top: { tierName: '三甲重点医院', deductible: 1200, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 }
+        community: { tierName: '基层社区/乡镇卫生院', deductible: 160, reimbursementRatio: 0.92, retireeRatioBonus: 0.04 },
+        tier1: { tierName: '一级医疗机构', deductible: 160, reimbursementRatio: 0.92, retireeRatioBonus: 0.04 },
+        tier2: { tierName: '二级医疗机构', deductible: 550, reimbursementRatio: 0.90, retireeRatioBonus: 0.04 },
+        tier3: { tierName: '三级医疗机构', deductible: 1200, reimbursementRatio: 0.88, retireeRatioBonus: 0.04 },
+        tier3_top: { tierName: '三甲重点医院', deductible: 1200, reimbursementRatio: 0.88, retireeRatioBonus: 0.04 }
       }
     },
     catastrophic: {
