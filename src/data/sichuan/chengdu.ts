@@ -138,6 +138,7 @@ export const chengduCityData: CityInsuranceData = {
       },
       repeatedDeductibleRule: '基准数据为成年人高档缴费；成年人低档缴费三级医院报销比例为53%、二级75%、一级85%、基层95%；学生儿童及大学生三级医院报销比例为60%、二级75%、一级85%、基层95%。'
     },
+
     catastrophic: {
       sourceDocId: 'cd-medical-insurance-regulations-2023',
       name: '城乡居民大病保险',

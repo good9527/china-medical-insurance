@@ -103,11 +103,12 @@ export const jinchangData: CityInsuranceData = {
       annualCap: 160000,
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区中心', deductible: 100, reimbursementRatio: 0.90 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.90 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 450, reimbursementRatio: 0.80 },
-        tier3: { tierName: '三级定点医疗机构', deductible: 800, reimbursementRatio: 0.75 },
-        tier3_top: { tierName: '三级甲等综合医院', deductible: 800, reimbursementRatio: 0.75 }
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
+        tier2: { tierName: '二级定点医疗机构', deductible: 450, reimbursementRatio: 0.78 },
+        tier3: { tierName: '三级定点医疗机构', deductible: 900, reimbursementRatio: 0.65 },
+        tier3_top: { tierName: '三级甲等综合医院', deductible: 900, reimbursementRatio: 0.65 }
       }
+
     },
     catastrophic: {
       sourceDocId: 'jc-medical-insurance-inpatient-2024',

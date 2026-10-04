@@ -109,12 +109,13 @@ export const jinanCityData: CityInsuranceData = {
       sourceDocId: 'jn-medical-insurance-inpatient-2025',
       annualCap: 250000,
       tierBenefits: {
-        community: { tierName: '乡镇卫生院/社区卫生中心', deductible: 200, reimbursementRatio: 0.80 },
+        community: { tierName: '乡镇卫生院/社区卫生中心', deductible: 200, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 400, reimbursementRatio: 0.80 },
-        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.70 },
-        tier3: { tierName: '市属三级定点医疗机构', deductible: 1000, reimbursementRatio: 0.60 },
-        tier3_top: { tierName: '省部属重点三甲医院(如齐鲁/省立)', deductible: 1000, reimbursementRatio: 0.50 }
+        tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.75 },
+        tier3: { tierName: '市属三级定点医疗机构', deductible: 1000, reimbursementRatio: 0.70 },
+        tier3_top: { tierName: '省部属重点三甲医院(如齐鲁/省立)', deductible: 1000, reimbursementRatio: 0.60 }
       },
+
       repeatedDeductibleRule: '第二次住院起付线减半，第三次及以上免起付线。'
     },
     catastrophic: {

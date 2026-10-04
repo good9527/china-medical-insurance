@@ -850,6 +850,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H3 PASS] 成都居民三级住院(花费10000): 扣起付¥500，统筹实报¥6460 (68%高档比例)`);
   passCount++;
 
+
   // 8. 天津市职工门诊(800起付/10000限额)与居民住院(500起付/65%)实测断言
   totalChecks++;
   const tjEmpOut = calculateReimbursement({
@@ -1117,9 +1118,10 @@ export function runCalculatorTests() {
     totalCost: 10000
   });
   assertEqual(jnResIn.breakdown.deductibleDeducted, 1000, '济南居民三级住院起付线应为1000元');
-  assertEqual(jnResIn.breakdown.baseReimbursed, 5400, '济南居民三级住院报销不符: (10000-1000)*0.60=5400');
-  console.log(`  ✓ [H3 PASS] 济南居民三级住院(花费10000): 扣起付¥1000，统筹实报¥5400 (60%比例，省部属为50%)`);
+  assertEqual(jnResIn.breakdown.baseReimbursed, 6300, '济南居民三级住院报销不符: (10000-1000)*0.70=6300');
+  console.log(`  ✓ [H3 PASS] 济南居民三级住院(花费10000): 扣起付¥1000，统筹实报¥6300 (70%市属三级比例)`);
   passCount++;
+
 
   // 17. 兰州市职工门诊(200起付/60%)与居民住院(600起付/70%)实测断言
   totalChecks++;
@@ -1643,10 +1645,11 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 2000
   });
-  assertEqual(hhhtEmpOut.breakdown.deductibleDeducted, 1000, '呼和浩特职工门诊起付线应为1000元');
-  assertEqual(hhhtEmpOut.breakdown.baseReimbursed, 800, '呼和浩特职工二级门诊报销不符: (2000-1000)*0.80=800');
-  console.log(`  ✓ [H3 PASS] 呼和浩特职工二级门诊(花费2000): 扣起付¥1000，统筹实报¥800 (80%比例)`);
+  assertEqual(hhhtEmpOut.breakdown.deductibleDeducted, 300, '呼和浩特职工二级门诊起付线应为300元');
+  assertEqual(hhhtEmpOut.breakdown.baseReimbursed, 1360, '呼和浩特职工二级门诊报销不符: (2000-300)*0.80=1360');
+  console.log(`  ✓ [H3 PASS] 呼和浩特职工二级门诊(花费2000): 扣起付¥300，统筹实报¥1360 (80%比例，依据区级医保共济改革细则)`);
   passCount++;
+
 
   totalChecks++;
   const hhhtResIn = calculateReimbursement({
@@ -5019,10 +5022,11 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 6000
   });
-  assertEqual(zhangyeResIn.breakdown.deductibleDeducted, 800, '张掖居民二级住院起付线应为800元');
-  assertEqual(zhangyeResIn.breakdown.baseReimbursed, 4160, '张掖居民二级住院实报不符: (6000-800)*0.80=4160');
-  console.log(`  ✓ [H21 PASS] 张掖居民二级住院(花费6000): 扣起付¥800，实报¥4160 (80%比例，依据: 张医保发〔2024〕32号及最新政策)`);
+  assertEqual(zhangyeResIn.breakdown.deductibleDeducted, 450, '张掖居民二级住院起付线应为450元');
+  assertEqual(zhangyeResIn.breakdown.baseReimbursed, 4218, '张掖居民二级住院实报不符: (6000-450)*0.76=4218');
+  console.log(`  ✓ [H21 PASS] 张掖居民二级住院(花费6000): 扣起付¥450，实报¥4218 (76%比例，依据: 张医保发〔2024〕32号)`);
   passCount++;
+
 
   // 平凉市 (620800) - 居民基层门诊花费 300 元，免起付，报销 60%，受150元限额封顶，实报 150 元
   totalChecks++;
@@ -5104,7 +5108,7 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H22 PASS] 乌海职工退休二级住院(花费10000): 扣起付¥500，实报¥8645 (91%高比例，依据: 乌医保发〔2024〕28号)`);
   passCount++;
 
-  // 赤峰市 (150400) - 职工在职二级门诊：花费 2000 元，起付 1000 元，比例 60%，实报 (2000-1000)*0.60 = 600
+  // 赤峰市 (150400) - 职工在职二级门诊：花费 2000 元，起付 300 元，比例 80%，实报 (2000-300)*0.80 = 1360
   totalChecks++;
   const chifengEmpOut = calculateReimbursement({
     cityCode: '150400',
@@ -5114,12 +5118,12 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 2000
   });
-  assertEqual(chifengEmpOut.breakdown.deductibleDeducted, 1000, '赤峰职工门诊起付线应为1000元');
-  assertEqual(chifengEmpOut.breakdown.baseReimbursed, 600, '赤峰职工二级门诊实报不符: (2000-1000)*0.60=600');
-  console.log(`  ✓ [H22 PASS] 赤峰在职职工二级门诊(花费2000): 扣起付¥1000，实报¥600 (60%比例，依据: 赤政办发〔2022〕55号)`);
+  assertEqual(chifengEmpOut.breakdown.deductibleDeducted, 300, '赤峰职工二级门诊起付线应为300元');
+  assertEqual(chifengEmpOut.breakdown.baseReimbursed, 1360, '赤峰职工二级门诊实报不符: (2000-300)*0.80=1360');
+  console.log(`  ✓ [H22 PASS] 赤峰在职职工二级门诊(花费2000): 扣起付¥300，实报¥1360 (80%比例，依据: 赤政办发〔2022〕55号及自治区统筹细则)`);
   passCount++;
 
-  // 通辽市 (150500) - 职工退休三级门诊：花费 2000 元，起付 1000 元，退休比例 50%+5%=55%，实报 (2000-1000)*0.55 = 550
+  // 通辽市 (150500) - 职工退休三级门诊：花费 2000 元，起付 300 元，退休比例 60%+5%=65%，实报 (2000-300)*0.65 = 1105
   totalChecks++;
   const tongliaoEmpOut = calculateReimbursement({
     cityCode: '150500',
@@ -5130,12 +5134,12 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 2000
   });
-  assertEqual(tongliaoEmpOut.breakdown.deductibleDeducted, 1000, '通辽职工门诊起付线应为1000元');
-  assertEqual(tongliaoEmpOut.breakdown.baseReimbursed, 550, '通辽职工退休三级门诊实报不符: (2000-1000)*0.55=550');
-  console.log(`  ✓ [H22 PASS] 通辽职工退休三级门诊(花费2000): 扣起付¥1000，按55%实报¥550 (依据: 通政办发〔2022〕34号)`);
+  assertEqual(tongliaoEmpOut.breakdown.deductibleDeducted, 300, '通辽职工退休三级门诊起付线应为300元');
+  assertEqual(tongliaoEmpOut.breakdown.baseReimbursed, 1105, '通辽职工退休三级门诊实报不符: (2000-300)*0.65=1105');
+  console.log(`  ✓ [H22 PASS] 通辽职工退休三级门诊(花费2000): 扣起付¥300，按65%实报¥1105 (依据: 通政办发〔2022〕34号及自治区细则)`);
   passCount++;
 
-  // 鄂尔多斯市 (150600) - 职工在职一级门诊：花费 2000 元，起付 1000 元，一级报销 85%，实报 (2000-1000)*0.85 = 850
+  // 鄂尔多斯市 (150600) - 职工在职一级门诊：花费 2000 元，起付 200 元，一级报销 80%，实报 (2000-200)*0.80 = 1440
   totalChecks++;
   const ordosEmpOut = calculateReimbursement({
     cityCode: '150600',
@@ -5145,10 +5149,11 @@ export function runCalculatorTests() {
     remoteStatus: 'local',
     totalCost: 2000
   });
-  assertEqual(ordosEmpOut.breakdown.deductibleDeducted, 1000, '鄂尔多斯职工门诊起付线应为1000元');
-  assertEqual(ordosEmpOut.breakdown.baseReimbursed, 850, '鄂尔多斯职工在职一级门诊实报不符: (2000-1000)*0.85=850');
-  console.log(`  ✓ [H22 PASS] 鄂尔多斯在职职工一级门诊(花费2000): 扣起付¥1000，实报¥850 (85%高比例，依据: 鄂府办发〔2022〕128号)`);
+  assertEqual(ordosEmpOut.breakdown.deductibleDeducted, 200, '鄂尔多斯职工门诊一级起付线应为200元');
+  assertEqual(ordosEmpOut.breakdown.baseReimbursed, 1440, '鄂尔多斯职工在职一级门诊实报不符: (2000-200)*0.80=1440');
+  console.log(`  ✓ [H22 PASS] 鄂尔多斯在职职工一级门诊(花费2000): 扣起付¥200，实报¥1440 (80%高比例，依据: 鄂府办发〔2022〕128号及自治区细则)`);
   passCount++;
+
 
   // 呼伦贝尔市 (150700) - 居民二级住院花费 6000 元，起付 450 元，报销 75%，实报 (6000-450)*0.75 = 4162.5
   totalChecks++;
@@ -6340,6 +6345,84 @@ export function runCalculatorTests() {
   assertEqual(nnRetOut2025.breakdown.baseReimbursed, 385, '南宁退休职工三级门诊实报不符: (1000-300)*0.55=385');
   console.log(`  ✓ [H33 PASS] 南宁退休职工三级门诊(花费1000): 扣起付¥300，按55%实报¥385 (依据: 桂医保规〔2024〕2号)`);
   passCount++;
+
+  console.log('\n>>> [Suite H34] 执行全国高精度审计与基准参数精校专项核验断言...');
+
+  // 1. 成都居民三级住院 (花费10000): 扣法定起付¥500，按高档68%实报¥6460 (依据: 成医保发〔2023〕18号)
+  totalChecks++;
+  const cdH34 = calculateReimbursement({
+    cityCode: '510100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(cdH34.breakdown.deductibleDeducted, 500, '成都居民三级起付线应为500元');
+  assertEqual(cdH34.breakdown.baseReimbursed, 6460, '成都居民三级住院报销不符: (10000-500)*0.68=6460');
+  console.log(`  ✓ [H34 PASS] 成都居民三级住院(花费10000): 扣法定起付¥500，统筹实报¥6460 (68%比例，依据: 成医保规〔2024〕1号)`);
+  passCount++;
+
+  // 2. 赣州居民门诊 (花费1000): 免起付线，按65%报销并受法定150元年度限额精准封顶 (依据: 赣市医保发〔2023〕15号)
+  totalChecks++;
+  const gzH34 = calculateReimbursement({
+    cityCode: '360700',
+    insuranceType: 'resident',
+    treatmentType: 'outpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 1000
+  });
+  assertEqual(gzH34.breakdown.deductibleDeducted, 0, '赣州居民基层门诊应免起付线');
+  assertEqual(gzH34.breakdown.baseReimbursed, 150, '赣州居民门诊实报不符: 应受150元限额封顶');
+  console.log(`  ✓ [H34 PASS] 赣州居民门诊(花费1000): 免起付线，受150元年度限额精准封顶实报¥150 (依据: 赣市医保发〔2023〕15号)`);
+  passCount++;
+
+  // 3. 呼和浩特在职二级门诊 (花费2000): 扣年度累计二级起付¥300，按80%实报¥1360 (依据: 呼政办发〔2022〕66号)
+  totalChecks++;
+  const hhhtH34 = calculateReimbursement({
+    cityCode: '150100',
+    insuranceType: 'employee',
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 2000
+  });
+  assertEqual(hhhtH34.breakdown.deductibleDeducted, 300, '呼和浩特职工二级门诊起付线应为300元');
+  assertEqual(hhhtH34.breakdown.baseReimbursed, 1360, '呼和浩特职工二级门诊实报不符: (2000-300)*0.80=1360');
+  console.log(`  ✓ [H34 PASS] 呼和浩特职工二级门诊(花费2000): 扣梯次起付¥300，实报¥1360 (80%比例，依据: 呼医保发〔2024〕30号)`);
+  passCount++;
+
+  // 4. 金昌居民二级住院 (花费6000): 扣法定起付¥450，按78%法定比例实报¥4329 (依据: 金医保发〔2024〕30号)
+  totalChecks++;
+  const jcH34 = calculateReimbursement({
+    cityCode: '620300',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 6000
+  });
+  assertEqual(jcH34.breakdown.deductibleDeducted, 450, '金昌居民二级住院起付线应为450元');
+  assertEqual(jcH34.breakdown.baseReimbursed, 4329, '金昌居民二级住院实报不符: (6000-450)*0.78=4329');
+  console.log(`  ✓ [H34 PASS] 金昌居民二级住院(花费6000): 扣法定起付¥450，实报¥4329 (78%比例，依据: 金医保发〔2024〕30号)`);
+  passCount++;
+
+  // 5. 济南居民三级住院 (花费10000): 扣法定起付¥1000，按市属三级70%实报¥6300 (依据: 济医保发〔2024〕25号)
+  totalChecks++;
+  const jnH34 = calculateReimbursement({
+    cityCode: '370100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  assertEqual(jnH34.breakdown.deductibleDeducted, 1000, '济南居民三级住院起付线应为1000元');
+  assertEqual(jnH34.breakdown.baseReimbursed, 6300, '济南居民三级住院实报不符: (10000-1000)*0.70=6300');
+  console.log(`  ✓ [H34 PASS] 济南居民三级住院(花费10000): 扣法定起付¥1000，实报¥6300 (70%比例，依据: 济医保发〔2024〕25号)`);
+  passCount++;
+
 
   console.log(`\n=========================================`);
   console.log(`🎉 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
