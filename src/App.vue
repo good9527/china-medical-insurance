@@ -279,7 +279,7 @@ page {
 }
 
 /* 强制所有表单元素继承全局字体与抗锯齿渲染 */
-input, button, select, textarea, uni-input, uni-button {
+input, button, /* #ifdef H5 */ select, /* #endif */ textarea, uni-input, uni-button {
   font-family: inherit;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -371,11 +371,13 @@ uni-page-head {
     align-items: center !important;
     justify-content: center !important;
   }
+  /* #ifdef H5 */
   .uni-tabbar .uni-tabbar__icon img {
     width: 22px !important;
     height: 22px !important;
     object-fit: contain !important;
   }
+  /* #endif */
   .uni-tabbar .uni-tabbar__label {
     font-size: 11px !important;
     font-weight: 600 !important;
@@ -403,6 +405,7 @@ body.modal-open {
   overflow: hidden !important;
 }
 
+/* #ifdef H5 */
 /* ==================== 现代微科技硬件光标系统 (0 运行时开销) ==================== */
 @media (pointer: fine) {
   html, body, page, uni-app, uni-page-body, .page-wrapper {
@@ -459,6 +462,7 @@ body.modal-open {
     cursor: grabbing !important;
   }
 }
+/* #endif */
 
 /* 全局 QQ 弹弹交互基础类与按压反馈 */
 button, .elastic-btn, .interactive-item {

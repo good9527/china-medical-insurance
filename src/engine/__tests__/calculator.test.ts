@@ -6601,6 +6601,162 @@ export function runCalculatorTests() {
   console.log(`  ✓ [H35 PASS] 宝鸡在职职工门诊(花费1000): 扣起付¥50，三级按50%实报¥475 (依据: 宝政办发〔2022〕54号)`);
   passCount++;
 
+  // --------------------------------------------------------------------------
+  // Suite H36: 执行住院退休封顶线 (annualCapRetiree) 深度逻辑与边界恒等式断言
+  // --------------------------------------------------------------------------
+  console.log('\n>>> [Suite H36] 执行住院退休封顶线 (annualCapRetiree) 深度逻辑与边界恒等式断言...');
+
+  const baseCity = getCityDataByCode('610100')!;
+  assertTrue(!!baseCity, '必须能获取西安基础数据作为参照');
+
+  // 1. 基准统筹区未定义 annualCapRetiree 场景 (默认回退至 annualCap)
+  totalChecks++;
+  assertEqual(baseCity.employee.inpatient.annualCapRetiree, undefined, '基础统筹区默认未独立设定退休住院限额');
+  passCount++;
+
+  totalChecks++;
+  const xaEmpInActive = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 1000000,
+    isRetiree: false
+  });
+  const xaEmpInRetiree = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 1000000,
+    isRetiree: true
+  });
+  // 当 annualCapRetiree 未定义时，在职与退休统筹基本封顶线均应受 annualCap (400,000) 约束
+  assertEqual(xaEmpInActive.breakdown.baseReimbursed, 400000, '未设退休限额时在职基本统筹封顶应为400,000');
+  assertEqual(xaEmpInRetiree.breakdown.baseReimbursed, 400000, '未设退休限额时退休基本统筹封顶应回退至400,000');
+  assertTrue(xaEmpInActive.policyNotes.some(n => n.includes('400,000')), '在职测算附注应提示达到40万封顶');
+  assertTrue(xaEmpInRetiree.policyNotes.some(n => n.includes('400,000')), '退休测算附注应提示达到40万封顶');
+  assertEqual(
+    xaEmpInRetiree.breakdown.totalReimbursed + xaEmpInRetiree.breakdown.personalPayTotal,
+    1000000,
+    '未设退休限额时资金守恒恒等式必须成立'
+  );
+  console.log('  ✓ [H36 PASS] 未定义 annualCapRetiree 时在职与退休平滑回退至 annualCap (40万)');
+  passCount++;
+
+  // 2. 模拟统筹区定义了 annualCapRetiree 且高于 annualCap 场景 (例如在职20万，退休30万)
+  const mockCityWithRetCap = JSON.parse(JSON.stringify(baseCity));
+  mockCityWithRetCap.cityCode = '999001';
+  mockCityWithRetCap.cityName = '退休优待测试示范区';
+  mockCityWithRetCap.employee.inpatient.annualCap = 200000;
+  mockCityWithRetCap.employee.inpatient.annualCapRetiree = 300000;
+  mockCityWithRetCap.employee.inpatient.tierBenefits.tier3 = {
+    tierName: '三级医院',
+    deductible: 1000,
+    reimbursementRatio: 0.85,
+    retireeRatioBonus: 0.05
+  };
+  mockCityWithRetCap.employee.catastrophic = {
+    sourceDocId: 'mock-doc',
+    name: '城镇职工大额医疗补助',
+    deductible: 0,
+    tiers: [{ minAmount: 0, ratio: 0.95 }]
+  };
+
+  // 2.1 高额花费 (500,000): 在职受 200,000 封顶，退休享受 300,000 封顶
+  totalChecks++;
+  const mockActiveHigh = calculateReimbursement({
+    cityCode: '999001',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 500000,
+    isRetiree: false
+  }, mockCityWithRetCap);
+
+  const mockRetireeHigh = calculateReimbursement({
+    cityCode: '999001',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 500000,
+    isRetiree: true
+  }, mockCityWithRetCap);
+
+  assertEqual(mockActiveHigh.breakdown.baseReimbursed, 200000, '在职基本统筹应精准锁定在在职限额 200,000');
+  assertEqual(mockRetireeHigh.breakdown.baseReimbursed, 300000, '退休人员基本统筹应成功突破在职限额并锁定在退休限额 300,000');
+  assertTrue(mockActiveHigh.policyNotes.some(n => n.includes('200,000')), '在职附注提示在职封顶');
+  assertTrue(mockRetireeHigh.policyNotes.some(n => n.includes('300,000')), '退休附注提示退休封顶');
+  console.log('  ✓ [H36 PASS] 定义 annualCapRetiree 时在职锁定20万、退休锁定30万');
+  passCount++;
+
+  // 2.2 中间花费 (花费 280,000): 在职超限(按20万封顶)，退休未超限(90%比例实报 (280000-1000)*0.9 = 251,100 < 300,000)
+  totalChecks++;
+  const mockActiveMid = calculateReimbursement({
+    cityCode: '999001',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 280000,
+    isRetiree: false
+  }, mockCityWithRetCap);
+
+  const mockRetireeMid = calculateReimbursement({
+    cityCode: '999001',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 280000,
+    isRetiree: true
+  }, mockCityWithRetCap);
+
+  assertEqual(mockActiveMid.breakdown.baseReimbursed, 200000, '在职达到20万封顶');
+  assertEqual(mockRetireeMid.breakdown.baseReimbursed, 251100, '退休未超30万限额，全额按优待比例90%实报251,100');
+  assertTrue(mockActiveMid.policyNotes.some(n => n.includes('封顶线')), '在职应达到封顶');
+  assertTrue(!mockRetireeMid.policyNotes.some(n => n.includes('封顶线')), '退休未达封顶线，不应有封顶提示');
+  console.log('  ✓ [H36 PASS] 中间花费区间退休待遇优势体现: 在职封顶20万，退休实报25.11万且未触顶');
+  passCount++;
+
+  // 3. 边界条件验证与恒等式守恒
+  console.log('  --- 执行极端边界与资金守恒严格核验 ---');
+  const boundaryCosts = [0, 0.01, 500, 1000, 1000.01, 1500, 200000, 222222.22, 300000, 500000, 10000000];
+  for (const cost of boundaryCosts) {
+    for (const isRet of [false, true]) {
+      totalChecks++;
+      const res = calculateReimbursement({
+        cityCode: '999001',
+        insuranceType: 'employee',
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: 'local',
+        totalCost: cost,
+        nonInsuranceCost: Math.round(cost * 0.1 * 100) / 100,
+        classBCost: Math.round(cost * 0.15 * 100) / 100,
+        isRetiree: isRet
+      }, mockCityWithRetCap);
+
+      const { totalCost, totalReimbursed, personalPayTotal, baseReimbursed, catastrophicReimbursed } = res.breakdown;
+      assertEqual(totalCost, cost, `总花费应等于入参: ${cost}`);
+      assertTrue(totalReimbursed >= 0, `报销额不得为负: ${totalReimbursed}`);
+      assertTrue(personalPayTotal >= 0, `自付额不得为负: ${personalPayTotal}`);
+      assertTrue(totalReimbursed <= totalCost + 0.01, `报销总额不得超过总花费: ${totalReimbursed} > ${totalCost}`);
+
+      const sum = Math.round((totalReimbursed + personalPayTotal) * 100) / 100;
+      assertCloseTo(sum, cost, 0.01, `资金守恒必须严格闭环: cost=${cost}, sum=${sum}`);
+
+      const compSum = Math.round((baseReimbursed + catastrophicReimbursed) * 100) / 100;
+      assertCloseTo(compSum, totalReimbursed, 0.01, `分项报销与合计报销必须严格闭环: base=${baseReimbursed}, cat=${catastrophicReimbursed}, total=${totalReimbursed}`);
+      passCount++;
+    }
+  }
+  console.log(`  ✓ [H36 PASS] 边界值与资金守恒恒等式全部通过 (共 ${boundaryCosts.length * 2} 组严密核验)`);
+
   console.log(`\n=========================================`);
   console.log(`[PASS] 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);

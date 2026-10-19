@@ -12,8 +12,11 @@ import { getCityDataByCode } from '../data';
  * 严格遵照国家及地市医保算法：
  * 统筹基金支付 = (总费用 - 目录外自费 - 乙类先行自付 - 起付线) * 综合报销比例
  */
-export function calculateReimbursement(request: CalculateRequest): CalculateResult {
-  const city = getCityDataByCode(request.cityCode);
+export function calculateReimbursement(
+  request: CalculateRequest,
+  customCityData?: CityInsuranceData
+): CalculateResult {
+  const city = customCityData || getCityDataByCode(request.cityCode);
   if (!city) {
     throw new Error(`未找到城市编码 [${request.cityCode}] 的医保政策数据`);
   }
@@ -85,7 +88,7 @@ export function calculateReimbursement(request: CalculateRequest): CalculateResu
       baseRatio += tierBenefit.retireeRatioBonus;
     }
 
-    annualCap = inRule.annualCap;
+    annualCap = (isRetiree && inRule.annualCapRetiree) ? inRule.annualCapRetiree : inRule.annualCap;
     if (inRule.repeatedDeductibleRule) {
       policyNotes.push(`起付标准说明: ${inRule.repeatedDeductibleRule}`);
     }

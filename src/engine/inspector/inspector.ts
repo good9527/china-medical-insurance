@@ -141,14 +141,14 @@ export class PolicyInspector {
   public static formatConsoleReport(summary: InspectionSummary): string {
     const lines: string[] = [];
     lines.push('================================================================================');
-    lines.push(`🛡️ 全国医保数据智能巡检与级联排查系统报告 [模式: ${summary.mode}]`);
+    lines.push(`[巡检报告] 全国医保数据智能巡检与级联排查系统报告 [模式: ${summary.mode}]`);
     lines.push(`巡检时间: ${summary.inspectedAt}`);
     lines.push(`纳管统筹区: ${summary.totalCities} | 健康统筹区: ${summary.healthyCities} | 健康率: ${summary.healthyRate.toFixed(1)}%`);
-    lines.push(`🔴 致命缺陷(CRITICAL): ${summary.criticalCount} | 🟡 潜在风险(WARNING): ${summary.warningCount} | 🔵 优化提示(INFO): ${summary.infoCount}`);
+    lines.push(`[严重] 致命缺陷(CRITICAL): ${summary.criticalCount} | [警告] 潜在风险(WARNING): ${summary.warningCount} | [提示] 优化提示(INFO): ${summary.infoCount}`);
     lines.push('================================================================================');
 
     if (summary.items.length === 0) {
-      lines.push('\n🎉 完美！全量统筹区各项核心待遇与公文凭证全部符合现行医保政策规范！\n');
+      lines.push('\n[达标] 全量统筹区各项核心待遇与公文凭证全部符合现行医保政策规范！\n');
       return lines.join('\n');
     }
 
@@ -162,11 +162,11 @@ export class PolicyInspector {
     for (const [prov, list] of group.entries()) {
       lines.push(`\n【${prov}】 (检出 ${list.length} 个关注项):`);
       for (const item of list) {
-        const icon = item.severity === 'CRITICAL' ? '🔴 [严重]' : '🟡 [警告]';
-        lines.push(`  ${icon} ${item.cityName.padEnd(5, '　')} (${item.cityCode}) [${item.category}] ${item.title}`);
+        const tag = item.severity === 'CRITICAL' ? '[严重]' : (item.severity === 'WARNING' ? '[警告]' : '[提示]');
+        lines.push(`  ${tag} ${item.cityName.padEnd(5, '　')} (${item.cityCode}) [${item.category}] ${item.title}`);
         lines.push(`     详情: ${item.detail}`);
         if (item.suggestedFix) {
-          lines.push(`     💡 整改建议: ${item.suggestedFix}`);
+          lines.push(`     [建议] 整改建议: ${item.suggestedFix}`);
         }
       }
     }
