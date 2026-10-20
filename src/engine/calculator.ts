@@ -24,15 +24,15 @@ export function calculateReimbursement(
   const pkg = request.insuranceType === 'employee' ? city.employee : city.resident;
   const isRetiree = request.insuranceType === 'employee' && !!request.isRetiree;
 
-  // 1. 基础花费分解
-  const totalCost = Math.max(0, Number(request.totalCost) || 0);
-  const nonInsuranceCost = Math.max(0, Number(request.nonInsuranceCost) || 0);
-  const classBCost = Math.max(0, Number(request.classBCost) || 0);
+  // 1. 基础花费分解 (强制入参分级规整，杜绝亚分漂移)
+  const totalCost = Math.round(Math.max(0, Number(request.totalCost) || 0) * 100) / 100;
+  const nonInsuranceCost = Math.round(Math.max(0, Number(request.nonInsuranceCost) || 0) * 100) / 100;
+  const classBCost = Math.round(Math.max(0, Number(request.classBCost) || 0) * 100) / 100;
   const classBRatio = request.classBSelfPayRatio ?? 0.05;
   const classBPriorPay = Math.round(classBCost * classBRatio * 100) / 100;
 
   // 符合医保政策范围内的费用 (进入医保统筹池的基数)
-  const eligibleCost = Math.max(0, totalCost - nonInsuranceCost - classBPriorPay);
+  const eligibleCost = Math.round(Math.max(0, totalCost - nonInsuranceCost - classBPriorPay) * 100) / 100;
 
   // 2. 区分门诊 vs 住院规则
   let deductible = 0;

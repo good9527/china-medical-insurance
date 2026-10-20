@@ -8,12 +8,12 @@ export type SortColumn =
   | 'overall_score'       // 全域综合得分
   | 'employee_score'      // 职工专属得分
   | 'resident_score'      // 居民专属得分
-  | 'inpatient_score'     // 🏥 住院全层级保障力得分
-  | 'outpatient_score'    // 💊 门诊共济与减负力得分
-  | 'catastrophic_score'  // 🛡️ 大病重疾抗风险力得分
-  | 'threshold_score'     // 🚪 门槛起付友好度得分
-  | 'retiree_score'       // 👴 群体倾斜与关怀力得分
-  | 'mobility_score'      // 🌐 异地就医流动自由度得分
+  | 'inpatient_score'     // 住院全层级保障力得分
+  | 'outpatient_score'    // 门诊共济与减负力得分
+  | 'catastrophic_score'  // 大病重疾抗风险力得分
+  | 'threshold_score'     // 门槛起付友好度得分
+  | 'retiree_score'       // 群体倾斜与关怀力得分
+  | 'mobility_score'      // 异地就医流动自由度得分
   | 'emp_inpatient'       // 职工三级住院比例
   | 'emp_inpatient_ded'   // 职工三级住院起付线 (门槛越低越好)
   | 'res_inpatient'       // 居民三级住院比例
@@ -77,12 +77,12 @@ export interface BenchmarkCityMetrics {
 
   // 6大能力雷达维度 (0 - 100 分，CMI-Index 2.0 标准)
   radar: {
-    inpatient: number;     // 🏥 住院全层级保障力
-    outpatient: number;    // 💊 门诊共济与减负力
-    catastrophic: number;  // 🛡️ 大病重疾抗风险力
-    threshold: number;     // 🚪 门槛起付友好度 (起付越低分越高)
-    retiree: number;       // 👴 群体倾斜与关怀力 (退休/高龄优待)
-    mobility: number;      // 🌐 异地就医流动自由度
+    inpatient: number;     // 住院全层级保障力
+    outpatient: number;    // 门诊共济与减负力
+    catastrophic: number;  // 大病重疾抗风险力
+    threshold: number;     // 门槛起付友好度 (起付越低分越高)
+    retiree: number;       // 群体倾斜与关怀力 (退休/高龄优待)
+    mobility: number;      // 异地就医流动自由度
   };
   rawCity: CityInsuranceData;
 }
@@ -160,7 +160,7 @@ export function extractCityBenchmarkMetrics(city: CityInsuranceData): BenchmarkC
 
   // ==================== 6 大能力维度量化评分 (0 - 100 分) ====================
 
-  // [维度 1] 🏥 住院全层级保障力 (inpatient)
+  // [维度 1] 住院全层级保障力 (inpatient)
   const empInpatientWeighted = empInTier3 * 0.50 + empInTier2 * 0.30 + empInTier1 * 0.20;
   const resInpatientWeighted = resInTier3 * 0.50 + resInTier2 * 0.30 + resInTier1 * 0.20;
   const combinedInpatientRatio = empInpatientWeighted * 0.55 + resInpatientWeighted * 0.45;
@@ -168,30 +168,30 @@ export function extractCityBenchmarkMetrics(city: CityInsuranceData): BenchmarkC
   const inDeductibleScore = Math.max(40, Math.min(100, Math.round(100 - (empDedInTier3 / 1500) * 35)));
   const inpatientScore = Math.round(inRatioScore * 0.85 + inDeductibleScore * 0.15);
 
-  // [维度 2] 💊 门诊共济与减负力 (outpatient)
+  // [维度 2] 门诊共济与减负力 (outpatient)
   const isEmpCapUncapped = empCap >= 9999999;
   const empCapScore = isEmpCapUncapped ? 100 : Math.min(98, Math.round((Math.min(empCap, 12000) / 12000) * 65 + 33));
   const empDedScore = empDed === 0 ? 100 : Math.max(30, Math.round(95 - (empDed / 1000) * 55));
   const resOutScore = Math.min(96, Math.max(35, Math.round((Math.min(resCap, 2500) / 2500) * 55 + resOutRatio * 45)));
   const outpatientScore = Math.round(empCapScore * 0.40 + empDedScore * 0.30 + resOutScore * 0.30);
 
-  // [维度 3] 🛡️ 大病重疾抗风险力 (catastrophic)
+  // [维度 3] 大病重疾抗风险力 (catastrophic)
   const maxCapScore = Math.min(100, Math.round(Math.min(maxCap, 1050000) / 1050000 * 75 + 25));
   const cataSafetyScore = isCatastrophicUncapped ? 99 : Math.min(90, Math.max(40, Math.round((resCata.annualCap || 300000) / 600000 * 50 + 40)));
   const cataRatioScore = Math.min(100, Math.round((cataMaxRatio / 0.85) * 80 + 20));
   const catastrophicScore = Math.round(maxCapScore * 0.40 + cataSafetyScore * 0.35 + cataRatioScore * 0.25);
 
-  // [维度 4] 🚪 门槛起付友好度 (threshold)
+  // [维度 4] 门槛起付友好度 (threshold)
   const outpatientThresholdScore = empDed === 0 ? 100 : Math.max(30, Math.round(96 - (empDed / 800) * 55));
   const inpatientThresholdScore = Math.max(35, Math.min(100, Math.round(95 - (empDedInTier3 / 1600) * 50)));
   const thresholdScore = Math.round(outpatientThresholdScore * 0.55 + inpatientThresholdScore * 0.45);
 
-  // [维度 5] 👴 群体倾斜与关怀力 (retiree)
+  // [维度 5] 群体倾斜与关怀力 (retiree)
   const retBonusScore = Math.min(100, Math.max(40, Math.round((retBonus / 0.06) * 60 + 40)));
   const retAdvScore = hasRetireeOutpatientAdvantage ? 96 : 80;
   const retireeScore = Math.round(retBonusScore * 0.70 + retAdvScore * 0.30);
 
-  // [维度 6] 🌐 异地就医流动自由度 (mobility)
+  // [维度 6] 异地就医流动自由度 (mobility)
   const transferScore = Math.min(100, Math.max(40, Math.round(((remoteTransferRatio - 0.75) / 0.25) * 60 + 40)));
   const unfiledScore = Math.min(100, Math.max(30, Math.round(((remoteUnfiledRatio - 0.50) / 0.30) * 65 + 35)));
   const mobilityScore = Math.round(transferScore * 0.60 + unfiledScore * 0.40);

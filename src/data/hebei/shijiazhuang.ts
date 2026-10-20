@@ -123,7 +123,7 @@ export const shijiazhuangData: CityInsuranceData = {
       ]
     },
     remoteMedical: {
-      sourceDocId: 'sjz-resident-inpatient-outpatient-2021',
+      sourceDocId: 'sjz-resident-inpatient-outpatient-2025',
       filingChannels: ['国家医保服务平台APP', '河北智慧医保小程序'],
       longTermFiledRatio: 1.0,
       transferFiledRatio: 0.77, // 省外转诊经备案支付比例统一为50%（折合参保地三级65%的约77%）

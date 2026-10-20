@@ -68,7 +68,7 @@ export const xuzhouCityData: CityInsuranceData = {
       note: '门诊年度起付线在职700元、退休人员减半（350元）。基层报销75%（退休85%）、二级报销65%（退休75%）、三级报销60%（退休70%）。年度统筹限额7000元。'
     },
     inpatient: {
-      sourceDocId: 'xz-medical-insurance-inpatient-2023',
+      sourceDocId: 'xz-resident-medical-2023',
       annualCap: 300000, // 基本统筹限额 30 万元
       repeatedDeductibleRule: '当年第二次住院起付标准减半，第三次及以上免除',
       tierBenefits: {
@@ -88,7 +88,7 @@ export const xuzhouCityData: CityInsuranceData = {
       ]
     },
     remoteMedical: {
-      sourceDocId: 'xz-medical-insurance-inpatient-2023',
+      sourceDocId: 'xz-resident-medical-2023',
       filingChannels: ['国家医保服务平台APP', '江苏医保云APP'],
       longTermFiledRatio: 1.0,
       transferFiledRatio: 0.90,
@@ -135,7 +135,7 @@ export const xuzhouCityData: CityInsuranceData = {
       ]
     },
     remoteMedical: {
-      sourceDocId: 'xz-medical-insurance-inpatient-2023',
+      sourceDocId: 'xz-resident-medical-2023',
       filingChannels: ['国家医保服务平台APP', '江苏医保云APP'],
       longTermFiledRatio: 1.0,
       transferFiledRatio: 0.90,

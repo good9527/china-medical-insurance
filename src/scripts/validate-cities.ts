@@ -67,6 +67,28 @@ export function validateAllCities(): { total: number; valid: number; reports: Qu
       if (!city.resident.remoteMedical) issues.push('居民缺失异地就医规则(remoteMedical)');
     }
 
+    // 4. 检验待遇包官方公文外键引用完整性 (Foreign Key Integrity)
+    const validDocIds = new Set((city.sourceDocs || []).map(d => d.docId));
+    const checkDocId = (docId: string | undefined, benefitName: string) => {
+      if (docId && !validDocIds.has(docId)) {
+        issues.push(`险种 [${benefitName}] 引用的 sourceDocId [${docId}] 不存在于本市 sourceDocs 凭证库中`);
+      }
+    };
+
+    if (city.employee) {
+      checkDocId(city.employee.outpatient?.sourceDocId, '职工门诊 (employee.outpatient)');
+      checkDocId(city.employee.inpatient?.sourceDocId, '职工住院 (employee.inpatient)');
+      checkDocId(city.employee.catastrophic?.sourceDocId, '职工大额医疗互助 (employee.catastrophic)');
+      checkDocId(city.employee.remoteMedical?.sourceDocId, '职工异地就医 (employee.remoteMedical)');
+    }
+
+    if (city.resident) {
+      checkDocId(city.resident.outpatient?.sourceDocId, '居民门诊 (resident.outpatient)');
+      checkDocId(city.resident.inpatient?.sourceDocId, '居民住院 (resident.inpatient)');
+      checkDocId(city.resident.catastrophic?.sourceDocId, '居民大病保险 (resident.catastrophic)');
+      checkDocId(city.resident.remoteMedical?.sourceDocId, '居民异地就医 (resident.remoteMedical)');
+    }
+
     const isValid = issues.length === 0;
     if (isValid) validCount++;
 
@@ -106,6 +128,6 @@ if (typeof require !== 'undefined' && require.main === module) {
     }
     process.exit(1);
   } else {
-    console.log(`✅ 所有已录入统筹区（${result.total}个）均完全符合规范化审计标准，无任何缺项！\n`);
+    console.log(`[PASS] 所有已录入统筹区（${result.total}个）均完全符合规范化审计标准，无任何缺项！\n`);
   }
 }

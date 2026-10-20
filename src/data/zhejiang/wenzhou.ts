@@ -57,7 +57,7 @@ export const wenzhouCityData: CityInsuranceData = {
       note: '门诊年度起付线在职600元、退休400元。基层报销80%（退休85%）、二级报销70%（退休75%）、三级报销60%（退休65%）。年度最高支付限额1万元。'
     },
     inpatient: {
-      sourceDocId: 'wz-medical-insurance-inpatient-2023',
+      sourceDocId: 'wz-medical-insurance-inpatient-2024',
       annualCap: 400000, // 基本统筹限额 40 万元
       repeatedDeductibleRule: '当年第二次住院起付标准减半，第三次及以上免除',
       tierBenefits: {
@@ -69,7 +69,7 @@ export const wenzhouCityData: CityInsuranceData = {
       }
     },
     catastrophic: {
-      sourceDocId: 'wz-medical-insurance-inpatient-2023',
+      sourceDocId: 'wz-medical-insurance-inpatient-2024',
       name: '温州市职工大病保险',
       deductible: 20000,
       annualCap: 500000,
@@ -80,7 +80,7 @@ export const wenzhouCityData: CityInsuranceData = {
       ]
     },
     remoteMedical: {
-      sourceDocId: 'wz-medical-insurance-inpatient-2023',
+      sourceDocId: 'wz-medical-insurance-inpatient-2024',
       filingChannels: ['国家医保服务平台APP', '浙里办APP', '温州医保微信公众号'],
       longTermFiledRatio: 1.0,
       transferFiledRatio: 0.90,

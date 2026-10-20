@@ -99,7 +99,7 @@ export const chuzhouData: CityInsuranceData = {
   // 城乡居民医保待遇 (滁州标准)
   resident: {
     outpatient: {
-      sourceDocId: 'czh-resident-employee-inpatient-2023',
+      sourceDocId: 'cz-resident-employee-inpatient-2023',
       annualCap: 150, // 依据皖医保发〔2024〕9号，普通门诊统筹年度限额150元
       tierBenefits: {
         community: { tierName: '基层卫生院/社区服务中心', deductible: 0, reimbursementRatio: 0.60 },

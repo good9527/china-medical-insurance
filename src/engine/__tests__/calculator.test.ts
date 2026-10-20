@@ -6757,6 +6757,203 @@ export function runCalculatorTests() {
   }
   console.log(`  ✓ [H36 PASS] 边界值与资金守恒恒等式全部通过 (共 ${boundaryCosts.length * 2} 组严密核验)`);
 
+  // --------------------------------------------------------------------------
+  // Suite H37: 全国政策深度校准、门诊按次起付、官方公文外键完整性与入参规整断言
+  // --------------------------------------------------------------------------
+  console.log('\n>>> [Suite H37] 执行全国政策深度校准、门诊按次起付、官方公文外键完整性与入参规整断言...');
+
+  // 1. 商洛市与宝鸡市门诊按次起付 (per_visit) 机制与政策附注断言
+  const shangluo = getCityDataByCode('611000')!;
+  assertTrue(!!shangluo, '商洛市数据必须存在');
+  totalChecks++;
+  assertEqual(shangluo.employee.outpatient.deductibleType, 'per_visit', '商洛职工门诊起付类型必须为 per_visit (依据: 商政办发〔2022〕27号)');
+  passCount++;
+
+  const baoji = getCityDataByCode('610300')!;
+  assertTrue(!!baoji, '宝鸡市数据必须存在');
+  totalChecks++;
+  assertEqual(baoji.employee.outpatient.deductibleType, 'per_visit', '宝鸡职工门诊起付类型必须为 per_visit (依据: 宝政办发〔2022〕54号)');
+  passCount++;
+
+  // 商洛各级医疗机构按次起付与提示文案验证
+  const slCommunityRes = calculateReimbursement({
+    cityCode: '611000',
+    insuranceType: 'employee',
+    treatmentType: 'outpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 100,
+    isRetiree: false
+  });
+  totalChecks++;
+  assertEqual(slCommunityRes.breakdown.deductibleDeducted, 30, '商洛基层门诊按次扣除起付线30元');
+  assertEqual(slCommunityRes.breakdown.baseReimbursed, 49, '商洛基层门诊实报: (100-30)*0.70 = 49');
+  assertTrue(slCommunityRes.policyNotes.some(n => n.includes('门诊起付标准按就医诊次执行，本次起付线 ¥30')), '商洛基层门诊应生成按诊次起付附注');
+  assertTrue(!slCommunityRes.policyNotes.some(n => n.includes('年度累计起付标准')), '商洛门诊不应包含年度累计提示');
+  passCount++;
+
+  const slTier2Res = calculateReimbursement({
+    cityCode: '611000',
+    insuranceType: 'employee',
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 200,
+    isRetiree: false
+  });
+  totalChecks++;
+  assertEqual(slTier2Res.breakdown.deductibleDeducted, 60, '商洛二级定点医院门诊按次扣除起付线60元');
+  assertEqual(slTier2Res.breakdown.baseReimbursed, 91, '商洛二级门诊实报: (200-60)*0.65 = 91');
+  assertTrue(slTier2Res.policyNotes.some(n => n.includes('门诊起付标准按就医诊次执行，本次起付线 ¥60')), '商洛二级门诊应提示60元诊次起付线');
+  passCount++;
+
+  const slTier3Res = calculateReimbursement({
+    cityCode: '611000',
+    insuranceType: 'employee',
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 300,
+    isRetiree: false
+  });
+  totalChecks++;
+  assertEqual(slTier3Res.breakdown.deductibleDeducted, 90, '商洛三级定点医院门诊按次扣除起付线90元');
+  assertEqual(slTier3Res.breakdown.baseReimbursed, 126, '商洛三级门诊实报: (300-90)*0.60 = 126');
+  assertTrue(slTier3Res.policyNotes.some(n => n.includes('门诊起付标准按就医诊次执行，本次起付线 ¥90')), '商洛三级门诊应提示90元诊次起付线');
+  passCount++;
+
+  const bjOutRes = calculateReimbursement({
+    cityCode: '610300',
+    insuranceType: 'employee',
+    treatmentType: 'outpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 1000,
+    isRetiree: false
+  });
+  totalChecks++;
+  assertEqual(bjOutRes.breakdown.deductibleDeducted, 50, '宝鸡三级门诊扣除按次起付50元');
+  assertEqual(bjOutRes.breakdown.baseReimbursed, 475, '宝鸡三级门诊实报475元');
+  assertTrue(bjOutRes.policyNotes.some(n => n.includes('门诊起付标准按就医诊次执行，本次起付线 ¥50')), '宝鸡门诊应提示50元诊次起付线');
+  passCount++;
+  console.log('  ✓ [H37 PASS] 商洛与宝鸡门诊按次起付(per_visit)机制与动态附注断言通过');
+
+  // 2. 广东省东莞市城乡居民住院报销比例精校断言 (东府办〔2023〕45号)
+  const dongguan = getCityDataByCode('441900')!;
+  assertTrue(!!dongguan, '东莞市数据必须存在');
+  totalChecks++;
+  assertEqual(dongguan.resident.inpatient.tierBenefits.tier1.reimbursementRatio, 0.85, '东莞居民一级住院比例应为85%');
+  assertEqual(dongguan.resident.inpatient.tierBenefits.tier2.reimbursementRatio, 0.80, '东莞居民二级住院比例应为80%');
+  assertEqual(dongguan.resident.inpatient.tierBenefits.tier3.reimbursementRatio, 0.75, '东莞居民三级住院比例应为75%');
+  assertEqual(dongguan.resident.inpatient.tierBenefits.tier3_top.reimbursementRatio, 0.75, '东莞居民三甲住院比例应为75%');
+  assertTrue(
+    dongguan.resident.inpatient.tierBenefits.tier3.reimbursementRatio < dongguan.employee.inpatient.tierBenefits.tier3.reimbursementRatio,
+    '东莞居民三级住院比例(75%)必须严谨低于职工三级住院比例(85%)，彻底消除倒挂'
+  );
+  passCount++;
+
+  // 东莞居民住院各级医院实报断言
+  const dgResT1 = calculateReimbursement({
+    cityCode: '441900',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 10000
+  });
+  totalChecks++;
+  assertEqual(dgResT1.breakdown.baseReimbursed, 8075, '东莞居民一级住院10000元实报: (10000-500)*0.85 = 8075');
+  assertEqual(dgResT1.breakdown.totalReimbursed + dgResT1.breakdown.personalPayTotal, 10000, '东莞居民一级住院资金守恒');
+  passCount++;
+
+  const dgResT2 = calculateReimbursement({
+    cityCode: '441900',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 20000
+  });
+  totalChecks++;
+  assertEqual(dgResT2.breakdown.baseReimbursed, 15360, '东莞居民二级住院20000元实报: (20000-800)*0.80 = 15360');
+  assertEqual(dgResT2.breakdown.totalReimbursed + dgResT2.breakdown.personalPayTotal, 20000, '东莞居民二级住院资金守恒');
+  passCount++;
+
+  const dgResT3 = calculateReimbursement({
+    cityCode: '441900',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 30000
+  });
+  totalChecks++;
+  assertEqual(dgResT3.breakdown.baseReimbursed, 21525, '东莞居民三级住院30000元实报: (30000-1300)*0.75 = 21525');
+  assertEqual(dgResT3.breakdown.totalReimbursed + dgResT3.breakdown.personalPayTotal, 30000, '东莞居民三级住院资金守恒');
+  passCount++;
+  console.log('  ✓ [H37 PASS] 东莞居民住院待遇精校(三级75%、二级80%、一级85%)与资金守恒核验通过');
+
+  // 3. 8 个校准统筹区官方公文外键完整性与 0 兜底解析断言
+  const calibratedCityCodes = ['510700', '440400', '441900', '330300', '320300', '130100', '341100', '210100'];
+  for (const code of calibratedCityCodes) {
+    const c = getCityDataByCode(code)!;
+    assertTrue(!!c, `校准统筹区 [${code}] 必须存在`);
+    const validIds = new Set(c.sourceDocs.map(d => d.docId));
+
+    const checkRefs = [
+      c.employee.outpatient?.sourceDocId,
+      c.employee.inpatient?.sourceDocId,
+      c.employee.catastrophic?.sourceDocId,
+      c.employee.remoteMedical?.sourceDocId,
+      c.resident.outpatient?.sourceDocId,
+      c.resident.inpatient?.sourceDocId,
+      c.resident.catastrophic?.sourceDocId,
+      c.resident.remoteMedical?.sourceDocId
+    ];
+
+    for (const ref of checkRefs) {
+      if (ref) {
+        totalChecks++;
+        assertTrue(validIds.has(ref), `统筹区 [${c.cityName}] 外键 [${ref}] 必须在 sourceDocs 中存在`);
+        passCount++;
+      }
+    }
+
+    // 运行测算确认 sourceDoc 匹配险种公文而非兜底首篇公文
+    totalChecks++;
+    const empInRes = calculateReimbursement({
+      cityCode: code,
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 10000
+    });
+    assertEqual(empInRes.officialDocUsed.docId, c.employee.inpatient.sourceDocId, `统筹区 [${c.cityName}] 住院测算公文解析必须精准对齐`);
+    passCount++;
+  }
+  console.log(`  ✓ [H37 PASS] 8个校准统筹区共20处 sourceDocId 外键完整性与0兜底精准溯源核验全部通过`);
+
+  // 4. 引擎入参分级规整与极端亚分物理守恒断言
+  const fractionalCostCases = [100.005, 100.004, 1234.567, 9999.999, 0.001];
+  for (const fCost of fractionalCostCases) {
+    totalChecks++;
+    const fRes = calculateReimbursement({
+      cityCode: '610100',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: fCost
+    });
+    const expectedRoundedTotal = Math.round(fCost * 100) / 100;
+    assertEqual(fRes.breakdown.totalCost, expectedRoundedTotal, `入参亚分花费必须规整到分: ${fCost} -> ${expectedRoundedTotal}`);
+    const fSum = Math.round((fRes.breakdown.totalReimbursed + fRes.breakdown.personalPayTotal) * 100) / 100;
+    assertEqual(fSum, fRes.breakdown.totalCost, `亚分规整后资金守恒必须完全闭环: totalCost=${fRes.breakdown.totalCost}, sum=${fSum}`);
+    passCount++;
+  }
+  console.log(`  ✓ [H37 PASS] 引擎入参分级规整与极端亚分物理守恒断言全部通过`);
+
   console.log(`\n=========================================`);
   console.log(`[PASS] 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);

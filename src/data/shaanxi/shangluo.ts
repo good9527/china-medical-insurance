@@ -66,6 +66,7 @@ export const shangluoCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'sl-employee-outpatient-2022',
       annualDeductible: 30, // 商洛按次设起付线（一级30/二级60/三级90元/次），系统首诊起付标准基准为30元
+      deductibleType: 'per_visit',
       annualCap: 1500,      // 在职职工门诊统筹年最高限额1500元
       annualCapRetiree: 2000,// 退休人员年最高限额2000元
       tierBenefits: {

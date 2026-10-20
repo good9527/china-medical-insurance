@@ -400,7 +400,7 @@ export function runEmpiricalChallengerTests(): { totalChecks: number; passed: bo
   console.log('✓ Section 7 Passed: Extreme boundary conditions and malformed inputs handled robustly.\n');
 
   console.log('========================================================================');
-  console.log(`🎉 EMPIRICAL CHALLENGER PASSED: ${checks} rigorous checks 100% SUCCESSFUL!`);
+  console.log(`[PASS] EMPIRICAL CHALLENGER PASSED: ${checks} rigorous checks 100% SUCCESSFUL!`);
   console.log('========================================================================\n');
 
   return { totalChecks: checks, passed: true };

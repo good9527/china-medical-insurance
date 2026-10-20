@@ -100,7 +100,7 @@ export const shenyangCityData: CityInsuranceData = {
       note: '普通门诊在基层医疗机构免起付线，报销50%-60%，年度限额400元。'
     },
     inpatient: {
-      sourceDocId: 'sy-resident-medical-2019-19',
+      sourceDocId: 'sy-medical-insurance-inpatient-2025',
       annualCap: 150000, // 居民基本统筹限额 15 万元
       tierBenefits: {
         community: { tierName: '一级医疗机构及社区中心', deductible: 200, reimbursementRatio: 0.85 },
@@ -112,7 +112,7 @@ export const shenyangCityData: CityInsuranceData = {
       repeatedDeductibleRule: '从第二次住院起，起付标准递减15%，一年内最多递减两次。恶性肿瘤患者一个自然年度内只需交纳首次住院起付标准。'
     },
     catastrophic: {
-      sourceDocId: 'sy-resident-medical-2019-19',
+      sourceDocId: 'sy-medical-insurance-inpatient-2025',
       name: '城乡居民大病保险（上不封顶）',
       deductible: 15000,
       tiers: [

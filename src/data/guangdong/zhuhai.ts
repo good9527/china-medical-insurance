@@ -50,7 +50,7 @@ export const zhuhaiCityData: CityInsuranceData = {
       note: '普通门诊免设起付线。选定门诊统筹定点机构在职报销80%（退休85%），签约家庭医生再提5%；转诊二级及以上机构报销70%（退休75%）。年度限额3500元。'
     },
     inpatient: {
-      sourceDocId: 'zh-medical-insurance-inpatient-2023',
+      sourceDocId: 'zh-medical-insurance-inpatient-2024',
       annualCap: 600000,
       tierBenefits: {
         community: { tierName: '一级及基层医疗机构', deductible: 300, reimbursementRatio: 0.94, retireeRatioBonus: 0.01 },
@@ -62,7 +62,7 @@ export const zhuhaiCityData: CityInsuranceData = {
       repeatedDeductibleRule: '参保人年度内多次住院，起付线每次均按对应机构级别扣除；转诊住院扣除差额。'
     },
     catastrophic: {
-      sourceDocId: 'zh-medical-insurance-inpatient-2023',
+      sourceDocId: 'zh-medical-insurance-inpatient-2024',
       name: '职工大病医疗保险/大爱乐康',
       deductible: 10000,
       annualCap: 500000,
@@ -73,7 +73,7 @@ export const zhuhaiCityData: CityInsuranceData = {
       ]
     },
     remoteMedical: {
-      sourceDocId: 'zh-medical-insurance-inpatient-2023',
+      sourceDocId: 'zh-medical-insurance-inpatient-2024',
       filingChannels: ['粤医保微信小程序', '国家医保服务平台APP'],
       longTermFiledRatio: 1.0,
       transferFiledRatio: 0.90,
@@ -85,7 +85,7 @@ export const zhuhaiCityData: CityInsuranceData = {
 
   resident: {
     outpatient: {
-      sourceDocId: 'zh-medical-insurance-inpatient-2023',
+      sourceDocId: 'zh-medical-insurance-inpatient-2024',
       annualCap: 1500,
       tierBenefits: {
         community: { tierName: '基层定点门诊机构', deductible: 0, reimbursementRatio: 0.70 },
@@ -108,7 +108,7 @@ export const zhuhaiCityData: CityInsuranceData = {
       }
     },
     catastrophic: {
-      sourceDocId: 'zh-medical-insurance-inpatient-2023',
+      sourceDocId: 'zh-medical-insurance-inpatient-2024',
       name: '城乡居民大病保险',
       deductible: 10000,
       annualCap: 400000,
@@ -119,7 +119,7 @@ export const zhuhaiCityData: CityInsuranceData = {
       ]
     },
     remoteMedical: {
-      sourceDocId: 'zh-medical-insurance-inpatient-2023',
+      sourceDocId: 'zh-medical-insurance-inpatient-2024',
       filingChannels: ['粤医保微信小程序', '国家医保服务平台APP'],
       longTermFiledRatio: 1.0,
       transferFiledRatio: 0.85,

@@ -651,7 +651,7 @@ export function runAdversarialTests(): { totalRuns: number; passed: boolean } {
   console.log(`✓ Fuzzing Generator: 5,000 pseudorandom scenarios completed with 0 errors.`);
 
   console.log('\n================================================================');
-  console.log(`🎉 ALL ADVERSARIAL STRESS TESTS PASSED! (${checks} total checks executed)`);
+  console.log(`[PASS] ALL ADVERSARIAL STRESS TESTS PASSED! (${checks} total checks executed)`);
   console.log('================================================================\n');
 
   return { totalRuns: checks, passed: true };

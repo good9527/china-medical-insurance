@@ -110,7 +110,7 @@ export const mianyangCityData: CityInsuranceData = {
       repeatedDeductibleRule: '参保人员自然年度内第二次及以上住院，起付线降低50%。'
     },
     catastrophic: {
-      sourceDocId: 'my-medical-insurance-inpatient-2021',
+      sourceDocId: 'my-medical-insurance-inpatient-2024',
       name: '城乡居民大病保险',
       deductible: 12000,
       annualCap: 300000, // 对齐四川省统一居民大病保险年度最高支付限额30万元/年
@@ -121,7 +121,7 @@ export const mianyangCityData: CityInsuranceData = {
       ]
     },
     remoteMedical: {
-      sourceDocId: 'my-medical-insurance-inpatient-2021',
+      sourceDocId: 'my-medical-insurance-inpatient-2024',
       filingChannels: ['国家医保服务平台APP', '四川医保公共服务平台微信小程序'],
       longTermFiledRatio: 1.0,
       transferFiledRatio: 0.90,
