@@ -242,6 +242,62 @@ export function runDeepAudit(): {
           }
         }
       }
+
+      // Remote Medical Ratio Monotonicity
+      const rm = pkg.remoteMedical;
+      if (rm) {
+        const {
+          longTermFiledRatio = 1.0,
+          transferFiledRatio = 1.0,
+          unfiledEmergencyRatio = 1.0,
+          unfiledNormalRatio = 1.0
+        } = rm;
+
+        if (transferFiledRatio > longTermFiledRatio + 0.0001) {
+          issues.push({
+            cityCode, cityName, provinceName,
+            severity: 'CRITICAL',
+            dimension: 'MONOTONICITY',
+            title: `${label}异地就医折算比例倒挂 (转诊备案高于长期居住)`,
+            detail: `长期备案=${(longTermFiledRatio*100).toFixed(1)}%, 转诊备案=${(transferFiledRatio*100).toFixed(1)}%`,
+            expected: `<= ${(longTermFiledRatio*100).toFixed(1)}%`,
+            actual: `${(transferFiledRatio*100).toFixed(1)}%`
+          });
+        }
+        if (unfiledEmergencyRatio > transferFiledRatio + 0.0001) {
+          issues.push({
+            cityCode, cityName, provinceName,
+            severity: 'CRITICAL',
+            dimension: 'MONOTONICITY',
+            title: `${label}异地就医折算比例倒挂 (未备案急诊高于转诊备案)`,
+            detail: `转诊备案=${(transferFiledRatio*100).toFixed(1)}%, 未备案急诊=${(unfiledEmergencyRatio*100).toFixed(1)}%`,
+            expected: `<= ${(transferFiledRatio*100).toFixed(1)}%`,
+            actual: `${(unfiledEmergencyRatio*100).toFixed(1)}%`
+          });
+        }
+        if (unfiledNormalRatio > unfiledEmergencyRatio + 0.0001) {
+          issues.push({
+            cityCode, cityName, provinceName,
+            severity: 'CRITICAL',
+            dimension: 'MONOTONICITY',
+            title: `${label}异地就医折算比例倒挂 (未备案普通就医高于未备案急诊)`,
+            detail: `未备案急诊=${(unfiledEmergencyRatio*100).toFixed(1)}%, 未备案普通就医=${(unfiledNormalRatio*100).toFixed(1)}%`,
+            expected: `<= ${(unfiledEmergencyRatio*100).toFixed(1)}%`,
+            actual: `${(unfiledNormalRatio*100).toFixed(1)}%`
+          });
+        }
+        if (unfiledNormalRatio > transferFiledRatio + 0.0001) {
+          issues.push({
+            cityCode, cityName, provinceName,
+            severity: 'CRITICAL',
+            dimension: 'MONOTONICITY',
+            title: `${label}异地就医折算比例倒挂 (未备案普通就医高于转诊备案)`,
+            detail: `转诊备案=${(transferFiledRatio*100).toFixed(1)}%, 未备案普通就医=${(unfiledNormalRatio*100).toFixed(1)}%`,
+            expected: `<= ${(transferFiledRatio*100).toFixed(1)}%`,
+            actual: `${(unfiledNormalRatio*100).toFixed(1)}%`
+          });
+        }
+      }
     }
 
     // --- 3. Compare Quotes with Coded Numbers ---
@@ -406,6 +462,13 @@ if (typeof require !== 'undefined' && require.main === module) {
     const cCount = list.filter(i => i.severity === 'CRITICAL').length;
     const wCount = list.filter(i => i.severity === 'WARNING').length;
     console.log(`  - ${p}: 🔴 CRITICAL ${cCount}, 🟡 WARNING ${wCount}`);
+  }
+
+  if (critical.length > 0) {
+    console.error(`\n[FAIL] 深度审计发现 ${critical.length} 处严重问题 (CRITICAL)，请核实整改！`);
+    process.exit(1);
+  } else {
+    console.log(`\n[PASS] 全国 348 个医保统筹区深度核验全部通过，0 致命缺陷！`);
   }
 }
 

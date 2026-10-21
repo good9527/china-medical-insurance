@@ -1,6 +1,7 @@
 import { calculateReimbursement } from '../calculator';
+import { runMultiCitySimulation, popularMultiCityPresets } from '../simulator';
 import { allCities } from '../../data';
-import type { CityInsuranceData, CalculateRequest, HospitalTier } from '../../data/types';
+import type { CityInsuranceData, CalculateRequest, HospitalTier, ComparisonScenarioInput } from '../../data/types';
 
 type RemoteStatus = CalculateRequest['remoteStatus'];
 
@@ -462,6 +463,386 @@ export function runChallengerInvariantTests(): { totalChecks: number; passed: bo
     }
   }
   console.log('✓ Suite 4 Passed: 348 cities verified across hospitalization counts (1, 2, 3), 5-stage funnel, and monotonic ordering.\n');
+
+  // --------------------------------------------------------------------------
+  // TEST SUITE 5: 跨城待遇实测对比模拟器对抗不变量检验 (Multi-City Actuarial Simulation Invariants)
+  // --------------------------------------------------------------------------
+  console.log('--- Suite 5: 跨城待遇实测对比模拟器对抗不变量检验 ---');
+
+  // 1. 跨城对比样本集构建 (Sample hundreds of multi-city pairs and triplets across 348 regions)
+  const sampledCitySets: Array<{ label: string; cities: string[] }> = [];
+
+  // 1.1 加入全部 9 组经典预设组合 (2~3 城)
+  for (const preset of popularMultiCityPresets) {
+    // 兼容重庆直辖市编码 500000 -> 500100 映射
+    const validCities = preset.cities.map(c => c === '500000' ? '500100' : c);
+    sampledCitySets.push({ label: `Preset-${preset.name}`, cities: validCities });
+  }
+
+  // 1.2 全量 348 统筹区相邻滑动窗口配对 (Adjacent pairs across all 348 cities: exactly 348 pairs)
+  for (let i = 0; i < allCities.length; i++) {
+    const c1 = allCities[i].cityCode;
+    const c2 = allCities[(i + 1) % allCities.length].cityCode;
+    sampledCitySets.push({
+      label: `AdjacentPair-${allCities[i].cityName}-${allCities[(i + 1) % allCities.length].cityName}`,
+      cities: [c1, c2]
+    });
+  }
+
+  // 1.3 跨省跨地理大区跨度配对 (Strided cross-province pairs: ~70 pairs)
+  for (let i = 0; i < allCities.length; i += 5) {
+    const c1 = allCities[i].cityCode;
+    const c2 = allCities[(i + 137) % allCities.length].cityCode;
+    sampledCitySets.push({
+      label: `StridePair-${allCities[i].cityName}-${allCities[(i + 137) % allCities.length].cityName}`,
+      cities: [c1, c2]
+    });
+  }
+
+  // 1.4 跨三大经济带三城组合 (Triplets across Eastern, Central, and Western regions: ~50 triplets)
+  for (let i = 0; i < allCities.length; i += 7) {
+    const c1 = allCities[i].cityCode;
+    const c2 = allCities[(i + 47) % allCities.length].cityCode;
+    const c3 = allCities[(i + 113) % allCities.length].cityCode;
+    sampledCitySets.push({
+      label: `Triplet-${allCities[i].cityName}-${allCities[(i + 47) % allCities.length].cityName}-${allCities[(i + 113) % allCities.length].cityName}`,
+      cities: [c1, c2, c3]
+    });
+  }
+
+  console.log(`[Suite 5.1] Total multi-city sets sampled across 348 regions: ${sampledCitySets.length}`);
+
+  // 5.1 全样本全量检验 (Standard Scenarios across hundreds of multi-city sets)
+  const standardScenarios: ComparisonScenarioInput[] = [
+    {
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 60000,
+      nonInsuranceCost: 6000,
+      classBCost: 9000,
+      hospitalizationCount: 1
+    },
+    {
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'transfer',
+      totalCost: 120000,
+      nonInsuranceCost: 15000,
+      classBCost: 20000,
+      hospitalizationCount: 2
+    },
+    {
+      insuranceType: 'resident',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      totalCost: 8000,
+      nonInsuranceCost: 500,
+      classBCost: 800,
+      hospitalizationCount: 1
+    },
+    {
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier1',
+      remoteStatus: 'local',
+      totalCost: 3500,
+      nonInsuranceCost: 200,
+      classBCost: 300
+    }
+  ];
+
+  for (const set of sampledCitySets) {
+    for (const sc of standardScenarios) {
+      checks++;
+      const result = runMultiCitySimulation(set.cities, sc);
+
+      // Invariant 1: Physical Fund Conservation: R_i + P_i === C_total (allConserved === true)
+      assert(result.allConserved === true, `[Suite 5 Invariant 1] allConserved is false for ${set.label}`);
+
+      const maxR = Math.max(...result.cities.map(c => c.totalReimbursed));
+      const minP = Math.min(...result.cities.map(c => c.personalPayTotal));
+      const minDed = Math.min(...result.cities.map(c => c.deductibleDeducted));
+      const maxCat = Math.max(...result.cities.map(c => c.catastrophicReimbursed));
+
+      const baseline = result.cities[0];
+
+      for (let idx = 0; idx < result.cities.length; idx++) {
+        const o = result.cities[idx];
+
+        // Invariant 1 (per-city):
+        assert(o.isConserved === true, `[Suite 5 Invariant 1] City ${o.cityName} isConserved false in ${set.label}`);
+        const citySum = Math.round((o.totalReimbursed + o.personalPayTotal) * 100) / 100;
+        assert(Math.abs(citySum - sc.totalCost) <= 0.01, `[Suite 5 Invariant 1] R + P != C in ${o.cityName}: ${citySum} != ${sc.totalCost}`);
+        assert(o.totalReimbursed >= 0, `[Suite 5 Invariant 1] Negative totalReimbursed in ${o.cityName}`);
+        assert(o.personalPayTotal >= 0, `[Suite 5 Invariant 1] Negative personalPayTotal in ${o.cityName}`);
+        assert(o.totalReimbursed <= sc.totalCost + 0.01, `[Suite 5 Invariant 1] Reimbursed exceeds cost in ${o.cityName}`);
+
+        // Subcomponents conservation: base + catastrophic === totalReimbursed
+        const subSum = Math.round((o.baseReimbursed + o.catastrophicReimbursed) * 100) / 100;
+        assert(Math.abs(subSum - o.totalReimbursed) <= 0.01, `[Suite 5 Subcomponent] Base + Cat != Total in ${o.cityName}`);
+
+        // Invariant 2: Baseline Delta Antisymmetry: deltaR_i === -deltaP_i (deltaR_i + deltaP_i = 0)
+        const expectedDeltaR = Math.round((o.totalReimbursed - baseline.totalReimbursed) * 100) / 100;
+        const expectedDeltaP = Math.round((o.personalPayTotal - baseline.personalPayTotal) * 100) / 100;
+        assert(Math.abs(o.deltaReimbursedVsCityA - expectedDeltaR) <= 0.01, `[Suite 5 Invariant 2] deltaReimbursed mismatch in ${o.cityName}`);
+        assert(Math.abs(o.deltaPersonalPayVsCityA - expectedDeltaP) <= 0.01, `[Suite 5 Invariant 2] deltaPersonalPay mismatch in ${o.cityName}`);
+        const deltaSum = Math.round((o.deltaReimbursedVsCityA + o.deltaPersonalPayVsCityA) * 100) / 100;
+        assert(Math.abs(deltaSum) <= 0.02, `[Suite 5 Invariant 2] Delta antisymmetry failed: deltaR + deltaP != 0 in ${o.cityName} (${o.deltaReimbursedVsCityA} + ${o.deltaPersonalPayVsCityA} = ${deltaSum})`);
+
+        if (idx === 0) {
+          assert(o.deltaReimbursedVsCityA === 0, `[Suite 5 Invariant 2] Baseline deltaR != 0`);
+          assert(o.deltaPersonalPayVsCityA === 0, `[Suite 5 Invariant 2] Baseline deltaP != 0`);
+        }
+
+        // Invariant 4: Winner determinism and tie-resilience
+        assert(o.isWinnerReimbursed === (o.totalReimbursed === maxR), `[Suite 5 Invariant 4] Winner reimbursed flag mismatch in ${o.cityName}`);
+        assert(o.isWinnerLowestOutPocket === (o.personalPayTotal === minP), `[Suite 5 Invariant 4] Winner lowest out pocket mismatch in ${o.cityName}`);
+        assert(o.isWinnerLowestDeductible === (o.deductibleDeducted === minDed), `[Suite 5 Invariant 4] Winner lowest deductible mismatch in ${o.cityName}`);
+        assert(o.isWinnerHighestCatastrophic === (maxCat > 0 && o.catastrophicReimbursed === maxCat), `[Suite 5 Invariant 4] Winner catastrophic mismatch in ${o.cityName}`);
+      }
+
+      // Invariant 3: Max Spread Equality: Spread_R === Spread_P
+      const actualSpreadR = Math.round((maxR - Math.min(...result.cities.map(c => c.totalReimbursed))) * 100) / 100;
+      const actualSpreadP = Math.round((Math.max(...result.cities.map(c => c.personalPayTotal)) - minP) * 100) / 100;
+      assert(Math.abs(result.maxReimbursementDelta - actualSpreadR) <= 0.01, `[Suite 5 Invariant 3] maxReimbursementDelta mismatch`);
+      assert(Math.abs(result.maxPersonalPayDelta - actualSpreadP) <= 0.01, `[Suite 5 Invariant 3] maxPersonalPayDelta mismatch`);
+      assert(Math.abs(result.maxReimbursementDelta - result.maxPersonalPayDelta) <= 0.02, `[Suite 5 Invariant 3] Spread_R != Spread_P: ${result.maxReimbursementDelta} != ${result.maxPersonalPayDelta}`);
+
+      // Winner string formatting checks
+      const winnersR = result.cities.filter(c => c.isWinnerReimbursed);
+      for (const w of winnersR) {
+        assert(result.winnerReimbursedCity.includes(w.cityName), `[Suite 5 Invariant 4] winnerReimbursedCity missing ${w.cityName}`);
+      }
+      if (winnersR.length > 1) {
+        assert(result.winnerReimbursedCity.includes('(并列)'), `[Suite 5 Invariant 4] Tie winner missing '(并列)'`);
+      } else {
+        assert(!result.winnerReimbursedCity.includes('(并列)'), `[Suite 5 Invariant 4] Single winner tagged '(并列)'`);
+      }
+
+      // Key Insights check
+      assert(result.keyInsights.length >= 2, `[Suite 5 Insights] Key insights too short: ${result.keyInsights.length}`);
+    }
+  }
+
+  // 5.2 对抗极限边界压力检验 (Invariant 5: Boundary Stress)
+  console.log('--- Suite 5.2: 对抗极限边界压力与极端场景检验 ---');
+
+  const boundarySets = [
+    { label: 'Presets-京陕深', cities: ['110100', '610100', '440300'] },
+    { label: 'Presets-沪蓉', cities: ['310100', '510100'] },
+    { label: 'Presets-陕北陕中', cities: ['610200', '610600'] },
+    { label: 'Presets-成渝陕', cities: ['610100', '510100', '500100'] },
+    { label: 'Presets-长三角', cities: ['330100', '320100', '310100'] },
+    { label: 'Presets-大湾区', cities: ['440100', '440300', '440400'] },
+    { label: 'Cross-哈尔滨三亚', cities: ['230100', '460200'] },
+    { label: 'Cross-上海乌鲁木齐拉萨', cities: ['310100', '650100', '540100'] }
+  ];
+
+  // 5.2.1 Boundary: Zero Cost (¥0)
+  for (const bSet of boundarySets) {
+    checks++;
+    const res0 = runMultiCitySimulation(bSet.cities, {
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 0
+    });
+    assert(res0.allConserved === true, `[Suite 5 Boundary 0] allConserved failed`);
+    assert(res0.maxReimbursementDelta === 0, `[Suite 5 Boundary 0] maxReimbursementDelta != 0`);
+    assert(res0.maxPersonalPayDelta === 0, `[Suite 5 Boundary 0] maxPersonalPayDelta != 0`);
+    assert(res0.winnerHighestCatastrophicCity.includes('未触发大病报销'), `[Suite 5 Boundary 0] Catastrophic winner expected none`);
+    for (const c of res0.cities) {
+      assert(c.totalReimbursed === 0, `[Suite 5 Boundary 0] totalReimbursed != 0`);
+      assert(c.personalPayTotal === 0, `[Suite 5 Boundary 0] personalPayTotal != 0`);
+      assert(c.isWinnerReimbursed === true, `[Suite 5 Boundary 0] isWinnerReimbursed should be true in tie`);
+      assert(c.isWinnerLowestOutPocket === true, `[Suite 5 Boundary 0] isWinnerLowestOutPocket should be true in tie`);
+      assert(c.deltaReimbursedVsCityA === 0, `[Suite 5 Boundary 0] deltaReimbursedVsCityA != 0`);
+      assert(c.deltaPersonalPayVsCityA === 0, `[Suite 5 Boundary 0] deltaPersonalPayVsCityA != 0`);
+    }
+  }
+
+  // 5.2.2 Boundary: Micro Cost (¥0.01)
+  for (const bSet of boundarySets) {
+    checks++;
+    const resMicro = runMultiCitySimulation(bSet.cities, {
+      insuranceType: 'resident',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      totalCost: 0.01
+    });
+    assert(resMicro.allConserved === true, `[Suite 5 Boundary 0.01] allConserved failed`);
+    assert(Math.abs(resMicro.maxReimbursementDelta - resMicro.maxPersonalPayDelta) <= 0.02, `[Suite 5 Boundary 0.01] Spread mismatch`);
+    for (const c of resMicro.cities) {
+      const sum = Math.round((c.totalReimbursed + c.personalPayTotal) * 100) / 100;
+      assert(Math.abs(sum - 0.01) <= 0.001, `[Suite 5 Boundary 0.01] Sum != 0.01: ${sum}`);
+      assert(Math.abs(c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) <= 0.02, `[Suite 5 Boundary 0.01] Delta antisymmetry failed`);
+    }
+  }
+
+  // 5.2.3 Boundary: Extreme Cost (¥50,000,000)
+  for (const bSet of boundarySets) {
+    checks++;
+    const res50M = runMultiCitySimulation(bSet.cities, {
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3_top',
+      remoteStatus: 'local',
+      totalCost: 50000000,
+      nonInsuranceCost: 2000000,
+      classBCost: 3000000,
+      hospitalizationCount: 1
+    });
+    assert(res50M.allConserved === true, `[Suite 5 Boundary 50M] allConserved failed in ${bSet.label}`);
+    assert(Math.abs(res50M.maxReimbursementDelta - res50M.maxPersonalPayDelta) <= 0.02, `[Suite 5 Boundary 50M] Spread_R != Spread_P`);
+    assert(res50M.winnerHighestCatastrophicCity !== '无 (未触发大病报销)', `[Suite 5 Boundary 50M] Expected catastrophic reimbursement at 50M`);
+    for (const c of res50M.cities) {
+      const sum = Math.round((c.totalReimbursed + c.personalPayTotal) * 100) / 100;
+      assert(Math.abs(sum - 50000000) <= 0.02, `[Suite 5 Boundary 50M] Conservation failed in ${c.cityName}`);
+      assert(c.catastrophicReimbursed > 0, `[Suite 5 Boundary 50M] Catastrophic should be > 0 at 50M in ${c.cityName}`);
+      assert(Math.abs(c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) <= 0.02, `[Suite 5 Boundary 50M] Delta antisymmetry failed in ${c.cityName}`);
+    }
+  }
+
+  // 5.2.4 Boundary: Admission Frequency (1, 2, 3 Hospitalizations)
+  for (const bSet of boundarySets) {
+    checks++;
+    const rCount1 = runMultiCitySimulation(bSet.cities, {
+      insuranceType: 'resident',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 30000,
+      hospitalizationCount: 1
+    });
+    const rCount2 = runMultiCitySimulation(bSet.cities, {
+      insuranceType: 'resident',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 30000,
+      hospitalizationCount: 2
+    });
+    const rCount3 = runMultiCitySimulation(bSet.cities, {
+      insuranceType: 'resident',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 30000,
+      hospitalizationCount: 3
+    });
+
+    assert(rCount1.allConserved && rCount2.allConserved && rCount3.allConserved, `[Suite 5 Hospitalization Count] Conservation failed`);
+    assert(Math.abs(rCount3.maxReimbursementDelta - rCount3.maxPersonalPayDelta) <= 0.02, `[Suite 5 Count 3] Spread mismatch`);
+
+    for (let i = 0; i < bSet.cities.length; i++) {
+      const c1 = rCount1.cities[i];
+      const c2 = rCount2.cities[i];
+      const c3 = rCount3.cities[i];
+
+      // Repeated deductible reduction ordering
+      assert(c1.deductibleReduction <= c2.deductibleReduction + 0.01, `[Suite 5 Count Monotonicity] dedReduction 1 vs 2 breach in ${c1.cityName}`);
+      assert(c2.deductibleReduction <= c3.deductibleReduction + 0.01, `[Suite 5 Count Monotonicity] dedReduction 2 vs 3 breach in ${c1.cityName}`);
+      assert(c1.deductibleDeducted >= c2.deductibleDeducted - 0.01, `[Suite 5 Count Monotonicity] dedDeducted 1 vs 2 breach in ${c1.cityName}`);
+      assert(c2.deductibleDeducted >= c3.deductibleDeducted - 0.01, `[Suite 5 Count Monotonicity] dedDeducted 2 vs 3 breach in ${c1.cityName}`);
+      assert(c1.totalReimbursed <= c2.totalReimbursed + 0.01, `[Suite 5 Count Monotonicity] Reimbursement 1 vs 2 breach in ${c1.cityName}`);
+      assert(c2.totalReimbursed <= c3.totalReimbursed + 0.01, `[Suite 5 Count Monotonicity] Reimbursement 2 vs 3 breach in ${c1.cityName}`);
+    }
+  }
+
+  // 5.2.5 Boundary: All 5 Remote Statuses
+  for (const bSet of boundarySets) {
+    for (const rem of remoteStatuses) {
+      checks++;
+      const resRem = runMultiCitySimulation(bSet.cities, {
+        insuranceType: 'employee',
+        isRetiree: false,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: rem,
+        totalCost: 45000,
+        nonInsuranceCost: 4000,
+        classBCost: 5000
+      });
+
+      assert(resRem.allConserved === true, `[Suite 5 Remote ${rem}] Conservation failed in ${bSet.label}`);
+      assert(Math.abs(resRem.maxReimbursementDelta - resRem.maxPersonalPayDelta) <= 0.02, `[Suite 5 Remote ${rem}] Spread mismatch`);
+      for (const c of resRem.cities) {
+        const sum = Math.round((c.totalReimbursed + c.personalPayTotal) * 100) / 100;
+        assert(Math.abs(sum - 45000) <= 0.01, `[Suite 5 Remote ${rem}] R + P != C in ${c.cityName}`);
+        assert(Math.abs(c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) <= 0.02, `[Suite 5 Remote ${rem}] Delta antisymmetry failed in ${c.cityName}`);
+      }
+    }
+  }
+
+  // 5.2.6 Fault Injection & Invalid City Count Testing
+  checks++;
+  let threwTooFew = false;
+  try {
+    runMultiCitySimulation(['110100'], {
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 1000
+    });
+  } catch (err: any) {
+    threwTooFew = true;
+    assert(err.message.includes('仅支持 2~3 个统筹区'), `Unexpected error message for < 2 cities: ${err.message}`);
+  }
+  assert(threwTooFew, 'Did not throw for 1 city');
+
+  checks++;
+  let threwTooMany = false;
+  try {
+    runMultiCitySimulation(['110100', '310100', '440100', '510100'], {
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 1000
+    });
+  } catch (err: any) {
+    threwTooMany = true;
+    assert(err.message.includes('仅支持 2~3 个统筹区'), `Unexpected error message for > 3 cities: ${err.message}`);
+  }
+  assert(threwTooMany, 'Did not throw for 4 cities');
+
+  checks++;
+  let threwInvalidCode = false;
+  try {
+    runMultiCitySimulation(['999999', '110100'], {
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 1000
+    });
+  } catch (err: any) {
+    threwInvalidCode = true;
+    assert(err.message.includes('未找到统筹区编码'), `Unexpected error message for invalid code: ${err.message}`);
+  }
+  assert(threwInvalidCode, 'Did not throw for invalid city code');
+
+  console.log('✓ Suite 5 Passed: 跨城待遇实测对比模拟器对抗不变量检验 100% 通过 (全量守恒、差额反对称、极差相等、胜者判定与极端边界).\n');
 
   console.log('================================================================================');
   console.log(`[PASS] ALL CHALLENGER INVARIANT TESTS PASSED! (${checks} total checks executed)`);

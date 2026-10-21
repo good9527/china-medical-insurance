@@ -1,7 +1,9 @@
 import { calculateReimbursement } from '../calculator';
+import { runMultiCitySimulation } from '../simulator';
 import { allCities, getCityDataByCode } from '../../data';
-import type { HospitalTier, CalculateRequest } from '../../data/types';
+import type { HospitalTier, CalculateRequest, ComparisonScenarioInput, MultiCitySimulationResult } from '../../data/types';
 import { getCachedBenchmarkList, getBenchmarkRankings, compareTwoCities } from '../ranking';
+
 
 // ============================================================================
 // 辅助断言函数
@@ -7671,10 +7673,178 @@ export function runCalculatorTests() {
   }
   console.log('  ✓ [H39 PASS] 异地 5 档状态全量 5 阶梯资金流向漏斗物理闭环恒等式验证通过');
 
+  // --------------------------------------------------------------------------
+  // Suite H40: 跨城就医待遇实测对比模拟器精算分析与多城并排资金物理守恒校验
+  // --------------------------------------------------------------------------
+  console.log('\n=========================================');
+  console.log('>>> [Suite H40] 执行跨城就医待遇实测对比模拟器精算分析与多城并排资金物理守恒断言...');
+
+  // 1. 京-陕-深三城在职三级住院对比 (¥50,000, 检验基准差额与落差，守恒率100%)
+  {
+    const simH1 = runMultiCitySimulation(['110100', '610100', '440300'], {
+      totalCost: 50000,
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+
+    totalChecks++;
+    assertEqual(simH1.cities.length, 3, '京陕深三城模拟包含3个统筹区产出');
+    assertTrue(simH1.allConserved, '京陕深三城并排测算全量满足资金物理守恒');
+    assertEqual(simH1.cities[0].deltaReimbursedVsCityA, 0, '基准城北京报销差额为0');
+    assertEqual(simH1.cities[0].deltaPersonalPayVsCityA, 0, '基准城北京自付差额为0');
+
+    for (const c of simH1.cities) {
+      assertTrue(c.isConserved, `${c.cityName}资金物理守恒成立`);
+      assertEqual(Math.round((c.totalReimbursed + c.personalPayTotal) * 100) / 100, 50000, `${c.cityName}报销加自付恒等于总费用50000`);
+      // 差额相反数恒等式: deltaReimbursed === -deltaPersonalPay
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}较基准城报销差额与自付差额完全满足相反数守恒律 (ΔR = -ΔP)`
+      );
+      assertTrue(c.officialDocUsed.docNumber.length > 0, `${c.cityName}具备真实法定公文字号`);
+    }
+
+    // 极差跨度恒等
+    assertEqual(simH1.maxReimbursementDelta, simH1.maxPersonalPayDelta, '最大报销跨度落差与最大自付跨度落差数学恒等');
+    assertTrue(simH1.maxReimbursementDelta > 0, '不同城市政策在5万元大病住院下存在客观差异');
+    assertTrue(simH1.keyInsights.length >= 3, '生成了多条精算决策洞察');
+    passCount++;
+    console.log('  ✓ [H40 PASS] 京陕深在职三级住院对比、基准差额与落差守恒率 100% 验证通过');
+  }
+
+  // 2. 沪-蓉退休门诊共济对比 (¥2,000, 检验门诊起付门槛优胜者与自负差额)
+  {
+    const simH2 = runMultiCitySimulation(['310100', '510100'], {
+      totalCost: 2000,
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local'
+    });
+
+    totalChecks++;
+    assertEqual(simH2.cities.length, 2, '沪蓉双城退休门诊模拟包含2个统筹区');
+    assertTrue(simH2.allConserved, '沪蓉退休门诊双城资金守恒');
+    // 成都退休职工门诊起付线为150元
+    const chengduH40 = simH2.cities.find(c => c.cityCode === '510100')!;
+    assertEqual(chengduH40.deductibleDeducted, 150, '成都退休职工门诊起付线优待实扣150元');
+    // 检验差额相反数恒等式
+    assertEqual(
+      Math.round((simH2.cities[1].deltaReimbursedVsCityA + simH2.cities[1].deltaPersonalPayVsCityA) * 100) / 100,
+      0,
+      '沪蓉双城报销差额与自付差额相反数守恒'
+    );
+    assertTrue(simH2.winnerLowestDeductibleCity.length > 0, '起付门槛最优胜出城市有效标注');
+    passCount++;
+    console.log('  ✓ [H40 PASS] 沪蓉退休门诊共济对比、起付门槛优胜者与自负差额验证通过');
+  }
+
+  // 3. 宁-陕-莞三次住院起付阶梯递减跨城对比 (南京免起付0元 vs 西安阶梯350元 vs 东莞不递减，检验最低门槛胜出)
+  {
+    const simH3 = runMultiCitySimulation(['320100', '610100', '441900'], {
+      totalCost: 10000,
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      hospitalizationCount: 3
+    });
+
+    totalChecks++;
+    const nanjingH40 = simH3.cities.find(c => c.cityCode === '320100')!;
+    const xianH40 = simH3.cities.find(c => c.cityCode === '610100')!;
+    const dongguanH40 = simH3.cities.find(c => c.cityCode === '441900')!;
+
+    assertEqual(nanjingH40.deductibleDeducted, 0, '南京三次住院执行二次减半三次免收，起付实扣0元');
+    assertEqual(nanjingH40.isWinnerLowestDeductible, true, '南京凭借0元起付线荣获最低门槛优胜者');
+    assertTrue(simH3.winnerLowestDeductibleCity.includes('南京市'), '南京市被正确标注为最低门槛胜出城市');
+
+    assertEqual(xianH40.deductibleDeducted, 350, '西安三级三次住院起付线阶梯衰减至350元');
+    assertEqual(xianH40.deductibleReduction, 300, '西安三级首次650元衰减至350元，减免额为300元');
+    assertEqual(xianH40.isWinnerLowestDeductible, false, '西安起付线高于南京，未获最低门槛优胜');
+
+    assertEqual(dongguanH40.deductibleReduction, 0, '东莞不执行起付线递减政策，减免额为0');
+    assertTrue(dongguanH40.deductibleDeducted > 350, '东莞起付线维持基准额度');
+    assertEqual(dongguanH40.isWinnerLowestDeductible, false, '东莞未获最低门槛优胜');
+    assertTrue(simH3.allConserved, '宁陕莞三地多次住院资金守恒');
+    passCount++;
+    console.log('  ✓ [H40 PASS] 宁陕莞三次住院起付阶梯递减跨城对比、最低门槛胜出判定验证通过');
+  }
+
+  // 4. 穗-咸-济大额重疾大病兜底对比 (居民¥200,000住院，检验大病二次救助梯度与最大救助胜出)
+  {
+    const simH4 = runMultiCitySimulation(['440100', '610400', '370100'], {
+      totalCost: 200000,
+      insuranceType: 'resident',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+
+    totalChecks++;
+    assertTrue(simH4.allConserved, '穗咸济三城大额重疾资金物理守恒');
+    for (const c of simH4.cities) {
+      assertTrue(c.catastrophicReimbursed > 0, `${c.cityName}在20万元花费下成功触发大病保险二次兜底`);
+      assertEqual(
+        Math.round((c.baseReimbursed + c.catastrophicReimbursed) * 100) / 100,
+        c.totalReimbursed,
+        `${c.cityName}总报销额严格等于基本统筹加重大疾病保险报销`
+      );
+    }
+
+    const maxCatVal = Math.max(...simH4.cities.map(c => c.catastrophicReimbursed));
+    const catWinner = simH4.cities.find(c => c.catastrophicReimbursed === maxCatVal)!;
+    assertEqual(catWinner.isWinnerHighestCatastrophic, true, '最大大病救助额城市标记为大病优胜者');
+    assertTrue(simH4.winnerHighestCatastrophicCity.includes(catWinner.cityName), '大病救助优胜城市正确归属');
+    passCount++;
+    console.log('  ✓ [H40 PASS] 穗咸济大额重疾大病兜底对比、二次救助梯度与最大救助胜出验证通过');
+  }
+
+  // 5. 铜-延异地违规就医惩罚折算差额对比 (跨省未备案惩罚下浮，检验差额相反数恒等式与资金守恒)
+  {
+    const simH5 = runMultiCitySimulation(['610200', '610600'], {
+      totalCost: 40000,
+      insuranceType: 'resident',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'unfiled_normal',
+      hospitalizationCount: 1
+    });
+
+    totalChecks++;
+    assertTrue(simH5.allConserved, '铜延异地未备案违规就医资金物理守恒');
+    assertEqual(simH5.cities[0].deltaReimbursedVsCityA, 0, '铜川基准报销差额为0');
+    assertEqual(simH5.cities[0].deltaPersonalPayVsCityA, 0, '铜川基准自付差额为0');
+    assertEqual(
+      Math.round((simH5.cities[1].deltaReimbursedVsCityA + simH5.cities[1].deltaPersonalPayVsCityA) * 100) / 100,
+      0,
+      '延安较铜川报销差额与自付差额完全满足相反数守恒律 (ΔR = -ΔP)'
+    );
+    assertTrue(simH5.cities[0].officialDocUsed.title.includes('铜川'), '铜川精准溯源至铜川医保公文');
+    assertTrue(
+      simH5.cities[1].officialDocUsed.docNumber.includes('延医保') ||
+      simH5.cities[1].officialDocUsed.issuingDept.some(d => d.includes('延安')),
+      '延安精准溯源至延安医保公文'
+    );
+    passCount++;
+    console.log('  ✓ [H40 PASS] 铜延异地违规就医惩罚折算差额对比、相反数恒等式与资金守恒验证通过');
+  }
+
   console.log(`\n=========================================`);
   console.log(`[PASS] 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);
 }
+
+
 
 
 

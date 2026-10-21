@@ -367,10 +367,95 @@ export const checkProvinceHomogeneity: InspectionRule = (city, allCities = []) =
   return items;
 };
 
+// 6. 异地就医折算比例合理性与层级单调递减规则
+export const checkRemoteMedicalRatios: InspectionRule = (city) => {
+  const items: DiagnosticItem[] = [];
+
+  for (const kind of ['employee', 'resident'] as const) {
+    const pkg = city[kind];
+    if (!pkg) continue;
+    const label = kind === 'employee' ? '职工' : '居民';
+    const rm = pkg.remoteMedical;
+    if (!rm) continue;
+
+    const {
+      longTermFiledRatio = 1.0,
+      transferFiledRatio = 1.0,
+      unfiledEmergencyRatio = 1.0,
+      unfiledNormalRatio = 1.0
+    } = rm;
+
+    // 异地就医各档比例应当满足层级单调性：
+    // longTermFiledRatio (长期居住备案) >= transferFiledRatio (转诊备案) >= unfiledEmergencyRatio (未备案急诊抢救) >= unfiledNormalRatio (未备案自行就医)
+    if (transferFiledRatio > longTermFiledRatio + 0.0001) {
+      items.push({
+        cityCode: city.cityCode,
+        cityName: city.cityName,
+        provinceName: city.provinceName,
+        severity: 'CRITICAL',
+        category: 'RATIO_INVERSION',
+        title: `${label}异地就医比例倒挂 (转诊备案高于长期备案)`,
+        detail: `转诊备案折算比例 (${(transferFiledRatio * 100).toFixed(1)}%) 高于长期居住备案比例 (${(longTermFiledRatio * 100).toFixed(1)}%)`,
+        fieldPath: `${kind}.remoteMedical.transferFiledRatio`,
+        currentValue: { longTermFiledRatio, transferFiledRatio },
+        suggestedFix: '核查并降低转诊备案折算比例，或提高长期居住折算比例至 100%'
+      });
+    }
+
+    if (unfiledEmergencyRatio > transferFiledRatio + 0.0001) {
+      items.push({
+        cityCode: city.cityCode,
+        cityName: city.cityName,
+        provinceName: city.provinceName,
+        severity: 'CRITICAL',
+        category: 'RATIO_INVERSION',
+        title: `${label}异地就医比例倒挂 (未备案急诊高于转诊备案)`,
+        detail: `未备案急诊抢救折算比例 (${(unfiledEmergencyRatio * 100).toFixed(1)}%) 高于合规转诊备案比例 (${(transferFiledRatio * 100).toFixed(1)}%)`,
+        fieldPath: `${kind}.remoteMedical.unfiledEmergencyRatio`,
+        currentValue: { transferFiledRatio, unfiledEmergencyRatio },
+        suggestedFix: '对齐医保发〔2022〕22号文“急诊视同转诊”原则，将未备案急诊抢救比例调整为小于或等于转诊备案比例'
+      });
+    }
+
+    if (unfiledNormalRatio > unfiledEmergencyRatio + 0.0001) {
+      items.push({
+        cityCode: city.cityCode,
+        cityName: city.cityName,
+        provinceName: city.provinceName,
+        severity: 'CRITICAL',
+        category: 'RATIO_INVERSION',
+        title: `${label}异地就医比例倒挂 (未备案普通就医高于急诊抢救)`,
+        detail: `未备案自行就医折算比例 (${(unfiledNormalRatio * 100).toFixed(1)}%) 高于未备案急诊比例 (${(unfiledEmergencyRatio * 100).toFixed(1)}%)`,
+        fieldPath: `${kind}.remoteMedical.unfiledNormalRatio`,
+        currentValue: { unfiledEmergencyRatio, unfiledNormalRatio },
+        suggestedFix: '降低未备案自行就医比例至急诊抢救比例以下'
+      });
+    }
+
+    if (unfiledNormalRatio > transferFiledRatio + 0.0001) {
+      items.push({
+        cityCode: city.cityCode,
+        cityName: city.cityName,
+        provinceName: city.provinceName,
+        severity: 'CRITICAL',
+        category: 'RATIO_INVERSION',
+        title: `${label}异地就医比例倒挂 (未备案普通就医高于转诊备案)`,
+        detail: `未备案自行就医折算比例 (${(unfiledNormalRatio * 100).toFixed(1)}%) 高于转诊备案比例 (${(transferFiledRatio * 100).toFixed(1)}%)`,
+        fieldPath: `${kind}.remoteMedical.unfiledNormalRatio`,
+        currentValue: { transferFiledRatio, unfiledNormalRatio },
+        suggestedFix: '降低未备案自行就医比例至转诊备案比例以下'
+      });
+    }
+  }
+
+  return items;
+};
+
 export const allInspectionRules: InspectionRule[] = [
   checkResidentInpatientRatios,
   checkEmployeeInpatientRatios,
   checkOutpatientLimits,
   checkSourceDocuments,
-  checkProvinceHomogeneity
+  checkProvinceHomogeneity,
+  checkRemoteMedicalRatios
 ];

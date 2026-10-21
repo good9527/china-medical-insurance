@@ -22,7 +22,7 @@
           <text class="benchmark-sub">根据各地公开政策文件整理，支持职工与居民报销比例对比及自选双城条款对照（数据仅供参考，以官方结算为准）</text>
         </view>
 
-        <!-- 模式切换：对比榜单 vs 双城对照 -->
+        <!-- 模式切换：对比榜单 vs 跨城模拟器 vs 双城对照 -->
         <view class="arena-switch-bar">
           <view 
             class="switch-pill" 
@@ -35,6 +35,18 @@
               <line x1="6" y1="20" x2="6" y2="14"></line>
             </svg>
             <text class="pill-label">待遇对比榜</text>
+          </view>
+          <view 
+            class="switch-pill" 
+            :class="{ active: viewMode === 'simulator' }"
+            @click="viewMode = 'simulator'; triggerHaptic()"
+          >
+            <svg class="pill-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            <text class="pill-label">跨城实测模拟器</text>
           </view>
           <view 
             class="switch-pill" 
@@ -789,9 +801,16 @@
       </view>
 
       <!-- ============================================================ -->
-      <!-- 视图 2：双城竞技场 PK (Policy Arena)                          -->
+      <!-- 视图 2：跨城待遇实测模拟器 (Multi-City Simulator)             -->
       <!-- ============================================================ -->
-      <view class="view-body" v-else>
+      <view class="view-body" v-else-if="viewMode === 'simulator'">
+        <MultiCitySimulator />
+      </view>
+
+      <!-- ============================================================ -->
+      <!-- 视图 3：双城竞技场 PK (Policy Arena)                          -->
+      <!-- ============================================================ -->
+      <view class="view-body" v-else-if="viewMode === 'battle'">
         
         <!-- 热门巅峰对决预设 (快速一键对战) -->
         <view class="preset-battle-bar">
@@ -1017,6 +1036,7 @@ import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 import { onPageScroll, onShow } from '@dcloudio/uni-app';
 import AppHeader from '../../components/AppHeader.vue';
 import AppFooter from '../../components/AppFooter.vue';
+import MultiCitySimulator from '../../components/MultiCitySimulator.vue';
 import { 
   getBenchmarkRankings, 
   compareTwoCities, 
@@ -1053,8 +1073,8 @@ function triggerHaptic() {
   } catch {}
 }
 
-// 视图模式：'leaderboard' | 'battle'
-const viewMode = ref<'leaderboard' | 'battle'>('leaderboard');
+// 视图模式：'leaderboard' | 'simulator' | 'battle'
+const viewMode = ref<'leaderboard' | 'simulator' | 'battle'>('leaderboard');
 const showMethodology = ref(false);
 
 // 榜单展示布局：'cards' (政策卡片流) | 'table' (全维宽表)
@@ -3627,17 +3647,19 @@ const filteredBattleMetrics = computed(() => {
   .arena-switch-bar {
     width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     padding: 2px;
   }
 
   .switch-pill {
-    padding: 6px 10px;
+    padding: 6px 4px;
     justify-content: center;
+    gap: 4px;
   }
 
   .pill-label {
-    font-size: 12px;
+    font-size: 11px;
+    white-space: nowrap;
   }
 
   /* 移动端紧凑三等分单行控制胶囊 */

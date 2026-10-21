@@ -127,7 +127,7 @@ export const shijiazhuangData: CityInsuranceData = {
       filingChannels: ['国家医保服务平台APP', '河北智慧医保小程序'],
       longTermFiledRatio: 1.0,
       transferFiledRatio: 0.77, // 省外转诊经备案支付比例统一为50%（折合参保地三级65%的约77%）
-      unfiledEmergencyRatio: 0.85,
+      unfiledEmergencyRatio: 0.77, // 异地急诊抢救视同转诊备案待遇（医保发〔2022〕22号）
       unfiledNormalRatio: 0.46, // 省外未备案自行就医直接按30%结算（折合约46%），且自付不进大病保险
       specialNotes: [
         '京津冀区域内就医视同本地就医，免证明免备案直接联网结算。',

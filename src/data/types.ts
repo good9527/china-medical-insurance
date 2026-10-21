@@ -183,3 +183,71 @@ export interface CalculateResult {
   tierName: string;
   policyNotes: string[];                 // 政策提示（如封顶线、起付线减免等）
 }
+
+// ============================================================================
+// 跨城就医待遇实测对比模拟器数据模型 (Multi-City Actuarial Simulation Contracts)
+// ============================================================================
+
+/**
+ * 跨城就医待遇实测对比模拟器 - 同等就医场景输入参数
+ */
+export interface ComparisonScenarioInput {
+  totalCost: number;                                          // 预估医疗总花费 (元)
+  insuranceType: 'employee' | 'resident';                     // 参保险种: 城镇职工 vs 城乡居民
+  isRetiree?: boolean;                                        // 是否退休 (仅职工医保有效)
+  treatmentType: 'outpatient' | 'inpatient';                  // 就医类型: 普通门诊 vs 住院
+  hospitalTier: HospitalTier;                                 // 医疗机构等级 ('community' | 'tier1' | 'tier2' | 'tier3' | 'tier3_top')
+  hospitalizationCount?: 1 | 2 | 3;                            // 自然年度内住院频次 (1: 首次, 2: 二次, 3: 三次及以上)
+  remoteStatus: 'local' | 'long_term' | 'transfer' | 'unfiled_emergency' | 'unfiled_normal'; // 就医地与备案状态
+  nonInsuranceCost?: number;                                  // 目录外全自费费用 (丙类/特需等)
+  classBCost?: number;                                        // 目录内乙类项目费用 (需先行自付)
+  classBSelfPayRatio?: number;                                // 乙类自付比例 (默认0.05)
+}
+
+/**
+ * 单一统筹区在指定场景下的精算测算与比对结果实体
+ */
+export interface CitySimulationOutcome {
+  cityCode: string;                                           // 统筹区行政代码 (如 '610100')
+  cityName: string;                                           // 统筹区名称 (如 '西安市')
+  provinceName: string;                                       // 所属省份 (如 '陕西省')
+  totalCost: number;                                          // 医疗总花费
+  totalReimbursed: number;                                    // 医保合计报销总额
+  personalPayTotal: number;                                   // 个人自理总金额
+  reimbursementRatio: number;                                 // 实际综合报销比例 (%)
+  deductibleDeducted: number;                                 // 实扣起付线金额
+  deductibleReduction: number;                                // 起付线递减减免金额
+  baseReimbursed: number;                                     // 基本医保统筹基金支付额
+  catastrophicReimbursed: number;                             // 大病保险/大额互助救助额
+  personalSpanCoPay: number;                                  // 报销段内政策自负金额
+  nonInsuranceAndPriorPay: number;                            // 丙类全自费与乙类先行自付合计
+  isConserved: boolean;                                       // 资金物理守恒校验状态
+  isWinnerReimbursed: boolean;                                // 是否基金报销最高
+  isWinnerLowestOutPocket: boolean;                           // 是否个人自负最少
+  isWinnerLowestDeductible: boolean;                          // 是否起付门槛最低
+  isWinnerHighestCatastrophic: boolean;                       // 是否大病二次救助最高
+  deltaReimbursedVsCityA: number;                             // 相比基准城市(City A)的报销差额
+  deltaPersonalPayVsCityA: number;                            // 相比基准城市(City A)的自付差额
+  officialDocUsed: OfficialPolicyDoc;                         // 本次测算依据的官方红头公文
+  specialNotes?: string[];                                    // 政策特色与测算注解
+  calcResult?: CalculateResult;                               // 底层测算完整明细 (可选透传)
+  hotline?: string;                                           // 医保热线
+  portalUrl?: string;                                         // 官方政务网链接
+}
+
+/**
+ * 跨城待遇实测对比模拟器多城综合测算报告
+ */
+export interface MultiCitySimulationResult {
+  scenario: ComparisonScenarioInput;                          // 输入的统一就医场景
+  cities: CitySimulationOutcome[];                            // 各统筹区并排测算结果列表
+  winnerReimbursedCity: string;                               // 报销最高胜出城市 (并列时以斜杠隔开并注并列)
+  winnerLowestOutPocketCity: string;                          // 自负最少胜出城市
+  winnerLowestDeductibleCity: string;                         // 门槛最低胜出城市
+  winnerHighestCatastrophicCity: string;                      // 大病救助最高胜出城市
+  maxReimbursementDelta: number;                              // 最大报销跨度落差 (max - min)
+  maxPersonalPayDelta: number;                                // 最大自付跨度落差 (max - min)
+  keyInsights: string[];                                      // 精算自动化决策洞察文案 (0-Emoji)
+  allConserved: boolean;                                      // 全城全场景资金物理守恒审计结论
+}
+

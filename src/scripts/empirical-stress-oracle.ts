@@ -1,6 +1,7 @@
 import { calculateReimbursement } from '../engine/calculator';
+import { runMultiCitySimulation, popularMultiCityPresets } from '../engine/simulator';
 import { allCities, getCityDataByCode } from '../data';
-import type { HospitalTier, CalculateRequest, CityInsuranceData } from '../data/types';
+import type { HospitalTier, CalculateRequest, CityInsuranceData, ComparisonScenarioInput } from '../data/types';
 
 interface Stats {
   totalChecks: number;
@@ -31,6 +32,17 @@ function assert(condition: boolean, msg: string) {
 
 function assertCloseTo(val1: number, val2: number, delta: number, msg: string) {
   assert(Math.abs(val1 - val2) <= delta, `${msg} (expected ${val1} ~ ${val2}, diff=${Math.abs(val1 - val2)})`);
+}
+
+function assertThrows(fn: () => void, msg: string) {
+  stats.totalChecks++;
+  try {
+    fn();
+    stats.failedChecks++;
+    stats.failures.push(`Expected exception not thrown: ${msg}`);
+  } catch {
+    stats.passedChecks++;
+  }
 }
 
 export function runFullStressSuite() {
@@ -585,6 +597,226 @@ export function runFullStressSuite() {
     }
   }
   console.log(`✓ Test Matrix 4 Passed: ${matrix4Scenarios.toLocaleString()} Cartesian combinations of admission frequency, 5 remote tiers, and hospital tiers fully verified.\n`);
+
+  // --------------------------------------------------------------------------
+  // TEST MATRIX 5: Multi-City Simulation Cartesian Combinations & Conservation Oracle
+  // --------------------------------------------------------------------------
+  console.log('--- Test Matrix 5: Multi-City Simulation Cartesian Combinations & Conservation Oracle ---');
+
+  // 1. 构建跨统筹区对比组合 (Curated & Cartesian sampled 2-city and 3-city combinations)
+  const matrix5CityCombos: Array<{ label: string; cities: string[] }> = [];
+
+  // 1.1 经典预设组合 (包含全部 9 组预设，兼容映射 500000 -> 500100)
+  for (const preset of popularMultiCityPresets) {
+    const validCities = preset.cities.map(c => c === '500000' ? '500100' : c);
+    matrix5CityCombos.push({ label: `Preset-${preset.name}`, cities: validCities });
+  }
+
+  // 1.2 战略跨区代表组合 (涵盖东西南北高原沿海)
+  const strategicCombos = [
+    { label: '哈尔滨-三亚-拉萨', cities: ['230100', '460200', '540100'] },
+    { label: '乌鲁木齐-上海', cities: ['650100', '310100'] },
+    { label: '武汉-长沙-郑州', cities: ['420100', '430100', '410100'] },
+    { label: '西安-宝鸡-榆林', cities: ['610100', '610300', '610800'] },
+    { label: '南京-苏州-无锡', cities: ['320100', '320500', '320200'] },
+    { label: '杭州-宁波-温州', cities: ['330100', '330200', '330300'] },
+    { label: '济南-青岛-烟台', cities: ['370100', '370200', '370600'] },
+    { label: '石家庄-唐山-保定', cities: ['130100', '130200', '130600'] },
+    { label: '沈阳-大连', cities: ['210100', '210200'] },
+    { label: '昆明-贵阳-南宁', cities: ['530100', '520100', '450100'] },
+    { label: '兰州-西宁-银川', cities: ['620100', '630100', '640100'] },
+    { label: '福州-厦门', cities: ['350100', '350200'] },
+    { label: '南昌-合肥', cities: ['360100', '340100'] },
+    { label: '长春-哈尔滨', cities: ['220100', '230100'] },
+    { label: '呼和浩特-包头', cities: ['150100', '150200'] },
+    { label: '海口-三亚', cities: ['460100', '460200'] }
+  ];
+  matrix5CityCombos.push(...strategicCombos);
+
+  // 1.3 步长全域采样 (覆盖全国多省份地市)
+  for (let i = 0; i < allCities.length; i += 28) {
+    const c1 = allCities[i].cityCode;
+    const c2 = allCities[(i + 89) % allCities.length].cityCode;
+    matrix5CityCombos.push({
+      label: `StridePair-${allCities[i].cityName}-${allCities[(i + 89) % allCities.length].cityName}`,
+      cities: [c1, c2]
+    });
+  }
+  for (let i = 0; i < allCities.length; i += 37) {
+    const c1 = allCities[i].cityCode;
+    const c2 = allCities[(i + 59) % allCities.length].cityCode;
+    const c3 = allCities[(i + 149) % allCities.length].cityCode;
+    matrix5CityCombos.push({
+      label: `StrideTriplet-${allCities[i].cityName}-${allCities[(i + 59) % allCities.length].cityName}-${allCities[(i + 149) % allCities.length].cityName}`,
+      cities: [c1, c2, c3]
+    });
+  }
+
+  const matrix5InpatientCosts = [0, 0.01, 500, 20000, 150000, 50000000];
+  const matrix5HospitalTiers: HospitalTier[] = ['community', 'tier2', 'tier3', 'tier3_top'];
+  const matrix5Remotes = ['local', 'long_term', 'transfer', 'unfiled_emergency', 'unfiled_normal'] as const;
+  const matrix5Admissions: (1 | 2 | 3)[] = [1, 2, 3];
+
+  let matrix5Simulations = 0;
+
+  for (const combo of matrix5CityCombos) {
+    // A. 住院场景全维笛卡尔积测试
+    for (const tt of [
+      { ins: 'employee' as const, isRet: false },
+      { ins: 'employee' as const, isRet: true },
+      { ins: 'resident' as const, isRet: false }
+    ]) {
+      for (const tier of matrix5HospitalTiers) {
+        for (const rem of matrix5Remotes) {
+          for (const count of matrix5Admissions) {
+            for (const cost of matrix5InpatientCosts) {
+              matrix5Simulations++;
+              const scenario: ComparisonScenarioInput = {
+                insuranceType: tt.ins,
+                isRetiree: tt.isRet,
+                treatmentType: 'inpatient',
+                hospitalTier: tier,
+                remoteStatus: rem,
+                hospitalizationCount: count,
+                totalCost: cost,
+                nonInsuranceCost: Math.round(cost * 0.08 * 100) / 100,
+                classBCost: Math.round(cost * 0.12 * 100) / 100
+              };
+
+              const res = runMultiCitySimulation(combo.cities, scenario);
+
+              // 1. 全局资金物理守恒: allConserved === true
+              assert(res.allConserved === true, `Matrix 5 allConserved failed: ${combo.label} cost=${cost}`);
+
+              // 2. 极差等价性: maxReimbursementDelta === maxPersonalPayDelta
+              assertCloseTo(
+                res.maxReimbursementDelta,
+                res.maxPersonalPayDelta,
+                0.02,
+                `Matrix 5 Spread equality breach: ${combo.label} cost=${cost}`
+              );
+
+              // 3. 边界检验: 零花费下极差为0
+              if (cost === 0) {
+                assert(res.maxReimbursementDelta === 0, `Matrix 5 zero cost maxReimbursementDelta != 0: ${combo.label}`);
+                assert(res.maxPersonalPayDelta === 0, `Matrix 5 zero cost maxPersonalPayDelta != 0: ${combo.label}`);
+              }
+
+              const maxR = Math.max(...res.cities.map(c => c.totalReimbursed));
+              const minP = Math.min(...res.cities.map(c => c.personalPayTotal));
+              const minDed = Math.min(...res.cities.map(c => c.deductibleDeducted));
+
+              for (let i = 0; i < res.cities.length; i++) {
+                const o = res.cities[i];
+
+                // 4. 基础数值合规: 无 NaN、无负数、有限数
+                assert(!Number.isNaN(o.totalReimbursed), `Matrix 5 NaN totalReimbursed: ${o.cityName}`);
+                assert(!Number.isNaN(o.personalPayTotal), `Matrix 5 NaN personalPayTotal: ${o.cityName}`);
+                assert(!Number.isNaN(o.baseReimbursed), `Matrix 5 NaN baseReimbursed: ${o.cityName}`);
+                assert(!Number.isNaN(o.catastrophicReimbursed), `Matrix 5 NaN catastrophicReimbursed: ${o.cityName}`);
+                assert(o.totalReimbursed >= 0, `Matrix 5 negative reimbursement: ${o.cityName}`);
+                assert(o.personalPayTotal >= 0, `Matrix 5 negative personalPay: ${o.cityName}`);
+                assert(o.totalReimbursed <= cost + 0.01, `Matrix 5 reimbursement > cost: ${o.cityName}`);
+
+                // 5. 单城物理资金守恒律: totalReimbursed + personalPayTotal === totalCost (零误差)
+                const cSum = Math.round((o.totalReimbursed + o.personalPayTotal) * 100) / 100;
+                assertCloseTo(cSum, cost, 0.02, `Matrix 5 City money conservation failed: ${o.cityName} cost=${cost}`);
+
+                // 6. 细项资金守恒: baseReimbursed + catastrophicReimbursed === totalReimbursed
+                const subSum = Math.round((o.baseReimbursed + o.catastrophicReimbursed) * 100) / 100;
+                assertCloseTo(subSum, o.totalReimbursed, 0.01, `Matrix 5 Subcomponent mismatch: ${o.cityName}`);
+
+                // 7. 基准差额反对称性 (ΔR_i = -ΔP_i)
+                const deltaSum = Math.round((o.deltaReimbursedVsCityA + o.deltaPersonalPayVsCityA) * 100) / 100;
+                assertCloseTo(deltaSum, 0, 0.02, `Matrix 5 Delta antisymmetry failed: ${o.cityName}`);
+
+                if (i === 0) {
+                  assert(o.deltaReimbursedVsCityA === 0, `Matrix 5 baseline deltaR != 0: ${o.cityName}`);
+                  assert(o.deltaPersonalPayVsCityA === 0, `Matrix 5 baseline deltaP != 0: ${o.cityName}`);
+                }
+
+                // 8. 胜出状态确定性
+                assert(o.isWinnerReimbursed === (o.totalReimbursed === maxR), `Matrix 5 winner reimbursed flag mismatch: ${o.cityName}`);
+                assert(o.isWinnerLowestOutPocket === (o.personalPayTotal === minP), `Matrix 5 winner lowest outpocket mismatch: ${o.cityName}`);
+                assert(o.isWinnerLowestDeductible === (o.deductibleDeducted === minDed), `Matrix 5 winner lowest deductible mismatch: ${o.cityName}`);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    // B. 门诊场景测试
+    const outpatientCosts = [0, 0.01, 200, 1500, 8000];
+    for (const tt of [
+      { ins: 'employee' as const, isRet: false },
+      { ins: 'employee' as const, isRet: true },
+      { ins: 'resident' as const, isRet: false }
+    ]) {
+      for (const tier of ['community', 'tier1', 'tier2', 'tier3'] as HospitalTier[]) {
+        for (const cost of outpatientCosts) {
+          matrix5Simulations++;
+          const scenario: ComparisonScenarioInput = {
+            insuranceType: tt.ins,
+            isRetiree: tt.isRet,
+            treatmentType: 'outpatient',
+            hospitalTier: tier,
+            remoteStatus: 'local',
+            totalCost: cost,
+            nonInsuranceCost: Math.round(cost * 0.05 * 100) / 100,
+            classBCost: Math.round(cost * 0.10 * 100) / 100
+          };
+
+          const res = runMultiCitySimulation(combo.cities, scenario);
+          assert(res.allConserved === true, `Matrix 5 outpatient allConserved failed: ${combo.label} cost=${cost}`);
+          assertCloseTo(res.maxReimbursementDelta, res.maxPersonalPayDelta, 0.02, `Matrix 5 outpatient spread equality failed: ${combo.label}`);
+
+          for (const o of res.cities) {
+            const cSum = Math.round((o.totalReimbursed + o.personalPayTotal) * 100) / 100;
+            assertCloseTo(cSum, cost, 0.02, `Matrix 5 outpatient conservation failed: ${o.cityName} cost=${cost}`);
+            const deltaSum = Math.round((o.deltaReimbursedVsCityA + o.deltaPersonalPayVsCityA) * 100) / 100;
+            assertCloseTo(deltaSum, 0, 0.02, `Matrix 5 outpatient delta antisymmetry failed: ${o.cityName}`);
+          }
+        }
+      }
+    }
+  }
+
+  // C. 异常入参与容错压力注入测试 (Adversarial Fault Injection)
+  assertThrows(() => {
+    runMultiCitySimulation(['110100'], {
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 1000
+    });
+  }, 'Underflow city count should throw error');
+
+  assertThrows(() => {
+    runMultiCitySimulation(['110100', '310100', '440100', '510100'], {
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 1000
+    });
+  }, 'Overflow city count should throw error');
+
+  assertThrows(() => {
+    runMultiCitySimulation(['000000', '110100'], {
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 1000
+    });
+  }, 'Non-existent city code should throw error');
+
+  console.log(`✓ Test Matrix 5 Passed: ${matrix5Simulations.toLocaleString()} multi-city simulation Cartesian scenarios verified with 100% physical conservation and delta antisymmetry.\n`);
 
   // --------------------------------------------------------------------------
   // SUMMARY
