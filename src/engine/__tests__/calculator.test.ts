@@ -6952,7 +6952,724 @@ export function runCalculatorTests() {
     assertEqual(fSum, fRes.breakdown.totalCost, `亚分规整后资金守恒必须完全闭环: totalCost=${fRes.breakdown.totalCost}, sum=${fSum}`);
     passCount++;
   }
-  console.log(`  ✓ [H37 PASS] 引擎入参分级规整与极端亚分物理守恒断言全部通过`);
+  // --------------------------------------------------------------------------
+  // Suite H38: 多次住院起付线阶梯递减与保底校验 (Repeated Inpatient Deductible Tiered Decay)
+  // --------------------------------------------------------------------------
+  console.log('\n=========================================');
+  console.log('>>> [Suite H38] 执行多次住院起付线阶梯递减与保底全维测算断言...');
+
+  // 1. 西安市城镇职工医保特等矩阵断言 (三特、三级、二级、一级阶梯递减与四次及以上免除)
+  const xianTier3TopH1 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3_top',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 1
+  });
+  totalChecks++;
+  assertEqual(xianTier3TopH1.breakdown.standardDeductible, 850, '西安职工三特住院首次基准起付线850元');
+  assertEqual(xianTier3TopH1.breakdown.appliedDeductible, 850, '西安职工三特住院首次适用起付线850元');
+  assertEqual(xianTier3TopH1.breakdown.deductibleReduction, 0, '西安职工三特住院首次减免0元');
+  assertEqual(xianTier3TopH1.breakdown.deductibleDeducted, 850, '西安职工三特住院首次扣除起付线850元');
+  assertEqual(xianTier3TopH1.breakdown.baseReimbursed, 8052, '西安职工三特住院首次实报: (10000-850)*0.88 = 8052');
+  assertEqual(xianTier3TopH1.breakdown.totalReimbursed + xianTier3TopH1.breakdown.personalPayTotal, 10000, '西安职工三特住院首次资金守恒');
+  passCount++;
+
+  const xianTier3TopH2 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3_top',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 2
+  });
+  totalChecks++;
+  assertEqual(xianTier3TopH2.breakdown.standardDeductible, 850, '西安职工三特住院二次基准起付线850元');
+  assertEqual(xianTier3TopH2.breakdown.appliedDeductible, 800, '西安职工三特住院二次适用起付线800元');
+  assertEqual(xianTier3TopH2.breakdown.deductibleReduction, 50, '西安职工三特住院二次减免50元');
+  assertEqual(xianTier3TopH2.breakdown.deductibleDeducted, 800, '西安职工三特住院二次扣除起付线800元');
+  assertEqual(xianTier3TopH2.breakdown.baseReimbursed, 8096, '西安职工三特住院二次实报: (10000-800)*0.88 = 8096');
+  assertEqual(xianTier3TopH2.breakdown.totalReimbursed + xianTier3TopH2.breakdown.personalPayTotal, 10000, '西安职工三特住院二次资金守恒');
+  passCount++;
+
+  const xianTier3TopH3 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3_top',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 3
+  });
+  totalChecks++;
+  assertEqual(xianTier3TopH3.breakdown.standardDeductible, 850, '西安职工三特住院三次基准起付线850元');
+  assertEqual(xianTier3TopH3.breakdown.appliedDeductible, 550, '西安职工三特住院三次适用起付线550元');
+  assertEqual(xianTier3TopH3.breakdown.deductibleReduction, 300, '西安职工三特住院三次减免300元');
+  assertEqual(xianTier3TopH3.breakdown.deductibleDeducted, 550, '西安职工三特住院三次扣除起付线550元');
+  assertEqual(xianTier3TopH3.breakdown.baseReimbursed, 8316, '西安职工三特住院三次实报: (10000-550)*0.88 = 8316');
+  assertEqual(xianTier3TopH3.breakdown.totalReimbursed + xianTier3TopH3.breakdown.personalPayTotal, 10000, '西安职工三特住院三次资金守恒');
+  passCount++;
+
+  // 西安职工三级普通医院多次住院阶梯递减断言 (650/550/350)
+  const xianTier3H1 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 1
+  });
+  const xianTier3H2 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 2
+  });
+  const xianTier3H3 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 3
+  });
+  totalChecks++;
+  assertEqual(xianTier3H1.breakdown.appliedDeductible, 650, '西安职工三级住院首次起付线650元');
+  assertEqual(xianTier3H2.breakdown.appliedDeductible, 550, '西安职工三级住院二次起付线550元');
+  assertEqual(xianTier3H3.breakdown.appliedDeductible, 350, '西安职工三级住院三次起付线350元');
+  assertEqual(xianTier3H1.breakdown.baseReimbursed, 8228, '西安职工三级首次实报8228元');
+  assertEqual(xianTier3H2.breakdown.baseReimbursed, 8316, '西安职工三级二次实报8316元');
+  assertEqual(xianTier3H3.breakdown.baseReimbursed, 8492, '西安职工三级三次实报8492元');
+  assertTrue(xianTier3H1.breakdown.personalPayTotal > xianTier3H2.breakdown.personalPayTotal, '首次住院自付高于二次住院');
+  assertTrue(xianTier3H2.breakdown.personalPayTotal > xianTier3H3.breakdown.personalPayTotal, '二次住院自付高于三次住院');
+  passCount++;
+
+  // 西安职工二级医院多次住院阶梯递减断言 (400/300/150)
+  const xianTier2H1 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 1
+  });
+  const xianTier2H2 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 2
+  });
+  const xianTier2H3 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier2',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 3
+  });
+  totalChecks++;
+  assertEqual(xianTier2H1.breakdown.appliedDeductible, 400, '西安职工二级住院首次起付线400元');
+  assertEqual(xianTier2H2.breakdown.appliedDeductible, 300, '西安职工二级住院二次起付线300元');
+  assertEqual(xianTier2H3.breakdown.appliedDeductible, 150, '西安职工二级住院三次起付线150元');
+  assertEqual(xianTier2H1.breakdown.baseReimbursed, 8640, '西安职工二级首次实报: (10000-400)*0.90 = 8640');
+  assertEqual(xianTier2H2.breakdown.baseReimbursed, 8730, '西安职工二级二次实报: (10000-300)*0.90 = 8730');
+  assertEqual(xianTier2H3.breakdown.baseReimbursed, 8865, '西安职工二级三次实报: (10000-150)*0.90 = 8865');
+  passCount++;
+  console.log('  ✓ [H38 PASS] 西安职工医保多次住院特等分级矩阵(三特850/800/550、三级650/550/350、二级400/300/150)验证通过');
+
+  // 2. 西安市城乡居民医保定额递减与保底校验断言 (递减50元，保底不低于100元)
+  const xianResT3H1 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 1
+  });
+  const xianResT3H2 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 2
+  });
+  const xianResT3H3 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 3
+  });
+  totalChecks++;
+  assertEqual(xianResT3H1.breakdown.appliedDeductible, 1200, '西安居民三级首次起付线1200元');
+  assertEqual(xianResT3H2.breakdown.appliedDeductible, 1150, '西安居民三级二次起付线1150元 (递减50元)');
+  assertEqual(xianResT3H3.breakdown.appliedDeductible, 1100, '西安居民三级三次起付线1100元 (递减100元)');
+  assertEqual(xianResT3H1.breakdown.baseReimbursed, 5280, '西安居民三级首次实报: (10000-1200)*0.60 = 5280');
+  assertEqual(xianResT3H2.breakdown.baseReimbursed, 5310, '西安居民三级二次实报: (10000-1150)*0.60 = 5310');
+  assertEqual(xianResT3H3.breakdown.baseReimbursed, 5340, '西安居民三级三次实报: (10000-1100)*0.60 = 5340');
+  passCount++;
+
+  // 西安居民基层社区医院保底约束测试 (基准起付线150元，每次递减50元，第三次保底100元)
+  const xianResComH1 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 2000,
+    hospitalizationCount: 1
+  });
+  const xianResComH2 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 2000,
+    hospitalizationCount: 2
+  });
+  const xianResComH3 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'community',
+    remoteStatus: 'local',
+    totalCost: 2000,
+    hospitalizationCount: 3
+  });
+  totalChecks++;
+  assertEqual(xianResComH1.breakdown.appliedDeductible, 150, '西安居民基层首次起付线150元');
+  assertEqual(xianResComH2.breakdown.appliedDeductible, 100, '西安居民基层二次起付线100元 (150-50)');
+  assertEqual(xianResComH3.breakdown.appliedDeductible, 100, '西安居民基层三次起付线保底100元 (不低于100元底线)');
+  assertEqual(xianResComH3.breakdown.deductibleReduction, 50, '西安居民基层三次起付线减免50元');
+  passCount++;
+  console.log('  ✓ [H38 PASS] 西安居民多次住院定额递减(每次降50)与最低保底100元约束验证通过');
+
+  // 3. 北京与武汉次起减半政策校验 (half_from_second)
+  const beijingEmpH1 = calculateReimbursement({
+    cityCode: '110100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 1
+  });
+  const beijingEmpH2 = calculateReimbursement({
+    cityCode: '110100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 2
+  });
+  const beijingEmpH3 = calculateReimbursement({
+    cityCode: '110100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 3
+  });
+  totalChecks++;
+  assertEqual(beijingEmpH1.breakdown.standardDeductible, 1300, '北京职工住院基准起付线1300元');
+  assertEqual(beijingEmpH1.breakdown.appliedDeductible, 1300, '北京职工住院首次起付线1300元');
+  assertEqual(beijingEmpH2.breakdown.appliedDeductible, 650, '北京职工住院二次起付线减半为650元');
+  assertEqual(beijingEmpH3.breakdown.appliedDeductible, 650, '北京职工住院三次起付线减半为650元');
+  assertEqual(beijingEmpH1.breakdown.baseReimbursed, 7395, '北京职工住院首次实报: (10000-1300)*0.85 = 7395');
+  assertEqual(beijingEmpH2.breakdown.baseReimbursed, 7947.5, '北京职工住院二次实报: (10000-650)*0.85 = 7947.5');
+  assertEqual(beijingEmpH3.breakdown.baseReimbursed, 7947.5, '北京职工住院三次实报: (10000-650)*0.85 = 7947.5');
+  passCount++;
+
+  // 武汉居民医保多次住院减半与基层社区除外断言
+  const wuhanResT3H1 = calculateReimbursement({
+    cityCode: '420100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 1
+  });
+  const wuhanResT3H2 = calculateReimbursement({
+    cityCode: '420100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 2
+  });
+  const wuhanResT1H1 = calculateReimbursement({
+    cityCode: '420100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 1
+  });
+  const wuhanResT1H2 = calculateReimbursement({
+    cityCode: '420100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 2
+  });
+  totalChecks++;
+  assertEqual(wuhanResT3H1.breakdown.appliedDeductible, 800, '武汉居民三级首次起付线800元');
+  assertEqual(wuhanResT3H2.breakdown.appliedDeductible, 400, '武汉居民三级二次起付线减半为400元');
+  assertEqual(wuhanResT1H1.breakdown.appliedDeductible, 200, '武汉居民一级首次起付线200元');
+  assertEqual(wuhanResT1H2.breakdown.appliedDeductible, 200, '武汉居民一级多次住院不执行减半，依然为200元');
+  passCount++;
+  console.log('  ✓ [H38 PASS] 北京与武汉次起减半(half_from_second)及基层机构除外规程核验通过');
+
+  // 4. 南京、济南与温州二次减半、三次免除校验 (half_second_zero_third)
+  const nanjingResH1 = calculateReimbursement({
+    cityCode: '320100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 1
+  });
+  const nanjingResH2 = calculateReimbursement({
+    cityCode: '320100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 2
+  });
+  const nanjingResH3 = calculateReimbursement({
+    cityCode: '320100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 3
+  });
+  totalChecks++;
+  assertEqual(nanjingResH1.breakdown.standardDeductible, 1000, '南京居民三级首次起付线1000元');
+  assertEqual(nanjingResH1.breakdown.appliedDeductible, 1000, '南京居民三级首次适用起付线1000元');
+  assertEqual(nanjingResH1.breakdown.baseReimbursed, 5850, '南京居民三级首次实报: (10000-1000)*0.65 = 5850');
+  assertEqual(nanjingResH2.breakdown.appliedDeductible, 500, '南京居民三级二次起付线减半为500元');
+  assertEqual(nanjingResH2.breakdown.baseReimbursed, 6175, '南京居民三级二次实报: (10000-500)*0.65 = 6175');
+  assertEqual(nanjingResH3.breakdown.appliedDeductible, 0, '南京居民三级三次起付线免除为0元');
+  assertEqual(nanjingResH3.breakdown.deductibleReduction, 1000, '南京居民三级三次起付线全额减免1000元');
+  assertEqual(nanjingResH3.breakdown.baseReimbursed, 6500, '南京居民三级三次实报: 10000*0.65 = 6500');
+  passCount++;
+
+  const jinanEmpH1 = calculateReimbursement({
+    cityCode: '370100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 1
+  });
+  const jinanEmpH2 = calculateReimbursement({
+    cityCode: '370100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 2
+  });
+  const jinanEmpH3 = calculateReimbursement({
+    cityCode: '370100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 3
+  });
+  totalChecks++;
+  assertEqual(jinanEmpH1.breakdown.appliedDeductible, 1000, '济南职工三级首次起付线1000元');
+  assertEqual(jinanEmpH2.breakdown.appliedDeductible, 500, '济南职工三级二次起付线减半为500元');
+  assertEqual(jinanEmpH3.breakdown.appliedDeductible, 0, '济南职工三级三次起付线免收为0元');
+  passCount++;
+  console.log('  ✓ [H38 PASS] 南京与济南二次减半三次免收(half_second_zero_third)零门槛测算通过');
+
+  // 5. 安徽统筹区 (芜湖) 定额递减与保底校验 (step_down)
+  const wuhuEmpH1 = calculateReimbursement({
+    cityCode: '340200',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 1
+  });
+  const wuhuEmpH2 = calculateReimbursement({
+    cityCode: '340200',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 2
+  });
+  const wuhuEmpH3 = calculateReimbursement({
+    cityCode: '340200',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 3
+  });
+  const wuhuEmpT1H2 = calculateReimbursement({
+    cityCode: '340200',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier1',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 2
+  });
+  totalChecks++;
+  assertEqual(wuhuEmpH1.breakdown.appliedDeductible, 600, '芜湖职工三级首次起付线600元');
+  assertEqual(wuhuEmpH2.breakdown.appliedDeductible, 500, '芜湖职工三级二次起付线500元 (递减100元)');
+  assertEqual(wuhuEmpH3.breakdown.appliedDeductible, 400, '芜湖职工三级三次起付线400元 (递减200元)');
+  assertEqual(wuhuEmpT1H2.breakdown.appliedDeductible, 200, '芜湖职工一级二次起付线保底200元 (不低于200元保底)');
+  passCount++;
+  console.log('  ✓ [H38 PASS] 安徽芜湖定额递减与保底线(step_down)多频次约束核验通过');
+
+  // 6. 代表性城市政策自洽性与多次住院扣减核验 (东莞、宝鸡、咸阳、成都)
+  // 6.1 东莞职工医保：参保人同一自然年度内多次住院按医疗机构级别扣除，不递减
+  const dgEmp1 = calculateReimbursement({
+    cityCode: '441900',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 1
+  });
+  const dgEmp2 = calculateReimbursement({
+    cityCode: '441900',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 2
+  });
+  const dgEmp3 = calculateReimbursement({
+    cityCode: '441900',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 10000,
+    hospitalizationCount: 3
+  });
+  totalChecks++;
+  assertEqual(dgEmp1.breakdown.appliedDeductible, 1300, '东莞职工三级首次起付线1300元');
+  assertEqual(dgEmp2.breakdown.appliedDeductible, 1300, '东莞职工三级二次起付线自洽保持1300元');
+  assertEqual(dgEmp3.breakdown.appliedDeductible, 1300, '东莞职工三级三次起付线自洽保持1300元');
+  assertEqual(dgEmp1.breakdown.totalReimbursed, dgEmp2.breakdown.totalReimbursed, '东莞职工报销额自洽');
+  assertEqual(dgEmp2.breakdown.totalReimbursed, dgEmp3.breakdown.totalReimbursed, '东莞职工报销额自洽');
+  passCount++;
+
+  // 6.2 宝鸡、咸阳、成都多次住院维持基准标准政策自洽性
+  const stableCheckCities = [
+    { code: '610300', ins: 'resident' as const, tier: 'tier3' as const, baseDeductible: 1500, name: '宝鸡居民' },
+    { code: '610400', ins: 'employee' as const, tier: 'tier3' as const, baseDeductible: 1200, name: '咸阳职工' },
+    { code: '510100', ins: 'resident' as const, tier: 'tier3' as const, baseDeductible: 500, name: '成都居民' }
+  ];
+  for (const sc of stableCheckCities) {
+    const s1 = calculateReimbursement({
+      cityCode: sc.code,
+      insuranceType: sc.ins,
+      treatmentType: 'inpatient',
+      hospitalTier: sc.tier,
+      remoteStatus: 'local',
+      totalCost: 10000,
+      hospitalizationCount: 1
+    });
+    const s2 = calculateReimbursement({
+      cityCode: sc.code,
+      insuranceType: sc.ins,
+      treatmentType: 'inpatient',
+      hospitalTier: sc.tier,
+      remoteStatus: 'local',
+      totalCost: 10000,
+      hospitalizationCount: 2
+    });
+    const s3 = calculateReimbursement({
+      cityCode: sc.code,
+      insuranceType: sc.ins,
+      treatmentType: 'inpatient',
+      hospitalTier: sc.tier,
+      remoteStatus: 'local',
+      totalCost: 10000,
+      hospitalizationCount: 3
+    });
+    totalChecks++;
+    assertEqual(s1.breakdown.appliedDeductible, sc.baseDeductible, `${sc.name} 首次起付线基准`);
+    assertEqual(s2.breakdown.appliedDeductible, sc.baseDeductible, `${sc.name} 二次起付线自洽`);
+    assertEqual(s3.breakdown.appliedDeductible, sc.baseDeductible, `${sc.name} 三次起付线自洽`);
+    assertEqual(s1.breakdown.totalReimbursed, s2.breakdown.totalReimbursed, `${sc.name} 报销额自洽`);
+    assertEqual(s2.breakdown.totalReimbursed, s3.breakdown.totalReimbursed, `${sc.name} 报销额自洽`);
+    passCount++;
+  }
+  console.log('  ✓ [H38 PASS] 东莞、宝鸡、咸阳、成都等代表性城市多次住院政策自洽性核验通过');
+
+  // 7. 门诊场景对 hospitalizationCount 绝对免疫性断言
+  const outpatientCities = ['610100', '110100', '320100', '510100'];
+  for (const ocCode of outpatientCities) {
+    const ocCity = getCityDataByCode(ocCode)!;
+    const op1 = calculateReimbursement({
+      cityCode: ocCode,
+      insuranceType: 'employee',
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500,
+      hospitalizationCount: 1
+    });
+    const op2 = calculateReimbursement({
+      cityCode: ocCode,
+      insuranceType: 'employee',
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500,
+      hospitalizationCount: 2
+    });
+    const op3 = calculateReimbursement({
+      cityCode: ocCode,
+      insuranceType: 'employee',
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500,
+      hospitalizationCount: 3
+    });
+    totalChecks++;
+    assertEqual(op1.breakdown.appliedDeductible, op1.breakdown.standardDeductible, `${ocCity.cityName} 门诊不因住院频次变更起付线`);
+    assertEqual(op2.breakdown.appliedDeductible, op1.breakdown.appliedDeductible, `${ocCity.cityName} 门诊二次免疫`);
+    assertEqual(op3.breakdown.appliedDeductible, op1.breakdown.appliedDeductible, `${ocCity.cityName} 门诊三次免疫`);
+    assertEqual(op1.breakdown.totalReimbursed, op2.breakdown.totalReimbursed, `${ocCity.cityName} 门诊报销额免疫`);
+    assertEqual(op2.breakdown.totalReimbursed, op3.breakdown.totalReimbursed, `${ocCity.cityName} 门诊报销额免疫`);
+    assertEqual(op1.breakdown.deductibleReduction, 0, `${ocCity.cityName} 门诊减免额严格为0`);
+    passCount++;
+  }
+  console.log('  ✓ [H38 PASS] 门诊场景对 hospitalizationCount 严格免疫断言通过');
+
+  // 8. 费用低于递减后起付线边界跃迁测试 (起付线衰减激活报销段)
+  const lowCostH1 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 500,
+    hospitalizationCount: 1
+  });
+  const lowCostH3 = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'employee',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 500,
+    hospitalizationCount: 3
+  });
+  totalChecks++;
+  assertEqual(lowCostH1.breakdown.deductibleDeducted, 500, '首次住院总费500元小于基准起付线650元，起付全额扣除500元');
+  assertEqual(lowCostH1.breakdown.totalReimbursed, 0, '首次住院未逾起付线，报销0元');
+  assertEqual(lowCostH3.breakdown.appliedDeductible, 350, '三次住院起付线递减至350元');
+  assertEqual(lowCostH3.breakdown.deductibleDeducted, 350, '三次住院扣除递减后起付线350元');
+  assertEqual(lowCostH3.breakdown.costInReimbursementSpan, 150, '三次住院跨过起付线，进入报销段150元');
+  assertEqual(lowCostH3.breakdown.baseReimbursed, 132, '三次住院起付线衰减激活报销: 150*0.88 = 132元');
+  assertEqual(lowCostH3.breakdown.personalPayTotal, 368, '三次住院自付降低为368元');
+  passCount++;
+  console.log('  ✓ [H38 PASS] 费用跨越递减起付线边界激活报销断言通过');
+
+  // --------------------------------------------------------------------------
+  // Suite H39: 异地就医 5 档全场景穿透测算 (Offsite Care 5-Tier Calibration & Emergency)
+  // --------------------------------------------------------------------------
+  console.log('\n=========================================');
+  console.log('>>> [Suite H39] 执行异地就医 5 档全场景穿透测算与大病解耦校验断言...');
+
+  // 1. 本地定点 (local) 与异地长期居住备案 (long_term) 待遇 100% 一致性跨省市核验
+  const offsiteParityCities = ['610100', '110100', '310100', '440100', '440300', '510100', '420100', '441900'];
+  for (const parityCode of offsiteParityCities) {
+    const cObj = getCityDataByCode(parityCode)!;
+    for (const iType of ['employee', 'resident'] as const) {
+      const resLocal = calculateReimbursement({
+        cityCode: parityCode,
+        insuranceType: iType,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: 'local',
+        totalCost: 20000
+      });
+      const resLongTerm = calculateReimbursement({
+        cityCode: parityCode,
+        insuranceType: iType,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: 'long_term',
+        totalCost: 20000
+      });
+      totalChecks++;
+      assertEqual(resLongTerm.breakdown.totalReimbursed, resLocal.breakdown.totalReimbursed, `${cObj.cityName} ${iType} 长期居住备案报销额与本地完全一致`);
+      assertEqual(resLongTerm.breakdown.personalPayTotal, resLocal.breakdown.personalPayTotal, `${cObj.cityName} ${iType} 长期居住备案自付额与本地完全一致`);
+      assertEqual(resLongTerm.breakdown.baseReimbursed, resLocal.breakdown.baseReimbursed, `${cObj.cityName} ${iType} 长期居住备案统筹基金支付与本地完全一致`);
+      assertEqual(resLongTerm.breakdown.catastrophicReimbursed, resLocal.breakdown.catastrophicReimbursed, `${cObj.cityName} ${iType} 长期居住备案大病互助与本地完全一致`);
+      passCount++;
+    }
+  }
+  console.log('  ✓ [H39 PASS] 全国重点城市本地定点(local)与异地长期居留(long_term) 100% 同等待遇核验通过');
+
+  // 2. 规范跨省/跨市转诊备案 (transfer) 官方规定比例下浮测算
+  const xianResLocal = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 20000
+  });
+  const xianResTransfer = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'transfer',
+    totalCost: 20000
+  });
+  totalChecks++;
+  assertEqual(xianResLocal.breakdown.baseReimbursed, 11280, '西安居民三级本地住院实报: (20000-1200)*0.60 = 11280');
+  assertEqual(xianResTransfer.breakdown.baseReimbursed, 10152, '西安居民三级转诊备案实报: (20000-1200)*(0.60*0.90) = 10152');
+  assertEqual(xianResLocal.breakdown.baseReimbursed - xianResTransfer.breakdown.baseReimbursed, 1128, '转诊备案报销下浮10%差额完全吻合');
+  passCount++;
+
+  // 3. 异地急诊抢救 (unfiled_emergency) 直接结算对齐
+  const xianResEmergency = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'unfiled_emergency',
+    totalCost: 20000
+  });
+  totalChecks++;
+  assertEqual(xianResEmergency.breakdown.baseReimbursed, 10152, '西安异地急诊抢救按国家医保直接结算规范，待遇对齐已备案转诊');
+  assertEqual(xianResEmergency.breakdown.totalReimbursed + xianResEmergency.breakdown.personalPayTotal, 20000, '急诊抢救资金守恒');
+  passCount++;
+
+  // 4. 未备案临时外出就医 (unfiled_normal) 惩罚性下浮测算与 5 档单调性链条
+  const xianResUnfiled = calculateReimbursement({
+    cityCode: '610100',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'unfiled_normal',
+    totalCost: 20000
+  });
+  totalChecks++;
+  assertEqual(xianResUnfiled.breakdown.baseReimbursed, 9024, '西安居民三级未备案临时就医惩罚性下浮20%: (20000-1200)*(0.60*0.80) = 9024');
+  assertTrue(xianResLocal.breakdown.totalReimbursed === xianResTransfer.breakdown.totalReimbursed || xianResLocal.breakdown.totalReimbursed > xianResTransfer.breakdown.totalReimbursed, '本地报销不低于转诊');
+  assertTrue(xianResTransfer.breakdown.totalReimbursed >= xianResEmergency.breakdown.totalReimbursed, '转诊报销不低于急诊');
+  assertTrue(xianResEmergency.breakdown.totalReimbursed > xianResUnfiled.breakdown.totalReimbursed, '急诊抢救报销严格高于未备案自行就医');
+  assertTrue(xianResUnfiled.breakdown.personalPayTotal > xianResEmergency.breakdown.personalPayTotal, '未备案自付最高');
+  passCount++;
+  console.log('  ✓ [H39 PASS] 异地就医 5 档待遇阶梯单调性(local == long_term > transfer >= emergency > unfiled)断言通过');
+
+  // 5. 异地就医折算比例与大病保险起付线/合规基数解耦校验 (Catastrophic Fund Offsite Decoupling)
+  // 核心逻辑: 咸阳居民大额住院(100,000元)，未备案就医统筹基金下浮30%(乘数0.70)，产生的17730元罚扣自负
+  // 必须严格从大病保险合规自负基数中剔除，大病保险报销额保持15540元不变，严禁大病基金变相兜底违规自费！
+  const xyResLocal = calculateReimbursement({
+    cityCode: '610400',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'local',
+    totalCost: 100000
+  });
+  const xyResUnfiled = calculateReimbursement({
+    cityCode: '610400',
+    insuranceType: 'resident',
+    treatmentType: 'inpatient',
+    hospitalTier: 'tier3',
+    remoteStatus: 'unfiled_normal',
+    totalCost: 100000
+  });
+  totalChecks++;
+  assertEqual(xyResLocal.breakdown.baseReimbursed, 59100, '咸阳居民三级本地住院统筹实报: (100000-1500)*0.60 = 59100');
+  assertEqual(xyResLocal.breakdown.catastrophicReimbursed, 15540, '咸阳居民本地大病保险二次报销: (40900-15000)*0.60 = 15540');
+  assertEqual(xyResLocal.breakdown.totalReimbursed, 74640, '咸阳居民本地总报销74640元');
+  assertEqual(xyResLocal.breakdown.personalPayTotal, 25360, '咸阳居民本地个人自理25360元');
+
+  assertEqual(xyResUnfiled.breakdown.baseReimbursed, 41370, '咸阳居民三级未备案统筹实报下浮30%: (100000-1500)*(0.60*0.70) = 41370');
+  // 关键断言: 大病报销额在未备案情形下严格保持 15540 元不变，绝不因基本统筹被罚而增加！
+  assertEqual(xyResUnfiled.breakdown.catastrophicReimbursed, 15540, '大病保险必须与异地就医罚扣解耦，报销额锁定15540元，绝不变相兜底违规自费');
+  assertEqual(xyResUnfiled.breakdown.totalReimbursed, 56910, '未备案总报销56910元');
+  assertEqual(xyResUnfiled.breakdown.personalPayTotal, 43090, '未备案个人自付43090元');
+  // 罚扣差额验证
+  const expectedPenalty = 59100 - 41370; // 17730元
+  assertEqual(xyResUnfiled.breakdown.personalPayTotal - xyResLocal.breakdown.personalPayTotal, expectedPenalty, '未备案惩罚性降比自付17730元完全由参保人自理');
+  passCount++;
+  console.log('  ✓ [H39 PASS] 异地折算与大病保险合规基数解耦(Catastrophic Offsite Decoupling)高精精算核验通过');
+
+  // 6. 5 阶梯资金流向漏斗物理守恒闭环断言 (跨5档异地就医状态)
+  const remoteTiers: CalculateRequest['remoteStatus'][] = ['local', 'long_term', 'transfer', 'unfiled_emergency', 'unfiled_normal'];
+  for (const rTier of remoteTiers) {
+    const complexRes = calculateReimbursement({
+      cityCode: '610100',
+      insuranceType: 'resident',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: rTier,
+      totalCost: 50000,
+      nonInsuranceCost: 3000,
+      classBCost: 5000,
+      classBSelfPayRatio: 0.1,
+      hospitalizationCount: 2
+    });
+    const cb = complexRes.breakdown;
+    totalChecks++;
+    // 物理守恒 1: 总报销 + 个人总自付 === 医疗总花费
+    assertEqual(Math.round((cb.totalReimbursed + cb.personalPayTotal) * 100) / 100, 50000, `${rTier} 总报销加个人自理守恒`);
+    // 物理守恒 2: 5阶梯漏斗分解闭环: 总花费 === 丙类自费 + 乙类先行自付 + 起付线门槛 + 基金报销合计 + 报销段内按比自负
+    const ladderSum = Math.round((cb.nonInsuranceCost + cb.classBPriorPay + cb.deductibleDeducted + cb.totalReimbursed + cb.personalSpanCoPay) * 100) / 100;
+    assertEqual(ladderSum, 50000, `${rTier} 5阶梯漏斗物理流向闭环恒等式`);
+    passCount++;
+  }
+  console.log('  ✓ [H39 PASS] 异地 5 档状态全量 5 阶梯资金流向漏斗物理闭环恒等式验证通过');
 
   console.log(`\n=========================================`);
   console.log(`[PASS] 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);

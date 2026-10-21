@@ -226,11 +226,11 @@ export function runChallengerInvariantTests(): { totalChecks: number; passed: bo
   console.log('✓ Suite 1 Passed: Inpatient retiree annual cap and fallback verified 100%.\n');
 
   // --------------------------------------------------------------------------
-  // TEST SUITE 2: Nationwide 348 Cities Deep Financial Invariant Conservation
+  // TEST SUITE 2: Nationwide 348 Cities Deep Financial Invariant Conservation & 5-Stage Funnel
   // --------------------------------------------------------------------------
   console.log(`--- Suite 2: Nationwide 348 Cities Invariant Sweep (${allCities.length} cities loaded) ---`);
   const tiers: HospitalTier[] = ['community', 'tier1', 'tier2', 'tier3', 'tier3_top'];
-  const remoteStatuses: RemoteStatus[] = ['local', 'transfer', 'unfiled_normal'];
+  const remoteStatuses: RemoteStatus[] = ['local', 'long_term', 'transfer', 'unfiled_emergency', 'unfiled_normal'];
   const testExpenses = [
     { total: 0, nonIns: 0, classB: 0 },
     { total: 0.01, nonIns: 0, classB: 0 },
@@ -276,12 +276,19 @@ export function runChallengerInvariantTests(): { totalChecks: number; passed: bo
                 const compSum = Math.round((b.baseReimbursed + b.catastrophicReimbursed) * 100) / 100;
                 assert(Math.abs(compSum - b.totalReimbursed) <= 0.01, `Subcomponent breach in ${city.cityName}: compSum=${compSum}, total=${b.totalReimbursed}`);
 
-                // 3. Non-negativity & Bounds
+                // 3. 5-Stage Stepped Funnel Physical Conservation:
+                // totalCost === nonInsuranceCost + classBSelfPay + deductibleDeducted + totalReimbursed + personalSpanCoPay
+                if (b.personalPayTotal >= (b.nonInsuranceCost + b.classBPriorPay + b.deductibleDeducted - 0.01)) {
+                  const funnelSum = Math.round((b.nonInsuranceCost + b.classBPriorPay + b.deductibleDeducted + b.totalReimbursed + b.personalSpanCoPay) * 100) / 100;
+                  assert(Math.abs(funnelSum - exp.total) <= 0.01, `Funnel ladder breach in ${city.cityName}: total=${exp.total}, funnelSum=${funnelSum}`);
+                }
+
+                // 4. Non-negativity & Bounds
                 assert(b.totalReimbursed >= 0, `Negative totalReimbursed: ${b.totalReimbursed}`);
                 assert(b.personalPayTotal >= 0, `Negative personalPayTotal: ${b.personalPayTotal}`);
                 assert(b.totalReimbursed <= exp.total + 0.001, `Reimbursement exceeds cost in ${city.cityName}`);
 
-                // 4. Zero cost check
+                // 5. Zero cost check
                 if (exp.total === 0) {
                   assert(b.totalReimbursed === 0, `Non-zero reimbursement on zero cost in ${city.cityName}`);
                   assert(b.personalPayTotal === 0, `Non-zero personal pay on zero cost in ${city.cityName}`);
@@ -293,7 +300,7 @@ export function runChallengerInvariantTests(): { totalChecks: number; passed: bo
       }
     }
   }
-  console.log(`✓ Suite 2 Passed: Verified all 348 cities across all tiers, statuses, costs, and insurance types.\n`);
+  console.log(`✓ Suite 2 Passed: Verified all 348 cities across all tiers, 5 remote statuses, 5-stage funnel, and costs.\n`);
 
   // --------------------------------------------------------------------------
   // TEST SUITE 3: Adversarial Extreme Value & Fault Injection Probing
@@ -311,12 +318,15 @@ export function runChallengerInvariantTests(): { totalChecks: number; passed: bo
       hospitalTier: 'tier3',
       remoteStatus: 'local',
       totalCost: c,
-      isRetiree: true
+      isRetiree: true,
+      hospitalizationCount: 2
     });
     const b = res.breakdown;
     const sum = Math.round((b.totalReimbursed + b.personalPayTotal) * 100) / 100;
     assert(Math.abs(sum - c) <= 0.01, `Extreme cost conservation failed at ${c}`);
     assert(b.totalReimbursed <= c, `Extreme cost reimbursement exceeded total`);
+    const funnelSum = Math.round((b.nonInsuranceCost + b.classBPriorPay + b.deductibleDeducted + b.totalReimbursed + b.personalSpanCoPay) * 100) / 100;
+    assert(Math.abs(funnelSum - c) <= 0.01, `Extreme cost funnel conservation failed at ${c}`);
   }
 
   // Test 3.2: Non-Insurance Cost exceeding Total Cost (Malicious / Corrupt input)
@@ -329,7 +339,8 @@ export function runChallengerInvariantTests(): { totalChecks: number; passed: bo
     remoteStatus: 'local',
     totalCost: 1000,
     nonInsuranceCost: 2000, // exceeds totalCost
-    isRetiree: false
+    isRetiree: false,
+    hospitalizationCount: 3
   });
   assert(corruptRes.breakdown.eligibleCost === 0, 'Eligible cost must floor at 0');
   assert(corruptRes.breakdown.totalReimbursed === 0, 'Reimbursement must be 0 when eligible cost is 0');
@@ -346,13 +357,111 @@ export function runChallengerInvariantTests(): { totalChecks: number; passed: bo
     totalCost: 1000,
     classBCost: 5000,
     classBSelfPayRatio: 0.1,
-    isRetiree: false
+    isRetiree: false,
+    hospitalizationCount: 2
   });
   assert(corruptClassB.breakdown.eligibleCost >= 0, 'Eligible cost must be non-negative');
   const sumCorrupt = Math.round((corruptClassB.breakdown.totalReimbursed + corruptClassB.breakdown.personalPayTotal) * 100) / 100;
   assert(Math.abs(sumCorrupt - 1000) <= 0.01, 'Conservation must hold under corrupt class B');
 
   console.log('✓ Suite 3 Passed: Extreme value probing and fault injection handled with 100% stability.\n');
+
+  // --------------------------------------------------------------------------
+  // TEST SUITE 4: Admission Frequency (1, 2, 3), 5-Stage Funnel & Monotonic Deductible Invariants
+  // --------------------------------------------------------------------------
+  console.log('--- Suite 4: Inpatient Frequency (1, 2, 3) & Monotonic Deductible Ordering Invariants ---');
+
+  const checkTiers: HospitalTier[] = ['community', 'tier2', 'tier3'];
+  const checkCosts = [5000, 50000];
+
+  for (const city of allCities) {
+    for (const insuranceType of ['employee', 'resident'] as const) {
+      for (const tier of checkTiers) {
+        for (const remoteStatus of remoteStatuses) {
+          for (const cost of checkCosts) {
+            // Run hospitalizationCount 1, 2, 3
+            checks++;
+            const r1 = calculateReimbursement({
+              cityCode: city.cityCode,
+              insuranceType,
+              treatmentType: 'inpatient',
+              hospitalTier: tier,
+              remoteStatus,
+              totalCost: cost,
+              nonInsuranceCost: Math.round(cost * 0.05 * 100) / 100,
+              classBCost: Math.round(cost * 0.10 * 100) / 100,
+              hospitalizationCount: 1
+            });
+
+            const r2 = calculateReimbursement({
+              cityCode: city.cityCode,
+              insuranceType,
+              treatmentType: 'inpatient',
+              hospitalTier: tier,
+              remoteStatus,
+              totalCost: cost,
+              nonInsuranceCost: Math.round(cost * 0.05 * 100) / 100,
+              classBCost: Math.round(cost * 0.10 * 100) / 100,
+              hospitalizationCount: 2
+            });
+
+            const r3 = calculateReimbursement({
+              cityCode: city.cityCode,
+              insuranceType,
+              treatmentType: 'inpatient',
+              hospitalTier: tier,
+              remoteStatus,
+              totalCost: cost,
+              nonInsuranceCost: Math.round(cost * 0.05 * 100) / 100,
+              classBCost: Math.round(cost * 0.10 * 100) / 100,
+              hospitalizationCount: 3
+            });
+
+            const b1 = r1.breakdown;
+            const b2 = r2.breakdown;
+            const b3 = r3.breakdown;
+
+            // Invariant 1: Physical Conservation across all admission counts
+            const sum1 = Math.round((b1.totalReimbursed + b1.personalPayTotal) * 100) / 100;
+            const sum2 = Math.round((b2.totalReimbursed + b2.personalPayTotal) * 100) / 100;
+            const sum3 = Math.round((b3.totalReimbursed + b3.personalPayTotal) * 100) / 100;
+            assert(Math.abs(sum1 - cost) <= 0.01, `Suite 4 Conservation 1 failed in ${city.cityName}`);
+            assert(Math.abs(sum2 - cost) <= 0.01, `Suite 4 Conservation 2 failed in ${city.cityName}`);
+            assert(Math.abs(sum3 - cost) <= 0.01, `Suite 4 Conservation 3 failed in ${city.cityName}`);
+
+            // Invariant 2: 5-Stage Stepped Funnel Conservation across all counts
+            const f1 = Math.round((b1.nonInsuranceCost + b1.classBPriorPay + b1.deductibleDeducted + b1.totalReimbursed + b1.personalSpanCoPay) * 100) / 100;
+            const f2 = Math.round((b2.nonInsuranceCost + b2.classBPriorPay + b2.deductibleDeducted + b2.totalReimbursed + b2.personalSpanCoPay) * 100) / 100;
+            const f3 = Math.round((b3.nonInsuranceCost + b3.classBPriorPay + b3.deductibleDeducted + b3.totalReimbursed + b3.personalSpanCoPay) * 100) / 100;
+            assert(Math.abs(f1 - cost) <= 0.01, `Suite 4 Funnel 1 failed in ${city.cityName}`);
+            assert(Math.abs(f2 - cost) <= 0.01, `Suite 4 Funnel 2 failed in ${city.cityName}`);
+            assert(Math.abs(f3 - cost) <= 0.01, `Suite 4 Funnel 3 failed in ${city.cityName}`);
+
+            // Invariant 3: Monotonic Deductible Ordering
+            // When deductible decays: appliedDeductible(1) >= appliedDeductible(2) >= appliedDeductible(3)
+            assert(b1.appliedDeductible >= b2.appliedDeductible, `Deductible ordering breach (1 vs 2) in ${city.cityName}`);
+            assert(b2.appliedDeductible >= b3.appliedDeductible, `Deductible ordering breach (2 vs 3) in ${city.cityName}`);
+            assert(b1.deductibleReduction <= b2.deductibleReduction, `Reduction ordering breach (1 vs 2) in ${city.cityName}`);
+            assert(b2.deductibleReduction <= b3.deductibleReduction, `Reduction ordering breach (2 vs 3) in ${city.cityName}`);
+
+            // Base fund reimbursement must be monotonically non-decreasing as deductible decays:
+            assert(b1.baseReimbursed <= b2.baseReimbursed + 0.01, `Base reimbursement monotonicity breach (1 vs 2) in ${city.cityName}`);
+            assert(b2.baseReimbursed <= b3.baseReimbursed + 0.01, `Base reimbursement monotonicity breach (2 vs 3) in ${city.cityName}`);
+
+            // Under local medical care, patient personal pay must be monotonically non-increasing:
+            // personalPayTotal(1) >= personalPayTotal(2) >= personalPayTotal(3)
+            if (remoteStatus === 'local' || remoteStatus === 'long_term') {
+              assert(b1.personalPayTotal >= b2.personalPayTotal - 0.01, `Personal pay monotonicity breach (1 vs 2) in ${city.cityName}: ${b1.personalPayTotal} < ${b2.personalPayTotal}`);
+              assert(b2.personalPayTotal >= b3.personalPayTotal - 0.01, `Personal pay monotonicity breach (2 vs 3) in ${city.cityName}: ${b2.personalPayTotal} < ${b3.personalPayTotal}`);
+              assert(b1.totalReimbursed <= b2.totalReimbursed + 0.01, `Total reimbursement monotonicity breach (1 vs 2) in ${city.cityName}`);
+              assert(b2.totalReimbursed <= b3.totalReimbursed + 0.01, `Total reimbursement monotonicity breach (2 vs 3) in ${city.cityName}`);
+            }
+          }
+        }
+      }
+    }
+  }
+  console.log('✓ Suite 4 Passed: 348 cities verified across hospitalization counts (1, 2, 3), 5-stage funnel, and monotonic ordering.\n');
 
   console.log('================================================================================');
   console.log(`[PASS] ALL CHALLENGER INVARIANT TESTS PASSED! (${checks} total checks executed)`);

@@ -182,7 +182,7 @@
             </view>
           </view>
 
-          <!-- 模块 3: 就医场景与定点机构 -->
+          <!-- 模块 3: 就医场景与机构等级 -->
           <view class="config-group">
             <view class="group-header">
               <text class="group-label">3. 就医场景与机构等级</text>
@@ -227,6 +227,44 @@
               </view>
             </view>
 
+            <!-- 住院就诊频次阶梯选择器 (仅住院场景生效) -->
+            <view class="admission-frequency-bar" v-if="form.treatmentType === 'inpatient'">
+              <view class="frequency-header">
+                <text class="frequency-label">年内住院频次：</text>
+                <text class="frequency-badge" v-if="form.hospitalizationCount > 1">享受起付阶梯递减</text>
+              </view>
+              <view class="frequency-segmented-control">
+                <view 
+                  class="freq-btn" 
+                  :class="{ active: form.hospitalizationCount === 1 }"
+                  @click="setHospitalizationCount(1)"
+                >
+                  <text class="freq-txt">首次住院</text>
+                  <text class="freq-sub">基准门槛</text>
+                </view>
+                <view 
+                  class="freq-btn" 
+                  :class="{ active: form.hospitalizationCount === 2 }"
+                  @click="setHospitalizationCount(2)"
+                >
+                  <text class="freq-txt">二次住院</text>
+                  <text class="freq-sub">起付递减</text>
+                </view>
+                <view 
+                  class="freq-btn" 
+                  :class="{ active: form.hospitalizationCount === 3 }"
+                  @click="setHospitalizationCount(3)"
+                >
+                  <text class="freq-txt">三次及以上</text>
+                  <text class="freq-sub">免/极低门槛</text>
+                </view>
+              </view>
+              <view class="frequency-policy-hint" v-if="currentRepeatedDeductibleRule">
+                <text class="hint-bullet">※</text>
+                <text class="hint-txt">{{ currentRepeatedDeductibleRule }}</text>
+              </view>
+            </view>
+
             <!-- 门诊政策提醒 -->
             <view class="policy-notice" v-if="form.treatmentType === 'outpatient' && currentCityData">
               <text class="notice-badge">门诊政策提醒</text>
@@ -239,10 +277,68 @@
             </view>
           </view>
 
-          <!-- 模块 4: 预估医疗花费与快捷芯片 -->
+          <!-- 模块 4: 就医地点与异地备案 (一级控件前置) -->
           <view class="config-group">
             <view class="group-header">
-              <text class="group-label">4. 预估医疗总花费</text>
+              <text class="group-label">4. 就医地点与异地备案</text>
+              <text class="group-remote-badge" :class="remoteOptions[selectedRemoteIndex].badgeClass">
+                {{ remoteOptions[selectedRemoteIndex].badge }}
+              </text>
+            </view>
+
+            <view class="dropdown-anchor-row" @click.stop>
+              <view 
+                class="cyber-dropdown-trigger" 
+                :class="{ open: openDropdown === 'remote' }" 
+                @click.stop="toggleDropdown('remote')"
+              >
+                <view class="remote-trigger-inner">
+                  <text class="select-val">{{ remoteOptions[selectedRemoteIndex].label }}</text>
+                  <text class="mini-rate-tag" :class="remoteOptions[selectedRemoteIndex].badgeClass">
+                    {{ remoteOptions[selectedRemoteIndex].badge }}
+                  </text>
+                </view>
+                <text class="select-arrow" :class="{ rotated: openDropdown === 'remote' }">▾</text>
+              </view>
+
+              <view class="cyber-dropdown-menu remote-dropdown-menu" v-if="openDropdown === 'remote'" @click.stop>
+                <view 
+                  class="dropdown-item remote-dropdown-item" 
+                  v-for="(r, idx) in remoteOptions" 
+                  :key="r.value"
+                  :class="{ selected: selectedRemoteIndex === idx }"
+                  @click.stop="selectRemote(idx)"
+                >
+                  <view class="remote-item-left">
+                    <view class="remote-item-title-row">
+                      <text class="item-name">{{ r.label }}</text>
+                      <text class="item-rate-badge" :class="r.badgeClass">{{ r.badge }}</text>
+                    </view>
+                    <text class="item-desc">{{ r.desc }}</text>
+                  </view>
+                  <text class="item-check" v-if="selectedRemoteIndex === idx">✓</text>
+                </view>
+              </view>
+            </view>
+
+            <!-- 异地就医动态政策指引 -->
+            <view class="remote-policy-guide" v-if="selectedRemoteIndex > 0">
+              <view class="rpg-header">
+                <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" class="rpg-svg">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+                <text class="rpg-title">{{ currentCityOption.cityName }}异地就医规程指引</text>
+              </view>
+              <text class="rpg-content">{{ dynamicRemoteHint }}</text>
+            </view>
+          </view>
+
+          <!-- 模块 5: 预估医疗花费与快捷芯片 -->
+          <view class="config-group">
+            <view class="group-header">
+              <text class="group-label">5. 预估医疗总花费</text>
             </view>
             <view class="amount-input-box">
               <text class="currency-symbol">¥</text>
@@ -294,41 +390,19 @@
             </view>
           </view>
 
-          <!-- 模块 5: 异地与自费折叠面板 -->
+          <!-- 高级自费折叠面板 -->
           <view class="advanced-collapse-card">
             <view class="collapse-trigger" @click="showExtra = !showExtra">
               <view class="trigger-label-group">
-                <text class="trigger-label">异地就医与全自费项目</text>
-                <PolicyTooltip title="什么是异地就医与全自费？" text="异地就医未备案直接结算通常会按政策下调比例（惩罚性降点10%~20%）；丙类自费药品与特需服务不属于基本医保目录，需个人全额自理。" />
+                <text class="trigger-label">自费与先行自付项目 (可选补充)</text>
+                <PolicyTooltip title="什么是全自费与先行自付？" text="丙类自费药品与特需耗材不属于基本医保目录，需全额自理；乙类项目先由个人按地方规定自付一定比例（通常5%~10%），剩余部分再纳入统筹报销。" />
               </view>
               <text class="trigger-arrow">{{ showExtra ? '收起 ▴' : '展开 ▾' }}</text>
             </view>
 
             <view class="collapse-content" v-if="showExtra">
               <view class="collapse-field">
-                <text class="field-label">异地就医备案状态</text>
-                <view class="dropdown-anchor-row" @click.stop>
-                  <view class="cyber-dropdown-trigger" :class="{ open: openDropdown === 'remote' }" @click.stop="toggleDropdown('remote')">
-                    <text class="select-val">{{ remoteOptions[selectedRemoteIndex].label }}</text>
-                    <text class="select-arrow" :class="{ rotated: openDropdown === 'remote' }">▾</text>
-                  </view>
-                  <view class="cyber-dropdown-menu" v-if="openDropdown === 'remote'" @click.stop>
-                    <view 
-                      class="dropdown-item" 
-                      v-for="(r, idx) in remoteOptions" 
-                      :key="r.value"
-                      :class="{ selected: selectedRemoteIndex === idx }"
-                      @click.stop="selectRemote(idx)"
-                    >
-                      <text class="item-name">{{ r.label }}</text>
-                      <text class="item-check" v-if="selectedRemoteIndex === idx">✓</text>
-                    </view>
-                  </view>
-                </view>
-              </view>
-
-              <view class="collapse-field mt-12">
-                <text class="field-label">全自费项目费用 (丙类药/特需耗材，不可报销额)</text>
+                <text class="field-label">全自费项目金额 (丙类药/特需耗材/不可报销项目)</text>
                 <input 
                   type="digit" 
                   class="collapse-input" 
@@ -412,79 +486,178 @@
               </view>
             </view>
 
-            <!-- 费用推导明细清单 (步骤流水化，零冗余，一表道尽) -->
-            <view class="flow-breakdown-card">
-              <view class="flow-card-head" @click="showDetail = !showDetail">
+            <!-- 资金流向阶梯式漏斗可视化卡片 (Uni-app H5 & 微信小程序通用) -->
+            <view class="stepped-funnel-card">
+              <view class="funnel-card-header" @click="showFunnel = !showFunnel">
                 <view class="fch-left">
-                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" class="fch-svg">
-                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-                  </svg>
-                  <text class="fch-title">费用推导分项明细</text>
-                  <text class="fch-badge">推导过程</text>
+                  <view class="funnel-icon-box">
+                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+                    </svg>
+                  </view>
+                  <text class="funnel-header-title">资金流向阶梯式漏斗推导</text>
+                  <text class="funnel-header-badge">5阶精算拆解</text>
                 </view>
-                <text class="fch-toggle">{{ showDetail ? '收起 ▴' : '展开 ▾' }}</text>
+                <text class="funnel-toggle-txt">{{ showFunnel ? '收起 ▴' : '展开 ▾' }}</text>
               </view>
 
-              <view class="flow-list" v-if="showDetail">
-                <view class="flow-row">
-                  <view class="flow-row-name">
-                    <text class="flow-step-num num-1">1</text>
-                    <text class="flow-label">总医疗花费</text>
+              <view class="funnel-ladder-body" v-if="showFunnel">
+                <!-- Step 1: 医疗总费用 (Total Medical Cost) -->
+                <view class="funnel-step step-total">
+                  <view class="step-spine">
+                    <view class="spine-node node-slate"><text class="node-num">1</text></view>
+                    <view class="spine-line"></view>
                   </view>
-                  <text class="flow-val font-mono">¥{{ (parseFloat(form.totalCost) || 0).toLocaleString() }}</text>
+                  <view class="step-content">
+                    <view class="step-top-row">
+                      <view class="step-label-group">
+                        <text class="step-label font-bold">Step 1. 医疗总花费 (定点账面流水)</text>
+                      </view>
+                      <text class="step-val font-mono font-bold">¥ {{ (result.breakdown.totalCost || 0).toLocaleString() }}</text>
+                    </view>
+                    <view class="step-bar-wrap">
+                      <view class="funnel-bar bar-total" style="width: 100%"></view>
+                    </view>
+                    <text class="step-desc">定点医药机构出具的住院/门诊全部合规与自费项目账面总金额 (100% 原始基准)</text>
+                  </view>
                 </view>
 
-                <view class="flow-row" v-if="(result.breakdown.nonInsuranceCost + (result.breakdown.classBPriorPay || 0)) > 0">
-                  <view class="flow-row-name">
-                    <text class="flow-step-num num-sub">-</text>
-                    <text class="flow-label">自费/乙类先行自付</text>
+                <!-- Step 2: 扣除全自费/先行自付 -->
+                <view class="funnel-step step-deduct-self">
+                  <view class="step-spine">
+                    <view class="spine-node node-amber"><text class="node-num">-</text></view>
+                    <view class="spine-line"></view>
                   </view>
-                  <text class="flow-val text-dim font-mono">- ¥{{ ((result.breakdown.nonInsuranceCost || 0) + (result.breakdown.classBPriorPay || 0)).toLocaleString() }}</text>
+                  <view class="step-content">
+                    <view class="step-top-row">
+                      <view class="step-label-group">
+                        <text class="step-label text-amber font-bold">Step 2. 扣除全自费与先行自付</text>
+                        <PolicyTooltip title="全自费与先行自付" text="丙类全自费项目不入医保统筹池；乙类药品耗材按地方规定由个人先行自付5%~10%后进入统筹范围。" />
+                      </view>
+                      <text class="step-val text-amber font-mono font-bold">
+                        - ¥ {{ ((result.breakdown.nonInsuranceCost || 0) + (result.breakdown.classBPriorPay || result.breakdown.classBSelfPay || 0)).toLocaleString() }}
+                      </text>
+                    </view>
+                    <view class="step-bar-wrap">
+                      <view class="funnel-bar bar-eligible" :style="{ width: Math.max(15, Math.min(100, Math.round(((result.breakdown.eligibleCost || 0) / (result.breakdown.totalCost || 1)) * 100))) + '%' }"></view>
+                    </view>
+                    <view class="step-sub-badges">
+                      <text class="sub-badge badge-amber" v-if="result.breakdown.nonInsuranceCost > 0">
+                        丙类全自费 ¥{{ (result.breakdown.nonInsuranceCost || 0).toLocaleString() }}
+                      </text>
+                      <text class="sub-badge badge-orange" v-if="(result.breakdown.classBPriorPay || result.breakdown.classBSelfPay || 0) > 0">
+                        乙类先行自付 ¥{{ (result.breakdown.classBPriorPay || result.breakdown.classBSelfPay || 0).toLocaleString() }}
+                      </text>
+                      <text class="sub-badge badge-gray" v-if="result.breakdown.nonInsuranceCost === 0 && (result.breakdown.classBPriorPay || result.breakdown.classBSelfPay || 0) === 0">
+                        全自费与先行自付 ¥0 (全部费用纳规)
+                      </text>
+                    </view>
+                    <view class="step-result-bubble">
+                      <text class="bubble-txt">➔ 医保统筹可结算基数 (Eligible Cost)：<text class="font-mono font-bold">¥ {{ (result.breakdown.eligibleCost || 0).toLocaleString() }}</text></text>
+                    </view>
+                  </view>
                 </view>
 
-                <view class="flow-row">
-                  <view class="flow-row-name">
-                    <text class="flow-step-num num-2">2</text>
-                    <text class="flow-label">扣除免赔起付线</text>
-                    <PolicyTooltip title="什么是起付线门槛？" text="医保统筹基金支付的最低起跑门槛。低于起付线由个人自理；超过起付线且属于政策范围内的合规费用，医保才开始按比例报销。" />
+                <!-- Step 3: 扣除免赔起付线 -->
+                <view class="funnel-step step-deductible">
+                  <view class="step-spine">
+                    <view class="spine-node node-indigo"><text class="node-num">2</text></view>
+                    <view class="spine-line"></view>
                   </view>
-                  <text class="flow-val text-amber font-mono">- ¥{{ result.breakdown.deductibleDeducted.toLocaleString() }}</text>
+                  <view class="step-content">
+                    <view class="step-top-row">
+                      <view class="step-label-group">
+                        <text class="step-label text-indigo font-bold">Step 3. 扣除免赔起付线门槛</text>
+                        <text class="discount-pill" v-if="form.treatmentType === 'inpatient' && form.hospitalizationCount > 1">
+                          年内第{{ form.hospitalizationCount }}次住院阶梯优惠
+                        </text>
+                      </view>
+                      <text class="step-val text-indigo font-mono font-bold">
+                        - ¥ {{ (result.breakdown.deductibleDeducted || 0).toLocaleString() }}
+                      </text>
+                    </view>
+                    <view class="step-bar-wrap">
+                      <view class="funnel-bar bar-deductible" :style="{ width: Math.max(10, Math.min(100, Math.round((Math.max(0, result.breakdown.eligibleCost - result.breakdown.deductibleDeducted) / (result.breakdown.totalCost || 1)) * 100))) + '%' }"></view>
+                    </view>
+                    <view class="deductible-detail-tags" v-if="result.breakdown.deductibleReduction > 0">
+                      <text class="deductible-tag">首选基准起付: ¥{{ result.breakdown.standardDeductible }}</text>
+                      <text class="deductible-tag tag-discount">频次递减减免: -¥{{ result.breakdown.deductibleReduction }}</text>
+                      <text class="deductible-tag tag-applied">实际执行标准: ¥{{ result.breakdown.appliedDeductible }}</text>
+                    </view>
+                    <view class="step-result-bubble bubble-indigo">
+                      <text class="bubble-txt">➔ 实际进入统筹报销段合规费用：<text class="font-mono font-bold">¥ {{ Math.max(0, result.breakdown.eligibleCost - result.breakdown.deductibleDeducted).toLocaleString() }}</text></text>
+                    </view>
+                  </view>
                 </view>
 
-                <view class="flow-row highlight-row">
-                  <view class="flow-row-name">
-                    <text class="flow-step-num num-3">3</text>
-                    <text class="flow-label font-bold">实际纳规报销基数</text>
-                    <PolicyTooltip title="什么是实际纳规报销基数？" text="总医疗花费扣除自费项目及起付线后，真正进入政策报销池的基准金额。" />
+                <!-- Step 4: 医保基金统筹报销 + 大病/大额基金补充报销 -->
+                <view class="funnel-step step-reimburse">
+                  <view class="step-spine">
+                    <view class="spine-node node-cyan"><text class="node-num">✓</text></view>
+                    <view class="spine-line"></view>
                   </view>
-                  <text class="flow-val font-bold font-mono">¥{{ Math.max(0, result.breakdown.eligibleCost - result.breakdown.deductibleDeducted).toLocaleString() }}</text>
+                  <view class="step-content">
+                    <view class="step-top-row">
+                      <view class="step-label-group">
+                        <text class="step-label text-cyan font-bold">Step 4. 医保基金统筹报销合计</text>
+                        <text class="ratio-pill">实报 {{ result.breakdown.effectiveRatio }}%</text>
+                      </view>
+                      <text class="step-val text-cyan font-bold font-mono">
+                        + ¥ {{ (result.breakdown.totalReimbursed || 0).toLocaleString() }}
+                      </text>
+                    </view>
+                    <view class="step-bar-wrap">
+                      <view class="funnel-bar bar-reimburse" :style="{ width: Math.max(5, Math.min(100, result.breakdown.effectiveRatio)) + '%' }"></view>
+                    </view>
+                    <view class="fund-split-tags">
+                      <view class="fund-tag tag-base">
+                        <text class="ft-label">基本统筹基金支付：</text>
+                        <text class="ft-val font-mono">¥{{ (result.breakdown.baseReimbursed || 0).toLocaleString() }}</text>
+                      </view>
+                      <view class="fund-tag tag-cata" v-if="(result.breakdown.catastrophicReimbursed || 0) > 0">
+                        <text class="ft-label">大病互助补充报销：</text>
+                        <text class="ft-val font-mono">+¥{{ (result.breakdown.catastrophicReimbursed || 0).toLocaleString() }}</text>
+                      </view>
+                    </view>
+                  </view>
                 </view>
 
-                <view class="flow-row">
-                  <view class="flow-row-name">
-                    <text class="flow-step-num num-4">4</text>
-                    <text class="flow-label">统筹执行报销比例</text>
-                    <PolicyTooltip title="什么是统筹报销比例？" text="当前统筹区对于该级别医院及参保人身份所适用的法定公文报销比例。" />
+                <!-- Step 5: 个人最终预计自理 -->
+                <view class="funnel-step step-personal">
+                  <view class="step-spine">
+                    <view class="spine-node node-rose"><text class="node-num">5</text></view>
                   </view>
-                  <text class="flow-val text-blue font-bold font-mono">{{ Math.max(0, result.breakdown.eligibleCost - result.breakdown.deductibleDeducted) > 0 ? Math.round((result.breakdown.baseReimbursed / (result.breakdown.eligibleCost - result.breakdown.deductibleDeducted)) * 100) : 0 }}%</text>
-                </view>
-
-                <view class="flow-row result-row">
-                  <view class="flow-row-name">
-                    <text class="flow-step-num num-check">✓</text>
-                    <text class="flow-label text-cyan font-bold">统筹基金报销金额</text>
-                    <PolicyTooltip title="什么是统筹基金报销？" text="经起付线扣除后，由基本医疗保险统筹基金直接承担的减免金额。" />
+                  <view class="step-content">
+                    <view class="step-top-row">
+                      <view class="step-label-group">
+                        <text class="step-label text-rose font-bold">Step 5. 个人最终预计自理总额</text>
+                        <text class="personal-ratio-pill">自理占比 {{ (100 - (result.breakdown.effectiveRatio || 0)).toFixed(1) }}%</text>
+                      </view>
+                      <text class="step-val text-rose font-bold font-mono">
+                        ¥ {{ (result.breakdown.personalPayTotal || 0).toLocaleString() }}
+                      </text>
+                    </view>
+                    <view class="step-bar-wrap">
+                      <view class="funnel-bar bar-personal" :style="{ width: Math.max(5, Math.min(100, Math.round(100 - result.breakdown.effectiveRatio))) + '%' }"></view>
+                    </view>
+                    <view class="personal-split-grid">
+                      <view class="ps-item">
+                        <text class="ps-label">起付线自付：</text>
+                        <text class="ps-val font-mono">¥{{ (result.breakdown.personalDeductiblePaid || 0).toLocaleString() }}</text>
+                      </view>
+                      <view class="ps-item">
+                        <text class="ps-label">政策内按比自负：</text>
+                        <text class="ps-val font-mono">¥{{ (result.breakdown.personalSpanCoPay || 0).toLocaleString() }}</text>
+                      </view>
+                      <view class="ps-item" v-if="((result.breakdown.nonInsuranceCost || 0) + (result.breakdown.classBPriorPay || result.breakdown.classBSelfPay || 0)) > 0">
+                        <text class="ps-label">自费及先行自付：</text>
+                        <text class="ps-val font-mono">¥{{ ((result.breakdown.nonInsuranceCost || 0) + (result.breakdown.classBPriorPay || result.breakdown.classBSelfPay || 0)).toLocaleString() }}</text>
+                      </view>
+                    </view>
+                    <view class="step-conservation-notice">
+                      <text class="sc-note">★ 资金物理守恒：医保报销 (¥{{ (result.breakdown.totalReimbursed || 0).toLocaleString() }}) + 个人自理 (¥{{ (result.breakdown.personalPayTotal || 0).toLocaleString() }}) = 总花费 (¥{{ (result.breakdown.totalCost || 0).toLocaleString() }})</text>
+                    </view>
                   </view>
-                  <text class="flow-val text-cyan font-bold font-mono">¥{{ result.breakdown.baseReimbursed.toLocaleString() }}</text>
-                </view>
-
-                <view class="flow-row" v-if="result.breakdown.catastrophicReimbursed > 0">
-                  <view class="flow-row-name">
-                    <text class="flow-step-num num-plus">+</text>
-                    <text class="flow-label text-emerald font-bold">大病互助二次报销</text>
-                    <PolicyTooltip title="什么是大病互助二次报销？" text="合规自付费用突破大病起付线后，自动启动大病二次梯级报销。" />
-                  </view>
-                  <text class="flow-val text-emerald font-bold font-mono">+ ¥{{ result.breakdown.catastrophicReimbursed }}</text>
                 </view>
               </view>
             </view>
@@ -497,17 +670,95 @@
               </view>
             </view>
 
-            <!-- 极简公文依据与合规注脚 (单行精悍收口) -->
-            <view class="doc-compact-bar" @click="openDocUrl">
-              <view class="dcb-left">
-                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="dcb-svg">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                  <polyline points="14 2 14 8 20 8"></polyline>
-                </svg>
-                <text class="dcb-tag">政策依据</text>
-                <text class="dcb-title">{{ result.officialDocUsed?.title || currentCityOption.cityName + '医保政策' }}</text>
+            <!-- 强化政策法规公文依据与溯源卡片 -->
+            <view class="statutory-doc-card">
+              <view class="doc-card-header">
+                <view class="doc-header-left">
+                  <view class="doc-icon-badge">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                      <line x1="16" y1="13" x2="8" y2="13"></line>
+                      <line x1="16" y1="17" x2="8" y2="17"></line>
+                    </svg>
+                  </view>
+                  <view class="doc-header-titles">
+                    <text class="doc-card-title">法定政策公文依据与溯源凭单</text>
+                    <text class="doc-card-subtitle">现行有效规范性文件 · 具备法律溯源效力</text>
+                  </view>
+                </view>
+                <view class="doc-status-badge">
+                  <text class="status-dot">●</text>
+                  <text class="status-txt">现行有效</text>
+                </view>
               </view>
-              <text class="dcb-action">查看公文 ↗</text>
+
+              <view class="doc-content-body">
+                <!-- 公文标题与发文字号 -->
+                <view class="doc-meta-row">
+                  <view class="doc-meta-main">
+                    <text class="doc-main-title">{{ result.officialDocUsed?.title || currentCityOption.cityName + '基本医疗保险政策' }}</text>
+                    <view class="doc-number-row" v-if="result.officialDocUsed?.docNumber">
+                      <text class="doc-num-label">发文字号：</text>
+                      <text class="doc-num-val font-mono">{{ result.officialDocUsed.docNumber }}</text>
+                      <view class="mini-copy-pill" @click.stop="copyDocNumber">
+                        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2">
+                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <text class="mcp-txt">复制文号</text>
+                      </view>
+                    </view>
+                  </view>
+                </view>
+
+                <!-- 法定核心条款原文引用卡片 -->
+                <view class="doc-quote-card" v-if="result.officialDocUsed?.summaryQuote">
+                  <view class="quote-header">
+                    <text class="quote-tag">核心法规条款摘录</text>
+                    <view class="quote-copy-btn" @click.stop="copyDocQuote">
+                      <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      <text class="qcb-txt">复制条款原文</text>
+                    </view>
+                  </view>
+                  <view class="quote-text-wrap">
+                    <text class="quote-marks-left">“</text>
+                    <text class="quote-content">{{ result.officialDocUsed.summaryQuote }}</text>
+                    <text class="quote-marks-right">”</text>
+                  </view>
+                </view>
+
+                <!-- 政务服务与官方直达快捷入口 -->
+                <view class="gov-shortcuts-row">
+                  <view class="gov-shortcut-item" @click="openDocUrl">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="gsi-svg">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                      <polyline points="15 3 21 3 21 9"></polyline>
+                      <line x1="10" y1="14" x2="21" y2="3"></line>
+                    </svg>
+                    <text class="gsi-txt">查阅公文原文</text>
+                  </view>
+
+                  <view class="gov-shortcut-item" @click="openPortalUrl" v-if="currentCityData?.officialPortalUrl">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="gsi-svg">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <line x1="2" y1="12" x2="22" y2="12"></line>
+                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                    </svg>
+                    <text class="gsi-txt">{{ currentCityOption.cityName }}医保官网</text>
+                  </view>
+
+                  <view class="gov-shortcut-item hotline-shortcut" @click="handleCallHotline">
+                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="gsi-svg hotline-svg">
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    <text class="gsi-txt">12393医保专线：{{ currentCityData?.hotline || '12393' }}</text>
+                  </view>
+                </view>
+              </view>
             </view>
 
             <view class="estimate-footnote-bar">
@@ -681,15 +932,23 @@ const form = reactive<{
   insuranceType: 'employee' | 'resident';
   isRetiree: boolean;
   treatmentType: 'outpatient' | 'inpatient';
+  hospitalizationCount: 1 | 2 | 3;
   totalCost: string;
   nonInsuranceCost: string;
 }>({
   insuranceType: 'employee',
   isRetiree: false,
   treatmentType: 'inpatient',
+  hospitalizationCount: 1,
   totalCost: '10000',
   nonInsuranceCost: ''
 });
+
+function setHospitalizationCount(count: 1 | 2 | 3) {
+  triggerHaptic();
+  form.hospitalizationCount = count;
+  triggerCalculation();
+}
 
 const quickAmounts = [1000, 3000, 10000, 30000, 50000];
 function formatQuickPill(amt: number): string {
@@ -743,6 +1002,7 @@ function setQuickCost(val: number) {
 
 const showExtra = ref(false);
 const showDetail = ref(true);
+const showFunnel = ref(true);
 
 const hospitalTiers: { tier: HospitalTier; name: string; shortName: string }[] = [
   { tier: 'tier3_top', name: '三甲医院 (重点三甲)', shortName: '三甲医院' },
@@ -819,6 +1079,7 @@ function applyScenario(sc: MedicalScenario) {
   triggerHaptic();
   selectedScenarioId.value = sc.id;
   form.treatmentType = sc.treatmentType;
+  form.hospitalizationCount = 1;
   form.totalCost = String(sc.totalCost);
   form.nonInsuranceCost = sc.nonInsuranceCost > 0 ? String(sc.nonInsuranceCost) : '';
   
@@ -834,13 +1095,90 @@ function applyScenario(sc: MedicalScenario) {
   triggerCalculation();
 }
 
-const remoteOptions = [
-  { value: 'local', label: '本地定点医院就医' },
-  { value: 'long_term', label: '异地长期居住 (已备案)' },
-  { value: 'transfer', label: '跨市/省转诊 (已备案)' },
-  { value: 'unfiled_normal', label: '外地就医 (未提前备案)' }
+interface RemoteOptionItem {
+  value: 'local' | 'long_term' | 'transfer' | 'unfiled_emergency' | 'unfiled_normal';
+  label: string;
+  badge: string;
+  badgeClass: string;
+  desc: string;
+}
+
+const remoteOptions: RemoteOptionItem[] = [
+  {
+    value: 'local',
+    label: '本地定点医疗机构',
+    badge: '标准 100%',
+    badgeClass: 'badge-success',
+    desc: '参保统筹区内定点医药机构，享受法定基准待遇'
+  },
+  {
+    value: 'long_term',
+    label: '异地长期居住/安置 (已备案)',
+    badge: '同等 100%',
+    badgeClass: 'badge-success',
+    desc: '已办理跨省/跨市长期居住备案，享受与本地同等报销比例'
+  },
+  {
+    value: 'transfer',
+    label: '跨省/跨市转诊转院 (已备案)',
+    badge: '合规下浮',
+    badgeClass: 'badge-warning',
+    desc: '参保地最高级别医院出具转诊证明并备案，合规比例微幅下调'
+  },
+  {
+    value: 'unfiled_emergency',
+    label: '异地急诊抢救 (急危重症未备案)',
+    badge: '急诊直接结算',
+    badgeClass: 'badge-cyan',
+    desc: '突发急危重症异地救治未提前备案，视同已备案直接结算'
+  },
+  {
+    value: 'unfiled_normal',
+    label: '跨省/跨市临时自行就医 (未备案)',
+    badge: '惩罚性下浮',
+    badgeClass: 'badge-danger',
+    desc: '未提前备案自行前往异地就医，执行惩罚性降点下浮'
+  }
 ];
 const selectedRemoteIndex = ref(0);
+
+const currentRepeatedDeductibleRule = computed(() => {
+  if (!currentCityData.value) return '';
+  const pkg = form.insuranceType === 'employee' ? currentCityData.value.employee : currentCityData.value.resident;
+  return pkg?.inpatient?.repeatedDeductibleRule || currentCityData.value.employee?.inpatient?.repeatedDeductibleRule || '';
+});
+
+const currentRemoteRule = computed(() => {
+  if (!currentCityData.value) return null;
+  return form.insuranceType === 'employee' 
+    ? currentCityData.value.employee.remoteMedical 
+    : currentCityData.value.resident.remoteMedical;
+});
+
+const dynamicRemoteHint = computed(() => {
+  if (!currentCityData.value) return '';
+  const rule = currentRemoteRule.value;
+  const cityName = currentCityOption.value.cityName;
+  const status = remoteOptions[selectedRemoteIndex.value].value;
+
+  if (status === 'long_term') {
+    return `【异地长期居住】已办理异地安置或长居备案，在备案就医地定点医院联网直接结算享受与${cityName}本地定点机构完全一致的报销待遇（待遇不降点）。`;
+  }
+  if (status === 'transfer') {
+    const ratioStr = rule?.transferFiledRatio ? `（报销比例按本地标准折算 ${Math.round(rule.transferFiledRatio * 100)}%）` : '（按地方规定合规下浮5%~10%）';
+    const channels = rule?.filingChannels?.length ? `推荐备案渠道：${rule.filingChannels.join('、')}。` : '';
+    return `【规范转诊】经本地最高级别定点医院转诊并备案前往异地就医${ratioStr}。${channels}`;
+  }
+  if (status === 'unfiled_emergency') {
+    const ratioStr = rule?.unfiledEmergencyRatio ? `（折算系数 ${Math.round(rule.unfiledEmergencyRatio * 100)}%）` : '（按急诊直接结算规程报销）';
+    return `【急诊抢救】参保人员异地突发急危重症就医救治${ratioStr}。国家医保服务平台支持就医地免备案或通过“急诊转住院”直接联网结算。`;
+  }
+  if (status === 'unfiled_normal') {
+    const ratioStr = rule?.unfiledNormalRatio ? `（报销比例按本地标准折算 ${Math.round(rule.unfiledNormalRatio * 100)}%）` : '（执行惩罚性降点10%~20%）';
+    return `【临时自行外出就医】跨省/跨市临时自行前往异地就医未提前备案${ratioStr}。建议就医前通过“国家医保服务平台APP”或热线进行线上自助快速备案，以享受更高报销比例。`;
+  }
+  return '';
+});
 
 const result = ref<CalculateResult | null>(null);
 
@@ -908,9 +1246,10 @@ function triggerCalculation() {
     isRetiree: form.isRetiree,
     treatmentType: form.treatmentType,
     hospitalTier: hospitalTiers[selectedHospitalIndex.value].tier,
-    remoteStatus: remoteOptions[selectedRemoteIndex.value].value as any,
+    remoteStatus: remoteOptions[selectedRemoteIndex.value].value,
     totalCost: cost,
-    nonInsuranceCost: parseFloat(form.nonInsuranceCost) || 0
+    nonInsuranceCost: parseFloat(form.nonInsuranceCost) || 0,
+    hospitalizationCount: form.treatmentType === 'inpatient' ? form.hospitalizationCount : 1
   };
 
   try {
@@ -926,18 +1265,75 @@ function triggerCalculation() {
   }
 }
 
+function copyText(data: string, successMsg: string) {
+  uni.setClipboardData({
+    data,
+    showToast: false,
+    success: () => {
+      uni.showToast({ title: successMsg, icon: 'success' });
+    },
+    fail: () => {
+      if (typeof navigator !== 'undefined' && navigator.clipboard) {
+        navigator.clipboard.writeText(data).then(() => {
+          uni.showToast({ title: successMsg, icon: 'success' });
+        }).catch(() => {
+          uni.showToast({ title: '复制失败，请长按手动复制', icon: 'none' });
+        });
+      } else {
+        uni.showToast({ title: '复制失败，请长按手动复制', icon: 'none' });
+      }
+    }
+  });
+}
+
+function copyDocNumber() {
+  if (!result.value?.officialDocUsed?.docNumber) return;
+  copyText(result.value.officialDocUsed.docNumber, '发文字号已复制');
+}
+
+function copyDocQuote() {
+  if (!result.value?.officialDocUsed) return;
+  const doc = result.value.officialDocUsed;
+  const quote = `【政策公文依据】《${doc.title}》（${doc.docNumber}）：\n“${doc.summaryQuote}”`;
+  copyText(quote, '法规条款原文已复制');
+}
+
+function openPortalUrl() {
+  const url = currentCityData.value?.officialPortalUrl;
+  if (!url) return;
+  if (typeof window !== 'undefined' && window.open) {
+    window.open(url, '_blank');
+  } else {
+    copyText(url, '政务官网网址已复制，可粘贴访问');
+  }
+}
+
+function handleCallHotline() {
+  const hotline = currentCityData.value?.hotline || '12393';
+  // #ifdef MP || APP-PLUS
+  uni.makePhoneCall({
+    phoneNumber: hotline.replace(/[^0-9]/g, ''),
+    fail: () => {
+      copyText(hotline, `医保专线 ${hotline} 已复制`);
+    }
+  });
+  // #endif
+  // #ifdef H5
+  if (typeof window !== 'undefined' && /mobile/i.test(navigator.userAgent)) {
+    window.location.href = `tel:${hotline.replace(/[^0-9]/g, '')}`;
+  } else {
+    copyText(hotline, `医保专线 ${hotline} 已复制，欢迎拨打咨询`);
+  }
+  // #endif
+}
+
 function openDocUrl() {
   if (!result.value?.officialDocUsed?.officialUrl) return;
   const url = result.value.officialDocUsed.officialUrl;
   if (typeof window !== 'undefined' && window.open) {
     window.open(url, '_blank');
   } else {
-    uni.setClipboardData({
-      data: url,
-      success: () => {
-        uni.showToast({ title: '官方网址已复制，可粘贴访问', icon: 'none' });
-      }
-    });
+    copyText(url, '官方网址已复制，可粘贴访问');
   }
 }
 
@@ -950,16 +1346,24 @@ function copyReceipt() {
   const b = res.breakdown;
   const city = currentCityOption.value?.cityName || '参保地';
   const insType = form.insuranceType === 'employee' ? (form.isRetiree ? '职工医保 (退休)' : '职工医保 (在职)') : '城乡居民医保';
-  const treatType = form.treatmentType === 'inpatient' ? '住院就医' : '普通门诊';
+  const hospFreq = form.treatmentType === 'inpatient' 
+    ? (form.hospitalizationCount === 1 ? '首次住院' : (form.hospitalizationCount === 2 ? '二次住院' : '三次及以上住院'))
+    : '';
+  const treatType = form.treatmentType === 'inpatient' 
+    ? `住院就医（${hospFreq}）` 
+    : '普通门诊';
   const hospTier = hospitalTiers[selectedHospitalIndex.value]?.shortName || '三级医院';
   const remote = remoteOptions[selectedRemoteIndex.value]?.label || '本地就医';
   const totalCost = (parseFloat(form.totalCost) || 0).toLocaleString();
   const reimbursed = b.totalReimbursed.toLocaleString();
   const personal = b.personalPayTotal.toLocaleString();
-  const basePay = (b.baseReimbursed + b.catastrophicReimbursed).toLocaleString();
+  const basePay = b.baseReimbursed.toLocaleString();
+  const cataPay = b.catastrophicReimbursed > 0 ? ` + 大病互助 ¥${b.catastrophicReimbursed.toLocaleString()}` : '';
   const deductible = b.deductibleDeducted.toLocaleString();
+  const deductibleTip = b.deductibleReduction > 0 ? ` (基准¥${b.standardDeductible}，递减-¥${b.deductibleReduction})` : '';
   const eligible = b.eligibleCost.toLocaleString();
   const docTitle = res.officialDocUsed?.title || `${city}基本医疗保险政策`;
+  const docNum = res.officialDocUsed?.docNumber ? `（${res.officialDocUsed.docNumber}）` : '';
 
   const voucher = `【医保报销估算凭据】
 统筹区域：${city}
@@ -968,32 +1372,16 @@ function copyReceipt() {
 医疗总费用：¥${totalCost}
 ------------------------
 ★ 医保预估统筹报销：¥${reimbursed} (预估比例 ${b.effectiveRatio}%)
-  - 统筹基金支付：¥${basePay}
-  - 扣除起付线：¥${deductible}
+  - 基本统筹基金支付：¥${basePay}${cataPay}
+  - 扣除免赔起付线：¥${deductible}${deductibleTip}
   - 纳规报销基数：¥${eligible}
-★ 个人预计自理：¥${personal}
+★ 个人预计自理：¥${personal} (占 ${(100 - b.effectiveRatio).toFixed(1)}%)
+  - 资金物理守恒：医保报销 (¥${reimbursed}) + 个人自理 (¥${personal}) = 总费用 (¥${totalCost})
 ------------------------
-参考政策依据：《${docTitle}》
+参考政策依据：《${docTitle}》${docNum}
 注：本结果由公开政策规则估算，仅供参考，实际报销金额请以就医定点医院出院医保结算单为准。`;
 
-  uni.setClipboardData({
-    data: voucher,
-    showToast: false,
-    success: () => {
-      uni.showToast({ title: '估算凭据已复制', icon: 'success' });
-    },
-    fail: () => {
-      if (typeof navigator !== 'undefined' && navigator.clipboard) {
-        navigator.clipboard.writeText(voucher).then(() => {
-          uni.showToast({ title: '估算凭据已复制', icon: 'success' });
-        }).catch(() => {
-          uni.showToast({ title: '复制失败，请截图保存', icon: 'none' });
-        });
-      } else {
-        uni.showToast({ title: '复制失败，请截图保存', icon: 'none' });
-      }
-    }
-  });
+  copyText(voucher, '估算凭据已复制');
 }
 
 function scrollToReceipt() {
@@ -1660,6 +2048,257 @@ svg {
   font-weight: 600;
 }
 
+/* 住院就诊频次阶梯选择器 */
+.admission-frequency-bar {
+  margin-top: 10px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 12px;
+}
+
+.frequency-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.frequency-label {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.frequency-badge {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #0284c7;
+  background: #e0f2fe;
+  border: 1px solid #bae6fd;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.frequency-segmented-control {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.freq-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 4px;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.18s ease;
+
+  &:hover {
+    border-color: #2563eb;
+    background: #eff6ff;
+  }
+
+  &.active {
+    background: #eff6ff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb, 0 2px 6px rgba(37, 99, 235, 0.12);
+
+    .freq-txt {
+      color: #1d4ed8;
+    }
+
+    .freq-sub {
+      color: #2563eb;
+      font-weight: 600;
+    }
+  }
+}
+
+.freq-txt {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #334155;
+  line-height: 1.2;
+}
+
+.freq-sub {
+  font-size: 10.5px;
+  color: #64748b;
+  margin-top: 2px;
+  line-height: 1.1;
+}
+
+.frequency-policy-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin-top: 8px;
+  padding: 6px 8px;
+  background: #f1f5f9;
+  border-radius: 6px;
+}
+
+.hint-bullet {
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.hint-txt {
+  font-size: 11px;
+  color: #475569;
+  line-height: 1.45;
+  flex: 1;
+}
+
+/* 4. 就医地点与异地备案前置控件 */
+.group-remote-badge {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.remote-trigger-inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1;
+}
+
+.mini-rate-tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.remote-dropdown-menu {
+  max-height: 340px !important;
+}
+
+.remote-dropdown-item {
+  padding: 10px 12px !important;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.remote-item-left {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  flex: 1;
+}
+
+.remote-item-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.item-rate-badge {
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.item-desc {
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.35;
+}
+
+/* 异地政策指引卡片 */
+.remote-policy-guide {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-top: 4px;
+}
+
+.rpg-header {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 3px;
+}
+
+.rpg-svg {
+  stroke: #2563eb;
+  flex-shrink: 0;
+}
+
+.rpg-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+.rpg-content {
+  font-size: 11px;
+  color: #1e40af;
+  line-height: 1.45;
+  display: block;
+}
+
+/* 状态徽章标准配色 */
+.badge-success {
+  background: #ecfdf5;
+  color: #059669;
+  border: 1px solid #a7f3d0;
+}
+
+.badge-warning {
+  background: #fffbeb;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.badge-cyan {
+  background: #e0f2fe;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
+}
+
+.badge-danger {
+  background: #fef2f2;
+  color: #b91c1c;
+  border: 1px solid #fecaca;
+}
+
+.badge-amber {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.badge-orange {
+  background: #ffedd5;
+  color: #c2410c;
+  border: 1px solid #fed7aa;
+}
+
+.badge-gray {
+  background: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
 /* 门诊政策提醒 */
 .policy-notice {
   margin-top: 4px;
@@ -2195,20 +2834,20 @@ svg {
   background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
 }
 
-/* 费用推导分项明细卡片 */
-.flow-breakdown-card {
+/* 资金流向阶梯式漏斗可视化卡片 */
+.stepped-funnel-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 12px 14px;
+  padding: 14px;
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
 }
 
-.flow-card-head {
+.funnel-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 8px;
+  padding-bottom: 10px;
   border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
   user-select: none;
@@ -2220,110 +2859,323 @@ svg {
   gap: 6px;
 }
 
-.fch-svg {
-  width: 14px;
-  height: 14px;
-  stroke: #2563eb;
+.funnel-icon-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
   flex-shrink: 0;
 }
 
-.fch-title {
-  font-size: 13px;
+.funnel-header-title {
+  font-size: 13.5px;
   font-weight: 700;
   color: #0f172a;
 }
 
-.fch-badge {
+.funnel-header-badge {
   font-size: 10.5px;
-  color: #64748b;
-  background: #f1f5f9;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
   padding: 1px 6px;
   border-radius: 4px;
+  font-weight: 600;
 }
 
-.fch-toggle {
+.funnel-toggle-txt {
   font-size: 11.5px;
   color: #64748b;
 }
 
-.flow-list {
+.funnel-ladder-body {
   display: flex;
   flex-direction: column;
-  margin-top: 4px;
+  margin-top: 12px;
+  gap: 0;
 }
 
-.flow-row {
+.funnel-step {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 0;
-  border-bottom: 1px solid #f8fafc;
-
-  &:last-child {
-    border-bottom: none;
-    padding-bottom: 0;
-  }
+  position: relative;
+  padding-bottom: 14px;
 }
 
-.flow-row.highlight-row {
-  background: #f8fafc;
-  padding-left: 6px;
-  padding-right: 6px;
-  border-radius: 6px;
+.funnel-step.step-personal {
+  padding-bottom: 0;
 }
 
-.flow-row.result-row {
-  background: #eff6ff;
-  padding-left: 6px;
-  padding-right: 6px;
-  border-radius: 6px;
-}
-
-.flow-row-name {
+.step-spine {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
+  width: 26px;
+  flex-shrink: 0;
+  margin-right: 10px;
 }
 
-.flow-step-num {
-  width: 16px;
-  height: 16px;
+.spine-node {
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
-  background: #f1f5f9;
-  color: #64748b;
-  font-size: 10px;
-  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.node-num {
+  font-size: 11px;
+  font-weight: 800;
   line-height: 1;
-
-  &.num-sub {
-    background: #fee2e2;
-    color: #b91c1c;
-  }
-
-  &.num-check {
-    background: #e0f2fe;
-    color: #0369a1;
-  }
-
-  &.num-plus {
-    background: #d1fae5;
-    color: #047857;
-  }
 }
 
-.flow-label {
+.node-slate { background: #0f172a; color: #ffffff; }
+.node-amber { background: #d97706; color: #ffffff; }
+.node-indigo { background: #4f46e5; color: #ffffff; }
+.node-cyan { background: #0284c7; color: #ffffff; }
+.node-rose { background: #e11d48; color: #ffffff; }
+
+.spine-line {
+  width: 2px;
+  flex: 1;
+  background: #e2e8f0;
+  margin: 3px 0;
+}
+
+.step-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.step-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.step-label-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.step-label {
   font-size: 12.5px;
-  color: #334155;
+  color: #1e293b;
 }
 
-.flow-val {
-  font-size: 13px;
-  color: #0f172a;
-  font-weight: 600;
+.text-indigo { color: #4338ca !important; }
+.text-rose { color: #e11d48 !important; }
+
+.step-val {
+  font-size: 13.5px;
   font-variant-numeric: tabular-nums;
+}
+
+.step-bar-wrap {
+  width: 100%;
+  height: 6px;
+  background: #f1f5f9;
+  border-radius: 9999px;
+  overflow: hidden;
+  margin: 2px 0;
+}
+
+.funnel-bar {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.bar-total { background: #0f172a; }
+.bar-eligible { background: linear-gradient(90deg, #f59e0b, #d97706); }
+.bar-deductible { background: linear-gradient(90deg, #6366f1, #4f46e5); }
+.bar-reimburse { background: linear-gradient(90deg, #0284c7, #10b981); }
+.bar-personal { background: linear-gradient(90deg, #f43f5e, #e11d48); }
+
+.step-desc {
+  font-size: 11px;
+  color: #64748b;
+  line-height: 1.35;
+}
+
+.step-sub-badges {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.sub-badge {
+  font-size: 10.5px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.step-result-bubble {
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 6px;
+  padding: 5px 8px;
+  margin-top: 2px;
+}
+
+.bubble-indigo {
+  background: #f5f3ff;
+  border-color: #c4b5fd;
+}
+
+.bubble-txt {
+  font-size: 11px;
+  color: #475569;
+}
+
+.discount-pill {
+  font-size: 10px;
+  color: #4338ca;
+  background: #e0e7ff;
+  border: 1px solid #c7d2fe;
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-weight: 700;
+}
+
+.deductible-detail-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.deductible-tag {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: #f1f5f9;
+  color: #475569;
+}
+
+.tag-discount {
+  color: #4338ca;
+  background: #e0e7ff;
+  font-weight: 700;
+}
+
+.tag-applied {
+  color: #0284c7;
+  background: #e0f2fe;
+  font-weight: 700;
+}
+
+.ratio-pill {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #0284c7;
+  background: #e0f2fe;
+  border: 1px solid #bae6fd;
+  padding: 1px 6px;
+  border-radius: 9999px;
+}
+
+.personal-ratio-pill {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #e11d48;
+  background: #ffe4e6;
+  border: 1px solid #fecdd3;
+  padding: 1px 6px;
+  border-radius: 9999px;
+}
+
+.fund-split-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.fund-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 6px;
+}
+
+.tag-base {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1e40af;
+}
+
+.tag-cata {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+}
+
+.ft-label {
+  font-size: 10.5px;
+}
+
+.ft-val {
+  font-weight: 700;
+}
+
+.personal-split-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  border-radius: 6px;
+  padding: 6px 8px;
+  margin-top: 2px;
+}
+
+.ps-item {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 11px;
+}
+
+.ps-label {
+  color: #9f1239;
+  font-size: 10.5px;
+}
+
+.ps-val {
+  color: #e11d48;
+  font-weight: 700;
+}
+
+.step-conservation-notice {
+  margin-top: 4px;
+  padding: 4px 6px;
+  background: #f8fafc;
+  border-radius: 4px;
+}
+
+.sc-note {
+  font-size: 10.5px;
+  color: #059669;
+  font-weight: 600;
 }
 
 /* 政策备忘 */
@@ -2358,69 +3210,274 @@ svg {
   flex: 1;
 }
 
-/* 极简公文依据与合规注脚 (单行精悍收口) */
-.doc-compact-bar {
+/* 强化法定政策公文依据与溯源卡片 */
+.statutory-doc-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  border: 1px solid #cbd5e1;
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.doc-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e2e8f0;
+  gap: 8px;
+}
+
+.doc-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.doc-icon-badge {
+  width: 28px;
+  height: 28px;
   border-radius: 8px;
-  padding: 8px 12px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.doc-header-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.doc-card-title {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.doc-card-subtitle {
+  font-size: 10.5px;
+  color: #64748b;
+  margin-top: 1px;
+}
+
+.doc-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  flex-shrink: 0;
+}
+
+.status-dot {
+  color: #10b981;
+  font-size: 8px;
+}
+
+.status-txt {
+  font-size: 11px;
+  font-weight: 700;
+  color: #059669;
+}
+
+.doc-content-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.doc-meta-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.doc-main-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1e293b;
+  line-height: 1.4;
+}
+
+.doc-number-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 2px;
+}
+
+.doc-num-label {
+  font-size: 11px;
+  color: #64748b;
+}
+
+.doc-num-val {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.mini-copy-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  padding: 2px 7px;
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.15s ease;
 
   &:hover {
     background: #eff6ff;
-    border-color: #bfdbfe;
-
-    .dcb-action {
-      color: #1d4ed8;
-    }
+    border-color: #93c5fd;
   }
 }
 
-.dcb-left {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  min-width: 0;
-  flex: 1;
+.mcp-txt {
+  font-size: 10.5px;
+  color: #475569;
+  font-weight: 600;
 }
 
-.dcb-svg {
-  width: 13px;
-  height: 13px;
+.mini-copy-pill:hover .mcp-txt {
+  color: #2563eb;
+}
+
+.doc-quote-card {
+  background: #f8fafc;
+  border-left: 3px solid #2563eb;
+  border-radius: 0 8px 8px 0;
+  padding: 10px 12px;
+}
+
+.quote-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.quote-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+
+.quote-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  padding: 2px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+  }
+}
+
+.qcb-txt {
+  font-size: 10.5px;
+  color: #475569;
+  font-weight: 600;
+}
+
+.quote-copy-btn:hover .qcb-txt {
+  color: #2563eb;
+}
+
+.quote-text-wrap {
+  display: flex;
+  position: relative;
+}
+
+.quote-marks-left, .quote-marks-right {
+  font-size: 16px;
+  color: #94a3b8;
+  font-family: Georgia, serif;
+  line-height: 1;
+}
+
+.quote-content {
+  font-size: 11.5px;
+  color: #334155;
+  line-height: 1.5;
+  margin: 0 4px;
+}
+
+.gov-shortcuts-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.gov-shortcut-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+  }
+}
+
+.gsi-svg {
   stroke: #2563eb;
   flex-shrink: 0;
 }
 
-.dcb-tag {
-  font-size: 10.5px;
-  color: #2563eb;
-  font-weight: 700;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  padding: 1px 5px;
-  border-radius: 4px;
-  flex-shrink: 0;
-}
-
-.dcb-title {
-  font-size: 12px;
-  color: #334155;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-weight: 500;
-}
-
-.dcb-action {
+.gsi-txt {
   font-size: 11.5px;
-  color: #2563eb;
+  color: #334155;
   font-weight: 600;
-  flex-shrink: 0;
-  margin-left: 8px;
+}
+
+.gov-shortcut-item:hover .gsi-txt {
+  color: #2563eb;
+}
+
+.hotline-shortcut {
+  background: #ecfdf5;
+  border-color: #a7f3d0;
+}
+
+.hotline-svg {
+  stroke: #059669;
+}
+
+.hotline-shortcut .gsi-txt {
+  color: #065f46;
+  font-weight: 700;
+}
+
+.hotline-shortcut:hover {
+  background: #d1fae5;
+  border-color: #6ee7b7;
 }
 
 .estimate-footnote-bar {
@@ -2765,7 +3822,11 @@ svg {
 .doc-compact-bar,
 .retiree-bar,
 .voucher-gen-btn,
-.copy-voucher-btn {
+.copy-voucher-btn,
+.freq-btn,
+.mini-copy-pill,
+.quote-copy-btn,
+.gov-shortcut-item {
   cursor: pointer;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
@@ -2777,7 +3838,10 @@ svg {
 .treat-btn:hover,
 .preset-pill:hover,
 .doc-compact-bar:hover,
-.search-pill-btn:hover {
+.search-pill-btn:hover,
+.mini-copy-pill:hover,
+.quote-copy-btn:hover,
+.gov-shortcut-item:hover {
   transform: translateY(-1px) scale(1.006);
 }
 
@@ -2791,7 +3855,11 @@ svg {
 .doc-compact-bar:active,
 .retiree-bar:active,
 .voucher-gen-btn:active,
-.copy-voucher-btn:active {
+.copy-voucher-btn:active,
+.freq-btn:active,
+.mini-copy-pill:active,
+.quote-copy-btn:active,
+.gov-shortcut-item:active {
   transform: translateY(1px) scale(0.98) !important;
   transition-duration: 0.08s !important;
 }

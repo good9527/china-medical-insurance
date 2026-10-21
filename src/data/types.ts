@@ -51,6 +51,23 @@ export interface OutpatientBenefit {
   note?: string;              // 特别说明（如：须在签约基层卫生服务机构或定点医院）
 }
 
+// 多次住院起付线精算策略类型定义
+export type RepeatedDeductiblePolicyType =
+  | 'none'                      // 不递减 (如上海、广州)
+  | 'half_from_second'          // 第2次及以上统一减半 (如北京、深圳、武汉、四川各市)
+  | 'half_second_zero_third'    // 第2次减半，第3次及以上免起付线 (如浙江、江苏等)
+  | 'step_down'                 // 每次递减固定金额直至保底线 (如安徽、河北、广西、贵州)
+  | 'custom_matrix'             // 明确分级阶梯表 (如西安职工、安康职工)
+  | 'highest_tier_once';        // 年内按最高等级医院计算一次 (如杭州、宁波)
+
+export interface RepeatedDeductiblePolicy {
+  type: RepeatedDeductiblePolicyType;
+  stepAmount?: number;          // 每次递减金额 (例如 100 或 50)
+  minFloor?: number;            // 保底起付线 (例如 100 或 200 或 0)
+  excludeTiers?: HospitalTier[];// 不参与递减的等级 (例如武汉社区及一级机构除外)
+  tierMatrix?: Partial<Record<HospitalTier, number[]>>; // 阶梯矩阵: [第1次, 第2次, 第3次, 第4次及以上]
+}
+
 // 住院保障规则
 export interface InpatientBenefit {
   sourceDocId: string;        // 关联的官方文件 ID
@@ -59,6 +76,7 @@ export interface InpatientBenefit {
   annualCapRetiree?: number;  // 退休人员统筹最高限额（若有差异）
   comprehensiveCap?: number;  // 叠加职工大额互助/大病保险后的年度综合最高保障额度（如重庆、武汉等）
   repeatedDeductibleRule?: string; // 年内多次住院起付线递减规则说明
+  repeatedDeductiblePolicy?: RepeatedDeductiblePolicy; // 年内多次住院结构化精算规程
 }
 
 // 大病保险 / 大额医疗互助规则
@@ -83,6 +101,19 @@ export interface RemoteMedicalRule {
   unfiledEmergencyRatio: number; // 异地急诊抢救（未备案）：报销比例调整系数 (如 0.9 = 降低10%)
   unfiledNormalRatio: number; // 自行就医（未备案非急诊）：报销比例调整系数 (如 0.8 = 降低20%)
   specialNotes: string[];     // 异地特别注意事项
+
+  // 可选高精精算扩展字段 (向后兼容)
+  adjustmentMode?: 'multiplicative' | 'subtractive'; // 折算模式：'multiplicative'(乘数折算，默认) | 'subtractive'(百分点扣减)
+  fixedTargetRatios?: {
+    transfer?: number;        // 如石家庄居民省外转诊固定 0.50
+    unfiledNormal?: number;   // 如石家庄居民省外未备案固定 0.30
+  };
+  offsiteDeductibles?: {
+    transferDeductible?: number;    // 如随州转市外起付线 1200 元
+    unfiledDeductible?: number;      // 如石家庄省外未备案起付线 4000 元
+  };
+  excludePenaltyFromCatastrophic?: boolean; // 降比例自付是否从大病保险基数中剔除（默认为 true）
+  regionalAlliances?: string[];    // 免备案协同圈，如 ['京津冀免备案', '长三角一体化', '省内免备案']
 }
 
 // 险种待遇包
@@ -119,6 +150,7 @@ export interface CalculateRequest {
   nonInsuranceCost?: number;             // 目录外全自费费用（丙类/特需等，默认为0）
   classBCost?: number;                   // 目录内乙类药品/项目费用（需先行自付，默认为0）
   classBSelfPayRatio?: number;           // 乙类平均先行自付比例（默认按 0.05~0.10，通常约为 5%）
+  hospitalizationCount?: 1 | 2 | 3;      // 年内住院频次 (1: 首次, 2: 二次, 3: 三次及以上住院)
 }
 
 // 测算详细账单结果
@@ -132,13 +164,20 @@ export interface CalculateResult {
     nonInsuranceCost: number;            // 目录外完全自费金额
     classBCost: number;                  // 乙类费用
     classBPriorPay: number;              // 乙类先行自付金额 (进入统筹前个人承担)
+    classBSelfPay?: number;              // 乙类先行自付金额 (兼容别名)
     eligibleCost: number;                // 符合医保政策范围内的费用 (可报销基数)
-    deductibleDeducted: number;          // 扣除起付线金额
+    standardDeductible: number;          // 首次基准起付线
+    appliedDeductible: number;           // 本次实际适用起付线标准 (经多次递减后)
+    deductibleReduction: number;         // 起付线减免金额 (standardDeductible - appliedDeductible)
+    deductibleDeducted: number;          // 实际扣除起付线金额 (min(eligibleCost, appliedDeductible))
+    costInReimbursementSpan: number;     // 进入报销段合规费用 (max(0, eligibleCost - deductibleDeducted))
     baseReimbursed: number;              // 基本医保统筹报销金额
     catastrophicReimbursed: number;      // 大病保险/大额互助报销金额
     totalReimbursed: number;             // 医保合计报销总额
     effectiveRatio: number;              // 实际综合报销比例 (合计报销 / 总费用)
     personalPayTotal: number;            // 个人最终自掏腰包总额
+    personalDeductiblePaid: number;      // 个人承担的起付线金额 (等于 deductibleDeducted)
+    personalSpanCoPay: number;           // 个人在报销段内自负金额
   };
   
   tierName: string;

@@ -510,6 +510,83 @@ export function runFullStressSuite() {
   console.log(`✓ Test Matrix 3 Passed: All ${adversarialRequests.length} adversarial fault scenarios survived safely.\n`);
 
   // --------------------------------------------------------------------------
+  // TEST MATRIX 4: Inpatient Frequency & Remote Status Cartesian Product Stress Oracle
+  // --------------------------------------------------------------------------
+  console.log('--- Test Matrix 4: Inpatient Frequency (1, 2, 3) & Remote Status (5 tiers) Cartesian Matrix ---');
+  const cartesianCosts = [0, 0.01, 100, 1500, 50000, 1000000];
+  const cartesianCounts: (1 | 2 | 3)[] = [1, 2, 3];
+  const cartesianTiers: HospitalTier[] = ['community', 'tier1', 'tier2', 'tier3', 'tier3_top'];
+  const testTypesMatrix4: Array<{ ins: 'employee' | 'resident'; isRet: boolean }> = [
+    { ins: 'employee', isRet: false },
+    { ins: 'employee', isRet: true },
+    { ins: 'resident', isRet: false }
+  ];
+
+  let matrix4Scenarios = 0;
+  for (const city of allCities) {
+    for (const tt of testTypesMatrix4) {
+      for (const tier of cartesianTiers) {
+        for (const rem of remoteStatuses) {
+          for (const count of cartesianCounts) {
+            for (const cost of cartesianCosts) {
+              matrix4Scenarios++;
+              const res = calculateReimbursement({
+                cityCode: city.cityCode,
+                insuranceType: tt.ins,
+                isRetiree: tt.isRet,
+                treatmentType: 'inpatient',
+                hospitalTier: tier,
+                remoteStatus: rem,
+                hospitalizationCount: count,
+                totalCost: cost,
+                nonInsuranceCost: Math.round(cost * 0.08 * 100) / 100,
+                classBCost: Math.round(cost * 0.12 * 100) / 100
+              });
+
+              const b = res.breakdown;
+
+              // 1. Numerical sanity: No NaN, no negative, finite
+              assert(!Number.isNaN(b.totalReimbursed), `NaN totalReimbursed in Matrix 4: ${city.cityName}`);
+              assert(!Number.isNaN(b.personalPayTotal), `NaN personalPayTotal in Matrix 4: ${city.cityName}`);
+              assert(!Number.isNaN(b.baseReimbursed), `NaN baseReimbursed in Matrix 4: ${city.cityName}`);
+              assert(!Number.isNaN(b.catastrophicReimbursed), `NaN catastrophicReimbursed in Matrix 4: ${city.cityName}`);
+              assert(Number.isFinite(b.totalReimbursed), `Infinity totalReimbursed in Matrix 4: ${city.cityName}`);
+
+              assert(b.totalReimbursed >= 0, `Negative totalReimbursed in Matrix 4: ${city.cityName}`);
+              assert(b.personalPayTotal >= 0, `Negative personalPayTotal in Matrix 4: ${city.cityName}`);
+              assert(b.baseReimbursed >= 0, `Negative baseReimbursed in Matrix 4: ${city.cityName}`);
+              assert(b.catastrophicReimbursed >= 0, `Negative catastrophicReimbursed in Matrix 4: ${city.cityName}`);
+
+              // 2. Bound constraints
+              assert(b.totalReimbursed <= b.totalCost + 0.01, `totalReimbursed > totalCost in Matrix 4: ${city.cityName}`);
+
+              // 3. Money conservation: totalReimbursed + personalPayTotal === totalCost
+              const totalSum = Math.round((b.totalReimbursed + b.personalPayTotal) * 100) / 100;
+              assertCloseTo(totalSum, b.totalCost, 0.02, `Money conservation failed in Matrix 4: ${city.cityName} cost=${cost}`);
+
+              // 4. Subcomponent conservation: base + catastrophic === totalReimbursed
+              const compSum = Math.round((b.baseReimbursed + b.catastrophicReimbursed) * 100) / 100;
+              assertCloseTo(compSum, b.totalReimbursed, 0.01, `Component mismatch in Matrix 4: ${city.cityName}`);
+
+              // 5. Deductible structural sanity
+              assert(b.appliedDeductible <= b.standardDeductible + 0.01, `appliedDeductible > standard in Matrix 4: ${city.cityName}`);
+              assert(b.deductibleDeducted <= b.appliedDeductible + 0.01, `deductibleDeducted > applied in Matrix 4: ${city.cityName}`);
+              assert(b.personalDeductiblePaid === b.deductibleDeducted, `personalDeductiblePaid mismatch in Matrix 4: ${city.cityName}`);
+
+              // 6. 5-Stage Stepped Funnel Physical Conservation
+              if (b.personalPayTotal >= (b.nonInsuranceCost + b.classBPriorPay + b.deductibleDeducted - 0.01)) {
+                const funnelSum = Math.round((b.nonInsuranceCost + b.classBPriorPay + b.deductibleDeducted + b.totalReimbursed + b.personalSpanCoPay) * 100) / 100;
+                assertCloseTo(funnelSum, b.totalCost, 0.02, `Funnel ladder mismatch in Matrix 4: ${city.cityName}`);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  console.log(`✓ Test Matrix 4 Passed: ${matrix4Scenarios.toLocaleString()} Cartesian combinations of admission frequency, 5 remote tiers, and hospital tiers fully verified.\n`);
+
+  // --------------------------------------------------------------------------
   // SUMMARY
   // --------------------------------------------------------------------------
   console.log('================================================================================');
