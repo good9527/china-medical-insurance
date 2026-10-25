@@ -12,10 +12,21 @@ export const shenzhenCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '0755-12393',
   officialPortalUrl: 'https://hsa.sz.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-10-25',
 
   // 官方依据文件库
   sourceDocs: [
+    {
+      docId: 'sz-resident-adjust-2026',
+      title: '深圳市医疗保障局 国家税务总局深圳市税务局关于调整我市居民基本医疗保险参保缴费有关事项的通知',
+      docNumber: '深医保规〔2026〕2号',
+      issuingDept: ['深圳市医疗保障局', '国家税务总局深圳市税务局'],
+      publishDate: '2026-05-12',
+      effectiveDate: '2026-06-01',
+      status: 'active',
+      officialUrl: 'https://hsa.sz.gov.cn/zwgk/zcfg/content/post_11749812.html',
+      summaryQuote: '本通知自2026年6月1日起施行。居民医保自2027年起调整为自然年度集中缴费（集中参保期为每年9月至12月），未在集中参保期参保缴费人员设立3个月待遇等待期。公布2026年度本市在岗职工年平均工资基准为177,057元/年（月均14,755元），职工一档普通门诊统筹限额（6%）联动调整为10,623元，统筹基金最高支付限额（6倍在岗工资）联动达1,062,342元。'
+    },
     {
       docId: 'sz-medical-insurance-regulations-2023',
       title: '深圳市医疗保障办法',
@@ -56,8 +67,8 @@ export const shenzhenCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'sz-medical-insurance-regulations-2023',
       annualDeductible: 0,   // 深圳职工一档门诊免设起付线（0元起付）
-      annualCap: 10000,      // 在职约 10000 元（按在岗职工年平均工资6%）
-      annualCapRetiree: 12000, // 退休约 12000 元（按在岗职工年平均工资7%）
+      annualCap: 10623,      // 2026年度在岗职工年平均工资（177,057元/年）的6%，即10,623元（原约10000元）
+      annualCapRetiree: 12394, // 2026年度在岗职工年平均工资（177,057元/年）的7%，即12,394元（原约12000元）
       tierBenefits: {
         community: { tierName: '社康中心/一级以下基层医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75, retireeRatioBonus: 0.05 },
@@ -65,11 +76,11 @@ export const shenzhenCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '三级甲等综合医院', deductible: 0, reimbursementRatio: 0.55, retireeRatioBonus: 0.05 }
       },
-      note: '门诊无起付线，在职职工在社康中心/一级医院报销75%（退休80%）、二级医院报销65%（退休70%）、三级医院报销55%（退休60%）。在职限额约10000元，退休限额约12000元。'
+      note: '门诊无起付线，在职职工在社康中心/一级医院报销75%（退休80%）、二级医院报销65%（退休70%）、三级医院报销55%（退休60%）。2026年度在岗职工年平均工资标准更新为177,057元/年，在职门诊统筹限额为10,623元（6%），退休限额为12,394元（7%）。'
     },
     inpatient: {
       sourceDocId: 'sz-medical-insurance-regulations-2023',
-      annualCap: 1050000, // 连续参保72个月以上统筹基金最高支付限额达在岗职工年平均工资6倍（超100万元）
+      annualCap: 1062342, // 2026年度在岗职工年平均工资（177,057元/年）的6倍，连续参保72个月以上限额达1,062,342元（约106.2万元）
       tierBenefits: {
         community: { tierName: '一级及社康中心', deductible: 200, reimbursementRatio: 0.94, retireeRatioBonus: 0.01 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.94, retireeRatioBonus: 0.01 },
@@ -105,7 +116,7 @@ export const shenzhenCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'sz-resident-medical-rules',
       annualDeductible: 0,
-      annualCap: 2655, // 在岗职工年平均工资1.5%（当前年度约2655元）
+      annualCap: 2656, // 依据在岗职工年平均工资（177,057元/年）的1.5%更新为2,656元（约2656元）
       tierBenefits: {
         community: { tierName: '选定绑定的社康中心/基层医疗机构', deductible: 0, reimbursementRatio: 0.75 },
         tier1: { tierName: '选定的一级定点医疗机构', deductible: 0, reimbursementRatio: 0.75 },
@@ -113,11 +124,11 @@ export const shenzhenCityData: CityInsuranceData = {
         tier3: { tierName: '三级医疗机构（需基层定点转诊）', deductible: 0, reimbursementRatio: 0.55 },
         tier3_top: { tierName: '三甲综合医院（需基层定点转诊）', deductible: 0, reimbursementRatio: 0.55 }
       },
-      note: '依据《深圳市医疗保障办法》第二十六、二十七条，居民普通门诊选定1家社康/基层首诊报销75%；经转诊至二级医院报销65%、三级医院报销55%（年满60周岁及以上老人各级别上浮5%）。年统筹基金最高支付限额为在岗职工年平均工资的1.5%（约2655元）。'
+      note: '依据《深圳市医疗保障办法》及深医保规〔2026〕2号，2026年度在岗职工年平均工资为177,057元/年。居民普通门诊选定1家社康/基层首诊报销75%；经转诊至二级医院报销65%、三级医院报销55%（年满60周岁及以上老人各级别上浮5%）。年统筹基金最高支付限额为在岗职工年平均工资的1.5%（2,656元）。'
     },
     inpatient: {
       sourceDocId: 'sz-medical-insurance-regulations-2023',
-      annualCap: 1050000, // 依据第三十八条，统筹基金支付限额与连续参保时间挂钩，满72个月达6倍在岗平均工资
+      annualCap: 1062342, // 依据第三十八条，连续参保满72个月达6倍在岗职工年平均工资（1,062,342元）
       tierBenefits: {
         community: { tierName: '一级以下及基层医疗机构', deductible: 200, reimbursementRatio: 0.92 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.92 },
@@ -131,7 +142,7 @@ export const shenzhenCityData: CityInsuranceData = {
       sourceDocId: 'sz-medical-insurance-regulations-2023',
       name: '城乡居民大病保险（二次报销）',
       deductible: 10000,
-      annualCap: 1000000, // 连续参保72个月以上大病保险限额达100万元
+      annualCap: 1062342, // 连续参保72个月以上大病保险限额达1,062,342元
       tiers: [
         { minAmount: 10000, maxAmount: 30000, ratio: 0.70 },
         { minAmount: 30000, ratio: 0.80 }

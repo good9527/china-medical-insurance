@@ -51,6 +51,17 @@ export const yulinCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.yl.gov.cn/zfxxgk/fdzdgknr/gfxwj/202601/t20260130_2072057.html',
       summaryQuote: '自2026年1月1日起，我市城乡居民大病保险起付标准调整为13500元。大病合规自付费用13500元至3万元部分报销60%；3万元至10万元部分报销70%；10万元以上部分报销80%。年度最高支付限额为30万元。经三重保障后政策范围内个人自付仍超过3万元部分，由大病保险资金按50%进行二次补偿。'
+    },
+    {
+      docId: 'sn-resident-catastrophic-framework-2024-24',
+      title: '陕西省医疗保障局 陕西省财政厅 国家金融监督管理总局陕西监管局关于进一步完善城乡居民大病保险有关工作的通知',
+      docNumber: '陕医保发〔2024〕24号',
+      issuingDept: ['陕西省医疗保障局', '陕西省财政厅', '国家金融监督管理总局陕西监管局'],
+      publishDate: '2024-09-30',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.shaanxi.gov.cn/',
+      summaryQuote: '指导全省统筹区建立城乡居民大病保险动态调整机制，原则上起付线按照全省或统筹区上一年度居民人均可支配收入的一半左右合理确定并动态调整；各统筹区结合当地经济承受能力与基金运行实际分别出台实施细则，并建立对连续参保人员和零报销人员的大病保险待遇长效激励机制。'
     }
   ],
 

@@ -7839,6 +7839,374 @@ export function runCalculatorTests() {
     console.log('  ✓ [H40 PASS] 铜延异地违规就医惩罚折算差额对比、相反数恒等式与资金守恒验证通过');
   }
 
+  // --------------------------------------------------------------------------
+  // Suite H41: 2025-2026 最新官方公文与更正参数全维端到端断言
+  // --------------------------------------------------------------------------
+  console.log('\n=========================================');
+  console.log('>>> [Suite H41] 执行 2025-2026 最新官方公文与更正参数全维端到端断言...');
+
+  // 1. 断言 1 (西安居民 2025 大病保险 2 万元新政临界点测试)
+  // 场景 1A: 合规自付未超 20,000 元时不触发大病报销 (catastrophicReimbursed === 0)
+  {
+    totalChecks++;
+    const xaRes15k = calculateReimbursement({
+      cityCode: '610100',
+      insuranceType: 'resident',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 15000
+    });
+    assertEqual(xaRes15k.breakdown.standardDeductible, 400, '西安居民二级住院起付线为400元');
+    assertEqual(xaRes15k.breakdown.baseReimbursed, 10220, '西安居民二级住院(15000元)统筹报销: (15000-400)*0.70 = 10220');
+    assertEqual(xaRes15k.breakdown.catastrophicReimbursed, 0, '合规自付4780未达20000大病门槛，大病报销严格为0');
+    assertEqual(xaRes15k.breakdown.totalReimbursed, 10220, '未触发大病时总报销等于基本统筹报销');
+    assertEqual(xaRes15k.breakdown.personalPayTotal, 4780, '自付总额为4780元');
+    assertEqual(
+      xaRes15k.breakdown.totalReimbursed + xaRes15k.breakdown.personalPayTotal,
+      15000,
+      '西安居民住院(15000元)资金物理守恒恒等式必须严格成立'
+    );
+    passCount++;
+    console.log('  - [H41 PASS] 西安居民住院15000元合规自付未达20000元门槛，大病报销为0，资金守恒成立');
+
+    // 场景 1B: 超 20,000 元时精准触发大病 60% 报销 (依据市医保发〔2024〕73号)
+    totalChecks++;
+    const xaRes60k = calculateReimbursement({
+      cityCode: '610100',
+      insuranceType: 'resident',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3_top',
+      remoteStatus: 'local',
+      totalCost: 60000
+    });
+    assertEqual(xaRes60k.breakdown.standardDeductible, 2000, '西安居民三特住院起付线为2000元');
+    assertEqual(xaRes60k.breakdown.baseReimbursed, 29000, '西安居民三特住院(60000元)统筹报销: (60000-2000)*0.50 = 29000');
+    assertEqual(xaRes60k.breakdown.catastrophicReimbursed, 6600, '超20000门槛部分11000元按60%报销，大病实报6600元');
+    assertEqual(xaRes60k.breakdown.totalReimbursed, 35600, '总报销额29000+6600=35600元');
+    assertEqual(xaRes60k.breakdown.personalPayTotal, 24400, '个人自付总额为24400元');
+    assertEqual(
+      xaRes60k.breakdown.totalReimbursed + xaRes60k.breakdown.personalPayTotal,
+      60000,
+      '西安居民三特住院(60000元)资金物理守恒恒等式必须严格成立'
+    );
+    passCount++;
+    console.log('  - [H41 PASS] 西安居民三特住院60000元跨过20000元门槛，精准触发大病60%报销6600元，资金守恒成立');
+
+    // 场景 1C: 引用公文溯源为 市医保发〔2024〕73号
+    totalChecks++;
+    const xaCityData = getCityDataByCode('610100')!;
+    const xaCatastrophicDoc = xaCityData.sourceDocs.find(d => d.docId === xaCityData.resident.catastrophic?.sourceDocId);
+    assertTrue(!!xaCatastrophicDoc, '西安居民大病公文依据必须存在');
+    assertTrue(xaCatastrophicDoc!.docNumber.includes('市医保发〔2024〕73号'), '西安居民大病依据文件字号必须包含市医保发〔2024〕73号');
+    assertEqual(xaCityData.resident.catastrophic?.deductible, 20000, '西安居民大病法定起付线为20000元');
+    assertEqual(xaCityData.resident.catastrophic?.tiers[0].ratio, 0.60, '西安居民大病法定报销比例为60%');
+    passCount++;
+    console.log('  - [H41 PASS] 西安居民大病保险公文溯源市医保发〔2024〕73号与20000元起付线校验通过');
+  }
+
+  // 2. 断言 2 (宝鸡与安康更正起付参数与阶梯验证)
+  {
+    // 2A: 宝鸡市职工一级住院起付线更正为 200 元 (宝医保发〔2023〕106号)
+    totalChecks++;
+    const bjCityData = getCityDataByCode('610300')!;
+    assertEqual(bjCityData.employee.inpatient.tierBenefits.tier1.deductible, 200, '宝鸡职工一级住院起付线更正为200元');
+    const bjInpatientDoc = bjCityData.sourceDocs.find(d => d.docId === bjCityData.employee.inpatient.sourceDocId);
+    assertTrue(!!bjInpatientDoc, '宝鸡职工住院公文依据必须存在');
+    assertTrue(bjInpatientDoc!.docNumber.includes('宝医保发〔2023〕106号'), '宝鸡职工住院公文文号必须为宝医保发〔2023〕106号');
+
+    const bjEmpIn1 = calculateReimbursement({
+      cityCode: '610300',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier1',
+      remoteStatus: 'local',
+      totalCost: 10000,
+      isRetiree: false
+    });
+    assertEqual(bjEmpIn1.breakdown.standardDeductible, 200, '宝鸡职工一级住院实扣起付线200元');
+    assertEqual(bjEmpIn1.breakdown.baseReimbursed, 9016, '宝鸡职工一级住院(10000元)实报: (10000-200)*0.92 = 9016');
+    assertEqual(bjEmpIn1.breakdown.totalReimbursed, 9016, '宝鸡职工一级住院总报销9016元');
+    assertEqual(bjEmpIn1.breakdown.personalPayTotal, 984, '宝鸡职工一级住院自付984元');
+    assertEqual(
+      bjEmpIn1.breakdown.totalReimbursed + bjEmpIn1.breakdown.personalPayTotal,
+      10000,
+      '宝鸡职工一级住院资金物理守恒恒等式严格成立'
+    );
+    passCount++;
+    console.log('  - [H41 PASS] 宝鸡职工一级住院起付线200元(宝医保发〔2023〕106号)与资金守恒核验通过');
+
+    // 2B: 安康市职工住院起付线更正为二级 600 元、三级 1500 元 (安医保发〔2022〕12号)
+    totalChecks++;
+    const akCityData = getCityDataByCode('610900')!;
+    assertEqual(akCityData.employee.inpatient.tierBenefits.tier2.deductible, 600, '安康职工二级住院起付线更正为600元');
+    assertEqual(akCityData.employee.inpatient.tierBenefits.tier3.deductible, 1500, '安康职工三级住院起付线更正为1500元');
+    const akInpatientDoc = akCityData.sourceDocs.find(d => d.docId === akCityData.employee.inpatient.sourceDocId);
+    assertTrue(!!akInpatientDoc, '安康职工住院公文依据必须存在');
+    assertTrue(akInpatientDoc!.docNumber.includes('安医保发〔2022〕12号'), '安康职工住院公文文号必须为安医保发〔2022〕12号');
+
+    const akEmpIn2 = calculateReimbursement({
+      cityCode: '610900',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 10000,
+      isRetiree: false
+    });
+    assertEqual(akEmpIn2.breakdown.standardDeductible, 600, '安康职工二级住院实扣起付线600元');
+    assertEqual(akEmpIn2.breakdown.baseReimbursed, 8836, '安康职工二级住院(10000元)实报: (10000-600)*0.94 = 8836');
+    assertEqual(akEmpIn2.breakdown.totalReimbursed, 8836, '安康职工二级住院总报销8836元');
+    assertEqual(akEmpIn2.breakdown.personalPayTotal, 1164, '安康职工二级住院自付1164元');
+    assertEqual(
+      akEmpIn2.breakdown.totalReimbursed + akEmpIn2.breakdown.personalPayTotal,
+      10000,
+      '安康职工二级住院资金物理守恒恒等式严格成立'
+    );
+
+    const akEmpIn3 = calculateReimbursement({
+      cityCode: '610900',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 10000,
+      isRetiree: false
+    });
+    assertEqual(akEmpIn3.breakdown.standardDeductible, 1500, '安康职工三级住院实扣起付线1500元');
+    assertEqual(akEmpIn3.breakdown.baseReimbursed, 7735, '安康职工三级住院(10000元)实报: (10000-1500)*0.91 = 7735');
+    assertEqual(akEmpIn3.breakdown.totalReimbursed, 7735, '安康职工三级住院总报销7735元');
+    assertEqual(akEmpIn3.breakdown.personalPayTotal, 2265, '安康职工三级住院自付2265元');
+    assertEqual(
+      akEmpIn3.breakdown.totalReimbursed + akEmpIn3.breakdown.personalPayTotal,
+      10000,
+      '安康职工三级住院资金物理守恒恒等式严格成立'
+    );
+    passCount++;
+    console.log('  - [H41 PASS] 安康职工二级(600元)与三级(1500元)住院起付线(安医保发〔2022〕12号)与资金守恒核验通过');
+  }
+
+  // 3. 断言 3 (上海职工 2025-2026 统筹超限与地方附加 80% 接续补偿测试)
+  {
+    totalChecks++;
+    const shCityData = getCityDataByCode('310100')!;
+    assertEqual(shCityData.employee.inpatient.annualCap, 670000, '上海2026医保年度职工统筹封顶线为670000元');
+    assertTrue(shCityData.sourceDocs.some(d => d.docNumber.includes('沪医保规〔2026〕4号')), '上海包含沪医保规〔2026〕4号正式公文');
+    assertEqual(shCityData.employee.catastrophic?.tiers[0].ratio, 0.80, '上海地方附加医疗基金超限接续报销比例为80%');
+
+    const shEmpIn800k = calculateReimbursement({
+      cityCode: '310100',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 800000,
+      isRetiree: false
+    });
+    assertEqual(shEmpIn800k.breakdown.baseReimbursed, 670000, '基本统筹达到670,000元年度法定最高支付限额封顶');
+    assertEqual(shEmpIn800k.breakdown.catastrophicReimbursed, 8211.76, '超限部分由地方附加医疗保险基金按80%精准接续报销8211.76元');
+    assertEqual(shEmpIn800k.breakdown.totalReimbursed, 678211.76, '总报销额为678,211.76元');
+    assertEqual(shEmpIn800k.breakdown.personalPayTotal, 121788.24, '自付总额为121,788.24元');
+    assertEqual(
+      Math.round((shEmpIn800k.breakdown.totalReimbursed + shEmpIn800k.breakdown.personalPayTotal) * 100) / 100,
+      800000,
+      '上海职工极值住院(800000元)资金物理守恒恒等式严格成立'
+    );
+    assertTrue(shEmpIn800k.policyNotes.some(n => n.includes('670,000')), '附注必须提示达到统筹封顶线');
+    assertTrue(shEmpIn800k.policyNotes.some(n => n.includes('上海市职工地方附加医疗保险')), '附注必须提示触发地方附加报销');
+    passCount++;
+    console.log('  - [H41 PASS] 上海职工80万元极值住院统筹封顶67万与地方附加80%接续补偿(沪医保规〔2026〕4号)核验通过');
+  }
+
+  // 4. 断言 4 (广州居民 2026 最新大病办法 穗府办规〔2026〕9号 1.8 万元起付线测试)
+  {
+    totalChecks++;
+    const gzCityData = getCityDataByCode('440100')!;
+    const gzCatDoc = gzCityData.sourceDocs.find(d => d.docId === gzCityData.resident.catastrophic?.sourceDocId);
+    assertTrue(!!gzCatDoc, '广州居民大病公文必须存在');
+    assertTrue(gzCatDoc!.docNumber.includes('穗府办规〔2026〕9号'), '广州居民大病依据文件字号必须为穗府办规〔2026〕9号');
+    assertEqual(gzCityData.resident.catastrophic?.deductible, 18000, '广州居民大病起付线为18000元');
+    assertEqual(gzCityData.resident.catastrophic?.tiers[0].minAmount, 18000, '广州居民大病第一阶梯起始18000元');
+    assertEqual(gzCityData.resident.catastrophic?.tiers[0].maxAmount, 36000, '广州居民大病第一阶梯上限36000元');
+    assertEqual(gzCityData.resident.catastrophic?.tiers[0].ratio, 0.60, '广州居民大病第一阶梯报销比例为60%');
+
+    // 4A: 100,000 元三级住院场景 (合规自付30350元，扣除18000元起付线后超出12350元，按60%报销7410元)
+    const gzResIn100k = calculateReimbursement({
+      cityCode: '440100',
+      insuranceType: 'resident',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 100000
+    });
+    assertEqual(gzResIn100k.breakdown.standardDeductible, 500, '广州居民三级住院起付线为500元');
+    assertEqual(gzResIn100k.breakdown.baseReimbursed, 69650, '广州居民三级住院基本统筹报销: (100000-500)*0.70 = 69650');
+    assertEqual(gzResIn100k.breakdown.catastrophicReimbursed, 7410, '超18000元起付线部分(12350元)按60%大病报销: 12350*0.60 = 7410');
+    assertEqual(gzResIn100k.breakdown.totalReimbursed, 77060, '总报销额69650+7410=77060元');
+    assertEqual(gzResIn100k.breakdown.personalPayTotal, 22940, '个人自付总额为22940元');
+    assertEqual(
+      gzResIn100k.breakdown.totalReimbursed + gzResIn100k.breakdown.personalPayTotal,
+      100000,
+      '广州居民住院100000元资金物理守恒恒等式严格成立'
+    );
+
+    // 4B: 20,000 元住院场景 (合规自付6350元未达18000元起付线，大病报销为0)
+    const gzResIn20k = calculateReimbursement({
+      cityCode: '440100',
+      insuranceType: 'resident',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 20000
+    });
+    assertEqual(gzResIn20k.breakdown.baseReimbursed, 13650, '广州居民20000元统筹实报: (20000-500)*0.70 = 13650');
+    assertEqual(gzResIn20k.breakdown.catastrophicReimbursed, 0, '合规自付6350未达18000元大病起付线，大病报销严格为0');
+    assertEqual(gzResIn20k.breakdown.totalReimbursed, 13650, '总报销额为13650元');
+    assertEqual(gzResIn20k.breakdown.personalPayTotal, 6350, '个人自付为6350元');
+    assertEqual(
+      gzResIn20k.breakdown.totalReimbursed + gzResIn20k.breakdown.personalPayTotal,
+      20000,
+      '广州居民住院20000元资金物理守恒恒等式严格成立'
+    );
+    passCount++;
+    console.log('  - [H41 PASS] 广州居民2026新政1.8万大病起付线与60%阶梯报销(穗府办规〔2026〕9号)核验通过');
+  }
+
+  // 5. 断言 5 (深圳 2026 在岗工资 177,057 元基准与门诊/住院封顶测试)
+  {
+    totalChecks++;
+    const szCityData = getCityDataByCode('440300')!;
+    assertTrue(szCityData.sourceDocs.some(d => d.docNumber.includes('深医保规〔2026〕2号')), '深圳包含深医保规〔2026〕2号公文');
+    assertEqual(szCityData.employee.outpatient.annualCap, 10623, '深圳在职职工门诊统筹限额联动10623元(177057*6%)');
+    assertEqual(szCityData.employee.outpatient.annualCapRetiree, 12394, '深圳退休人员门诊统筹限额联动12394元(177057*7%)');
+    assertEqual(szCityData.employee.inpatient.annualCap, 1062342, '深圳职工住院统筹封顶线联动1062342元(6倍在岗工资)');
+
+    // 5A: 在职职工社区门诊高额花费受 10623 元封顶测试
+    const szEmpOutActive = calculateReimbursement({
+      cityCode: '440300',
+      insuranceType: 'employee',
+      treatmentType: 'outpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      totalCost: 20000,
+      isRetiree: false
+    });
+    assertEqual(szEmpOutActive.breakdown.standardDeductible, 0, '深圳职工门诊免设起付线(0元)');
+    assertEqual(szEmpOutActive.breakdown.baseReimbursed, 10623, '在职门诊按75%算得15000元，受10623元年度封顶线精准约束');
+    assertEqual(szEmpOutActive.breakdown.totalReimbursed, 10623, '总报销额为10623元');
+    assertEqual(szEmpOutActive.breakdown.personalPayTotal, 9377, '个人自付总额为9377元');
+    assertEqual(
+      szEmpOutActive.breakdown.totalReimbursed + szEmpOutActive.breakdown.personalPayTotal,
+      20000,
+      '深圳在职门诊资金物理守恒恒等式严格成立'
+    );
+
+    // 5B: 退休职工社区门诊高额花费受 12394 元封顶测试
+    const szEmpOutRetiree = calculateReimbursement({
+      cityCode: '440300',
+      insuranceType: 'employee',
+      treatmentType: 'outpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      totalCost: 20000,
+      isRetiree: true
+    });
+    assertEqual(szEmpOutRetiree.breakdown.baseReimbursed, 12394, '退休门诊按80%算得16000元，受12394元年度退休限额精准约束');
+    assertEqual(szEmpOutRetiree.breakdown.totalReimbursed, 12394, '总报销额为12394元');
+    assertEqual(szEmpOutRetiree.breakdown.personalPayTotal, 7606, '个人自付总额为7606元');
+    assertEqual(
+      szEmpOutRetiree.breakdown.totalReimbursed + szEmpOutRetiree.breakdown.personalPayTotal,
+      20000,
+      '深圳退休门诊资金物理守恒恒等式严格成立'
+    );
+    passCount++;
+    console.log('  - [H41 PASS] 深圳2026在岗工资177057元基准与在职(10623)/退休(12394)门诊限额联动核验通过');
+  }
+
+  // 6. 断言 6 (跨城实测模拟器 2025-2026 最新政策多市并排对比与资金守恒测试)
+  {
+    // 6A: 西安、宝鸡、广州三城在职三级住院对比 (花费 50,000 元)
+    totalChecks++;
+    const sim6A = runMultiCitySimulation(['610100', '610300', '440100'], {
+      totalCost: 50000,
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+    assertEqual(sim6A.cities.length, 3, '三城模拟返回3个统筹区产出');
+    assertTrue(sim6A.allConserved, '三城并排测算全量满足资金物理守恒');
+    assertEqual(sim6A.cities[0].deltaReimbursedVsCityA, 0, '基准城西安报销差额为0');
+    assertEqual(sim6A.cities[0].deltaPersonalPayVsCityA, 0, '基准城西安自付差额为0');
+
+    for (const c of sim6A.cities) {
+      assertTrue(c.isConserved, `${c.cityName}资金物理守恒成立`);
+      assertEqual(
+        Math.round((c.totalReimbursed + c.personalPayTotal) * 100) / 100,
+        50000,
+        `${c.cityName}报销加自付恒等于总费用50000`
+      );
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}较基准城报销差额与自付差额完全满足相反数守恒律 (ΔR = -ΔP)`
+      );
+      assertTrue(c.officialDocUsed.docNumber.length > 0, `${c.cityName}具备真实法定公文字号`);
+    }
+
+    assertEqual(sim6A.maxReimbursementDelta, sim6A.maxPersonalPayDelta, '最大报销跨度落差与最大自付跨度落差数学恒等');
+    assertTrue(sim6A.winnerReimbursedCity.length > 0, '优胜报销城市必须有效标注');
+    assertTrue(sim6A.winnerLowestOutPocketCity.length > 0, '最低自理城市必须有效标注');
+    assertTrue(sim6A.winnerLowestDeductibleCity.length > 0, '最低起付门槛城市必须有效标注');
+    assertTrue(sim6A.keyInsights.length >= 2, '生成多条跨城精算洞察分析');
+
+    // 0-Emoji 规范检验: keyInsights 严禁包含 Emoji 表情
+    const emojiRegexTest = /[\u{1F300}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{1F1E0}-\u{1F1FF}\u{1FA00}-\u{1FAFF}]/u;
+    for (const insight of sim6A.keyInsights) {
+      assertTrue(!emojiRegexTest.test(insight), `跨城精算洞察必须严格遵循0-Emoji规范: ${insight}`);
+    }
+    passCount++;
+    console.log('  - [H41 PASS] 西安-宝鸡-广州跨城模拟实测并排精算、ΔR = -ΔP 相反数守恒与0-Emoji规范核验通过');
+
+    // 6B: 北京、西安、咸阳三城居民大额住院对比 (花费 100,000 元，验证大病保险救助梯次与资金守恒)
+    totalChecks++;
+    const sim6B = runMultiCitySimulation(['110100', '610100', '610400'], {
+      totalCost: 100000,
+      insuranceType: 'resident',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+    assertEqual(sim6B.cities.length, 3, '京陕咸三城模拟返回3个统筹区产出');
+    assertTrue(sim6B.allConserved, '京陕咸三城并排测算全量满足资金物理守恒');
+
+    for (const c of sim6B.cities) {
+      assertTrue(c.isConserved, `${c.cityName}大额住院资金物理守恒成立`);
+      assertEqual(
+        Math.round((c.totalReimbursed + c.personalPayTotal) * 100) / 100,
+        100000,
+        `${c.cityName}报销加自付恒等于总费用100000`
+      );
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}差额满足相反数守恒律 (ΔR = -ΔP)`
+      );
+    }
+
+    assertTrue(sim6B.winnerLowestDeductibleCity.length > 0, '最低起付门槛城市标注有效');
+    assertTrue(sim6B.winnerHighestCatastrophicCity.length > 0, '大病保险最高救助城市标注有效');
+    for (const insight of sim6B.keyInsights) {
+      assertTrue(!emojiRegexTest.test(insight), `京陕咸洞察必须严格遵循0-Emoji规范: ${insight}`);
+    }
+    passCount++;
+    console.log('  - [H41 PASS] 北京-西安-咸阳居民大额住院模拟对比、大病救助胜出判定与资金守恒核验通过');
+  }
+
   console.log(`\n=========================================`);
   console.log(`[PASS] 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);

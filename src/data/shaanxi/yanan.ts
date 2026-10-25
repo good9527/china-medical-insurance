@@ -63,6 +63,17 @@ export const yananCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://www.yanan.gov.cn/gk/fdzdgknr/jyta/zxta/1839477136604323841.html',
       summaryQuote: '职工住院起付线：一级400元（在职92%、退休96%），二级500元（在职90%、退休94%），三级700元（在职88%、退休92%）。二次住院起付标准降低20%，三次及以上降低30%。职工统筹基金年度封顶约45万元。大额医疗互助报销92%，封顶40万元。异地转诊备案报销比例降低5%，未备案非急诊就医降低10%。'
+    },
+    {
+      docId: 'sn-resident-catastrophic-framework-2024-24',
+      title: '陕西省医疗保障局 陕西省财政厅 国家金融监督管理总局陕西监管局关于进一步完善城乡居民大病保险有关工作的通知',
+      docNumber: '陕医保发〔2024〕24号',
+      issuingDept: ['陕西省医疗保障局', '陕西省财政厅', '国家金融监督管理总局陕西监管局'],
+      publishDate: '2024-09-30',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.shaanxi.gov.cn/',
+      summaryQuote: '指导全省统筹区建立城乡居民大病保险动态调整机制，原则上起付线按照全省或统筹区上一年度居民人均可支配收入的一半左右合理确定并动态调整；各统筹区结合当地经济承受能力与基金运行实际分别出台实施细则，并建立对连续参保人员和零报销人员的大病保险待遇长效激励机制。'
     }
   ],
 

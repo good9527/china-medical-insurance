@@ -35,7 +35,7 @@ export const ankangCityData: CityInsuranceData = {
       effectiveDate: '2022-04-01',
       status: 'active',
       officialUrl: 'https://www.ankang.gov.cn/Content-2432422.html',
-      summaryQuote: '起付标准设置为：一级医疗机构第一次200元、第二次100元、第三次及以后0元；二级医疗机构第一次400元、第二次200元、第三次及以后0元；三级医疗机构第一次800元、第二次400元、第三次及以后0元。退休人员在上述对应标准分别降低100元。统筹基金支付比例：一级医疗机构95%，二级医疗机构94%，三级医疗机构91%，退休人员个人自付比例降低1个百分点（支付比例增加1个百分点）。基本医疗保险统筹基金年最高支付限额为12万元。大病医疗保险超出统筹最高支付限额部分个人自付10%（基金支付90%），年度最高支付限额为14万元。'
+      summaryQuote: '起付标准设置为：一级医疗机构第一次200元、第二次100元、第三次及以后0元；二级医疗机构第一次600元、第二次300元、第三次及以后0元；三级医疗机构第一次1500元、第二次750元、第三次及以后0元。退休人员在上述对应标准分别降低100元。统筹基金支付比例：一级医疗机构95%，二级医疗机构94%，三级医疗机构91%，退休人员个人自付比例降低1个百分点（支付比例增加1个百分点）。基本医疗保险统筹基金年最高支付限额为12万元。大病医疗保险超出统筹最高支付限额部分个人自付10%（基金支付90%），年度最高支付限额为14万元。'
     },
     {
       docId: 'ak-resident-basic-2019',
@@ -58,6 +58,17 @@ export const ankangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://www.ankang.gov.cn/Content-2689123.html',
       summaryQuote: '巩固城乡居民基本医保参保与住院待遇水平，继续执行城乡居民住院基层一级起付线200元报销80%、二级起付线600元报销70%、三级起付线2000元报销60%标准。全面落实门诊两病与慢特病用药保障和大病保险倾斜救助。'
+    },
+    {
+      docId: 'sn-resident-catastrophic-framework-2024-24',
+      title: '陕西省医疗保障局 陕西省财政厅 国家金融监督管理总局陕西监管局关于进一步完善城乡居民大病保险有关工作的通知',
+      docNumber: '陕医保发〔2024〕24号',
+      issuingDept: ['陕西省医疗保障局', '陕西省财政厅', '国家金融监督管理总局陕西监管局'],
+      publishDate: '2024-09-30',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.shaanxi.gov.cn/',
+      summaryQuote: '指导全省统筹区建立城乡居民大病保险动态调整机制，原则上起付线按照全省或统筹区上一年度居民人均可支配收入的一半左右合理确定并动态调整；各统筹区结合当地经济承受能力与基金运行实际分别出台实施细则，并建立对连续参保人员和零报销人员的大病保险待遇长效激励机制。'
     }
   ],
 
@@ -105,7 +116,7 @@ export const ankangCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'ak-employee-inpatient-2022',
       annualCap: 120000, // 基本医保统筹基金年最高支付限额12万元
-      repeatedDeductibleRule: '同一自然年度内多次住院起付线逐步递减：一级医院依次为200元、100元、第三次及以后0元；二级医院依次为400元、200元、第三次及以后0元；三级医院依次为800元、400元、第三次及以后0元。退休人员各级起付线对应减少100元。',
+      repeatedDeductibleRule: '同一自然年度内多次住院起付线逐步递减：一级医院首次200元、第二次100元、第三次及以后0元；二级医院首次600元、第二次300元、第三次及以后0元；三级医院首次1500元、第二次750元、第三次及以后0元。退休人员在上述对应标准分别降低100元。',
       tierBenefits: {
         community: {
           tierName: '基层社区卫生服务中心/乡镇卫生院',
@@ -121,19 +132,19 @@ export const ankangCityData: CityInsuranceData = {
         },
         tier2: {
           tierName: '二级定点医疗机构',
-          deductible: 400,
+          deductible: 600,
           reimbursementRatio: 0.94,
           retireeRatioBonus: 0.01
         },
         tier3: {
           tierName: '三级定点医疗机构',
-          deductible: 800,
+          deductible: 1500,
           reimbursementRatio: 0.91,
           retireeRatioBonus: 0.01
         },
         tier3_top: {
           tierName: '三级甲等综合医院',
-          deductible: 800,
+          deductible: 1500,
           reimbursementRatio: 0.91,
           retireeRatioBonus: 0.01
         }
@@ -231,7 +242,7 @@ export const ankangCityData: CityInsuranceData = {
       }
     },
     catastrophic: {
-      sourceDocId: 'ak-resident-basic-2019',
+      sourceDocId: 'ak-resident-notice-2024',
       name: '安康市城乡居民大病保险',
       deductible: 10000, // 居民大病保险起付线1万元
       tiers: [

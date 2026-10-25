@@ -72,6 +72,28 @@ export const xianyangCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.xianyang.gov.cn/zfxxgk/fdzdgknr/zcwj/zcfg1/202412/t20241231_1894800.html',
       summaryQuote: '咸阳市城乡居民基本医疗保险住院待遇（市内）：一级医疗机构/镇卫生院起付金160元、报销比例90%；二级医疗机构起付金550元、报销比例75%；三级医疗机构起付金1500元、报销比例60%；三特医疗机构（西京、唐都、交大一附院、交大二附院、西安市中心医院、陕西省人民医院）起付金3000元、报销比例50%（经规范转诊提高5个百分点为55%）。年度最高支付限额20万元。大病保险起付金1.5万元（特困低保0.75万元），5万元以下报销60%、5万-10万元报销65%、10万元以上报销70%，封顶线30万元（特困低保无封顶）。'
+    },
+    {
+      docId: 'xy-resident-catastrophic-2026-5',
+      title: '咸阳市医疗保障局 咸阳市财政局关于做好2026年城乡居民大病保险工作的通知',
+      docNumber: '咸医保发〔2026〕5号',
+      issuingDept: ['咸阳市医疗保障局', '咸阳市财政局'],
+      publishDate: '2026-03-13',
+      effectiveDate: '2026-03-13',
+      status: 'active',
+      officialUrl: 'https://ybj.xianyang.gov.cn/zfxxgk/fdzdgknr/zcwj/zcfg1/202412/t20241231_1894800.html',
+      summaryQuote: '进一步做好2026年城乡居民大病保险工作，全市大病保险起付线标准为1.5万元（特困低保等困难群体减半为0.75万元），按1.5万-5万元报销60%、5万-10万元报销65%、10万元以上报销70%分段计算累加支付，普通群众最高支付限额30万元（困难群体取消封顶线）。'
+    },
+    {
+      docId: 'sn-resident-catastrophic-framework-2024-24',
+      title: '陕西省医疗保障局 陕西省财政厅 国家金融监督管理总局陕西监管局关于进一步完善城乡居民大病保险有关工作的通知',
+      docNumber: '陕医保发〔2024〕24号',
+      issuingDept: ['陕西省医疗保障局', '陕西省财政厅', '国家金融监督管理总局陕西监管局'],
+      publishDate: '2024-09-30',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.shaanxi.gov.cn/',
+      summaryQuote: '指导全省统筹区建立城乡居民大病保险动态调整机制，原则上起付线按照全省或统筹区上一年度居民人均可支配收入的一半左右合理确定并动态调整；各统筹区结合当地经济承受能力与基金运行实际分别出台实施细则，并建立对连续参保人员和零报销人员的大病保险待遇长效激励机制。'
     }
   ],
 
@@ -149,7 +171,7 @@ export const xianyangCityData: CityInsuranceData = {
       }
     },
     catastrophic: {
-      sourceDocId: 'xy-medical-adjust-2024-48',
+      sourceDocId: 'xy-resident-catastrophic-2026-5',
       name: '城乡居民大病保险',
       deductible: 15000, // 咸阳市居民大病保险起付线：一般群众1.5万元，特困低保0.75万元
       annualCap: 300000, // 一般群众封顶线 30 万元，特困/低保/返贫致贫人口无封顶

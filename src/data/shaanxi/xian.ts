@@ -69,6 +69,28 @@ export const xianCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.xa.gov.cn/zcfg/zcjd/1892182736182910291.html',
       summaryQuote: '全面落实参保长效机制，对连续参保人员按规定提高大病保险最高支付限额；优化门诊统筹与“两病”用药保障，二级以下医疗机构普通门诊报销保持稳定。'
+    },
+    {
+      docId: 'xa-resident-catastrophic-2024-73',
+      title: '西安市医疗保障局 西安市财政局关于做好城乡居民大病保险有关政策落实工作的通知',
+      docNumber: '市医保发〔2024〕73号',
+      issuingDept: ['西安市医疗保障局', '西安市财政局'],
+      publishDate: '2024-12-10',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.xa.gov.cn/zcfg/zcjd/1892182736182910291.html',
+      summaryQuote: '自2025年1月1日起，西安市城乡居民大病保险起付标准统一调整为20000元（特困人员、低保对象和返贫致贫人口起付线调整为10000元）；大病保险起付标准以上政策范围内个人自付费用统一报销比例为60%；年度最高支付限额统一调整提高至30万元（特困人员、低保对象等取消年度最高支付限额）。建立连续参保与零报销激励机制。'
+    },
+    {
+      docId: 'sn-resident-catastrophic-framework-2024-24',
+      title: '陕西省医疗保障局 陕西省财政厅 国家金融监督管理总局陕西监管局关于进一步完善城乡居民大病保险有关工作的通知',
+      docNumber: '陕医保发〔2024〕24号',
+      issuingDept: ['陕西省医疗保障局', '陕西省财政厅', '国家金融监督管理总局陕西监管局'],
+      publishDate: '2024-09-30',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.shaanxi.gov.cn/',
+      summaryQuote: '指导全省统筹区建立城乡居民大病保险动态调整机制，原则上起付线按照全省或统筹区上一年度居民人均可支配收入的一半左右合理确定并动态调整；各统筹区结合当地经济承受能力与基金运行实际分别出台实施细则，并建立对连续参保人员和零报销人员的大病保险待遇长效激励机制。'
     }
   ],
 
@@ -265,7 +287,7 @@ export const xianCityData: CityInsuranceData = {
       }
     },
     catastrophic: {
-      sourceDocId: 'xa-resident-basic-2019-40',
+      sourceDocId: 'xa-resident-catastrophic-2024-73',
       name: '城乡居民大病保险',
       deductible: 20000, // 2025年1月1日起调为20000元（特困人员、低保对象10000元）
       annualCap: 300000, // 年度最高支付限额30万元（特困人员、低保对象无封顶）

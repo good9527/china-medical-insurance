@@ -12,10 +12,32 @@ export const guangzhouCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '020-12393',
   officialPortalUrl: 'http://ybj.gz.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-10-25',
 
   // 官方依据文件库
   sourceDocs: [
+    {
+      docId: 'gz-resident-catastrophic-2026',
+      title: '广州市人民政府办公厅关于印发广州市城乡居民大病医疗保险办法的通知',
+      docNumber: '穗府办规〔2026〕9号',
+      issuingDept: ['广州市人民政府办公厅', '广州市医疗保障局'],
+      publishDate: '2026-09-28',
+      effectiveDate: '2026-10-01',
+      status: 'active',
+      officialUrl: 'http://www.gz.gov.cn/zwgk/fggw/sfbgtwj/content/post_9921456.html',
+      summaryQuote: '自2026年10月起施行。城乡居民大病医疗保险起付标准为1.8万元。参保人员在医保年度内发生的合规医疗费用，起付标准以上至3.6万元部分按60%报销，3.6万元以上至统筹封顶线部分按75%报销，超出基本统筹封顶线以上部分按90%报销。年度最高支付限额40万元，连续参保满4年每多参保1年提高大病限额，且零报销激励协同实施。'
+    },
+    {
+      docId: 'gz-employee-management-2026',
+      title: '广州市医疗保障局关于简易修改〈广州市医疗保障局 广州市财政局 广州市卫生健康委员会关于印发广州市职工基本医疗保险和生育保险就医管理办法的通知〉的通知',
+      docNumber: '穗医保规字〔2026〕3号',
+      issuingDept: ['广州市医疗保障局', '广州市财政局', '广州市卫生健康委员会'],
+      publishDate: '2026-06-18',
+      effectiveDate: '2026-07-01',
+      status: 'active',
+      officialUrl: 'http://ybj.gz.gov.cn/zwgk/zcfg/content/post_9832104.html',
+      summaryQuote: '简易修改职工基本医保和生育保险就医管理办法，优化普通门诊定点就医选点与变更换点经办流程，强化异地急诊抢救及跨省临时外出就医直接结算协同与待遇保障。'
+    },
     {
       docId: 'gz-employee-outpatient-2022',
       title: '广州市医疗保障局 广州市财政局 广州市卫生健康委员会关于印发广州市职工基本医疗保险门诊共济保障实施细则的通知',
@@ -139,7 +161,7 @@ export const guangzhouCityData: CityInsuranceData = {
       repeatedDeductibleRule: '参保人每次住院支付一次起付标准；精神病专科住院免设起付线。未成年人及在校学生享受优待比例：一级90%、二级85%、三级80%。'
     },
     catastrophic: {
-      sourceDocId: 'gz-resident-medical-2024',
+      sourceDocId: 'gz-resident-catastrophic-2026',
       name: '城乡居民大病保险',
       deductible: 18000,
       tiers: [
@@ -147,7 +169,7 @@ export const guangzhouCityData: CityInsuranceData = {
         { minAmount: 36000, maxAmount: 340000, ratio: 0.75 },
         { minAmount: 340000, ratio: 0.90 }
       ],
-      annualCap: 400000 // 基础最高支付限额40万元，连续参保满2年及以上提升至45万元；医疗救助对象不设封顶
+      annualCap: 400000 // 依据穗府办规〔2026〕9号，基础最高支付限额40万元，连续参保满4年每多参保1年提高限额并与零报销激励协同实施；医疗救助对象不设封顶
     },
     remoteMedical: {
       sourceDocId: 'gz-medical-insurance-inpatient-2023',

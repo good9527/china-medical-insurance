@@ -12,7 +12,7 @@ export const shanghaiCityData: CityInsuranceData = {
   provinceName: '上海市',
   hotline: '021-12393',
   officialPortalUrl: 'https://ybj.sh.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-10-25',
 
   // 官方依据文件库
   sourceDocs: [
@@ -26,6 +26,28 @@ export const shanghaiCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'https://ybj.sh.gov.cn/zfxxgk/202406/t20240628_3159231.html',
       summaryQuote: '2024-2025医保年度本市职工医保统筹基金最高支付限额提高至63万元（2025-2026医保年度提高至65万元），超过部分按80%继续报销。在职职工门急诊自负段为500元，一级医疗机构报销80%、二级报销75%、三级报销70%（退休人员上浮5%至10%）。在职职工住院起付线为1500元，统筹报销比例为85%（退休92%）。'
+    },
+    {
+      docId: 'sh-employee-transition-2025',
+      title: '上海市医疗保障局关于本市职工基本医疗保险医保年度转换有关事项的通知',
+      docNumber: '沪医保规〔2025〕4号',
+      issuingDept: ['上海市医疗保障局', '上海市财政局'],
+      publishDate: '2025-06-20',
+      effectiveDate: '2025-07-01',
+      status: 'active',
+      officialUrl: 'https://ybj.sh.gov.cn/zfxxgk/202506/t20250625_3198542.html',
+      summaryQuote: '2025医保年度（2025年7月1日至2026年6月30日）职工基本医疗保险统筹基金最高支付限额从63万元提高到65万元。超过统筹基金最高支付限额以上的医疗费用，由地方附加医疗保险基金继续支付80%。在职职工和退休人员门急诊自负段、报销比例保持稳定。'
+    },
+    {
+      docId: 'sh-employee-transition-2026',
+      title: '上海市医疗保障局关于本市职工基本医疗保险医保年度转换有关事项的通知',
+      docNumber: '沪医保规〔2026〕4号',
+      issuingDept: ['上海市医疗保障局', '上海市财政局'],
+      publishDate: '2026-06-22',
+      effectiveDate: '2026-07-01',
+      status: 'active',
+      officialUrl: 'https://ybj.sh.gov.cn/zfxxgk/202606/t20260626_3264109.html',
+      summaryQuote: '2026医保年度（2026年7月1日至2027年6月30日）职工基本医疗保险统筹基金最高支付限额从65万元进一步提高到67万元。参保人员在医保年度内发生的门急诊和住院医疗费用合并计算统筹基金支付限额，超过限额以上的医疗费用由地方附加医疗保险基金支付80%。'
     },
     {
       docId: 'sh-resident-medical-regulations',
@@ -54,11 +76,11 @@ export const shanghaiCityData: CityInsuranceData = {
   // 城镇职工医保待遇 (上海标准)
   employee: {
     outpatient: {
-      sourceDocId: 'sh-medical-insurance-regulations-2024',
+      sourceDocId: 'sh-employee-transition-2026',
       annualDeductible: 500, // 在职门急诊自负段 500 元（2001年后退休300元）
       annualDeductibleRetiree: 300, // 退休人员自负段 300 元
-      annualCap: 650000,     // 计入统筹基金最高支付限额 65 万元
-      annualCapRetiree: 650000,
+      annualCap: 670000,     // 2026医保年度统筹基金最高支付限额提高至 67 万元
+      annualCapRetiree: 670000,
       tierBenefits: {
         community: { tierName: '一级及社区卫生服务中心', deductible: 500, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 500, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
@@ -66,11 +88,11 @@ export const shanghaiCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 500, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '三甲重点综合医院', deductible: 500, reimbursementRatio: 0.70, retireeRatioBonus: 0.05 }
       },
-      note: '门急诊费用自负段在职500元、退休300元，共负段一级报销80%、二级75%、三级70%（退休各上浮5%）。门诊与住院合并计算统筹封顶线（65万元），超过限额由附加基金继续报销80%。'
+      note: '门急诊费用自负段在职500元、退休300元，共负段一级报销80%、二级75%、三级70%（退休各上浮5%）。门诊与住院合并计算统筹封顶线（2025医保年度65万元，2026医保年度提高至67万元），超过限额由地方附加医疗保险基金继续报销80%。'
     },
     inpatient: {
-      sourceDocId: 'sh-medical-insurance-regulations-2024',
-      annualCap: 650000, // 2025医保年度封顶 65 万元
+      sourceDocId: 'sh-employee-transition-2026',
+      annualCap: 670000, // 2026医保年度封顶 67 万元（2025医保年度为65万元）
       tierBenefits: {
         community: { tierName: '一级及社区卫生机构', deductible: 1500, reimbursementRatio: 0.85, retireeRatioBonus: 0.07 },
         tier1: { tierName: '一级定点医疗机构', deductible: 1500, reimbursementRatio: 0.85, retireeRatioBonus: 0.07 },
@@ -81,11 +103,11 @@ export const shanghaiCityData: CityInsuranceData = {
       repeatedDeductibleRule: '在职住院起付线1500元（退休1200元），当年多次住院不递减。'
     },
     catastrophic: {
-      sourceDocId: 'sh-medical-insurance-regulations-2024',
+      sourceDocId: 'sh-employee-transition-2026',
       name: '上海市职工地方附加医疗保险',
-      deductible: 650000,
+      deductible: 670000,
       tiers: [
-        { minAmount: 650000, ratio: 0.80 } // 超过65万部分按80%报销，不设封顶线
+        { minAmount: 670000, ratio: 0.80 } // 超过67万部分由地方附加医疗保险基金继续报销80%，不设封顶线
       ]
     },
     remoteMedical: {

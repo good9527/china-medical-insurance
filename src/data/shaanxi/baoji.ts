@@ -57,6 +57,28 @@ export const baojiCityData: CityInsuranceData = {
       status: 'active',
       officialUrl: 'http://ybj.baoji.gov.cn/',
       summaryQuote: '职工医保住院起付标准：一级定点医疗机构300元，二级定点医疗机构600元，三级定点医疗机构1500元。符合政策范围费用支付比例：一级机构在职92%（退休94%），二级机构在职90%（退休92%），三级机构在职85%（退休87%）。统筹基金年度最高支付限额35万元。'
+    },
+    {
+      docId: 'bj-medical-adjust-2023-106',
+      title: '宝鸡市医疗保障局 宝鸡市财政局关于调整我市基本医疗保险待遇政策有关问题的通知',
+      docNumber: '宝医保发〔2023〕106号',
+      issuingDept: ['宝鸡市医疗保障局', '宝鸡市财政局'],
+      publishDate: '2023-11-16',
+      effectiveDate: '2024-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.baoji.gov.cn/',
+      summaryQuote: '全市参保城乡居民及城镇职工，在本市行政区域内一级定点医疗机构住院的起付标准，由现行的300元调整为200元；学生儿童在行政区域内一级定点医疗机构住院起付标准由150元调整为100元；大学生门诊统筹基本医疗保险基金支付限额调整为380元。'
+    },
+    {
+      docId: 'sn-resident-catastrophic-framework-2024-24',
+      title: '陕西省医疗保障局 陕西省财政厅 国家金融监督管理总局陕西监管局关于进一步完善城乡居民大病保险有关工作的通知',
+      docNumber: '陕医保发〔2024〕24号',
+      issuingDept: ['陕西省医疗保障局', '陕西省财政厅', '国家金融监督管理总局陕西监管局'],
+      publishDate: '2024-09-30',
+      effectiveDate: '2025-01-01',
+      status: 'active',
+      officialUrl: 'http://ybj.shaanxi.gov.cn/',
+      summaryQuote: '指导全省统筹区建立城乡居民大病保险动态调整机制，原则上起付线按照全省或统筹区上一年度居民人均可支配收入的一半左右合理确定并动态调整；各统筹区结合当地经济承受能力与基金运行实际分别出台实施细则，并建立对连续参保人员和零报销人员的大病保险待遇长效激励机制。'
     }
   ],
 
@@ -77,11 +99,11 @@ export const baojiCityData: CityInsuranceData = {
       note: '依据《宝鸡市职工基本医疗保险门诊共济保障实施办法（试行）》（宝政办发〔2022〕54号）：普通门诊按次起付50元/次（一个自然月只收1次，年累计不超过4次）。在职报销比例：一级60%、二级55%、三级50%，退休人员上浮5个百分点。在职年度限额500元，退休年度限额900元。'
     },
     inpatient: {
-      sourceDocId: 'bj-employee-inpatient-policy-2020',
+      sourceDocId: 'bj-medical-adjust-2023-106',
       annualCap: 350000,
       tierBenefits: {
-        community: { tierName: '基层乡镇卫生院/社区中心', deductible: 300, reimbursementRatio: 0.92, retireeRatioBonus: 0.02 },
-        tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.92, retireeRatioBonus: 0.02 },
+        community: { tierName: '基层乡镇卫生院/社区中心', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.02 },
+        tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.02 },
         tier2: { tierName: '二级定点医疗机构', deductible: 600, reimbursementRatio: 0.90, retireeRatioBonus: 0.02 },
         tier3: { tierName: '三级定点医疗机构', deductible: 1500, reimbursementRatio: 0.85, retireeRatioBonus: 0.02 },
         tier3_top: { tierName: '三甲综合医院', deductible: 1500, reimbursementRatio: 0.85, retireeRatioBonus: 0.02 }
@@ -131,7 +153,7 @@ export const baojiCityData: CityInsuranceData = {
       }
     },
     catastrophic: {
-      sourceDocId: 'bj-resident-inpatient-adjust-2022-66',
+      sourceDocId: 'bj-resident-inpatient-adjust-2024',
       name: '城乡居民大病保险',
       deductible: 10000,
       annualCap: 300000, // 宝鸡市城乡居民大病保险年度最高支付限额30万元
