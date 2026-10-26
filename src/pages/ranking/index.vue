@@ -1885,6 +1885,8 @@ const filteredBattleMetrics = computed(() => {
   background: #ffffff;
   border: 1px solid #cbd5e1;
   padding: 8px 14px;
+  min-height: 44px;
+  box-sizing: border-box;
   border-radius: 8px;
   cursor: pointer;
   min-width: 170px;
@@ -1966,10 +1968,14 @@ const filteredBattleMetrics = computed(() => {
 .layout-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  padding: 6px 12px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 14px;
   border-radius: 6px;
   cursor: pointer;
+  box-sizing: border-box;
   font-size: 12px;
   font-weight: 600;
   color: #64748b;
@@ -2013,6 +2019,8 @@ const filteredBattleMetrics = computed(() => {
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   padding: 0 12px;
+  min-height: 44px;
+  box-sizing: border-box;
   width: 300px;
   transition: border-color 0.18s ease;
 }
@@ -2032,7 +2040,7 @@ const filteredBattleMetrics = computed(() => {
 
 .search-input {
   flex: 1;
-  height: 38px;
+  height: 44px;
   font-size: 13px;
   color: #1e293b;
 }
@@ -2072,10 +2080,10 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .podium-card.rank-1 {
-  border: 1px solid rgba(245, 158, 11, 0.4);
+  border: 1px solid rgba(245, 158, 11, 0.2);
   padding: 26px 20px;
   background: linear-gradient(180deg, #fffdf2 0%, #fffcf0 50%, #ffffff 100%);
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(245, 158, 11, 0.06);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .podium-card.rank-2 {
@@ -2480,11 +2488,17 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .brc-act-btn {
-  padding: 4px 9px;
-  border-radius: 6px;
-  font-size: 11px;
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
+  border-radius: 8px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.15s ease;
 }
 
@@ -2588,7 +2602,7 @@ const filteredBattleMetrics = computed(() => {
   font-weight: 700;
   color: #475569;
   user-select: none;
-  border-bottom: 2px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
   background: #f8fafc;
   white-space: nowrap !important;
   word-break: keep-all !important;
@@ -2863,13 +2877,14 @@ const filteredBattleMetrics = computed(() => {
   justify-content: center !important;
   white-space: nowrap !important;
   word-break: keep-all !important;
-  gap: 3px !important;
-  height: 28px !important;
-  line-height: 28px !important;
-  padding: 0 10px !important;
+  gap: 4px !important;
+  min-height: 44px !important;
+  min-width: 44px !important;
+  line-height: 44px !important;
+  padding: 0 14px !important;
   background: #eff6ff !important;
   border: 1px solid #bfdbfe !important;
-  border-radius: 6px !important;
+  border-radius: 8px !important;
   cursor: pointer;
   flex-shrink: 0 !important;
   box-sizing: border-box !important;
@@ -3457,9 +3472,15 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .size-pill {
-  padding: 3px 8px;
-  border-radius: 4px;
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border-radius: 6px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.15s ease;
 }
 
@@ -3485,14 +3506,20 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .page-nav-btn {
-  padding: 5px 12px;
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
   font-size: 12px;
   font-weight: 600;
   color: #334155;
   background: #ffffff;
   border: 1px solid #cbd5e1;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
+  box-sizing: border-box;
   line-height: 1.5;
   transition: all 0.15s ease;
 }
@@ -3769,7 +3796,8 @@ const filteredBattleMetrics = computed(() => {
 
   .dropdown-trigger {
     width: 100%;
-    height: 34px;
+    height: 44px;
+    min-height: 44px;
     box-sizing: border-box;
     min-width: unset;
     padding: 0 8px;
@@ -3827,7 +3855,8 @@ const filteredBattleMetrics = computed(() => {
     display: flex;
     padding: 2px;
     border-radius: 8px;
-    height: 34px;
+    height: 44px;
+    min-height: 44px;
     box-sizing: border-box;
     background: #f1f5f9;
     border: 1px solid #e2e8f0;
@@ -3836,6 +3865,8 @@ const filteredBattleMetrics = computed(() => {
   .layout-toggle-dock .layout-btn {
     padding: 0 8px;
     height: 100%;
+    min-height: 44px;
+    min-width: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3856,13 +3887,15 @@ const filteredBattleMetrics = computed(() => {
 
   .search-input-box {
     width: 100%;
-    height: 34px;
+    height: 44px;
+    min-height: 44px;
     box-sizing: border-box;
     padding: 0 10px;
   }
 
   .search-input {
-    height: 32px;
+    height: 44px;
+    min-height: 44px;
     font-size: 12px;
   }
 

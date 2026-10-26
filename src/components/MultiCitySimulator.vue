@@ -54,10 +54,10 @@
       </view>
     </view>
 
-    <!-- 2. 统筹区选择卡 (支持 2~3 个地级市) -->
+    <!-- 统筹区选择卡 (支持 2~3 个地级市) -->
     <view class="city-selector-card">
       <view class="csc-head">
-        <text class="csc-title">1. 选择对比统筹区（支持 2~3 个城市自由对比）</text>
+        <text class="csc-title">选择对比统筹区（支持 2~3 个城市自由对比）</text>
         <view class="csc-actions" v-if="selectedCities.length < 3">
           <view class="add-city-btn" @click="addThirdCity">
             <svg class="btn-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
@@ -93,10 +93,10 @@
       </view>
     </view>
 
-    <!-- 3. 同等就医场景配置面板 (Identical Healthcare Scenario) -->
+    <!-- 同等就医场景配置面板 (Identical Healthcare Scenario) -->
     <view class="scenario-panel-card">
       <view class="spc-head">
-        <text class="spc-title">2. 设定同等就医场景与人员参数（各城市在完全相同场景下并排精算）</text>
+        <text class="spc-title">设定同等就医场景与人员参数（各城市在完全相同场景下并排精算）</text>
       </view>
 
       <view class="scenario-form-grid">
@@ -301,7 +301,7 @@
       <view class="crs-head">
         <view class="crs-title-wrap">
           <svg class="crs-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          <text class="crs-title">3. 并排精算账单与胜出维度透视</text>
+          <text class="crs-title">并排精算账单与胜出维度透视</text>
         </view>
         <text class="crs-sub">医疗总费用：¥{{ scenario.totalCost.toLocaleString() }} · {{ scenario.insuranceType === 'employee' ? (scenario.isRetiree ? '退休职工' : '在职职工') : '城乡居民' }} · {{ getHospitalTierName(scenario.hospitalTier) }}</text>
       </view>
@@ -446,12 +446,12 @@
         </view>
       </view>
 
-      <!-- 5. 红头法定政策公文依据与溯源凭单 (Red-Header Statutory Citations) -->
+      <!-- 红头法定政策公文依据与溯源凭单 (Red-Header Statutory Citations) -->
       <view class="statutory-citation-deck">
         <view class="scd-head">
           <view class="scd-title-group">
             <svg class="scd-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-            <text class="scd-title">4. 红头政策公文依据溯源凭单（各统筹区法规公文一对一穿透印证）</text>
+            <text class="scd-title">红头政策公文依据溯源凭单（各统筹区法规公文一对一穿透印证）</text>
           </view>
           <text class="scd-badge">现行有效规范性公文</text>
         </view>
@@ -469,50 +469,28 @@
             </view>
 
             <view class="rh-body">
-              <!-- 公文全称 -->
-              <text class="rh-doc-title">{{ city.officialDocUsed?.title || city.cityName + '现行医疗保障政策文件' }}</text>
-
-              <!-- 发文单位与字号 -->
-              <view class="rh-meta-grid">
-                <view class="rh-meta-item" v-if="city.officialDocUsed?.issuingDept?.length">
-                  <text class="rh-meta-k">发文机关：</text>
-                  <text class="rh-meta-v">{{ city.officialDocUsed.issuingDept.join(' · ') }}</text>
-                </view>
-
-                <view class="rh-meta-item">
-                  <text class="rh-meta-k">发文字号：</text>
-                  <view class="rh-num-group">
-                    <text class="rh-doc-num font-mono">{{ city.officialDocUsed?.docNumber || '规范性文件' }}</text>
-                    <view class="rh-copy-btn" @click.stop="copyText(city.officialDocUsed?.docNumber || '', '发文字号')">
-                      <svg class="copy-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                      <text>复制文号</text>
-                    </view>
-                  </view>
-                </view>
-
-                <view class="rh-meta-item" v-if="city.officialDocUsed?.effectiveDate">
-                  <text class="rh-meta-k">施行日期：</text>
-                  <text class="rh-meta-v font-mono">{{ city.officialDocUsed.effectiveDate }} 起施行</text>
-                </view>
-              </view>
-
-              <!-- 法定核心条款原文引用 -->
-              <view class="rh-quote-block" v-if="city.officialDocUsed?.summaryQuote">
-                <view class="quote-head">
-                  <text class="qh-tag">支撑测算法规条款原文</text>
-                  <view class="qh-copy-btn" @click.stop="copyText(city.officialDocUsed.summaryQuote, '法规条款原文')">
+              <!-- 公文全称与发文字号 -->
+              <view class="rh-strip-main">
+                <text class="rh-doc-title">{{ city.officialDocUsed?.title || city.cityName + '现行医疗保障政策文件' }}</text>
+                <view class="rh-num-group" v-if="city.officialDocUsed?.docNumber">
+                  <text class="rh-doc-num font-mono">{{ city.officialDocUsed.docNumber }}</text>
+                  <view class="rh-copy-btn" @click.stop="copyText(city.officialDocUsed.docNumber, '发文字号')">
                     <svg class="copy-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                    <text>复制条款</text>
+                    <text>复制文号</text>
                   </view>
                 </view>
-                <text class="quote-text">“{{ city.officialDocUsed.summaryQuote }}”</text>
               </view>
 
-              <!-- 快捷操作栏：查阅原文 / 医保局官网 / 12393 热线 -->
+              <!-- 快捷操作栏：查阅原文 / 复制条款 / 医保局官网 / 12393 热线 -->
               <view class="rh-actions-bar">
-                <view class="rh-act-btn" @click="handleOpenDocUrl(city.officialDocUsed?.officialUrl)">
+                <view class="rh-act-btn" @click="handleOpenDocUrl(city.officialDocUsed?.officialUrl)" v-if="city.officialDocUsed?.officialUrl">
                   <svg class="act-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                   <text>查阅公文原文 ↗</text>
+                </view>
+
+                <view class="rh-act-btn" @click.stop="copyText(city.officialDocUsed?.summaryQuote || '', '法规条款原文')" v-if="city.officialDocUsed?.summaryQuote">
+                  <svg class="act-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                  <text>复制条款</text>
                 </view>
 
                 <view class="rh-act-btn" @click="handleOpenPortalUrl(city.portalUrl)" v-if="city.portalUrl">
@@ -1098,10 +1076,15 @@ function triggerHaptic() {
 .remove-slot-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 2px;
   font-size: 11px;
   color: #ef4444;
   cursor: pointer;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 8px;
+  box-sizing: border-box;
 }
 
 .remove-svg {
@@ -1502,14 +1485,21 @@ function triggerHaptic() {
 }
 
 .cost-chip {
-  padding: 4px 10px;
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 14px;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  font-size: 12px;
+  border-radius: 8px;
+  font-size: 13px;
   font-weight: 600;
   color: #334155;
   cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
 }
 
 .cost-chip.active {
@@ -1870,13 +1860,13 @@ function triggerHaptic() {
   flex-shrink: 0;
 }
 
-/* 5. 红头政策公文凭单 */
+/* 红头政策公文凭单 */
 .statutory-citation-deck {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 14px;
   padding: 18px 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .scd-head {
@@ -1928,10 +1918,11 @@ function triggerHaptic() {
 }
 
 .red-header-card {
-  border: 1px solid #fecdd3;
+  border: 1px solid #e2e8f0;
   border-radius: 10px;
   overflow: hidden;
   background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .red-header-bar {
@@ -1958,93 +1949,65 @@ function triggerHaptic() {
   padding: 14px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+}
+
+.rh-strip-main {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .rh-doc-title {
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #0f172a;
   line-height: 1.4;
-}
-
-.rh-meta-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 12px;
-}
-
-.rh-meta-item {
-  display: flex;
-  align-items: baseline;
-}
-
-.rh-meta-k {
-  color: #64748b;
-  white-space: nowrap;
-}
-
-.rh-meta-v {
-  color: #0f172a;
 }
 
 .rh-num-group {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-wrap: wrap;
 }
 
 .rh-doc-num {
+  font-size: 11.5px;
   font-weight: 700;
   color: #be123c;
+  background: #fff1f2;
+  border: 1px solid #fecdd3;
+  padding: 1px 6px;
+  border-radius: 4px;
 }
 
 .rh-copy-btn, .qh-copy-btn {
+  min-height: 44px;
+  min-width: 44px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 3px;
   font-size: 11px;
   color: #2563eb;
   cursor: pointer;
-  padding: 1px 4px;
-  border-radius: 3px;
+  padding: 0 10px;
+  border-radius: 6px;
   background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #dbeafe;
+  }
 }
 
 .copy-svg {
-  width: 11px;
-  height: 11px;
+  width: 12px;
+  height: 12px;
   flex-shrink: 0;
-}
-
-.rh-quote-block {
-  background: #fdf2f4;
-  border-left: 3px solid #be123c;
-  border-radius: 4px;
-  padding: 8px 10px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.quote-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.qh-tag {
-  font-size: 11px;
-  font-weight: 600;
-  color: #be123c;
-}
-
-.quote-text {
-  font-size: 12px;
-  color: #475569;
-  line-height: 1.5;
-  font-style: normal;
 }
 
 .rh-actions-bar {
@@ -2056,26 +2019,40 @@ function triggerHaptic() {
 }
 
 .rh-act-btn {
+  min-height: 44px;
+  min-width: 44px;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 600;
   color: #334155;
-  background: #f1f5f9;
+  background: #f8fafc;
   border: 1px solid #e2e8f0;
-  border-radius: 6px;
-  padding: 5px 8px;
+  border-radius: 8px;
+  padding: 0 12px;
   cursor: pointer;
-}
+  box-sizing: border-box;
+  transition: all 0.15s ease;
 
-.rh-act-btn:hover {
-  background: #e2e8f0;
+  &:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+    color: #2563eb;
+  }
 }
 
 .hotline-btn {
   color: #047857;
   border-color: #bbf7d0;
   background: #f0fdf4;
+
+  &:hover {
+    background: #dcfce7;
+    border-color: #86efac;
+    color: #065f46;
+  }
 }
 
 .act-svg {

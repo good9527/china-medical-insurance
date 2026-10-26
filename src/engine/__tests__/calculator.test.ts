@@ -8607,6 +8607,401 @@ export function runCalculatorTests() {
     console.log('  - [H42 PASS] 跨城对比模拟器差额相反数守恒律(ΔR = -ΔP)与对称性4组场景全维核验通过');
   }
 
+  // --------------------------------------------------------------------------
+  // Suite H43: 2025-2026 前沿新政深度穿透、UI渐进式极简无噪展开、全额域超高压资金守恒与跨城对偶对称断言
+  // --------------------------------------------------------------------------
+  console.log('\n=========================================');
+  console.log('>>> [Suite H43] 执行 2025-2026 前沿新政深度穿透、全额域超高压资金守恒、跨城对偶对称与UI渐进式极简无噪展开全量校验...');
+
+  // 1. 2025-2026 最新官方公文参数穿透与公共台账一致性核验 (含8条最新公文)
+  {
+    // 1A: 深圳市 2026 医保年度在岗职工社平工资 177,057 元门诊共济限额联动 (深医保规〔2026〕2号)
+    totalChecks++;
+    const szData = getCityDataByCode('440300')!;
+    assertTrue(!!szData, '深圳市政策数据必须存在');
+    assertEqual(szData.employee.outpatient?.annualCap, 10623, '深圳在职职工普通门诊统筹年度限额精确为10623元(在岗社平工资177057×6%)');
+    assertEqual(szData.employee.outpatient?.annualCapRetiree, 12394, '深圳退休人员普通门诊统筹年度限额精确为12394元(在岗社平工资177057×7%)');
+    assertEqual(szData.employee.outpatient?.annualDeductible, 0, '深圳职工门诊不设起付线(0元)');
+
+    const szActiveOut = calculateReimbursement({
+      cityCode: '440300',
+      insuranceType: 'employee',
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 25000,
+      isRetiree: false
+    });
+    assertEqual(szActiveOut.breakdown.totalReimbursed, 10623, '深圳在职职工门诊25000元精确触顶10623元封顶线');
+    assertEqual(szActiveOut.breakdown.personalPayTotal, 14377, '深圳在职职工门诊自付精确为14377元');
+    assertEqual(szActiveOut.breakdown.totalReimbursed + szActiveOut.breakdown.personalPayTotal, 25000, '深圳在职门诊资金物理守恒');
+
+    const szRetireeOut = calculateReimbursement({
+      cityCode: '440300',
+      insuranceType: 'employee',
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 25000,
+      isRetiree: true
+    });
+    assertEqual(szRetireeOut.breakdown.totalReimbursed, 12394, '深圳退休职工门诊25000元精确触顶12394元退休专享封顶线');
+    assertEqual(szRetireeOut.breakdown.personalPayTotal, 12606, '深圳退休职工门诊自付精确为12606元');
+    assertEqual(szRetireeOut.breakdown.totalReimbursed + szRetireeOut.breakdown.personalPayTotal, 25000, '深圳退休门诊资金物理守恒');
+    passCount++;
+    console.log('  - [H43 PASS] 深圳市2026年社平工资联动门诊限额(深医保规〔2026〕2号)在职/退休双轨测算通过');
+
+    // 1B: 广州市 2026 新版城乡居民大病保险 1.8 万元起付线与阶梯报销 (穗府办规〔2026〕9号)
+    totalChecks++;
+    const gzData = getCityDataByCode('440100')!;
+    assertTrue(!!gzData.resident.catastrophic, '广州居民大病保险政策必须存在');
+    assertEqual(gzData.resident.catastrophic!.deductible, 18000, '广州居民大病保险起付线精准更新为18000元');
+    assertEqual(gzData.resident.catastrophic!.annualCap, 400000, '广州居民大病保险年度最高支付限额为400000元');
+
+    const gzResIn = calculateReimbursement({
+      cityCode: '440100',
+      insuranceType: 'resident',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 80000,
+      isRetiree: false
+    });
+    assertEqual(gzResIn.breakdown.baseReimbursed, 55650, '广州居民三级住院基本统筹报销(80000-500)*0.7=55650元');
+    assertEqual(gzResIn.breakdown.catastrophicReimbursed, 3810, '广州居民大病保险实报(24350-18000)*0.6=3810元');
+    assertEqual(gzResIn.breakdown.totalReimbursed, 59460, '广州居民大病合并总报销59460元');
+    assertEqual(gzResIn.breakdown.personalPayTotal, 20540, '广州居民个人最终自付20540元');
+    assertEqual(gzResIn.breakdown.totalReimbursed + gzResIn.breakdown.personalPayTotal, 80000, '广州居民住院资金物理守恒');
+    passCount++;
+    console.log('  - [H43 PASS] 广州市2026新版城乡居民大病保险(穗府办规〔2026〕9号)起付线与阶梯补偿自洽通过');
+
+    // 1C: 杭州市新版医保办法门诊共济无封顶与退休倾斜 (杭政函〔2025〕88号)
+    totalChecks++;
+    const hzData = getCityDataByCode('330100')!;
+    assertEqual(hzData.employee.outpatient?.annualDeductible, 600, '杭州在职职工门诊起付线为600元');
+    assertEqual(hzData.employee.outpatient?.annualDeductibleRetiree, 200, '杭州退休职工门诊起付线优待至200元');
+    assertTrue((hzData.employee.outpatient?.annualCap ?? 0) >= 999999, '杭州门诊统筹上不封顶');
+
+    const hzActiveOut = calculateReimbursement({
+      cityCode: '330100',
+      insuranceType: 'employee',
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 2000,
+      isRetiree: false
+    });
+    assertEqual(hzActiveOut.breakdown.totalReimbursed, 1064, '杭州在职职工三级门诊(2000-600)*0.76=1064元');
+    assertEqual(hzActiveOut.breakdown.personalPayTotal, 936, '杭州在职职工自付936元');
+    assertEqual(hzActiveOut.breakdown.totalReimbursed + hzActiveOut.breakdown.personalPayTotal, 2000, '杭州在职门诊资金物理守恒');
+
+    const hzRetireeOut = calculateReimbursement({
+      cityCode: '330100',
+      insuranceType: 'employee',
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 2000,
+      isRetiree: true
+    });
+    assertEqual(hzRetireeOut.breakdown.totalReimbursed, 1476, '杭州退休职工三级门诊(2000-200)*0.82=1476元');
+    assertEqual(hzRetireeOut.breakdown.personalPayTotal, 524, '杭州退休职工自付524元');
+    assertEqual(hzRetireeOut.breakdown.totalReimbursed + hzRetireeOut.breakdown.personalPayTotal, 2000, '杭州退休门诊资金物理守恒');
+    passCount++;
+    console.log('  - [H43 PASS] 杭州市新版医保办法(杭政函〔2025〕88号)职工门诊无封顶与起付倾斜测算通过');
+
+    // 1D: 武汉市职工门诊 0 元起付线与基层高比例报销 (武医保发〔2024〕12号)
+    totalChecks++;
+    const whData = getCityDataByCode('420100')!;
+    assertEqual(whData.employee.outpatient?.annualDeductible, 0, '武汉职工门诊全域0元起付线');
+    const whTier1 = calculateReimbursement({
+      cityCode: '420100',
+      insuranceType: 'employee',
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier1',
+      remoteStatus: 'local',
+      totalCost: 1000,
+      isRetiree: false
+    });
+    assertEqual(whTier1.breakdown.totalReimbursed, 850, '武汉在职职工一级门诊按85%实报850元');
+    assertEqual(whTier1.breakdown.personalPayTotal, 150, '武汉在职自付150元');
+    assertEqual(whTier1.breakdown.totalReimbursed + whTier1.breakdown.personalPayTotal, 1000, '武汉一级门诊资金物理守恒');
+
+    const whTier3 = calculateReimbursement({
+      cityCode: '420100',
+      insuranceType: 'employee',
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 1000,
+      isRetiree: false
+    });
+    assertEqual(whTier3.breakdown.totalReimbursed, 550, '武汉在职职工三级门诊按55%实报550元');
+    assertEqual(whTier3.breakdown.personalPayTotal, 450, '武汉在职自付450元');
+    assertEqual(whTier3.breakdown.totalReimbursed + whTier3.breakdown.personalPayTotal, 1000, '武汉三级门诊资金物理守恒');
+    passCount++;
+    console.log('  - [H43 PASS] 武汉市职工门诊0起付与梯次比例(武医保发〔2024〕12号)自洽核验通过');
+
+    // 1E: 公共纠错台账 CORRECTION_UPDATES_LOG 字段完整性与 8 条最新挖掘公文凭证核验
+    totalChecks++;
+    assertTrue(CORRECTION_UPDATES_LOG.length >= 35, '公共纠错台账记录条数充足(>=35条)');
+    for (const logItem of CORRECTION_UPDATES_LOG) {
+      assertTrue(!!logItem.id, `台账记录 ID 必须非空: ${JSON.stringify(logItem)}`);
+      assertTrue(!!logItem.city, `台账记录统筹区名称必须非空: ${logItem.id}`);
+      assertTrue(!!logItem.type, `台账记录类型必须非空: ${logItem.id}`);
+      assertTrue(!!logItem.date, `台账记录日期必须非空: ${logItem.id}`);
+      assertTrue(!!logItem.desc && logItem.desc.length >= 10, `台账记录描述必须详尽(>=10字): ${logItem.id}`);
+      assertTrue(!!logItem.doc && logItem.doc.length >= 4, `台账依据公文必须具备正规文号: ${logItem.id}`);
+    }
+    passCount++;
+
+    const newCircularIds = [
+      'u-2026-1026-hz-outpatient',
+      'u-2026-1026-jn-catastrophic',
+      'u-2026-1026-js-incentive',
+      'u-2026-1026-hb-anti-poverty',
+      'u-2026-1026-national-chronic10',
+      'u-2026-1026-gba-elderly-voucher',
+      'u-2026-1026-sc-cq-tenure',
+      'u-2026-1026-cd-catastrophic-dyn'
+    ];
+    for (const cid of newCircularIds) {
+      totalChecks++;
+      const item = CORRECTION_UPDATES_LOG.find(x => x.id === cid);
+      assertTrue(!!item, `2025-2026最新红头公文台账记录必须存在: ${cid}`);
+      assertTrue(!!item!.doc && item!.doc.length >= 4, `公文凭证字号必须规范: ${cid}`);
+      assertTrue(!!item!.desc && item!.desc.length >= 10, `公文政策摘要必须详尽: ${cid}`);
+      passCount++;
+    }
+    console.log('  - [H43 PASS] 公共纠错台账 CORRECTION_UPDATES_LOG 35+ 条公文凭证与8项最新红头公文核验通过');
+  }
+
+  // 2. 全额域资金物理守恒定律严格边界测试 [0 ~ 100,000,000 RMB] (4区域代表城市 × 24极端边界 = 96组全量断言)
+  {
+    const boundaryAmounts = [
+      0,
+      0.01,
+      0.49,
+      1.00,
+      99.99,
+      100,
+      100.01,
+      300,
+      300.01,
+      800,
+      800.01,
+      1500,
+      1500.01,
+      5000,
+      18000,
+      18000.01,
+      50000,
+      100000,
+      670000,
+      670000.01,
+      1000000,
+      10000000,
+      50000000,
+      100000000
+    ];
+
+    const testScenarios: { cityCode: string; name: string; insuranceType: 'employee' | 'resident'; hospitalTier: HospitalTier; isRetiree: boolean }[] = [
+      { cityCode: '440300', name: '深圳特区职工三甲住院', insuranceType: 'employee', hospitalTier: 'tier3_top', isRetiree: false },
+      { cityCode: '420100', name: '武汉九省通衢居民二级住院', insuranceType: 'resident', hospitalTier: 'tier2', isRetiree: false },
+      { cityCode: '510100', name: '成都西南中心在职三级住院', insuranceType: 'employee', hospitalTier: 'tier3', isRetiree: false },
+      { cityCode: '230100', name: '哈尔滨东北重镇居民一级住院', insuranceType: 'resident', hospitalTier: 'tier1', isRetiree: false }
+    ];
+
+    for (const sc of testScenarios) {
+      for (const amount of boundaryAmounts) {
+        totalChecks++;
+        const res = calculateReimbursement({
+          cityCode: sc.cityCode,
+          insuranceType: sc.insuranceType,
+          treatmentType: 'inpatient',
+          hospitalTier: sc.hospitalTier,
+          remoteStatus: 'local',
+          totalCost: amount,
+          isRetiree: sc.isRetiree
+        });
+
+        // 1. 资金物理守恒公理: 报销总额 + 个人自付总额 恒等于 医疗总花费 (分级取整误差 <= 0.01 元)
+        const totalSum = Math.round((res.breakdown.totalReimbursed + res.breakdown.personalPayTotal) * 100) / 100;
+        assertCloseTo(
+          totalSum,
+          amount,
+          0.01,
+          `${sc.name} 在花费 ¥${amount} 时满足资金物理守恒定律 (总报销+总自付===总费用)`
+        );
+
+        // 2. 非负与有界性公理: 0 <= R <= C, 0 <= P <= C
+        assertTrue(res.breakdown.totalReimbursed >= 0, `${sc.name} 报销总额非负`);
+        assertTrue(res.breakdown.personalPayTotal >= 0, `${sc.name} 个人自付非负`);
+        assertTrue(res.breakdown.totalReimbursed <= amount + 0.01, `${sc.name} 报销总额不得超过医疗总费用`);
+        assertTrue(res.breakdown.personalPayTotal <= amount + 0.01, `${sc.name} 个人自付不得超过医疗总费用`);
+
+        // 3. 子项相加恒等式: 基本报销 + 大病/互助报销 === 总报销 (误差 <= 0.01 元)
+        const subSum = Math.round((res.breakdown.baseReimbursed + res.breakdown.catastrophicReimbursed) * 100) / 100;
+        assertCloseTo(
+          subSum,
+          res.breakdown.totalReimbursed,
+          0.01,
+          `${sc.name} 在花费 ¥${amount} 时子项报销之和等于总报销`
+        );
+
+        // 4. 零花费幂等性验证
+        if (amount === 0) {
+          assertEqual(res.breakdown.totalReimbursed, 0, `${sc.name} 零花费时报销总额必须为0`);
+          assertEqual(res.breakdown.personalPayTotal, 0, `${sc.name} 零花费时自付总额必须为0`);
+        }
+      }
+    }
+    passCount++;
+    console.log('  - [H43 PASS] 全额域资金物理守恒定律 [0 ~ 100,000,000 RMB] 4代表城市24极端边界96组严密断言全部通过');
+  }
+
+  // 3. 跨城对比模拟器差额相反数守恒律（对偶律: ΔR = -ΔP）与对称性全维断言 (4组典型经济区跨城模拟)
+  {
+    const emojiRegexTest = /[\u{1F300}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{1F1E0}-\u{1F1FF}\u{1FA00}-\u{1FAFF}]/u;
+
+    // 3A: 粤港澳大湾区跨城实测 (深圳 440300, 广州 440100, 珠海 440400)
+    totalChecks++;
+    const sim4A = runMultiCitySimulation(['440300', '440100', '440400'], {
+      totalCost: 120000,
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3_top',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+    assertEqual(sim4A.cities.length, 3, '大湾区三城模拟返回3个统筹区');
+    assertTrue(sim4A.allConserved, '大湾区模拟全量满足资金守恒');
+    for (const c of sim4A.cities) {
+      assertTrue(c.isConserved, `${c.cityName}资金守恒成立`);
+      assertEqual(
+        Math.round((c.totalReimbursed + c.personalPayTotal) * 100) / 100,
+        120000,
+        `${c.cityName}报销+自付===120000`
+      );
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}满足差额相反数对偶律 (ΔR = -ΔP)`
+      );
+    }
+    assertEqual(sim4A.maxReimbursementDelta, sim4A.maxPersonalPayDelta, '大湾区最大报销跨度落差与最大自付跨度落差严格相等');
+    for (const insight of sim4A.keyInsights) {
+      assertTrue(!emojiRegexTest.test(insight), `大湾区洞察严格遵循0-Emoji规范: ${insight}`);
+    }
+
+    // 3B: 长江中游城市群跨城实测 (武汉 420100, 长沙 430100, 南昌 360100)
+    totalChecks++;
+    const sim4B = runMultiCitySimulation(['420100', '430100', '360100'], {
+      totalCost: 45000,
+      insuranceType: 'resident',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+    assertEqual(sim4B.cities.length, 3, '长江中游三城模拟返回3个统筹区');
+    assertTrue(sim4B.allConserved, '长江中游模拟全量满足资金守恒');
+    for (const c of sim4B.cities) {
+      assertTrue(c.isConserved, `${c.cityName}资金守恒成立`);
+      assertEqual(
+        Math.round((c.totalReimbursed + c.personalPayTotal) * 100) / 100,
+        45000,
+        `${c.cityName}报销+自付===45000`
+      );
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}满足差额相反数对偶律 (ΔR = -ΔP)`
+      );
+    }
+    assertEqual(sim4B.maxReimbursementDelta, sim4B.maxPersonalPayDelta, '长江中游最大报销落差与最大自付落差严格相等');
+    for (const insight of sim4B.keyInsights) {
+      assertTrue(!emojiRegexTest.test(insight), `长江中游洞察严格遵循0-Emoji规范: ${insight}`);
+    }
+
+    // 3C: 东北老工业基地跨城实测 (沈阳 210100, 长春 220100, 哈尔滨 230100)
+    totalChecks++;
+    const sim4C = runMultiCitySimulation(['210100', '220100', '230100'], {
+      totalCost: 80000,
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+    assertEqual(sim4C.cities.length, 3, '东北三省会城市模拟返回3个统筹区');
+    assertTrue(sim4C.allConserved, '东北模拟全量满足资金守恒');
+    for (const c of sim4C.cities) {
+      assertTrue(c.isConserved, `${c.cityName}资金守恒成立`);
+      assertEqual(
+        Math.round((c.totalReimbursed + c.personalPayTotal) * 100) / 100,
+        80000,
+        `${c.cityName}报销+自付===80000`
+      );
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}满足差额相反数对偶律 (ΔR = -ΔP)`
+      );
+    }
+    assertEqual(sim4C.maxReimbursementDelta, sim4C.maxPersonalPayDelta, '东北城市最大报销落差与最大自付落差严格相等');
+    for (const insight of sim4C.keyInsights) {
+      assertTrue(!emojiRegexTest.test(insight), `东北洞察严格遵循0-Emoji规范: ${insight}`);
+    }
+
+    // 3D: 极限一亿元超级应力三城模拟 (北京 110100, 上海 310100, 广州 440100)
+    totalChecks++;
+    const sim4D = runMultiCitySimulation(['110100', '310100', '440100'], {
+      totalCost: 100000000,
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3_top',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+    assertEqual(sim4D.cities.length, 3, '北上广三城极限模拟返回3个统筹区');
+    assertTrue(sim4D.allConserved, '一亿元超级应力下全量满足资金物理守恒');
+    for (const c of sim4D.cities) {
+      assertTrue(c.isConserved, `${c.cityName}极限花费资金守恒成立`);
+      assertEqual(
+        Math.round((c.totalReimbursed + c.personalPayTotal) * 100) / 100,
+        100000000,
+        `${c.cityName}极限花费报销+自付===100000000`
+      );
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}极限花费满足差额相反数对偶律 (ΔR = -ΔP)`
+      );
+    }
+    assertEqual(sim4D.maxReimbursementDelta, sim4D.maxPersonalPayDelta, '极限花费下最大报销落差与最大自付落差严格相等');
+    for (const insight of sim4D.keyInsights) {
+      assertTrue(!emojiRegexTest.test(insight), `极限模拟洞察严格遵循0-Emoji规范: ${insight}`);
+    }
+
+    passCount++;
+    console.log('  - [H43 PASS] 跨城对比模拟器差额相反数守恒律(ΔR = -ΔP)与对称性4组大区场景全维核验通过');
+  }
+
+  // 4. UI 渐进式展开 (Progressive Disclosure) 极简无噪与规范扩展断言
+  {
+    totalChecks++;
+    const uiChecksCount = runUIProgressiveDisclosureTests();
+    assertTrue(uiChecksCount >= 6, 'UI 渐进式折叠规范检验项数至少需包含6项核心断言');
+    totalChecks += uiChecksCount;
+    passCount++;
+    console.log('  - [H43 PASS] UI 渐进式极简无噪状态与严肃政务 0-Emoji 规范静态核验通过');
+  }
+
   console.log(`\n=========================================`);
   console.log(`[PASS] 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);

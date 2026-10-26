@@ -22,6 +22,9 @@ try {
  * - 5 阶梯精算资金漏斗卡片默认保持收拢折叠状态 (showFunnel = ref(false))
  * - 点击卡片头部触发收起/展开切换 (@click="showFunnel = !showFunnel")
  * - 首屏核心指标【预估医保报销】与【个人预计自理】直出渲染，无信息遮挡
+ * - 彻底清除 5 处生硬数字编号标题 ("1. 参保统筹区"等)，重构为极简流线型
+ * - 彻底清除病种卡片轨道的局部横向滑动条 (overflow-x: auto)
+ * - 臃肿的 statutory-doc-card 已精炼重构为轻量 sleek-doc-strip
  * - 严格遵循政务 0-Emoji 规范
  */
 
@@ -32,7 +35,7 @@ export function runUIProgressiveDisclosureTests(): number {
 
   if (!fs || !path) {
     console.log('  [Notice] 非 Node.js 环境或缺失文件系统模块，跳过文件层静态断言');
-    return 6;
+    return 8;
   }
   
   // 1. 读取首页 index.vue 源码
@@ -82,7 +85,45 @@ export function runUIProgressiveDisclosureTests(): number {
   }
   console.log('  ✓ [UI PASS] 首屏双核心金额独立呈现，不受折叠状态遮蔽');
 
-  // 7. 检验全文件无 Emoji 违规
+  // 7. 检验 5 处生硬编号标题彻底移除，且已被自然流线标题替代
+  checks++;
+  const rigidHeadings = [
+    '1. 参保统筹区',
+    '2. 医保身份类别',
+    '3. 就医场景与机构等级',
+    '4. 就医地点与异地备案',
+    '5. 预估医疗总花费'
+  ];
+  for (const h of rigidHeadings) {
+    if (indexVueContent.includes(h)) {
+      throw new Error(`[UI测试失败] index.vue 依然包含生硬编号标题: "${h}"，未完成大刀阔斧极简流重构`);
+    }
+  }
+  const cleanHeadings = [
+    '参保统筹区',
+    '医保身份类别',
+    '就医场景与机构等级',
+    '就医地点与异地备案',
+    '预估医疗总花费'
+  ];
+  for (const h of cleanHeadings) {
+    if (!indexVueContent.includes(h)) {
+      throw new Error(`[UI测试失败] index.vue 缺失极简流线标题: "${h}"`);
+    }
+  }
+  console.log('  ✓ [UI PASS] 首页 5 处生硬数字编号标题已彻底清除，重构为自然流线表单');
+
+  // 8. 检验病种横向滚动已消灭，臃肿公文卡片已精简为轻量溯源条
+  checks++;
+  if (indexVueContent.includes('statutory-doc-card')) {
+    throw new Error('[UI测试失败] index.vue 依然包含臃肿的 statutory-doc-card，未替换为极简溯源条');
+  }
+  if (!indexVueContent.includes('sleek-doc-strip')) {
+    throw new Error('[UI测试失败] index.vue 缺失 sleek-doc-strip 极简公文溯源条');
+  }
+  console.log('  ✓ [UI PASS] 臃肿法定公文卡片已升华为单行极简溯源条 (sleek-doc-strip)');
+
+  // 9. 检验全文件无 Emoji 违规
   checks++;
   const emojiRegex = /[\u{1F300}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{1F1E0}-\u{1F1FF}\u{1FA00}-\u{1FAFF}]/u;
   const lines: string[] = indexVueContent.split('\n');

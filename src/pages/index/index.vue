@@ -92,10 +92,10 @@
             </view>
           </view>
 
-          <!-- 模块 1: 参保统筹区 -->
+          <!-- 参保统筹区 -->
           <view class="config-group">
             <view class="group-header">
-              <text class="group-label">1. 参保统筹区</text>
+              <text class="group-label">参保统筹区</text>
               <text class="group-hint">当前：{{ currentCityOption.cityName }}（{{ currentProvince.name }}）</text>
             </view>
             <view class="region-dropdown-grid dropdown-anchor-row">
@@ -139,10 +139,10 @@
             </view>
           </view>
 
-          <!-- 模块 2: 参保身份类别 -->
+          <!-- 参保身份类别 -->
           <view class="config-group">
             <view class="group-header">
-              <text class="group-label">2. 医保身份类别</text>
+              <text class="group-label">医保身份类别</text>
             </view>
             <view class="segmented-control">
               <view 
@@ -182,10 +182,10 @@
             </view>
           </view>
 
-          <!-- 模块 3: 就医场景与机构等级 -->
+          <!-- 就医场景与机构等级 -->
           <view class="config-group">
             <view class="group-header">
-              <text class="group-label">3. 就医场景与机构等级</text>
+              <text class="group-label">就医场景与机构等级</text>
             </view>
             <view class="grid-2col dropdown-anchor-row">
               <view class="col-field">
@@ -277,10 +277,10 @@
             </view>
           </view>
 
-          <!-- 模块 4: 就医地点与异地备案 (一级控件前置) -->
+          <!-- 就医地点与异地备案 (一级控件前置) -->
           <view class="config-group">
             <view class="group-header">
-              <text class="group-label">4. 就医地点与异地备案</text>
+              <text class="group-label">就医地点与异地备案</text>
               <text class="group-remote-badge" :class="remoteOptions[selectedRemoteIndex].badgeClass">
                 {{ remoteOptions[selectedRemoteIndex].badge }}
               </text>
@@ -335,10 +335,10 @@
             </view>
           </view>
 
-          <!-- 模块 5: 预估医疗花费与快捷芯片 -->
+          <!-- 预估医疗总花费 -->
           <view class="config-group">
             <view class="group-header">
-              <text class="group-label">5. 预估医疗总花费</text>
+              <text class="group-label">预估医疗总花费</text>
             </view>
             <view class="amount-input-box">
               <text class="currency-symbol">¥</text>
@@ -689,93 +689,26 @@
               </view>
             </view>
 
-            <!-- 强化政策法规公文依据与溯源卡片 -->
-            <view class="statutory-doc-card">
-              <view class="doc-card-header">
-                <view class="doc-header-left">
-                  <view class="doc-icon-badge">
-                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                      <polyline points="14 2 14 8 20 8"></polyline>
-                      <line x1="16" y1="13" x2="8" y2="13"></line>
-                      <line x1="16" y1="17" x2="8" y2="17"></line>
-                    </svg>
-                  </view>
-                  <view class="doc-header-titles">
-                    <text class="doc-card-title">法定政策公文依据与溯源凭单</text>
-                    <text class="doc-card-subtitle">现行有效规范性文件 · 具备法律溯源效力</text>
-                  </view>
-                </view>
-                <view class="doc-status-badge">
-                  <text class="status-dot">●</text>
-                  <text class="status-txt">现行有效</text>
-                </view>
+            <!-- 极简法定政策公文依据与溯源条 (Sleek Statutory Citation Strip) -->
+            <view class="sleek-doc-strip">
+              <view class="sds-main" @click.stop="openDocUrl">
+                <view class="sds-dot"></view>
+                <text class="sds-label">公文依据：</text>
+                <text class="sds-title">{{ result.officialDocUsed?.title || currentCityOption.cityName + '基本医疗保险政策' }}</text>
+                <text class="sds-num font-mono" v-if="result.officialDocUsed?.docNumber">({{ result.officialDocUsed.docNumber }})</text>
               </view>
-
-              <view class="doc-content-body">
-                <!-- 公文标题与发文字号 -->
-                <view class="doc-meta-row">
-                  <view class="doc-meta-main">
-                    <text class="doc-main-title">{{ result.officialDocUsed?.title || currentCityOption.cityName + '基本医疗保险政策' }}</text>
-                    <view class="doc-number-row" v-if="result.officialDocUsed?.docNumber">
-                      <text class="doc-num-label">发文字号：</text>
-                      <text class="doc-num-val font-mono">{{ result.officialDocUsed.docNumber }}</text>
-                      <view class="mini-copy-pill" @click.stop="copyDocNumber">
-                        <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2">
-                          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                        </svg>
-                        <text class="mcp-txt">复制文号</text>
-                      </view>
-                    </view>
-                  </view>
+              <view class="sds-actions">
+                <view class="sds-btn" @click.stop="openDocUrl" v-if="result.officialDocUsed?.officialUrl" title="查阅公文原文">
+                  <text class="sds-btn-txt">查阅原文 ↗</text>
                 </view>
-
-                <!-- 法定核心条款原文引用卡片 -->
-                <view class="doc-quote-card" v-if="result.officialDocUsed?.summaryQuote">
-                  <view class="quote-header">
-                    <text class="quote-tag">核心法规条款摘录</text>
-                    <view class="quote-copy-btn" @click.stop="copyDocQuote">
-                      <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                      </svg>
-                      <text class="qcb-txt">复制条款原文</text>
-                    </view>
-                  </view>
-                  <view class="quote-text-wrap">
-                    <text class="quote-marks-left">“</text>
-                    <text class="quote-content">{{ result.officialDocUsed.summaryQuote }}</text>
-                    <text class="quote-marks-right">”</text>
-                  </view>
+                <view class="sds-btn" @click.stop="copyDocQuote" v-if="result.officialDocUsed?.summaryQuote" title="复制公文条款">
+                  <text class="sds-btn-txt">复制依据</text>
                 </view>
-
-                <!-- 政务服务与官方直达快捷入口 -->
-                <view class="gov-shortcuts-row">
-                  <view class="gov-shortcut-item" @click="openDocUrl">
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="gsi-svg">
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-                      <polyline points="15 3 21 3 21 9"></polyline>
-                      <line x1="10" y1="14" x2="21" y2="3"></line>
-                    </svg>
-                    <text class="gsi-txt">查阅公文原文</text>
-                  </view>
-
-                  <view class="gov-shortcut-item" @click="openPortalUrl" v-if="currentCityData?.officialPortalUrl">
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="gsi-svg">
-                      <circle cx="12" cy="12" r="10"></circle>
-                      <line x1="2" y1="12" x2="22" y2="12"></line>
-                      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-                    </svg>
-                    <text class="gsi-txt">{{ currentCityOption.cityName }}医保官网</text>
-                  </view>
-
-                  <view class="gov-shortcut-item hotline-shortcut" @click="handleCallHotline">
-                    <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" class="gsi-svg hotline-svg">
-                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                    </svg>
-                    <text class="gsi-txt">12393医保专线：{{ currentCityData?.hotline || '12393' }}</text>
-                  </view>
+                <view class="sds-btn" @click.stop="openPortalUrl" v-if="currentCityData?.officialPortalUrl" title="访问医保官网">
+                  <text class="sds-btn-txt">{{ currentCityOption.cityName }}官网</text>
+                </view>
+                <view class="sds-btn sds-btn-hotline" @click.stop="handleCallHotline" title="拨打12393医保专线">
+                  <text class="sds-btn-txt">12393专线</text>
                 </view>
               </view>
             </view>
@@ -1979,15 +1912,15 @@ svg {
   min-height: 44px;
   margin-top: 4px;
   background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
+  border: 1px solid #f1f5f9;
+  border-radius: 8px;
   padding: 8px 12px;
   box-sizing: border-box;
   cursor: pointer;
   transition: all 0.18s ease;
 
   &:hover {
-    border-color: #cbd5e1;
+    border-color: #e2e8f0;
   }
 }
 
@@ -2108,26 +2041,25 @@ svg {
   font-weight: 600;
 }
 
-/* 住院就诊频次阶梯选择器 */
+/* 住院就诊频次阶梯选择器 (流线极简 3 段药丸) */
 .admission-frequency-bar {
-  margin-top: 10px;
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 10px 12px;
+  margin-top: 8px;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .frequency-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .frequency-label {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 700;
-  color: #1e293b;
+  color: #334155;
 }
 
 .frequency-badge {
@@ -2143,7 +2075,10 @@ svg {
 .frequency-segmented-control {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
+  gap: 4px;
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 3px;
 }
 
 .freq-btn {
@@ -2152,46 +2087,45 @@ svg {
   align-items: center;
   justify-content: center;
   min-height: 44px;
-  padding: 6px 4px;
-  background: #ffffff;
-  border: 1.5px solid #cbd5e1;
+  padding: 2px 4px;
+  background: transparent;
+  border: none;
   border-radius: 8px;
   box-sizing: border-box;
   cursor: pointer;
   transition: all 0.18s ease;
 
   &:hover {
-    border-color: #2563eb;
-    background: #eff6ff;
+    background: rgba(255, 255, 255, 0.6);
   }
 
   &.active {
-    background: #eff6ff;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 1px #2563eb, 0 2px 6px rgba(37, 99, 235, 0.12);
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
 
     .freq-txt {
-      color: #1d4ed8;
+      color: #2563eb;
+      font-weight: 700;
     }
 
     .freq-sub {
-      color: #2563eb;
+      color: #3b82f6;
       font-weight: 600;
     }
   }
 }
 
 .freq-txt {
-  font-size: 12.5px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 600;
   color: #334155;
   line-height: 1.2;
 }
 
 .freq-sub {
-  font-size: 10.5px;
+  font-size: 10px;
   color: #64748b;
-  margin-top: 2px;
+  margin-top: 1px;
   line-height: 1.1;
 }
 
@@ -2199,9 +2133,9 @@ svg {
   display: flex;
   align-items: flex-start;
   gap: 5px;
-  margin-top: 8px;
-  padding: 6px 8px;
-  background: #f1f5f9;
+  margin-top: 6px;
+  padding: 5px 8px;
+  background: #f8fafc;
   border-radius: 6px;
 }
 
@@ -2219,7 +2153,7 @@ svg {
   flex: 1;
 }
 
-/* 4. 就医地点与异地备案前置控件 */
+/* 就医地点与异地备案前置控件 */
 .group-remote-badge {
   font-size: 11px;
   font-weight: 700;
@@ -2286,11 +2220,11 @@ svg {
 
 /* 异地政策指引卡片 */
 .remote-policy-guide {
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
   border-radius: 8px;
   padding: 8px 10px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .rpg-header {
@@ -2363,9 +2297,10 @@ svg {
 
 /* 门诊政策提醒 */
 .policy-notice {
-  margin-top: 4px;
-  background: #eff6ff;
-  border-left: 3px solid #2563eb;
+  margin-top: 6px;
+  background: #f8fafc;
+  border: 1px solid #f1f5f9;
+  border-left: 3px solid #3b82f6;
   border-radius: 8px;
   padding: 8px 10px;
 }
@@ -2504,19 +2439,8 @@ svg {
 
 .scenario-chips-scroll {
   display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 4px;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-
-  &::-webkit-scrollbar {
-    height: 4px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 9999px;
-  }
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
 .scenario-chip {
@@ -2584,13 +2508,12 @@ svg {
   font-weight: 700;
 }
 
-
-/* 高级自费折叠面板 */
+/* 高级自费折叠面板 (流线去嵌套) */
 .advanced-collapse-card {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 10px;
-  padding: 8px 12px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 4px 0;
 }
 
 .collapse-trigger {
@@ -2843,13 +2766,13 @@ svg {
 }
 
 .half-yen {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
   line-height: 1;
 }
 
 .half-val {
-  font-size: 28px;
+  font-size: 34px;
   font-weight: 900;
   font-variant-numeric: tabular-nums;
   line-height: 1.1;
@@ -3359,274 +3282,102 @@ svg {
   flex: 1;
 }
 
-/* 强化法定政策公文依据与溯源卡片 */
-.statutory-doc-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  padding: 14px;
+/* 极简法定政策公文依据与溯源条 */
+.sleek-doc-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 10px 14px;
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
-.doc-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #e2e8f0;
-  gap: 8px;
-}
-
-.doc-header-left {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.doc-icon-badge {
-  width: 28px;
-  height: 28px;
-  border-radius: 8px;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #2563eb;
-  flex-shrink: 0;
-}
-
-.doc-header-titles {
-  display: flex;
-  flex-direction: column;
-}
-
-.doc-card-title {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: #0f172a;
-}
-
-.doc-card-subtitle {
-  font-size: 10.5px;
-  color: #64748b;
-  margin-top: 1px;
-}
-
-.doc-status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: #ecfdf5;
-  border: 1px solid #a7f3d0;
-  padding: 2px 7px;
-  border-radius: 9999px;
-  flex-shrink: 0;
-}
-
-.status-dot {
-  color: #10b981;
-  font-size: 8px;
-}
-
-.status-txt {
-  font-size: 11px;
-  font-weight: 700;
-  color: #059669;
-}
-
-.doc-content-body {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.doc-meta-row {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.doc-main-title {
-  font-size: 13px;
-  font-weight: 700;
-  color: #1e293b;
-  line-height: 1.4;
-}
-
-.doc-number-row {
+.sds-main {
   display: flex;
   align-items: center;
   gap: 6px;
-  flex-wrap: wrap;
-  margin-top: 2px;
-}
-
-.doc-num-label {
-  font-size: 11px;
-  color: #64748b;
-}
-
-.doc-num-val {
-  font-size: 11.5px;
-  font-weight: 700;
-  color: #2563eb;
-  background: #eff6ff;
-  border: 1px solid #bfdbfe;
-  padding: 1px 6px;
-  border-radius: 4px;
-}
-
-.mini-copy-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  padding: 2px 7px;
-  border-radius: 4px;
+  min-width: 0;
+  flex: 1;
   cursor: pointer;
-  transition: all 0.15s ease;
-
-  &:hover {
-    background: #eff6ff;
-    border-color: #93c5fd;
-  }
 }
 
-.mcp-txt {
-  font-size: 10.5px;
-  color: #475569;
-  font-weight: 600;
-}
-
-.mini-copy-pill:hover .mcp-txt {
-  color: #2563eb;
-}
-
-.doc-quote-card {
-  background: #f8fafc;
-  border-left: 3px solid #2563eb;
-  border-radius: 0 8px 8px 0;
-  padding: 10px 12px;
-}
-
-.quote-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 6px;
-}
-
-.quote-tag {
-  font-size: 11px;
-  font-weight: 700;
-  color: #1d4ed8;
-}
-
-.quote-copy-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  background: #ffffff;
-  border: 1px solid #cbd5e1;
-  padding: 2px 7px;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-
-  &:hover {
-    background: #eff6ff;
-    border-color: #93c5fd;
-  }
-}
-
-.qcb-txt {
-  font-size: 10.5px;
-  color: #475569;
-  font-weight: 600;
-}
-
-.quote-copy-btn:hover .qcb-txt {
-  color: #2563eb;
-}
-
-.quote-text-wrap {
-  display: flex;
-  position: relative;
-}
-
-.quote-marks-left, .quote-marks-right {
-  font-size: 16px;
-  color: #94a3b8;
-  font-family: Georgia, serif;
-  line-height: 1;
-}
-
-.quote-content {
-  font-size: 11.5px;
-  color: #334155;
-  line-height: 1.5;
-  margin: 0 4px;
-}
-
-.gov-shortcuts-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 2px;
-}
-
-.gov-shortcut-item {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: #f8fafc;
-  border: 1px solid #cbd5e1;
-  padding: 5px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-
-  &:hover {
-    background: #eff6ff;
-    border-color: #93c5fd;
-  }
-}
-
-.gsi-svg {
-  stroke: #2563eb;
+.sds-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #10b981;
   flex-shrink: 0;
 }
 
-.gsi-txt {
-  font-size: 11.5px;
-  color: #334155;
-  font-weight: 600;
+.sds-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  flex-shrink: 0;
 }
 
-.gov-shortcut-item:hover .gsi-txt {
+.sds-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #1e293b;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sds-num {
+  font-size: 11px;
+  color: #2563eb;
+  flex-shrink: 0;
+}
+
+.sds-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.sds-btn {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border-radius: 6px;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background: #eff6ff;
+    border-color: #93c5fd;
+  }
+}
+
+.sds-btn-txt {
+  font-size: 11px;
+  font-weight: 600;
+  color: #334155;
+  white-space: nowrap;
+}
+
+.sds-btn:hover .sds-btn-txt {
   color: #2563eb;
 }
 
-.hotline-shortcut {
+.sds-btn-hotline {
   background: #ecfdf5;
   border-color: #a7f3d0;
 }
 
-.hotline-svg {
-  stroke: #059669;
-}
-
-.hotline-shortcut .gsi-txt {
-  color: #065f46;
-  font-weight: 700;
-}
-
-.hotline-shortcut:hover {
-  background: #d1fae5;
-  border-color: #6ee7b7;
+.sds-btn-hotline .sds-btn-txt {
+  color: #059669;
 }
 
 .estimate-footnote-bar {

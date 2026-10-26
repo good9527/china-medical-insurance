@@ -4,13 +4,37 @@
  */
 
 import { calculateReimbursement } from './calculator';
-import { getCityDataByCode } from '../data';
+import { getCityDataByCode as getRawCityData } from '../data';
 import type {
   ComparisonScenarioInput,
   CitySimulationOutcome,
   MultiCitySimulationResult,
   CalculateRequest
 } from '../data/types';
+
+/**
+ * 统筹区编码别名解析映射 (直辖市省级编码到统筹区编码容错映射)
+ */
+const CITY_CODE_ALIASES: Record<string, string> = {
+  '500000': '500100', // 重庆市省级代码 -> 重庆市统筹区代码
+  '110000': '110100', // 北京市省级代码 -> 北京市统筹区代码
+  '120000': '120100', // 天津市省级代码 -> 天津市统筹区代码
+  '310000': '310100', // 上海市省级代码 -> 上海市统筹区代码
+};
+
+/**
+ * 规范化解析统筹区编码 (支持直辖市省级代码自动映射至统筹区代码)
+ */
+export function resolveCityCode(code: string): string {
+  return CITY_CODE_ALIASES[code] || code;
+}
+
+/**
+ * 统筹区数据安全检索 (自动支持省级代码如 500000 别名容错解析)
+ */
+export function getCityDataByCode(cityCode: string) {
+  return getRawCityData(resolveCityCode(cityCode));
+}
 
 /**
  * 经典跨城/多城就医待遇对比预设组合
@@ -29,7 +53,7 @@ export const popularMultiCityPresets: MultiCityPreset[] = [
   { id: 'gz-xy-jn', name: '穗咸济三城', cities: ['440100', '610400', '370100'], label: '广州 VS 咸阳 VS 济南' },
   { id: 'tc-ya', name: '陕北陕中双城', cities: ['610200', '610600'], label: '铜川 VS 延安' },
   { id: 'bj-sh-gz', name: '北上广一线', cities: ['110100', '310100', '440100'], label: '北京 VS 上海 VS 广州' },
-  { id: 'xa-cd-cq', name: '成渝陕西部', cities: ['610100', '510100', '500000'], label: '西安 VS 成都 VS 重庆' },
+  { id: 'xa-cd-cq', name: '成渝陕西部', cities: ['610100', '510100', '500100'], label: '西安 VS 成都 VS 重庆' },
   { id: 'hz-nj-sh', name: '长三角三强', cities: ['330100', '320100', '310100'], label: '杭州 VS 南京 VS 上海' },
   { id: 'gz-sz-zh', name: '大湾区三核', cities: ['440100', '440300', '440400'], label: '广州 VS 深圳 VS 珠海' }
 ];
@@ -67,11 +91,12 @@ export function runMultiCitySimulation(
   const outcomes: CitySimulationOutcome[] = [];
 
   for (let i = 0; i < cityCodes.length; i++) {
-    const cityCode = cityCodes[i];
-    const city = getCityDataByCode(cityCode);
+    const rawCityCode = cityCodes[i];
+    const city = getCityDataByCode(rawCityCode);
     if (!city) {
-      throw new Error(`未找到统筹区编码 [${cityCode}] 的政策数据`);
+      throw new Error(`未找到统筹区编码 [${rawCityCode}] 的政策数据`);
     }
+    const cityCode = city.cityCode;
 
     // 若政策文本明确载明二次减半、三次及以上免收但未配置结构化 policy，则自动赋能精算策略
     let cityDataToUse = city;
