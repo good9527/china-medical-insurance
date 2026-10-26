@@ -450,10 +450,10 @@
             <!-- 核心精炼英雄结算看板 (左右并列，精致双核，杜绝冗余厚度) -->
             <view class="result-hero-board">
               <view class="hero-split-row">
-                <!-- 统筹报销 -->
+                <!-- 预估医保报销 -->
                 <view class="hero-half half-reimbursed">
                   <view class="half-tag tag-cyan">
-                    <text class="half-tag-txt">医保统筹报销</text>
+                    <text class="half-tag-txt">预估医保报销</text>
                     <text class="half-tag-pct">{{ displayRatio }}%</text>
                   </view>
                   <view class="half-price-row">
@@ -465,17 +465,17 @@
 
                 <view class="hero-center-divider"></view>
 
-                <!-- 个人自理 -->
+                <!-- 个人自付金额 -->
                 <view class="hero-half half-personal">
                   <view class="half-tag tag-amber">
-                    <text class="half-tag-txt">个人预计自理</text>
+                    <text class="half-tag-txt">个人自付金额</text>
                     <text class="half-tag-pct">{{ (100 - (result.breakdown.effectiveRatio || 0)).toFixed(1) }}%</text>
                   </view>
                   <view class="half-price-row">
                     <text class="half-yen text-amber">¥</text>
                     <text class="half-val text-amber">{{ displayPersonalPay.toLocaleString() }}</text>
                   </view>
-                  <text class="half-hint">含起付线及按比自负金额</text>
+                  <text class="half-hint">含起付线、按比自负及自费项</text>
                 </view>
               </view>
 
@@ -484,18 +484,37 @@
                 <view class="mini-bar bar-cyan" :style="{ width: result.breakdown.effectiveRatio + '%' }"></view>
                 <view class="mini-bar bar-amber" :style="{ width: Math.max(0, 100 - result.breakdown.effectiveRatio) + '%' }"></view>
               </view>
+
+              <!-- 首屏副标：直接呈现权威公文出处及 12393 咨询指引 -->
+              <view class="hero-authority-sub">
+                <view class="authority-doc-box" @click.stop="openDocUrl" :title="result.officialDocUsed?.title || '查看公文原文'">
+                  <svg class="authority-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                  </svg>
+                  <text class="authority-doc-title">{{ currentDocSummary }}</text>
+                </view>
+                <view class="authority-hotline-btn" @click.stop="handleCallHotline">
+                  <svg class="authority-hotline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                  </svg>
+                  <text class="authority-hotline-txt">12393 咨询指引</text>
+                </view>
+              </view>
             </view>
 
             <!-- 资金流向阶梯式漏斗可视化卡片 (Uni-app H5 & 微信小程序通用) -->
             <view class="stepped-funnel-card">
-              <view class="funnel-card-header" @click="showFunnel = !showFunnel">
+              <view class="funnel-card-header" :class="{ 'has-bottom-border': showFunnel }" @click="showFunnel = !showFunnel">
                 <view class="fch-left">
                   <view class="funnel-icon-box">
-                    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
                       <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
                     </svg>
                   </view>
-                  <text class="funnel-header-title">资金流向阶梯式漏斗推导</text>
+                  <text class="funnel-header-title">查看精算报销明细</text>
                   <text class="funnel-header-badge">5阶精算拆解</text>
                 </view>
                 <text class="funnel-toggle-txt">{{ showFunnel ? '收起 ▴' : '展开 ▾' }}</text>
@@ -1002,7 +1021,7 @@ function setQuickCost(val: number) {
 
 const showExtra = ref(false);
 const showDetail = ref(true);
-const showFunnel = ref(true);
+const showFunnel = ref(false);
 
 const hospitalTiers: { tier: HospitalTier; name: string; shortName: string }[] = [
   { tier: 'tier3_top', name: '三甲医院 (重点三甲)', shortName: '三甲医院' },
@@ -1181,6 +1200,16 @@ const dynamicRemoteHint = computed(() => {
 });
 
 const result = ref<CalculateResult | null>(null);
+
+const currentDocSummary = computed(() => {
+  if (result.value?.officialDocUsed) {
+    const doc = result.value.officialDocUsed;
+    const title = doc.title || `${currentCityOption.value.cityName}基本医疗保险政策`;
+    const num = doc.docNumber ? `（${doc.docNumber}）` : '';
+    return `政策依据：《${title}》${num}`;
+  }
+  return `政策依据：《${currentCityOption.value.cityName}基本医疗保险政策》`;
+});
 
 // 高精数字滚动动效状态
 const displayReimbursed = ref(0);
@@ -1463,6 +1492,9 @@ onShow(() => {
 /* 页面主容器 */
 .page-wrapper {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background: #f8fafc;
   color: #1e293b;
   box-sizing: border-box;
@@ -1476,6 +1508,7 @@ onShow(() => {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* 页面顶部标题与工具条 (大方朴实，左右对齐) */
@@ -1587,7 +1620,7 @@ svg {
   border: 1px solid #e2e8f0;
   border-radius: 16px;
   padding: 22px 24px;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03), 0 8px 24px -4px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -1651,13 +1684,16 @@ svg {
 .quick-search-trigger {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
+  justify-content: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 14px;
   border-radius: 9999px;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
   cursor: pointer;
   flex-shrink: 0;
+  box-sizing: border-box;
   transition: all 0.15s ease;
 
   &:hover {
@@ -1792,7 +1828,8 @@ svg {
 
 .cyber-dropdown-trigger {
   width: 100%;
-  height: 40px;
+  min-height: 44px;
+  height: 44px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   border-radius: 10px;
@@ -1891,10 +1928,12 @@ svg {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  height: 42px;
+  min-height: 44px;
+  height: 44px;
   border-radius: 10px;
   background: #f8fafc;
   border: 1.5px solid #e2e8f0;
+  box-sizing: border-box;
   cursor: pointer;
   transition: all 0.18s ease;
 
@@ -1937,11 +1976,13 @@ svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 44px;
   margin-top: 4px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
   padding: 8px 12px;
+  box-sizing: border-box;
   cursor: pointer;
   transition: all 0.18s ease;
 
@@ -1975,15 +2016,30 @@ svg {
 
 .custom-switch {
   width: 44px;
-  height: 24px;
-  border-radius: 9999px;
-  background: #cbd5e1;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
   position: relative;
   transition: background-color 0.2s ease;
   flex-shrink: 0;
+  box-sizing: border-box;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 0;
+    width: 44px;
+    height: 24px;
+    border-radius: 9999px;
+    background: #cbd5e1;
+    transition: background-color 0.2s ease;
+  }
 
   &.checked {
-    background: #10b981;
+    &::before {
+      background: #10b981;
+    }
 
     .switch-handle {
       transform: translateX(20px);
@@ -1997,10 +2053,11 @@ svg {
   border-radius: 50%;
   background: #ffffff;
   position: absolute;
-  top: 2px;
+  top: 12px;
   left: 2px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1;
 }
 
 /* 就医类型与机构等级栅格 */
@@ -2012,7 +2069,8 @@ svg {
 
 .sub-segmented-control {
   display: flex;
-  height: 40px;
+  min-height: 44px;
+  height: 44px;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
@@ -2023,11 +2081,13 @@ svg {
 
 .sub-seg-btn {
   flex: 1;
+  min-height: 38px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 8px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.15s ease;
 
   &.active {
@@ -2091,10 +2151,12 @@ svg {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 8px 4px;
+  min-height: 44px;
+  padding: 6px 4px;
   background: #ffffff;
   border: 1.5px solid #cbd5e1;
   border-radius: 8px;
+  box-sizing: border-box;
   cursor: pointer;
   transition: all 0.18s ease;
 
@@ -2381,11 +2443,13 @@ svg {
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 44px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
-  padding: 6px 2px;
+  padding: 6px 4px;
   border-radius: 8px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.15s ease;
 
   &:hover {
@@ -2460,11 +2524,13 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  min-height: 44px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
-  padding: 5px 10px;
+  padding: 6px 12px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.18s ease;
   user-select: none;
 
@@ -2704,13 +2770,13 @@ svg {
   color: #2563eb;
 }
 
-/* 双核英雄结算看板 (高度极度精炼，左右双核对比，去除了重复数字) */
+/* 双核英雄结算看板 (高度极度精炼，左右双核对比，高反差大字，无冗余厚度) */
 .result-hero-board {
   background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #eff6ff 100%);
-  border: 1px solid #bfdbfe;
+  border: 1px solid #cbd5e1;
   border-radius: 12px;
-  padding: 14px 16px 12px;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 2px 8px rgba(37, 99, 235, 0.04);
+  padding: 16px 18px 14px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .hero-split-row {
@@ -2738,8 +2804,8 @@ svg {
 }
 
 .half-tag-txt {
-  font-size: 12px;
-  font-weight: 700;
+  font-size: 13px;
+  font-weight: 800;
 }
 
 .tag-cyan .half-tag-txt {
@@ -2777,16 +2843,16 @@ svg {
 }
 
 .half-yen {
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 800;
   line-height: 1;
 }
 
 .half-val {
-  font-size: 26px;
+  font-size: 28px;
   font-weight: 900;
   font-variant-numeric: tabular-nums;
-  line-height: 1;
+  line-height: 1.1;
   letter-spacing: -0.5px;
 }
 
@@ -2806,7 +2872,7 @@ svg {
 
 .hero-center-divider {
   width: 1px;
-  height: 44px;
+  height: 48px;
   background: #e2e8f0;
   margin: 0 16px;
   flex-shrink: 0;
@@ -2834,23 +2900,104 @@ svg {
   background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
 }
 
-/* 资金流向阶梯式漏斗可视化卡片 */
+/* 首屏副标：公文依据与 12393 专线快捷方式 */
+.hero-authority-sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+}
+
+.authority-doc-box {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  flex: 1;
+  min-width: 0;
+  transition: opacity 0.15s ease;
+}
+
+.authority-doc-box:hover {
+  opacity: 0.85;
+}
+
+.authority-svg {
+  width: 14px;
+  height: 14px;
+  stroke: #2563eb;
+  flex-shrink: 0;
+}
+
+.authority-doc-title {
+  font-size: 11.5px;
+  color: #334155;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.authority-hotline-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 32px;
+  padding: 4px 10px;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 9999px;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.authority-hotline-btn:hover {
+  background: #dbeafe;
+}
+
+.authority-hotline-svg {
+  width: 12px;
+  height: 12px;
+  stroke: #2563eb;
+  flex-shrink: 0;
+}
+
+.authority-hotline-txt {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #2563eb;
+  line-height: 1;
+}
+
+/* 资金流向阶梯式漏斗可视化卡片 (48px 可折叠精算明细) */
 .stepped-funnel-card {
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 14px;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
+  padding: 0 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  transition: all 0.25s ease;
 }
 
 .funnel-card-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #f1f5f9;
+  min-height: 48px;
   cursor: pointer;
   user-select: none;
+  box-sizing: border-box;
+}
+
+.funnel-card-header.has-bottom-border {
+  border-bottom: 1px solid #f1f5f9;
+  padding: 12px 0 10px;
 }
 
 .fch-left {
@@ -2860,8 +3007,8 @@ svg {
 }
 
 .funnel-icon-box {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 6px;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
@@ -2889,14 +3036,16 @@ svg {
 }
 
 .funnel-toggle-txt {
-  font-size: 11.5px;
-  color: #64748b;
+  font-size: 12px;
+  font-weight: 600;
+  color: #2563eb;
 }
 
 .funnel-ladder-body {
   display: flex;
   flex-direction: column;
   margin-top: 12px;
+  padding-bottom: 14px;
   gap: 0;
 }
 
@@ -3661,7 +3810,9 @@ svg {
 
   .preset-pill {
     min-width: 0;
-    padding: 10rpx 2rpx;
+    min-height: 44px;
+    padding: 6px 2rpx;
+    box-sizing: border-box;
   }
 
   .pill-text {

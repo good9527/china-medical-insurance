@@ -843,6 +843,9 @@ function triggerHaptic() {
   flex-direction: column;
   gap: 20px;
   width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 /* 1. 标头简介卡 */
@@ -851,7 +854,7 @@ function triggerHaptic() {
   border-radius: 14px;
   border: 1px solid #e2e8f0;
   padding: 20px 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .sim-intro-header {
@@ -967,7 +970,8 @@ function triggerHaptic() {
 }
 
 .sim-preset-chip {
-  padding: 5px 12px;
+  padding: 6px 14px;
+  min-height: 44px;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
@@ -975,7 +979,9 @@ function triggerHaptic() {
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 4px;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
@@ -1001,7 +1007,7 @@ function triggerHaptic() {
   border-radius: 14px;
   border: 1px solid #e2e8f0;
   padding: 18px 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .csc-head {
@@ -1020,8 +1026,10 @@ function triggerHaptic() {
 .add-city-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  padding: 6px 12px;
+  min-height: 44px;
+  padding: 0 14px;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
   color: #1d4ed8;
@@ -1029,6 +1037,7 @@ function triggerHaptic() {
   font-weight: 600;
   border-radius: 6px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
@@ -1105,10 +1114,12 @@ function triggerHaptic() {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 44px;
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   padding: 10px 14px;
+  box-sizing: border-box;
   cursor: pointer;
 }
 
@@ -1142,7 +1153,7 @@ function triggerHaptic() {
   border-radius: 14px;
   border: 1px solid #e2e8f0;
   padding: 18px 24px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .spc-head {
@@ -1191,12 +1202,14 @@ function triggerHaptic() {
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 8px;
+  min-height: 44px;
+  padding: 8px 12px;
   border-radius: 6px;
   font-size: 13px;
   font-weight: 500;
   color: #64748b;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
@@ -1217,10 +1230,12 @@ function triggerHaptic() {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 44px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 8px 12px;
+  box-sizing: border-box;
   cursor: pointer;
 }
 
@@ -1246,16 +1261,36 @@ function triggerHaptic() {
 }
 
 .custom-switch {
-  width: 40px;
-  height: 22px;
-  border-radius: 11px;
-  background: #cbd5e1;
+  width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
   position: relative;
   transition: all 0.2s ease;
-}
+  flex-shrink: 0;
+  box-sizing: border-box;
 
-.custom-switch.checked {
-  background: #2563eb;
+  &::before {
+    content: '';
+    position: absolute;
+    top: 11px;
+    left: 0;
+    width: 40px;
+    height: 22px;
+    border-radius: 11px;
+    background: #cbd5e1;
+    transition: all 0.2s ease;
+  }
+
+  &.checked {
+    &::before {
+      background: #2563eb;
+    }
+
+    .switch-dot {
+      transform: translateX(18px);
+    }
+  }
 }
 
 .switch-dot {
@@ -1264,13 +1299,10 @@ function triggerHaptic() {
   border-radius: 50%;
   background: #ffffff;
   position: absolute;
-  top: 2px;
+  top: 13px;
   left: 2px;
   transition: all 0.2s ease;
-}
-
-.custom-switch.checked .switch-dot {
-  left: 20px;
+  z-index: 1;
 }
 
 .hospital-tier-chips {
@@ -1280,6 +1312,7 @@ function triggerHaptic() {
 }
 
 .tier-chip {
+  min-height: 44px;
   padding: 8px 10px;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
@@ -1287,7 +1320,9 @@ function triggerHaptic() {
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 2px;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
@@ -1333,6 +1368,7 @@ function triggerHaptic() {
 }
 
 .freq-item-btn {
+  min-height: 44px;
   padding: 8px 10px;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
@@ -1340,7 +1376,10 @@ function triggerHaptic() {
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 2px;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
 .freq-item-btn.active {
@@ -1370,6 +1409,7 @@ function triggerHaptic() {
 }
 
 .remote-chip {
+  min-height: 44px;
   padding: 8px 10px;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
@@ -1377,7 +1417,10 @@ function triggerHaptic() {
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   gap: 4px;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
 .remote-chip.active {
@@ -1631,14 +1674,14 @@ function triggerHaptic() {
   display: flex;
   flex-direction: column;
   gap: 14px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
   position: relative;
   transition: all 0.2s ease;
 }
 
 .actuarial-city-card.is-winner-card {
   border-color: #f59e0b;
-  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.12);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(245, 158, 11, 0.08);
 }
 
 .acc-top-bar {
@@ -2172,6 +2215,10 @@ function triggerHaptic() {
   .city-slots-grid.slots-3 {
     grid-template-columns: 1fr;
   }
+
+  .scenario-panel-card {
+    padding: 14px 16px;
+  }
   
   .scenario-form-grid {
     grid-template-columns: 1fr;
@@ -2181,10 +2228,15 @@ function triggerHaptic() {
   .remote-chips-grid {
     grid-template-columns: 1fr;
   }
+
+  .frequency-bar {
+    grid-template-columns: 1fr;
+  }
   
   .side-by-side-grid.grid-2,
   .side-by-side-grid.grid-3 {
     grid-template-columns: 1fr;
+    gap: 16px;
   }
   
   .scd-cards-row.cards-2,

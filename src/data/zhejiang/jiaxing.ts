@@ -116,7 +116,7 @@ export const jiaxingCityData: CityInsuranceData = {
       note: '居民基层门诊在社区卫生服务中心报销55%（签约慢病65%），二级机构报销45%，三级及其他机构报销35%；普通门诊年度最高支付限额提高为2400元。'
     },
     inpatient: {
-      sourceDocId: 'jx-medical-insurance-adjust-2024',
+      sourceDocId: 'jx-medical-insurance-inpatient-2023',
       annualCap: 300000,
       repeatedDeductibleRule: '二次及多次住院起付线依次递减',
       tierBenefits: {

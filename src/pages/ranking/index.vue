@@ -83,7 +83,6 @@
             <view class="seg-texts">
               <view class="seg-title-row">
                 <text class="seg-title">全域整体综合榜</text>
-                <text class="seg-badge badge-indigo">全维度</text>
               </view>
               <text class="seg-desc">兼顾职工与居民全域真实保障水平</text>
             </view>
@@ -104,7 +103,6 @@
             <view class="seg-texts">
               <view class="seg-title-row">
                 <text class="seg-title">城镇职工医保榜</text>
-                <text class="seg-badge badge-blue">职工专属</text>
               </view>
               <text class="seg-desc">门诊共济 · 住院保障 · 退休倾斜</text>
             </view>
@@ -127,7 +125,6 @@
             <view class="seg-texts">
               <view class="seg-title-row">
                 <text class="seg-title">城乡居民医保榜</text>
-                <text class="seg-badge badge-emerald">居民专属</text>
               </view>
               <text class="seg-desc">基层统筹 · 二三级住院 · 大病兜底</text>
             </view>
@@ -346,7 +343,6 @@
         <view class="podium-row" v-if="!searchQuery && selectedProvince === 'all' && sortColumn === 'composite' && !sortAsc && rankings.length >= 3">
           <!-- 银席 No.2 -->
           <view class="podium-card rank-2" @click="goToCityPolicy(rankings[1].cityCode)">
-            <view class="podium-halo halo-silver"></view>
             <view class="podium-crest crest-silver">
               <svg class="crest-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="8" r="7"></circle>
@@ -371,7 +367,6 @@
 
           <!-- 金席 No.1 榜首 (至尊殿堂级凸显) -->
           <view class="podium-card rank-1" @click="goToCityPolicy(rankings[0].cityCode)">
-            <view class="podium-halo halo-gold"></view>
             <view class="podium-crest crest-gold">
               <svg class="crest-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
@@ -395,7 +390,6 @@
 
           <!-- 铜席 No.3 -->
           <view class="podium-card rank-3" @click="goToCityPolicy(rankings[2].cityCode)">
-            <view class="podium-halo halo-bronze"></view>
             <view class="podium-crest crest-bronze">
               <svg class="crest-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <circle cx="12" cy="8" r="6"></circle>
@@ -1485,8 +1479,12 @@ const filteredBattleMetrics = computed(() => {
 <style scoped>
 .page-wrapper {
   min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  overflow-x: hidden;
   background-color: #f8fafc;
   padding-bottom: 60px;
+  box-sizing: border-box;
 }
 
 .content-box {
@@ -1497,6 +1495,7 @@ const filteredBattleMetrics = computed(() => {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 /* 顶部标头 */
@@ -1600,10 +1599,13 @@ const filteredBattleMetrics = computed(() => {
 .switch-pill {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
-  padding: 7px 16px;
+  min-height: 44px;
+  padding: 0 16px;
   border-radius: 8px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   color: #475569;
 }
@@ -1612,7 +1614,7 @@ const filteredBattleMetrics = computed(() => {
   background: #ffffff;
   color: #2563eb;
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .pill-svg {
@@ -1641,10 +1643,12 @@ const filteredBattleMetrics = computed(() => {
   display: flex;
   align-items: center;
   gap: 10px;
+  min-height: 44px;
   padding: 10px 14px;
   border-radius: 8px;
   cursor: pointer;
   background: transparent;
+  box-sizing: border-box;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   user-select: none;
   position: relative;
@@ -2055,7 +2059,7 @@ const filteredBattleMetrics = computed(() => {
   padding: 22px 20px;
   text-align: center;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
   cursor: pointer;
   position: relative;
   overflow: hidden;
@@ -2063,53 +2067,27 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .podium-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px -4px rgba(15, 23, 42, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
 }
 
 .podium-card.rank-1 {
-  border: 1.5px solid rgba(245, 158, 11, 0.45);
-  padding: 28px 22px;
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  padding: 26px 20px;
   background: linear-gradient(180deg, #fffdf2 0%, #fffcf0 50%, #ffffff 100%);
-  box-shadow: 0 12px 36px -4px rgba(245, 158, 11, 0.18), 0 2px 8px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 4px 12px rgba(245, 158, 11, 0.06);
 }
 
 .podium-card.rank-2 {
-  border: 1px solid rgba(148, 163, 184, 0.4);
+  border: 1px solid #cbd5e1;
   background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 60%, #ffffff 100%);
-  box-shadow: 0 8px 24px -4px rgba(100, 116, 139, 0.08);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .podium-card.rank-3 {
-  border: 1px solid rgba(234, 88, 12, 0.35);
+  border: 1px solid #fed7aa;
   background: linear-gradient(180deg, #fffaf5 0%, #fff7ed 60%, #ffffff 100%);
-  box-shadow: 0 8px 24px -4px rgba(234, 88, 12, 0.08);
-}
-
-.podium-halo {
-  position: absolute;
-  top: -40px;
-  left: 50%;
-  transform: translateX(-50%);
-  pointer-events: none;
-}
-
-.halo-gold {
-  width: 220px;
-  height: 100px;
-  background: radial-gradient(ellipse, rgba(245, 158, 11, 0.22) 0%, transparent 70%);
-}
-
-.halo-silver {
-  width: 200px;
-  height: 90px;
-  background: radial-gradient(ellipse, rgba(148, 163, 184, 0.2) 0%, transparent 70%);
-}
-
-.halo-bronze {
-  width: 200px;
-  height: 90px;
-  background: radial-gradient(ellipse, rgba(217, 119, 6, 0.16) 0%, transparent 70%);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .podium-crest {
@@ -2127,7 +2105,6 @@ const filteredBattleMetrics = computed(() => {
   background: linear-gradient(135deg, #fef3c7, #fde68a);
   color: #92400e;
   border: 1px solid #f59e0b;
-  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
 }
 
 .crest-silver {
@@ -2279,7 +2256,7 @@ const filteredBattleMetrics = computed(() => {
   border: 1px solid #e2e8f0;
   border-radius: 14px;
   padding: 18px 20px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
   cursor: pointer;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
   display: flex;
@@ -2289,7 +2266,7 @@ const filteredBattleMetrics = computed(() => {
 
 .bento-rank-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
   border-color: #cbd5e1;
 }
 
@@ -2323,7 +2300,7 @@ const filteredBattleMetrics = computed(() => {
   background: #fef3c7;
   color: #b45309;
   border: 1px solid #fde68a;
-  box-shadow: 0 2px 6px rgba(245, 158, 11, 0.25);
+  box-shadow: none;
 }
 
 .rank-silver {
@@ -2561,7 +2538,7 @@ const filteredBattleMetrics = computed(() => {
   border: 1px solid #e2e8f0;
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
   margin-bottom: 24px;
 }
 
@@ -2705,7 +2682,7 @@ const filteredBattleMetrics = computed(() => {
   z-index: 3;
   background: #ffffff;
   border-right: 1px solid #e2e8f0;
-  box-shadow: 6px 0 16px -4px rgba(15, 23, 42, 0.12);
+  box-shadow: 3px 0 8px -2px rgba(15, 23, 42, 0.05);
 }
 
 .b-thead-tr th.col-city {
@@ -2718,7 +2695,7 @@ const filteredBattleMetrics = computed(() => {
   z-index: 6;
   background: #f8fafc;
   border-right: 1px solid #e2e8f0;
-  box-shadow: 6px 0 16px -4px rgba(15, 23, 42, 0.12);
+  box-shadow: 3px 0 8px -2px rgba(15, 23, 42, 0.05);
 }
 
 /* 右侧粘性固定列：操作按钮列在滑动时不丢失 */
