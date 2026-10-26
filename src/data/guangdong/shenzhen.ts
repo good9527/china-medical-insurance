@@ -105,6 +105,7 @@ export const shenzhenCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['粤港澳大湾区'],
       specialNotes: [
         '跨省及省内异地就医直接联网结算，符合规定备案人员享受参保地同等报销待遇。'
       ]
@@ -155,6 +156,7 @@ export const shenzhenCityData: CityInsuranceData = {
       transferFiledRatio: 1.0, // 已办理规范转诊备案，执行与市内就医相同比例 (100%)
       unfiledEmergencyRatio: 0.90, // 异地急诊抢救按市内比例90%支付
       unfiledNormalRatio: 0.80, // 跨省临时就医按市内比例80%支付（广东省内跨市直接结算按市内比例90%支付）
+      regionalAlliances: ['粤港澳大湾区'],
       specialNotes: [
         '省内及跨省异地就医直接结算，规范办理长期居住备案或市外转诊手续的，享受与市内就医同等待遇。',
         '未办理转诊的跨省临时外出就医按市内同级别标准的80%支付，广东省内跨市直接结算按90%支付。'

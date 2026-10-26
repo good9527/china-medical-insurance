@@ -55,14 +55,14 @@ export const hohhotCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'hhht-medical-insurance-inpatient-2024',
       annualCap: 500000, // 基本统筹 + 职工大病救助
+      repeatedDeductibleRule: '同自然年度内多次住院起付线享受规程减免。',
       tierBenefits: {
         community: { tierName: '一级基层定点医疗机构', deductible: 300, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
         tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
         tier2: { tierName: '二级定点医疗机构', deductible: 500, reimbursementRatio: 0.88, retireeRatioBonus: 0.04 },
         tier3: { tierName: '市属三级定点医疗机构', deductible: 1000, reimbursementRatio: 0.85, retireeRatioBonus: 0.04 },
         tier3_top: { tierName: '自治区重点三甲综合医院', deductible: 1000, reimbursementRatio: 0.85, retireeRatioBonus: 0.04 }
-      },
-      repeatedDeductibleRule: '同自然年度内多次住院起付线享受规程减免。'
+      }
     },
     catastrophic: {
       sourceDocId: 'hhht-medical-insurance-inpatient-2024',
@@ -103,6 +103,7 @@ export const hohhotCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'hhht-medical-insurance-inpatient-2024',
       annualCap: 150000, // 居民基本统筹限额 15 万元
+      repeatedDeductibleRule: '同自然年度内多次住院起付线享受规程减免。',
       tierBenefits: {
         community: { tierName: '一级及基层社区中心', deductible: 100, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.85 },

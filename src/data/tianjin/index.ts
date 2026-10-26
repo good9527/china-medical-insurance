@@ -106,6 +106,7 @@ export const tianjinCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['京津冀免备案'],
       specialNotes: [
         '京津冀协同发展：京津冀三地跨省异地就医直接结算视同备案，享受本地同等报销待遇。'
       ]
@@ -157,6 +158,7 @@ export const tianjinCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['京津冀免备案'],
       specialNotes: [
         '京津冀异地就医免备案直接联网结算。'
       ]

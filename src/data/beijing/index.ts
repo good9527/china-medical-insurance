@@ -118,6 +118,7 @@ export const beijingCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['京津冀免备案'],
       specialNotes: [
         '京津冀区域内就医已实现“视同备案”，参保人员在津冀定点医院就医享受参保地同等报销待遇。',
         '跨省临时就医未备案人员，统筹基金支付比例按规定下浮。'
@@ -168,6 +169,7 @@ export const beijingCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['京津冀免备案'],
       specialNotes: [
         '京津冀异地就医免备案，普通门诊与住院直接刷卡实时结算。'
       ]

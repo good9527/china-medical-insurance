@@ -55,14 +55,14 @@ export const lanzhouData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'lz-medical-insurance-inpatient-2025',
       annualCap: 500000, // 基本医保统筹限额 50 万元
+      repeatedDeductibleRule: '参保人员在同级别医疗机构多次住院的，第二次及以上起付标准按相应标准递减。',
       tierBenefits: {
         community: { tierName: '社区服务中心/一级机构', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
         tier2: { tierName: '二级定点医疗机构', deductible: 400, reimbursementRatio: 0.90, retireeRatioBonus: 0.03 },
         tier3: { tierName: '三级乙等定点医疗机构', deductible: 600, reimbursementRatio: 0.86, retireeRatioBonus: 0.03 },
         tier3_top: { tierName: '三级甲等定点医疗机构', deductible: 1000, reimbursementRatio: 0.85, retireeRatioBonus: 0.03 }
-      },
-      repeatedDeductibleRule: '参保人员在同级别医疗机构多次住院的，第二次及以上起付标准按相应标准递减。'
+      }
     },
     catastrophic: {
       sourceDocId: 'lz-medical-insurance-inpatient-2025',
@@ -103,6 +103,7 @@ export const lanzhouData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'lz-medical-insurance-inpatient-2025',
       annualCap: 150000, // 居民住院年最高限额 15 万元
+      repeatedDeductibleRule: '参保人员在同级别医疗机构多次住院的，第二次及以上起付标准按相应标准递减。',
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区卫生服务中心', deductible: 100, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },

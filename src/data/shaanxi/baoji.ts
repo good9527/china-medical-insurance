@@ -101,6 +101,7 @@ export const baojiCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'bj-medical-adjust-2023-106',
       annualCap: 350000,
+      repeatedDeductibleRule: '参保人在同级别定点医疗机构住院，按规定执行起付标准；分级诊疗转诊差额补齐起付线。',
       tierBenefits: {
         community: { tierName: '基层乡镇卫生院/社区中心', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.02 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.02 },

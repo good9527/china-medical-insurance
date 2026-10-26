@@ -116,6 +116,7 @@ export const xianyangCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'xy-employee-inpatient-official',
       annualCap: 350000,
+      repeatedDeductibleRule: '参保职工在一个自然年度内多次住院，起付标准按定点医疗机构级别分别计算。',
       tierBenefits: {
         community: { tierName: '基层社区/乡镇卫生院', deductible: 160, reimbursementRatio: 0.92, retireeRatioBonus: 0.04 },
         tier1: { tierName: '一级医疗机构', deductible: 160, reimbursementRatio: 0.92, retireeRatioBonus: 0.04 },
@@ -162,6 +163,7 @@ export const xianyangCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'xy-resident-inpatient-regulations',
       annualCap: 200000,
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，起付标准按定点医疗机构级别分别计算。',
       tierBenefits: {
         community: { tierName: '一级医疗机构/镇卫生院(社区卫生中心)', deductible: 160, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级医疗机构/卫生院', deductible: 160, reimbursementRatio: 0.90 },

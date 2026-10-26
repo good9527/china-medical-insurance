@@ -54,6 +54,7 @@ export const lanzhouNewAreaBenefitData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'lzxq-medical-insurance-inpatient-2024',
       annualCap: 500000,
+      repeatedDeductibleRule: '参保人员在同级别医疗机构多次住院的，第二次及以上起付标准按相应标准递减。',
       tierBenefits: {
         community: { tierName: '社区服务中心/一级机构', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
@@ -101,6 +102,7 @@ export const lanzhouNewAreaBenefitData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'lzxq-medical-insurance-inpatient-2024',
       annualCap: 160000,
+      repeatedDeductibleRule: '参保人员在同级别医疗机构多次住院的，第二次及以上起付标准按相应标准递减。',
       tierBenefits: {
         community: { tierName: '社区服务中心/卫生院', deductible: 100, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },

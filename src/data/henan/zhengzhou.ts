@@ -71,6 +71,8 @@ export const zhengzhouCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'zz-medical-insurance-inpatient',
       annualCap: 150000, // 基本统筹限额 15 万元
+      repeatedDeductibleRule: '参保人员自然年度内多次住院的，从第二次住院起，起付标准降低100元。',
+      repeatedDeductiblePolicy: { type: 'step_down', stepAmount: 100, minFloor: 100 },
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区卫生中心', deductible: 200, reimbursementRatio: 0.95, retireeRatioBonus: 0.02 },
         tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.95, retireeRatioBonus: 0.02 },
@@ -120,6 +122,8 @@ export const zhengzhouCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'zz-medical-insurance-inpatient',
       annualCap: 150000, // 居民住院年最高限额 15 万元
+      repeatedDeductibleRule: '参保人员自然年度内多次住院的，从第二次住院起，起付标准降低100元。',
+      repeatedDeductiblePolicy: { type: 'step_down', stepAmount: 100, minFloor: 100 },
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区中心', deductible: 150, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 600, reimbursementRatio: 0.75 },

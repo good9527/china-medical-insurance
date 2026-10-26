@@ -71,6 +71,8 @@ export const hangzhouCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'hz-medical-insurance-regulations-2025',
       annualCap: 400000, // 基本医疗保险统筹限额 40 万元
+      repeatedDeductibleRule: '一个自然年度内设一次住院起付标准，多次住院按最高级别机构标准计算一次，其余免收。',
+      repeatedDeductiblePolicy: { type: 'highest_tier_once' },
       tierBenefits: {
         community: { tierName: '基层社区卫生机构', deductible: 300, reimbursementRatio: 0.92, retireeRatioBonus: 0.04 },
         tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.92, retireeRatioBonus: 0.04 },
@@ -96,6 +98,7 @@ export const hangzhouCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['长三角一体化'],
       specialNotes: [
         '长三角就医免备案，普通门诊与住院直接联网结算。'
       ]
@@ -120,6 +123,8 @@ export const hangzhouCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'hz-resident-medical-2024',
       annualCap: 300000, // 居民住院年最高限额 30 万元
+      repeatedDeductibleRule: '一个自然年度内设一次住院起付标准，多次住院按最高级别机构标准计算一次，其余免收。',
+      repeatedDeductiblePolicy: { type: 'highest_tier_once' },
       tierBenefits: {
         community: { tierName: '基层社区卫生服务机构', deductible: 300, reimbursementRatio: 0.80 },
         tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.80 },
@@ -146,6 +151,7 @@ export const hangzhouCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['长三角一体化'],
       specialNotes: [
         '长三角区域内就医直接刷卡结算。'
       ]

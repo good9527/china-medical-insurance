@@ -55,6 +55,7 @@ export const ulanqabData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'wlcb-medical-insurance-inpatient-2024',
       annualCap: 500000,
+      repeatedDeductibleRule: '同自然年度内多次住院起付线享受规程减免。',
       tierBenefits: {
         community: { tierName: '基层定点医疗机构', deductible: 300, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
         tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
@@ -102,6 +103,7 @@ export const ulanqabData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'wlcb-medical-insurance-inpatient-2024',
       annualCap: 150000,
+      repeatedDeductibleRule: '同自然年度内多次住院起付线享受规程减免。',
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区中心', deductible: 100, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },

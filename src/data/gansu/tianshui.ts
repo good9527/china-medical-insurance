@@ -54,6 +54,7 @@ export const tianshuiData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'ts-medical-insurance-inpatient-2024',
       annualCap: 500000, // 基本医保统筹限额 50 万元
+      repeatedDeductibleRule: '参保人员在同级别医疗机构多次住院的，第二次及以上起付标准按相应标准递减。',
       tierBenefits: {
         community: { tierName: '一级机构/社区服务中心', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
@@ -101,6 +102,7 @@ export const tianshuiData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'ts-medical-insurance-inpatient-2024',
       annualCap: 150000, // 居民住院年最高限额 15 万元
+      repeatedDeductibleRule: '参保人员在同级别医疗机构多次住院的，第二次及以上起付标准按相应标准递减。',
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区中心', deductible: 100, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },

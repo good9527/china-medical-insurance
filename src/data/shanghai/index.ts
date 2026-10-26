@@ -117,6 +117,7 @@ export const shanghaiCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['长三角一体化'],
       specialNotes: [
         '长三角示范区（青浦、吴江、嘉善等）门诊与住院就医免备案直接实时结算。'
       ]
@@ -141,6 +142,7 @@ export const shanghaiCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'sh-resident-medical-regulations',
       annualCap: 250000, // 居民年统筹限额 25 万元
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，起付标准按定点医疗机构级别分别计算。',
       tierBenefits: {
         community: { tierName: '社区卫生服务中心/一级定点', deductible: 50, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 50, reimbursementRatio: 0.90 },
@@ -164,6 +166,7 @@ export const shanghaiCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['长三角一体化'],
       specialNotes: [
         '长三角区域一体化结算，规范备案人员与上海本地享受同等待遇。'
       ]

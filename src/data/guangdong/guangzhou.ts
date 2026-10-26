@@ -127,6 +127,7 @@ export const guangzhouCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['粤港澳大湾区'],
       specialNotes: [
         '广东省内异地就医直接结算，规范备案人员与广州参保地同等待遇。'
       ]
@@ -178,6 +179,7 @@ export const guangzhouCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['粤港澳大湾区'],
       specialNotes: [
         '省内异地就医直接结算，规范备案人员与本地享受同等待遇。'
       ]

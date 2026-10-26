@@ -1665,7 +1665,8 @@ svg {
 
 .search-input {
   width: 100%;
-  height: 36px;
+  height: 44px;
+  min-height: 44px;
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
@@ -1818,6 +1819,8 @@ svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 44px;
+  box-sizing: border-box;
   padding: 8px 12px;
   border-bottom: 1px solid #f8fafc;
   cursor: pointer;
@@ -2014,7 +2017,7 @@ svg {
 
 .sub-seg-btn {
   flex: 1;
-  min-height: 38px;
+  min-height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2618,6 +2621,8 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  min-height: 44px;
+  box-sizing: border-box;
   background: #2563eb;
   border: 1px solid #2563eb;
   padding: 4px 10px;
@@ -2654,6 +2659,8 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  min-height: 44px;
+  box-sizing: border-box;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   padding: 4px 10px;
@@ -2870,13 +2877,14 @@ svg {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  min-height: 32px;
+  min-height: 44px;
   padding: 4px 10px;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
   border-radius: 9999px;
   cursor: pointer;
   flex-shrink: 0;
+  box-sizing: border-box;
   transition: all 0.15s ease;
 }
 
@@ -3471,6 +3479,7 @@ svg {
 
   .copy-voucher-btn {
     padding: 3px 8px !important;
+    min-height: 44px !important;
   }
 
   .copy-btn-txt {

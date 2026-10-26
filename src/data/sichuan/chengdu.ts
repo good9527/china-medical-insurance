@@ -82,6 +82,8 @@ export const chengduCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'cd-medical-insurance-regulations-2023',
       annualCap: 450000, // 基本医疗保险年最高支付限额约为平均工资6倍（约45万元）
+      repeatedDeductibleRule: '参保人员自然年度内第二次及以上住院，起付线降低50%。',
+      repeatedDeductiblePolicy: { type: 'half_from_second' },
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区卫生服务中心', deductible: 160, reimbursementRatio: 0.95, retireeRatioBonus: 0.03 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.92, retireeRatioBonus: 0.03 },
@@ -105,6 +107,7 @@ export const chengduCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['川渝医保一体化'],
       specialNotes: [
         '成渝双城经济圈医保互联互通，异地就医直接联网结算。'
       ]
@@ -129,14 +132,14 @@ export const chengduCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'cd-medical-insurance-regulations-2023',
       annualCap: 240000, // 居民住院年最高支付限额 24 万元
+      repeatedDeductibleRule: '基准数据为成年人高档缴费；成年人低档缴费三级医院报销比例为53%、二级75%、一级85%、基层95%；学生儿童及大学生三级医院报销比例为60%、二级75%、一级85%、基层95%。自然年度内多次住院起付标准按规定分别计算。',
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区卫生服务中心', deductible: 100, reimbursementRatio: 0.95 },
         tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.87 },
         tier2: { tierName: '二级定点医疗机构', deductible: 200, reimbursementRatio: 0.82 },
         tier3: { tierName: '三级定点医疗机构', deductible: 500, reimbursementRatio: 0.68 },
         tier3_top: { tierName: '三甲重点医疗机构', deductible: 500, reimbursementRatio: 0.68 }
-      },
-      repeatedDeductibleRule: '基准数据为成年人高档缴费；成年人低档缴费三级医院报销比例为53%、二级75%、一级85%、基层95%；学生儿童及大学生三级医院报销比例为60%、二级75%、一级85%、基层95%。'
+      }
     },
 
     catastrophic: {
@@ -157,6 +160,7 @@ export const chengduCityData: CityInsuranceData = {
       transferFiledRatio: 0.95, // 临时外出就医/异地转诊仅在本地支付比例基础上降低5%
       unfiledEmergencyRatio: 0.95,
       unfiledNormalRatio: 0.95, // 未办理异地备案人员在本地住院支付比例基础上降低5%（大病保险不降）
+      regionalAlliances: ['川渝医保一体化'],
       specialNotes: [
         '四川省内、重庆市、云南省、贵州省、西藏自治区、广州市、南京市就医免备案，直接享受本地同等报销待遇。',
         '跨省临时就医及未备案人员在异地住院结算时，基本医保支付比例仅在本地基础上降低5个百分点，居民大病保险报销比例不变。'

@@ -304,3 +304,53 @@ Integrity mode: development
 - [ ] `npm run check:all` 8 门禁流水线 100% PASS（0 报错、0 警告）。
 - [ ] `npm run build:mp-weixin` 微信小程序编译构建 100% 成功。
 - [ ] `npm run build:h5` H5 生产环境编译构建 100% 成功。
+
+
+## 2026-10-26T18:07:50Z
+
+全国医保报销精算与政策平台深度迭代：全面贯彻“深入采集每个统筹区的真实数据、准确数据”，充分利用实时联网检索与政务公文采矿能力，对全国 348 个地级市统筹区进行地毯式数据深度校准。全面核查并校准各统筹区现行门诊共济限额（在职/退休）、大病保险动态挂钩起付线与分段比例、各级医院住院报销比例及退休人员倾斜优待等关键精算参数，100% 绑定官方红头公文发文字号，杜绝经验估算与数据倒挂，确保全额域资金物理守恒与双端高质交付。
+
+Working directory: H:\2026年项目\14.全国医保报销
+Integrity mode: development
+
+## Requirements
+
+### R1. 全国 348 个统筹区全域真实医保精算参数深度联网采集与校准 (Nationwide 348 Pooling Areas Real Policy Mining)
+- 充分调用实时联网搜索与各省市医疗保障局官方门户公开信息，逐区深挖与校准：
+  1. 普通门诊统筹共济待遇：各统筹区在职与退休职工门诊共济年度最高限额、起付标准及各级机构报销比例；城乡居民门诊统筹年度限额；
+  2. 大病保险动态调整待遇：城乡居民及职工大病保险年度起付线（是否与当地最新可支配收入或社平工资挂钩）、各分段报销比例及年度最高支付限额；
+  3. 住院分级报销与退休倾斜：基层、一级、二级、三级及三甲医院的起付标准与报销比例，退休人员法定倾斜上浮优待比例；
+  4. 多次住院与异地直结：年内多次住院起付线阶梯式递减减免规程，以及跨省直接结算备案折算系数。
+
+### R2. 100% 官方红头文号穿透绑定与零缺陷数据治理 (Authentic Red-Header Traceability & Governance)
+- 每一个纳管统筹区的政策参数必须具备权威公文支撑，记录发文字号（如“医保发”、“政办发”、“医保规”）、发文日期与官方门户出处链接；
+- 杜绝任何虚假 Mock、经验推算或参数倒挂（如高等级医院报销比例高于低等级医院等反常数据），维持全国 348 统筹区 0 悬空外键 (sourceDocId);
+- 同步更新官方公共勘误与升级台账 src/data/correctionUpdates.ts。
+
+### R3. 资金物理守恒定律、测试套件扩充与双端生产构建 (Math Invariants, Pipeline & Dual-End Build)
+- 核心算法测试套件扩充：扩充 src/engine/__tests__/calculator.test.ts（Suite H44），新增针对本轮校准区域政策的端到端测算断言，测试断言量持续攀升且 100% PASS。
+- 全额域资金物理守恒定律与对偶律：
+  - 在全额域 [0 ~ 100,000,000 RMB] 无条件严格满足：totalReimbursed + personalPayTotal === totalCost（误差 <= 0.01元）
+  - 跨城对比模拟器严格满足相反数对偶律：ΔR_i === -ΔP_i。
+- 8 门禁质量流水线与双端构建：
+  - npm run check:all 8 门禁全绿（0 错误、0 警告）；
+  - 微信小程序生产构建（npm run build:mp-weixin）与 H5 生产构建 100% 成功；
+  - 保持全站严格政务 0-Emoji 纯矢量 SVG 规范。
+
+## Acceptance Criteria
+
+### 1. 真实数据覆盖度与权威性验收 (Data Authenticity & Coverage Criteria)
+- [ ] 全国 348 个统筹区全部通过规范性与自洽性审计，无任何参数倒挂或逻辑异常。
+- [ ] 本轮重点挖掘与校准的地级市新政均 100% 绑定正规发文字号，公共勘误台账 src/data/correctionUpdates.ts 记录完备。
+- [ ] 348 个统筹区外键引用完整率保持 100.00%（0 悬空 sourceDocId）。
+
+### 2. 精算准确性与物理守恒验收 (Actuarial & Invariant Criteria)
+- [ ] 资金物理守恒定律 totalReimbursed + personalPayTotal === totalCost 在全额域极限测试中 100% 保持成立，0 浮动偏差。
+- [ ] 跨城对比模拟器各城市相对于基准城市的差额严格满足相反数对偶律 ΔR_i === -ΔP_i。
+
+### 3. 工程流水线与双端构建验收 (Pipeline Criteria)
+- [ ] npm run test:calc 全量断言测试 100% PASS。
+- [ ] npm run check:all 8 门禁流水线 100% PASS（0 报错、0 警告）。
+- [ ] npm run build:mp-weixin 微信小程序生产构建成功（dist/build/mp-weixin）。
+- [ ] npm run build:h5 H5 生产环境编译构建成功（dist/build/h5）。
+- [ ] npx tsx src/scripts/check-emojis.ts 全站静态代码扫描 0 违规。

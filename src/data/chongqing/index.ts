@@ -108,6 +108,7 @@ export const chongqingCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['川渝医保一体化'],
       specialNotes: [
         '川渝两地推进医保一体化，跨省就医已实现免备案直接结算。'
       ]
@@ -132,6 +133,7 @@ export const chongqingCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'cq-medical-insurance-regulations',
       annualCap: 80000, // 居民住院一档8万元，二档12万元
+      repeatedDeductibleRule: '参保人员一年内多次住院的，从第二次起起付线依次降低。',
       tierBenefits: {
         community: { tierName: '乡镇卫生院/一级定点医疗机构', deductible: 100, reimbursementRatio: 0.80 },
         tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.80 },
@@ -155,6 +157,7 @@ export const chongqingCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['川渝医保一体化'],
       specialNotes: [
         '川渝跨省异地就医直接结算，规范备案人员与参保地报销待遇一致。'
       ]
