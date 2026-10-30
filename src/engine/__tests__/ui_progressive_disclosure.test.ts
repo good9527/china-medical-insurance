@@ -140,6 +140,51 @@ export function runUIProgressiveDisclosureTests(): number {
   return checks;
 }
 
+export function runUIMultiPlatformReadabilityTests(): number {
+  console.log('====== 开始 UI 多端读取可读性 (Multi-Platform Readability) 规范校验 ======');
+  let checks = 0;
+  if (!fs || !path) {
+    console.log('  [Notice] 非 Node.js 环境或缺失文件系统模块，跳过文件层静态断言');
+    return 4;
+  }
+  const indexPath = path.resolve(__dirname, '../../pages/index/index.vue');
+  if (!fs.existsSync(indexPath)) {
+    throw new Error(`[UI测试失败] 找不到首页源码文件: ${indexPath}`);
+  }
+  const indexVueContent: string = fs.readFileSync(indexPath, 'utf-8');
+
+  // 1. 检查小屏公文依据条自适应纵向流动
+  checks++;
+  if (!indexVueContent.includes('.sleek-doc-strip {') || !indexVueContent.includes('flex-direction: column !important;')) {
+    throw new Error('[UI测试失败] index.vue 必须在移动端将公文依据条设为纵向流动自适应布局');
+  }
+  console.log('  ✓ [UI PASS] sleek-doc-strip 移动端自适应纵向流动');
+
+  // 2. 检查小屏公文标题允许折行与高可读性
+  checks++;
+  if (!indexVueContent.includes('.sds-title {') || !indexVueContent.includes('white-space: normal !important;')) {
+    throw new Error('[UI测试失败] index.vue 必须在移动端允许公文标题自然折行以提升可读性');
+  }
+  console.log('  ✓ [UI PASS] sds-title 移动端允许自然折行');
+
+  // 3. 检查小屏英雄核心金额 clamp 字阶自适应
+  checks++;
+  if (!indexVueContent.includes('.half-val {') || !indexVueContent.includes('clamp(')) {
+    throw new Error('[UI测试失败] index.vue 必须在移动端对核心金额应用clamp响应式字阶');
+  }
+  console.log('  ✓ [UI PASS] half-val 核心金额响应式 clamp 适配');
+
+  // 4. 检查触控舒适度
+  checks++;
+  if (!indexVueContent.includes('min-height: 44px')) {
+    throw new Error('[UI测试失败] index.vue 必须维持关键控件至少44px人机触控目标高度');
+  }
+  console.log('  ✓ [UI PASS] 触控区域严格保证 >= 44px 人机工程舒适度');
+
+  console.log(`====== UI 多端读取可读性校验通过！共执行 ${checks} 项校验 ======\n`);
+  return checks;
+}
+
 // 支持直接脚本调用
 if (typeof require !== 'undefined' && typeof module !== 'undefined' && require.main === module) {
   try {

@@ -4,7 +4,7 @@ import { allCities, getCityDataByCode } from '../../data';
 import type { HospitalTier, CalculateRequest, ComparisonScenarioInput, MultiCitySimulationResult } from '../../data/types';
 import { getCachedBenchmarkList, getBenchmarkRankings, compareTwoCities } from '../ranking';
 import { CORRECTION_UPDATES_LOG } from '../../data/correctionUpdates';
-import { runUIProgressiveDisclosureTests } from './ui_progressive_disclosure.test';
+import { runUIProgressiveDisclosureTests, runUIMultiPlatformReadabilityTests } from './ui_progressive_disclosure.test';
 
 
 // ============================================================================
@@ -9424,6 +9424,279 @@ export function runCalculatorTests() {
     totalChecks += uiChecksCount;
     passCount++;
     console.log('  - [H44 PASS] UI 渐进式极简无噪状态与严肃政务 0-Emoji 规范静态核验通过');
+  }
+
+  
+  // --------------------------------------------------------------------------
+  // Suite H45: 2025-2026 全国统筹区真实官方数据深度校准、全额域超高压守恒与多端可读性全维核验
+  // --------------------------------------------------------------------------
+  console.log('\n=========================================');
+  console.log('>>> [Suite H45] 执行 2025-2026 统筹区真实官方数据深度采矿校准、全额域资金物理守恒与多端读取可读性全量校验...');
+
+  // 1. 重点统筹区真实官方公文穿透与端到端精算断言
+  {
+    // 1A: 青岛市 职工门诊基层0起付与三级差异化比例 (青政办发〔2022〕4号)
+    totalChecks++;
+    const qdCity = getCityDataByCode('370200');
+    assertTrue(!!qdCity, '青岛市统筹区数据必须存在');
+    assertEqual(qdCity?.employee?.outpatient?.sourceDocId, 'qd-employee-outpatient-2022-17', '青岛门诊公文外键引用正确');
+    assertEqual(qdCity?.employee?.outpatient?.tierBenefits.community.deductible, 0, '青岛基层门诊起付线为0元');
+    assertEqual(qdCity?.employee?.outpatient?.annualCap, 6000, '青岛在职职工门诊封顶线为6000元');
+    assertEqual(qdCity?.employee?.outpatient?.annualCapRetiree, 7000, '青岛退休职工门诊封顶线为7000元');
+
+    // 青岛在职基层门诊 1000 元花费
+    totalChecks++;
+    const qdRes1 = calculateReimbursement({
+      cityCode: '370200',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      totalCost: 1000
+    });
+    assertEqual(qdRes1.breakdown.deductibleDeducted, 0, '青岛基层门诊免起付线');
+    assertEqual(qdRes1.breakdown.totalReimbursed, 800, '青岛在职基层门诊报销80%即800元');
+    assertEqual(qdRes1.breakdown.personalPayTotal, 200, '青岛在职基层门诊自付200元');
+    assertEqual(Math.round((qdRes1.breakdown.totalReimbursed + qdRes1.breakdown.personalPayTotal) * 100) / 100, 1000, '青岛基层门诊资金守恒成立');
+
+    // 青岛在职三级门诊 3000 元花费
+    totalChecks++;
+    const qdRes2 = calculateReimbursement({
+      cityCode: '370200',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 3000
+    });
+    assertEqual(qdRes2.breakdown.deductibleDeducted, 800, '青岛三级门诊起付线800元');
+    assertEqual(qdRes2.breakdown.totalReimbursed, 1320, '青岛在职三级门诊(3000-800)*60%=1320元');
+    assertEqual(qdRes2.breakdown.personalPayTotal, 1680, '青岛在职三级门诊个人自理1680元');
+    assertEqual(Math.round((qdRes2.breakdown.totalReimbursed + qdRes2.breakdown.personalPayTotal) * 100) / 100, 3000, '青岛三级门诊资金守恒成立');
+
+    passCount++;
+    console.log('  - [H45 PASS] 青岛市职工门诊基层0起付与三级差异化比例(青政办发〔2022〕4号)自洽核验通过');
+
+    // 1B: 济南市 职工门诊梯次起付与最高支付限额 (济政办发〔2022〕12号)
+    totalChecks++;
+    const jnCity = getCityDataByCode('370100');
+    assertTrue(!!jnCity, '济南市统筹区数据必须存在');
+    const jnDoc = jnCity?.sourceDocs.find(d => d.docId === 'jn-employee-outpatient-2023');
+    assertEqual(jnDoc?.docNumber, '济政办发〔2022〕12号', '济南市职工门诊发文字号核准为济政办发〔2022〕12号');
+    assertEqual(jnCity?.employee?.outpatient?.annualCap, 6000, '济南在职门诊封顶线为6000元');
+    assertEqual(jnCity?.employee?.outpatient?.annualCapRetiree, 7000, '济南退休门诊封顶线为7000元');
+
+    // 济南在职社区门诊 1000 元
+    totalChecks++;
+    const jnRes1 = calculateReimbursement({
+      cityCode: '370100',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      totalCost: 1000
+    });
+    assertEqual(jnRes1.breakdown.deductibleDeducted, 200, '济南社区门诊起付线200元');
+    assertEqual(jnRes1.breakdown.totalReimbursed, 640, '济南社区门诊报销(1000-200)*80%=640元');
+    assertEqual(jnRes1.breakdown.personalPayTotal, 360, '济南社区门诊自理360元');
+    assertEqual(Math.round((jnRes1.breakdown.totalReimbursed + jnRes1.breakdown.personalPayTotal) * 100) / 100, 1000, '济南社区门诊资金守恒成立');
+
+    passCount++;
+    console.log('  - [H45 PASS] 济南市职工门诊统筹发文字号与梯次起付标准(济政办发〔2022〕12号)测算通过');
+
+    // 1C: 无锡市 职工门诊1.2万元年度最高支付限额 (锡政办发〔2022〕97号)
+    totalChecks++;
+    const wxCity = getCityDataByCode('320200');
+    assertTrue(!!wxCity, '无锡市统筹区数据必须存在');
+    assertEqual(wxCity?.employee?.outpatient?.annualCap, 12000, '无锡在职职工门诊封顶线为12000元');
+    assertEqual(wxCity?.employee?.outpatient?.annualDeductible, 500, '无锡在职门诊起付线为500元');
+    assertEqual(wxCity?.employee?.outpatient?.annualDeductibleRetiree, 300, '无锡退休门诊起付线为300元');
+
+    totalChecks++;
+    const wxRes1 = calculateReimbursement({
+      cityCode: '320200',
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'outpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(wxRes1.breakdown.deductibleDeducted, 300, '无锡退休门诊社区起付线300元');
+    assertEqual(wxRes1.breakdown.totalReimbursed, 1080, '无锡退休社区门诊报销(1500-300)*90%=1080元');
+    assertEqual(wxRes1.breakdown.personalPayTotal, 420, '无锡退休社区门诊自付420元');
+    assertEqual(Math.round((wxRes1.breakdown.totalReimbursed + wxRes1.breakdown.personalPayTotal) * 100) / 100, 1500, '无锡退休社区门诊资金守恒成立');
+
+    passCount++;
+    console.log('  - [H45 PASS] 无锡市职工门诊1.2万元年度最高支付限额(锡政办发〔2022〕97号)测算通过');
+
+    // 1D: 长沙市 门诊基层免起付与年度封顶 (长政办发〔2022〕39号)
+    totalChecks++;
+    const csCity = getCityDataByCode('430100');
+    assertTrue(!!csCity, '长沙市统筹区数据必须存在');
+    assertEqual(csCity?.employee?.outpatient?.annualCap, 1500, '长沙在职门诊封顶线为1500元');
+    assertEqual(csCity?.employee?.outpatient?.annualCapRetiree, 2000, '长沙退休门诊封顶线为2000元');
+
+    totalChecks++;
+    const csRes1 = calculateReimbursement({
+      cityCode: '430100',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      totalCost: 800
+    });
+    assertEqual(csRes1.breakdown.deductibleDeducted, 0, '长沙基层门诊免起付线');
+    assertEqual(csRes1.breakdown.totalReimbursed, 560, '长沙基层门诊报销800*70%=560元');
+    assertEqual(csRes1.breakdown.personalPayTotal, 240, '长沙基层门诊自付240元');
+    assertEqual(Math.round((csRes1.breakdown.totalReimbursed + csRes1.breakdown.personalPayTotal) * 100) / 100, 800, '长沙基层门诊资金守恒成立');
+
+    passCount++;
+    console.log('  - [H45 PASS] 长沙市职工门诊基层0起付与年度封顶(长政办发〔2022〕39号)测算通过');
+
+    // 1E: 延安市 职工门诊0起付与退休人员10%高倾斜优待 (延政办发〔2022〕16号)
+    totalChecks++;
+    const yaCity = getCityDataByCode('610600');
+    assertTrue(!!yaCity, '延安市统筹区数据必须存在');
+    assertEqual(yaCity?.employee?.outpatient?.annualDeductible, 0, '延安职工门诊统筹免设起付线');
+    assertEqual(yaCity?.employee?.outpatient?.annualCap, 1500, '延安在职职工门诊封顶线为1500元');
+    assertEqual(yaCity?.employee?.outpatient?.annualCapRetiree, 2500, '延安退休职工门诊封顶线为2500元');
+
+    totalChecks++;
+    const yaRes1 = calculateReimbursement({
+      cityCode: '610600',
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 2000
+    });
+    assertEqual(yaRes1.breakdown.deductibleDeducted, 0, '延安职工门诊免起付线');
+    assertEqual(yaRes1.breakdown.totalReimbursed, 1200, '延安退休三级门诊报销2000*60%=1200元(在职50%+退休10%)');
+    assertEqual(yaRes1.breakdown.personalPayTotal, 800, '延安退休三级门诊自付800元');
+    assertEqual(Math.round((yaRes1.breakdown.totalReimbursed + yaRes1.breakdown.personalPayTotal) * 100) / 100, 2000, '延安门诊资金守恒成立');
+
+    passCount++;
+    console.log('  - [H45 PASS] 延安市职工门诊0起付与退休10%高优待(延政办发〔2022〕16号)核验通过');
+  }
+
+  // 2. 公共纠错台账 CORRECTION_UPDATES_LOG 扩充到 50+ 项断言
+  {
+    totalChecks++;
+    assertTrue(CORRECTION_UPDATES_LOG.length >= 50, `公共纠错台账总数已扩充至 ${CORRECTION_UPDATES_LOG.length} 条 (>= 50项)`);
+    const qdLog = CORRECTION_UPDATES_LOG.find(l => l.id === 'u-2026-1030-qd-outpatient-4');
+    assertTrue(!!qdLog, '青岛门诊共济4号文勘误台账必须存在');
+    const jnLog = CORRECTION_UPDATES_LOG.find(l => l.id === 'u-2026-1030-jn-outpatient-12');
+    assertTrue(!!jnLog, '济南门诊共济12号文勘误台账必须存在');
+    const wxLog = CORRECTION_UPDATES_LOG.find(l => l.id === 'u-2026-1030-wx-outpatient-97');
+    assertTrue(!!wxLog, '无锡门诊共济97号文勘误台账必须存在');
+    const csLog = CORRECTION_UPDATES_LOG.find(l => l.id === 'u-2026-1030-cs-outpatient-39');
+    assertTrue(!!csLog, '长沙门诊共济39号文勘误台账必须存在');
+    const yaLog = CORRECTION_UPDATES_LOG.find(l => l.id === 'u-2026-1030-ya-outpatient-16');
+    assertTrue(!!yaLog, '延安门诊共济16号文勘误台账必须存在');
+
+    passCount++;
+    console.log('  - [H45 PASS] 公共纠错台账 CORRECTION_UPDATES_LOG 50+ 条公文凭证核验通过');
+  }
+
+  // 3. 全额域资金物理守恒定律超级应力测试 [0 ~ 100,000,000 RMB] (青岛、济南、无锡、长沙、延安)
+  {
+    const boundaryAmounts = [
+      0, 0.01, 100, 199.99, 200, 200.01, 300, 400, 500, 799.99, 800, 800.01,
+      1000, 1500, 2000, 5000, 6000, 7000, 10000, 12000, 30000, 60000, 150000,
+      1000000, 100000000
+    ];
+    const stressCities = ['370200', '370100', '320200', '430100', '610600'];
+
+    for (const cityCode of stressCities) {
+      for (const cost of boundaryAmounts) {
+        totalChecks++;
+        const res = calculateReimbursement({
+          cityCode,
+          insuranceType: 'employee',
+          isRetiree: cost % 2 === 0,
+          treatmentType: cost < 2000 ? 'outpatient' : 'inpatient',
+          hospitalTier: 'tier3',
+          remoteStatus: 'local',
+          totalCost: cost,
+          nonInsuranceCost: Math.round(cost * 0.05 * 100) / 100,
+          classBCost: Math.round(cost * 0.05 * 100) / 100
+        });
+
+        const sum = Math.round((res.breakdown.totalReimbursed + res.breakdown.personalPayTotal) * 100) / 100;
+        assertEqual(sum, cost, `统筹区[${cityCode}]在极端金额 ¥${cost} 下满足资金物理守恒`);
+      }
+    }
+
+    passCount++;
+    console.log('  - [H45 PASS] 全额域资金物理守恒定律 [0 ~ 100,000,000 RMB] 5代表城市25极端边界125组严密断言全部通过');
+  }
+
+  // 4. 跨城对比模拟器相反数对偶律 (ΔR = -ΔP) 跨省都市圈实测
+  {
+    // 4A: 齐鲁双雄 (济南 370100, 青岛 370200, 烟台 370600)
+    totalChecks++;
+    const sim4A = runMultiCitySimulation(['370100', '370200', '370600'], {
+      totalCost: 15000,
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+    assertEqual(sim4A.cities.length, 3, '齐鲁三城模拟返回3个统筹区');
+    assertTrue(sim4A.allConserved, '齐鲁门诊模拟全量满足资金守恒');
+    for (const c of sim4A.cities) {
+      totalChecks++;
+      assertTrue(c.isConserved, `${c.cityName}资金守恒成立`);
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}满足差额相反数对偶律 (ΔR = -ΔP)`
+      );
+    }
+
+    // 4B: 苏南走廊 (无锡 320200, 苏州 320500, 常州 320400)
+    totalChecks++;
+    const sim4B = runMultiCitySimulation(['320200', '320500', '320400'], {
+      totalCost: 50000,
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      hospitalizationCount: 2
+    });
+    assertEqual(sim4B.cities.length, 3, '苏南三城模拟返回3个统筹区');
+    assertTrue(sim4B.allConserved, '苏南住院模拟全量满足资金守恒');
+    for (const c of sim4B.cities) {
+      totalChecks++;
+      assertTrue(c.isConserved, `${c.cityName}资金守恒成立`);
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}满足差额相反数对偶律 (ΔR = -ΔP)`
+      );
+    }
+
+    passCount++;
+    console.log('  - [H45 PASS] 跨城对比模拟器差额相反数守恒律(ΔR = -ΔP)与对称性齐鲁及苏南大区场景全维核验通过');
+  }
+
+  // 5. 多端读取可读性 (Multi-Platform Readability) 与严肃政务 0-Emoji 规范静态核验
+  {
+    totalChecks++;
+    const readabilityChecks = runUIMultiPlatformReadabilityTests();
+    assertTrue(readabilityChecks >= 4, '多端可读性校验项数至少需包含4项核心断言');
+    totalChecks += readabilityChecks;
+    passCount++;
+    console.log('  - [H45 PASS] 多端读取可读性自适应流动排版与严肃政务 0-Emoji 规范静态核验通过');
   }
 
   console.log(`\n=========================================`);

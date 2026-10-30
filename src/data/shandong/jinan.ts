@@ -18,14 +18,14 @@ export const jinanCityData: CityInsuranceData = {
   sourceDocs: [
     {
       docId: 'jn-employee-outpatient-2023',
-      title: '济南市人民政府办公厅关于印发济南市职工基本医疗保险门诊共济保障机制实施细则的通知',
-      docNumber: '济政办发〔2022〕18号',
+      title: '济南市人民政府办公厅关于印发关于进一步健全职工基本医疗保险门诊共济保障机制的若干政策措施的通知',
+      docNumber: '济政办发〔2022〕12号',
       issuingDept: ['济南市人民政府办公厅', '济南市医疗保障局'],
       publishDate: '2022-12-18',
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'https://ybj.jinan.gov.cn/art/2022/12/22/art_1234_189201.html',
-      summaryQuote: '在职职工普通门诊起付线为200元，退休人员为100元。一级及社区医疗机构在职报销80%（退休85%）、二级医疗机构在职报销70%（退休75%）、三级医疗机构在职报销60%（退休65%）。门诊统筹现行年度最高支付限额在职职工6000元，退休人员7000元。'
+      summaryQuote: '在一个医疗年度内，职工门诊起付线为社区及一级机构200元、二级机构400元、三级机构800元；起付标准合并计算。一级及社区医疗机构在职报销80%（退休85%）、二级医疗机构在职报销70%（退休75%）、三级医疗机构在职报销60%（退休65%）。门诊统筹现行年度最高支付限额在职职工6000元，退休人员7000元。'
     },
     {
       docId: 'jn-medical-insurance-inpatient-2025',

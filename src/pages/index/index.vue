@@ -3477,6 +3477,53 @@ svg {
     gap: 6px;
   }
 
+  /* 多端读取可读性优化：公文依据条在小屏端自适应纵向流动与全标题排版 */
+  .sleek-doc-strip {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 10px !important;
+    padding: 10px 12px !important;
+  }
+
+  .sds-main {
+    flex-wrap: wrap !important;
+    gap: 4px 8px !important;
+  }
+
+  .sds-title {
+    white-space: normal !important;
+    line-height: 1.45 !important;
+    font-size: 12.5px !important;
+  }
+
+  .sds-actions {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+  }
+
+  /* 英雄结算看板在移动端字阶缩放与自适应防折行 */
+  .half-val {
+    font-size: clamp(22px, 5.8vw, 28px) !important;
+  }
+
+  .half-price-row {
+    white-space: nowrap !important;
+  }
+
+  .half-yen {
+    font-size: 16px !important;
+  }
+
+  .hero-split-row {
+    gap: 8px !important;
+  }
+
+  .hero-center-divider {
+    margin: 0 8px !important;
+  }
+
   .copy-voucher-btn {
     padding: 3px 8px !important;
     min-height: 44px !important;
@@ -3708,6 +3755,18 @@ svg {
 
   .hero-val {
     font-size: 20px;
+  }
+
+  .half-val {
+    font-size: clamp(17px, 5.2vw, 21px) !important;
+  }
+
+  .half-yen {
+    font-size: 14px !important;
+  }
+
+  .half-tag-txt {
+    font-size: 11px !important;
   }
 
   .hero-pct-pill {

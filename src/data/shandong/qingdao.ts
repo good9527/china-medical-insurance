@@ -12,14 +12,14 @@ export const qingdaoCityData: CityInsuranceData = {
   sourceDocs: [
     {
       docId: 'qd-employee-outpatient-2022-17',
-      title: '青岛市人民政府办公厅关于建立健全职工基本医疗保险门诊共济保障机制的实施意见',
-      docNumber: '青政办发〔2022〕17号',
+      title: '青岛市人民政府办公厅关于印发关于完善职工基本医疗保险门诊共济保障机制的实施意见的通知',
+      docNumber: '青政办发〔2022〕4号',
       issuingDept: ['青岛市人民政府办公厅', '青岛市医疗保障局'],
       publishDate: '2022-12-20',
       effectiveDate: '2023-01-01',
       status: 'active',
       officialUrl: 'http://ybj.qingdao.gov.cn/zwgk/zcfg/202212/t20221225_210984.shtml',
-      summaryQuote: '职工普通门诊统筹起付线：一级及社区100元，二级及三级200元；报销比例：基层80%（退休85%），二级70%（退休75%），三级60%（退休65%）；现行年度统筹支付限额在职职工6000元，退休人员7000元。'
+      summaryQuote: '参保职工在普通门诊统筹定点机构就医：基层（含一级）定点医疗机构不设起付标准（0元起付）；二级医疗机构起付标准500元；三级医疗机构起付标准800元。报销比例：基层80%（退休85%），二级70%（退休75%），三级60%（退休65%）；年度统筹最高支付限额在职职工6000元，退休人员7000元。'
     },
     {
       docId: 'qd-medical-insurance-inpatient-2024',
