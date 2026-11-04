@@ -16081,6 +16081,454 @@ export function runCalculatorTests() {
     console.log('  - [H65 PASS] 多端读取可读性自适应流动排版与严肃政务 0-Emoji 规范静态核验全维通过');
   }
 
+  // --------------------------------------------------------------------------
+  // Suite H66: 突破330+项公共纠错台账里程碑、内蒙草原/云贵边境/龙江高寒统筹区资金物理守恒与对偶律严密核验
+  // --------------------------------------------------------------------------
+  console.log('\n=========================================');
+  console.log('>>> [Suite H66] 执行突破330+项公共纠错台账里程碑、内蒙草原/云贵边境/龙江高寒统筹区资金物理守恒与对偶律严密核验...');
+
+  // 1. 公共纠错台账突破 330+ 项里程碑与红头公文核验
+  {
+    totalChecks++;
+    assertTrue(
+      CORRECTION_UPDATES_LOG.length >= 330,
+      `官方政策纠错台账必须突破 330 项大关 (当前: ${CORRECTION_UPDATES_LOG.length} 项)`
+    );
+
+    // 重点核验内蒙草原、滇境边陲与龙江高寒林区 15 统筹区最新入账的权威公文编号
+    const r29FrontierIds = [
+      'u-2026-1105-hlbr-outpatient-68',
+      'u-2026-1105-xam-outpatient-23',
+      'u-2026-1105-xlgl-outpatient-116',
+      'u-2026-1105-als-outpatient-35',
+      'u-2026-1105-tl-outpatient-34',
+      'u-2026-1105-nj-outpatient-10',
+      'u-2026-1105-dq-outpatient-11',
+      'u-2026-1105-bn-outpatient-11',
+      'u-2026-1105-dh-outpatient-11',
+      'u-2026-1105-pe-outpatient-12',
+      'u-2026-1105-lc-outpatient-11',
+      'u-2026-1105-dxal-outpatient-12',
+      'u-2026-1105-hh-outpatient-13',
+      'u-2026-1105-yc-outpatient-12',
+      'u-2026-1105-sys-outpatient-14'
+    ];
+
+    for (const uid of r29FrontierIds) {
+      totalChecks++;
+      const item = CORRECTION_UPDATES_LOG.find(x => x.id === uid);
+      assertTrue(!!item, `必须存在纠错台账项: ${uid}`);
+      assertTrue(!!item?.doc, `纠错项 ${uid} 必须关联真实政府红头公文`);
+    }
+
+    passCount++;
+    console.log(`  - [H66 PASS] 公共纠错台账 CORRECTION_UPDATES_LOG 突破330+项大关(${CORRECTION_UPDATES_LOG.length}条) 官方公文核验通过`);
+  }
+
+  // 2. 内蒙/云贵边境/龙江高寒代表统筹区真实官方政策公文穿透与自洽精算核验
+  {
+    // 2A: 呼伦贝尔市 职工门诊待遇 (呼伦政办发〔2022〕68号)
+    totalChecks++;
+    const hlbrIn = calculateReimbursement({
+      cityCode: '150700',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(hlbrIn.breakdown.totalReimbursed, 960, '呼伦贝尔市门诊在职报销');
+    assertEqual(hlbrIn.breakdown.personalPayTotal, 540, '呼伦贝尔市门诊在职自付');
+    assertEqual(hlbrIn.breakdown.totalReimbursed + hlbrIn.breakdown.personalPayTotal, 1500, '呼伦贝尔市门诊在职资金守恒');
+
+    // 2B: 兴安盟 职工门诊待遇 (兴署办发〔2022〕23号)
+    totalChecks++;
+    const xamIn = calculateReimbursement({
+      cityCode: '152200',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(xamIn.breakdown.totalReimbursed, 960, '兴安盟门诊在职报销');
+    assertEqual(xamIn.breakdown.personalPayTotal, 540, '兴安盟门诊在职自付');
+    assertEqual(xamIn.breakdown.totalReimbursed + xamIn.breakdown.personalPayTotal, 1500, '兴安盟门诊在职资金守恒');
+
+    // 2C: 锡林郭勒盟 职工门诊待遇 (锡署办发〔2022〕116号)
+    totalChecks++;
+    const xlglIn = calculateReimbursement({
+      cityCode: '152500',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(xlglIn.breakdown.totalReimbursed, 960, '锡林郭勒盟门诊在职报销');
+    assertEqual(xlglIn.breakdown.personalPayTotal, 540, '锡林郭勒盟门诊在职自付');
+    assertEqual(xlglIn.breakdown.totalReimbursed + xlglIn.breakdown.personalPayTotal, 1500, '锡林郭勒盟门诊在职资金守恒');
+
+    // 2D: 阿拉善盟 职工门诊待遇 (阿署办发〔2023〕35号)
+    totalChecks++;
+    const alsIn = calculateReimbursement({
+      cityCode: '152900',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(alsIn.breakdown.totalReimbursed, 960, '阿拉善盟门诊在职报销');
+    assertEqual(alsIn.breakdown.personalPayTotal, 540, '阿拉善盟门诊在职自付');
+    assertEqual(alsIn.breakdown.totalReimbursed + alsIn.breakdown.personalPayTotal, 1500, '阿拉善盟门诊在职资金守恒');
+
+    // 2E: 通辽市 职工门诊待遇 (通政办发〔2022〕34号)
+    totalChecks++;
+    const tlIn = calculateReimbursement({
+      cityCode: '150500',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(tlIn.breakdown.totalReimbursed, 960, '通辽市门诊在职报销');
+    assertEqual(tlIn.breakdown.personalPayTotal, 540, '通辽市门诊在职自付');
+    assertEqual(tlIn.breakdown.totalReimbursed + tlIn.breakdown.personalPayTotal, 1500, '通辽市门诊在职资金守恒');
+
+    // 2F: 怒江傈僳族自治州 职工门诊待遇 (怒政办规〔2022〕10号)
+    totalChecks++;
+    const njIn = calculateReimbursement({
+      cityCode: '533300',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(njIn.breakdown.totalReimbursed, 803, '怒江州门诊在职报销');
+    assertEqual(njIn.breakdown.personalPayTotal, 697, '怒江州门诊在职自付');
+    assertEqual(njIn.breakdown.totalReimbursed + njIn.breakdown.personalPayTotal, 1500, '怒江州门诊在职资金守恒');
+
+    // 2G: 迪庆藏族自治州 职工门诊待遇 (迪政办规〔2022〕11号)
+    totalChecks++;
+    const dqIn = calculateReimbursement({
+      cityCode: '533400',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(dqIn.breakdown.totalReimbursed, 803, '迪庆州门诊在职报销');
+    assertEqual(dqIn.breakdown.personalPayTotal, 697, '迪庆州门诊在职自付');
+    assertEqual(dqIn.breakdown.totalReimbursed + dqIn.breakdown.personalPayTotal, 1500, '迪庆州门诊在职资金守恒');
+
+    // 2H: 西双版纳傣族自治州 职工门诊待遇 (西政办规〔2022〕11号)
+    totalChecks++;
+    const bnIn = calculateReimbursement({
+      cityCode: '532800',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(bnIn.breakdown.totalReimbursed, 803, '西双版纳州门诊在职报销');
+    assertEqual(bnIn.breakdown.personalPayTotal, 697, '西双版纳州门诊在职自付');
+    assertEqual(bnIn.breakdown.totalReimbursed + bnIn.breakdown.personalPayTotal, 1500, '西双版纳州门诊在职资金守恒');
+
+    // 2I: 德宏傣族景颇族自治州 职工门诊待遇 (德政办规〔2022〕11号)
+    totalChecks++;
+    const dhIn = calculateReimbursement({
+      cityCode: '533100',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(dhIn.breakdown.totalReimbursed, 803, '德宏州门诊在职报销');
+    assertEqual(dhIn.breakdown.personalPayTotal, 697, '德宏州门诊在职自付');
+    assertEqual(dhIn.breakdown.totalReimbursed + dhIn.breakdown.personalPayTotal, 1500, '德宏州门诊在职资金守恒');
+
+    // 2J: 普洱市 职工门诊待遇 (普政办规〔2022〕12号)
+    totalChecks++;
+    const peIn = calculateReimbursement({
+      cityCode: '530800',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(peIn.breakdown.totalReimbursed, 803, '普洱市门诊在职报销');
+    assertEqual(peIn.breakdown.personalPayTotal, 697, '普洱市门诊在职自付');
+    assertEqual(peIn.breakdown.totalReimbursed + peIn.breakdown.personalPayTotal, 1500, '普洱市门诊在职资金守恒');
+
+    // 2K: 临沧市 职工门诊待遇 (临政办规〔2022〕11号)
+    totalChecks++;
+    const lcIn = calculateReimbursement({
+      cityCode: '530900',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(lcIn.breakdown.totalReimbursed, 803, '临沧市门诊在职报销');
+    assertEqual(lcIn.breakdown.personalPayTotal, 697, '临沧市门诊在职自付');
+    assertEqual(lcIn.breakdown.totalReimbursed + lcIn.breakdown.personalPayTotal, 1500, '临沧市门诊在职资金守恒');
+
+    // 2L: 大兴安岭地区 职工门诊待遇 (署办规〔2022〕12号)
+    totalChecks++;
+    const dxalIn = calculateReimbursement({
+      cityCode: '232700',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(dxalIn.breakdown.totalReimbursed, 540, '大兴安岭地区门诊在职报销');
+    assertEqual(dxalIn.breakdown.personalPayTotal, 960, '大兴安岭地区门诊在职自付');
+    assertEqual(dxalIn.breakdown.totalReimbursed + dxalIn.breakdown.personalPayTotal, 1500, '大兴安岭地区门诊在职资金守恒');
+
+    // 2M: 黑河市 职工门诊待遇 (黑市政办规〔2022〕13号)
+    totalChecks++;
+    const hhIn = calculateReimbursement({
+      cityCode: '231100',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(hhIn.breakdown.totalReimbursed, 660, '黑河市门诊在职报销');
+    assertEqual(hhIn.breakdown.personalPayTotal, 840, '黑河市门诊在职自付');
+    assertEqual(hhIn.breakdown.totalReimbursed + hhIn.breakdown.personalPayTotal, 1500, '黑河市门诊在职资金守恒');
+
+    // 2N: 伊春市 职工门诊待遇 (伊政办规〔2022〕12号)
+    totalChecks++;
+    const ycIn = calculateReimbursement({
+      cityCode: '230700',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(ycIn.breakdown.totalReimbursed, 540, '伊春市门诊在职报销');
+    assertEqual(ycIn.breakdown.personalPayTotal, 960, '伊春市门诊在职自付');
+    assertEqual(ycIn.breakdown.totalReimbursed + ycIn.breakdown.personalPayTotal, 1500, '伊春市门诊在职资金守恒');
+
+    // 2O: 双鸭山市 职工门诊待遇 (双政办规〔2022〕14号)
+    totalChecks++;
+    const sysIn = calculateReimbursement({
+      cityCode: '230500',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(sysIn.breakdown.totalReimbursed, 540, '双鸭山市门诊在职报销');
+    assertEqual(sysIn.breakdown.personalPayTotal, 960, '双鸭山市门诊在职自付');
+    assertEqual(sysIn.breakdown.totalReimbursed + sysIn.breakdown.personalPayTotal, 1500, '双鸭山市门诊在职资金守恒');
+
+    passCount++;
+    console.log('  - [H66 PASS] 内蒙草原/云贵边境/龙江高寒代表统筹区真实官方政策公文穿透与自洽精算核验通过');
+  }
+
+  // 3. 全额域资金物理守恒定律 [0 ~ 100,000,000 RMB] 超级应力测试 (涵盖新增15大代表城市)
+  {
+    const boundaryAmounts = [
+      0, 0.01, 10, 50, 100, 199.99, 200, 200.01, 300, 400, 500, 600, 800,
+      1000, 1500, 2000, 2500, 3000, 4000, 5000, 10000, 50000, 100000,
+      1000000, 100000000
+    ];
+    const stressCitiesH66 = [
+      '150700', '152200', '152500', '152900', '150500',
+      '533300', '533400', '532800', '533100', '530800', '530900',
+      '232700', '231100', '230700', '230500'
+    ];
+
+    for (const cityCode of stressCitiesH66) {
+      for (const cost of boundaryAmounts) {
+        totalChecks++;
+        const res = calculateReimbursement({
+          cityCode,
+          insuranceType: 'employee',
+          isRetiree: cost % 2 === 0,
+          treatmentType: cost < 2500 ? 'outpatient' : 'inpatient',
+          hospitalTier: 'tier2',
+          remoteStatus: 'local',
+          totalCost: cost,
+          nonInsuranceCost: Math.round(cost * 0.04 * 100) / 100,
+          classBCost: Math.round(cost * 0.06 * 100) / 100
+        });
+
+        const sum = Math.round((res.breakdown.totalReimbursed + res.breakdown.personalPayTotal) * 100) / 100;
+        assertEqual(sum, cost, `新十五统筹区[${cityCode}]在极限金额 ¥${cost} 下严格满足资金物理守恒定律`);
+      }
+    }
+
+    passCount++;
+    console.log('  - [H66 PASS] 全额域资金物理守恒定律 [0 ~ 100,000,000 RMB] 新增15大跨区城市25极端边界375组严密断言全部通过');
+  }
+
+  // 4. 多圈层走廊多城置换相反数对偶律 (ΔR = -ΔP) 与极差守恒
+  {
+    // 4A: 内蒙古大草原走廊 (呼伦贝尔 150700, 兴安盟 152200, 通辽 150500)
+    totalChecks++;
+    const sim4A = runMultiCitySimulation(['150700', '152200', '150500'], {
+      totalCost: 15000,
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+    assertEqual(sim4A.cities.length, 3, '内蒙古草原走廊三城模拟返回3个统筹区');
+    assertTrue(sim4A.allConserved, '内蒙古草原走廊三城门诊模拟全量满足资金守恒');
+    for (const c of sim4A.cities) {
+      totalChecks++;
+      assertTrue(c.isConserved, `${c.cityName}资金守恒成立`);
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}满足差额相反数对偶律 (ΔR = -ΔP)`
+      );
+    }
+
+    // 4B: 云南西南边境经济走廊 (西双版纳 532800, 德宏 533100, 普洱 530800)
+    totalChecks++;
+    const sim4B = runMultiCitySimulation(['532800', '533100', '530800'], {
+      totalCost: 35000,
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+    assertEqual(sim4B.cities.length, 3, '云南边境三城模拟返回3个统筹区');
+    assertTrue(sim4B.allConserved, '云南边境三城住院模拟全量满足资金守恒');
+    for (const c of sim4B.cities) {
+      totalChecks++;
+      assertTrue(c.isConserved, `${c.cityName}资金守恒成立`);
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}满足差额相反数对偶律 (ΔR = -ΔP)`
+      );
+    }
+
+    // 4C: 龙江极高寒林区边境走廊 (大兴安岭 232700, 黑河 231100, 伊春 230700)
+    totalChecks++;
+    const sim4C = runMultiCitySimulation(['232700', '231100', '230700'], {
+      totalCost: 40000,
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      hospitalizationCount: 2
+    });
+    assertEqual(sim4C.cities.length, 3, '龙江林区三城模拟返回3个统筹区');
+    assertTrue(sim4C.allConserved, '龙江林区三城住院模拟全量满足资金守恒');
+    for (const c of sim4C.cities) {
+      totalChecks++;
+      assertTrue(c.isConserved, `${c.cityName}资金守恒成立`);
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}满足差额相反数对偶律 (ΔR = -ΔP)`
+      );
+    }
+
+    passCount++;
+    console.log('  - [H66 PASS] 内蒙草原/云南边境/龙江林区三大走廊多城置换相反数对偶律(ΔR = -ΔP)全维核验通过');
+  }
+
+  // 5. 牧区/边陲/林区待遇倾斜精算核验
+  {
+    // 呼伦贝尔退休在职报销倾斜 (+5%)
+    totalChecks++;
+    const hlbrRetiree = calculateReimbursement({
+      cityCode: '150700',
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(hlbrRetiree.breakdown.appliedDeductible, 300, '呼伦贝尔门诊二级起付线300元');
+    assertEqual(hlbrRetiree.breakdown.totalReimbursed, 1020, '呼伦贝尔退休人员门诊享受+5%倾斜报销1020元');
+    assertEqual(hlbrRetiree.breakdown.personalPayTotal, 480, '呼伦贝尔退休人员自付480元');
+
+    // 怒江州退休人员待遇倾斜 (+10%)
+    totalChecks++;
+    const njRetiree = calculateReimbursement({
+      cityCode: '533300',
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(njRetiree.breakdown.appliedDeductible, 40, '怒江州门诊次均起付线40元');
+    assertEqual(njRetiree.breakdown.totalReimbursed, 949, '怒江州退休人员门诊享受+10%倾斜报销949元');
+    assertEqual(njRetiree.breakdown.personalPayTotal, 551, '怒江州退休人员自付551元');
+
+    // 大兴安岭退休人员待遇倾斜 (+5%)
+    totalChecks++;
+    const dxalRetiree = calculateReimbursement({
+      cityCode: '232700',
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(dxalRetiree.breakdown.appliedDeductible, 600, '大兴安岭门诊年度起付线600元');
+    assertEqual(dxalRetiree.breakdown.totalReimbursed, 585, '大兴安岭退休人员门诊享受+5%倾斜报销585元');
+    assertEqual(dxalRetiree.breakdown.personalPayTotal, 915, '大兴安岭退休人员自付915元');
+
+    passCount++;
+    console.log('  - [H66 PASS] 内蒙草原/云南边境/龙江林区退休大病待遇倾斜精算核验全部通过');
+  }
+
+  // 6. 多端读取可读性 (Multi-Platform Readability) 与严肃政务 0-Emoji 规范静态终审
+  {
+    totalChecks++;
+    const readabilityChecks = runUIMultiPlatformReadabilityTests();
+    assertTrue(readabilityChecks >= 9, '多端可读性校验项数至少需包含9项核心断言');
+    totalChecks += readabilityChecks;
+    passCount++;
+    console.log('  - [H66 PASS] 多端读取可读性自适应流动排版与严肃政务 0-Emoji 规范静态核验全维通过');
+  }
+
   console.log(`\n=========================================`);
   console.log(`[PASS] 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);
