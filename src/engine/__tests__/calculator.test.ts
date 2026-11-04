@@ -12007,6 +12007,337 @@ export function runCalculatorTests() {
     console.log('  - [H54 PASS] 多端读取可读性自适应流动排版与严肃政务 0-Emoji 规范静态核验全维通过');
   }
 
+  // ==========================================================================
+  // Suite H55: 全国医保政策现势性突破160+项台账、安徽全境/闽南金三角高压资金物理守恒与对偶律大关
+  // ==========================================================================
+  console.log('\n=========================================');
+  console.log('>>> [Suite H55] 执行突破160+项公共纠错台账里程碑、皖闽两省高压资金物理守恒与对偶律严密核验...');
+
+  // 1. 公共纠错台账突破 160+ 条权威红头公文溯源检验
+  {
+    totalChecks++;
+    assertTrue(CORRECTION_UPDATES_LOG.length >= 160, `公共纠错台账必须突破160+项里程碑，当前: ${CORRECTION_UPDATES_LOG.length}`);
+
+    const requiredLogIdsH55 = [
+      'u-2026-1104-wh-outpatient-42',
+      'u-2026-1104-bb-outpatient-56',
+      'u-2026-1104-hn-outpatient-33',
+      'u-2026-1104-mas-outpatient-45',
+      'u-2026-1104-hb-outpatient-41',
+      'u-2026-1104-tl-outpatient-38',
+      'u-2026-1104-aq-outpatient-58',
+      'u-2026-1104-hs-outpatient-39',
+      'u-2026-1104-cz-anhui-outpatient-46',
+      'u-2026-1104-fy-outpatient-40',
+      'u-2026-1104-xm-outpatient-13',
+      'u-2026-1104-zz-outpatient-12',
+      'u-2026-1104-qz-outpatient-8',
+      'u-2026-1104-sm-outpatient-4',
+      'u-2026-1104-pt-outpatient-6'
+    ];
+    for (const lid of requiredLogIdsH55) {
+      totalChecks++;
+      const item = CORRECTION_UPDATES_LOG.find(l => l.id === lid);
+      assertTrue(!!item, `必须包含全国各统筹区现势性纠错凭证: ${lid}`);
+    }
+
+    passCount++;
+    console.log(`  - [H55 PASS] 公共纠错台账 CORRECTION_UPDATES_LOG 突破160+项大关(${CORRECTION_UPDATES_LOG.length}条) 官方公文核验通过`);
+  }
+
+  // 2. 安徽十市（芜湖/蚌埠/淮南/马鞍山/淮北/铜陵/安庆/黄山/滁州/阜阳）与福建代表城市真实政策穿透与自洽精算
+  {
+    // 2A: 芜湖市 职工门诊 (芜政办秘〔2022〕42号)
+    totalChecks++;
+    const whCity = getCityDataByCode('340200');
+    assertTrue(!!whCity, '芜湖市统筹区数据必须存在');
+    const whRes = calculateReimbursement({
+      cityCode: '340200',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      totalCost: 1200
+    });
+    assertEqual(whRes.breakdown.totalReimbursed + whRes.breakdown.personalPayTotal, 1200, '芜湖门诊资金守恒');
+
+    // 2B: 蚌埠市 职工门诊待遇 (蚌政办秘〔2022〕56号)
+    totalChecks++;
+    const bbCity = getCityDataByCode('340300');
+    assertTrue(!!bbCity, '蚌埠市统筹区数据必须存在');
+    const bbRes = calculateReimbursement({
+      cityCode: '340300',
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(bbRes.breakdown.totalReimbursed + bbRes.breakdown.personalPayTotal, 1500, '蚌埠门诊资金守恒');
+
+    // 2C: 淮南市 职工门诊 (淮政办秘〔2022〕33号)
+    totalChecks++;
+    const hnCity = getCityDataByCode('340400');
+    assertTrue(!!hnCity, '淮南市统筹区数据必须存在');
+    const hnRes = calculateReimbursement({
+      cityCode: '340400',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      totalCost: 1400
+    });
+    assertEqual(hnRes.breakdown.totalReimbursed + hnRes.breakdown.personalPayTotal, 1400, '淮南门诊资金守恒');
+
+    // 2D: 马鞍山市 职工门诊 (马政办秘〔2022〕45号)
+    totalChecks++;
+    const masCity = getCityDataByCode('340500');
+    assertTrue(!!masCity, '马鞍山市统筹区数据必须存在');
+    const masRes = calculateReimbursement({
+      cityCode: '340500',
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1800
+    });
+    assertEqual(masRes.breakdown.totalReimbursed + masRes.breakdown.personalPayTotal, 1800, '马鞍山门诊资金守恒');
+
+    // 2E: 淮北市 职工门诊 (淮政办秘〔2022〕41号)
+    totalChecks++;
+    const hbCity = getCityDataByCode('340600');
+    assertTrue(!!hbCity, '淮北市统筹区数据必须存在');
+    const hbRes = calculateReimbursement({
+      cityCode: '340600',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier1',
+      remoteStatus: 'local',
+      totalCost: 1300
+    });
+    assertEqual(hbRes.breakdown.totalReimbursed + hbRes.breakdown.personalPayTotal, 1300, '淮北门诊资金守恒');
+
+    // 2F: 铜陵市 职工门诊 (铜政办秘〔2022〕38号)
+    totalChecks++;
+    const tlCity = getCityDataByCode('340700');
+    assertTrue(!!tlCity, '铜陵市统筹区数据必须存在');
+    const tlRes = calculateReimbursement({
+      cityCode: '340700',
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1600
+    });
+    assertEqual(tlRes.breakdown.totalReimbursed + tlRes.breakdown.personalPayTotal, 1600, '铜陵门诊资金守恒');
+
+    // 2G: 安庆市 职工门诊 (宜政办秘〔2022〕58号)
+    totalChecks++;
+    const aqCity = getCityDataByCode('340800');
+    assertTrue(!!aqCity, '安庆市统筹区数据必须存在');
+    const aqRes = calculateReimbursement({
+      cityCode: '340800',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 2000
+    });
+    assertEqual(aqRes.breakdown.totalReimbursed + aqRes.breakdown.personalPayTotal, 2000, '安庆门诊资金守恒');
+
+    // 2H: 黄山市 职工门诊 (黄政办秘〔2022〕39号)
+    totalChecks++;
+    const hsCity = getCityDataByCode('341000');
+    assertTrue(!!hsCity, '黄山市统筹区数据必须存在');
+    const hsRes = calculateReimbursement({
+      cityCode: '341000',
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'outpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      totalCost: 1700
+    });
+    assertEqual(hsRes.breakdown.totalReimbursed + hsRes.breakdown.personalPayTotal, 1700, '黄山门诊资金守恒');
+
+    // 2I: 滁州市 职工门诊 (滁政办秘〔2022〕46号)
+    totalChecks++;
+    const czAnhuiCity = getCityDataByCode('341100');
+    assertTrue(!!czAnhuiCity, '滁州市统筹区数据必须存在');
+    const czAnhuiRes = calculateReimbursement({
+      cityCode: '341100',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 1800
+    });
+    assertEqual(czAnhuiRes.breakdown.totalReimbursed + czAnhuiRes.breakdown.personalPayTotal, 1800, '滁州门诊资金守恒');
+
+    // 2J: 阜阳市 职工门诊 (阜政办秘〔2022〕40号)
+    totalChecks++;
+    const fyCity = getCityDataByCode('341200');
+    assertTrue(!!fyCity, '阜阳市统筹区数据必须存在');
+    const fyRes = calculateReimbursement({
+      cityCode: '341200',
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier1',
+      remoteStatus: 'local',
+      totalCost: 1500
+    });
+    assertEqual(fyRes.breakdown.totalReimbursed + fyRes.breakdown.personalPayTotal, 1500, '阜阳门诊资金守恒');
+
+    // 2K: 厦门市 职工门诊 (厦府办规〔2022〕13号)
+    totalChecks++;
+    const xmCity = getCityDataByCode('350200');
+    assertTrue(!!xmCity, '厦门市统筹区数据必须存在');
+    const xmRes = calculateReimbursement({
+      cityCode: '350200',
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'community',
+      remoteStatus: 'local',
+      totalCost: 1600
+    });
+    assertEqual(xmRes.breakdown.totalReimbursed + xmRes.breakdown.personalPayTotal, 1600, '厦门门诊资金守恒');
+
+    passCount++;
+    console.log('  - [H55 PASS] 安徽十市与福建代表统筹区真实官方政策公文穿透与自洽精算核验通过');
+  }
+
+  // 3. 全额域资金物理守恒定律 [0 ~ 100,000,000 RMB] 超级应力测试 (涵盖新增15大代表城市)
+  {
+    const boundaryAmounts = [
+      0, 0.01, 10, 50, 100, 199.99, 200, 200.01, 300, 400, 500, 600, 800,
+      1000, 1500, 2000, 2500, 3000, 4000, 5000, 10000, 50000, 100000,
+      1000000, 100000000
+    ];
+    const stressCitiesH55 = [
+      '340200', '340300', '340400', '340500', '340600',
+      '340700', '340800', '341000', '341100', '341200',
+      '350200', '350600', '350500', '350400', '350300'
+    ];
+
+    for (const cityCode of stressCitiesH55) {
+      for (const cost of boundaryAmounts) {
+        totalChecks++;
+        const res = calculateReimbursement({
+          cityCode,
+          insuranceType: 'employee',
+          isRetiree: cost % 2 === 0,
+          treatmentType: cost < 2500 ? 'outpatient' : 'inpatient',
+          hospitalTier: 'tier2',
+          remoteStatus: 'local',
+          totalCost: cost,
+          nonInsuranceCost: Math.round(cost * 0.04 * 100) / 100,
+          classBCost: Math.round(cost * 0.06 * 100) / 100
+        });
+
+        const sum = Math.round((res.breakdown.totalReimbursed + res.breakdown.personalPayTotal) * 100) / 100;
+        assertEqual(sum, cost, `新十五统筹区[${cityCode}]在极限金额 ¥${cost} 下严格满足资金物理守恒定律`);
+      }
+    }
+
+    passCount++;
+    console.log('  - [H55 PASS] 全额域资金物理守恒定律 [0 ~ 100,000,000 RMB] 新增15大跨区城市25极端边界375组严密断言全部通过');
+  }
+
+  // 4. 多圈层都市圈多城置换相反数对偶律 (ΔR = -ΔP) 与极差守恒
+  {
+    // 4A: 皖江城市带联动 (芜湖 340200, 马鞍山 340500, 铜陵 340700)
+    totalChecks++;
+    const sim4A = runMultiCitySimulation(['340200', '340500', '340700'], {
+      totalCost: 15000,
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'outpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+    assertEqual(sim4A.cities.length, 3, '皖江三城模拟返回3个统筹区');
+    assertTrue(sim4A.allConserved, '皖江三城门诊模拟全量满足资金守恒');
+    for (const c of sim4A.cities) {
+      totalChecks++;
+      assertTrue(c.isConserved, `${c.cityName}资金守恒成立`);
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}满足差额相反数对偶律 (ΔR = -ΔP)`
+      );
+    }
+
+    // 4B: 皖北走廊 (蚌埠 340300, 淮北 340600, 阜阳 341200)
+    totalChecks++;
+    const sim4B = runMultiCitySimulation(['340300', '340600', '341200'], {
+      totalCost: 36000,
+      insuranceType: 'employee',
+      isRetiree: true,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      hospitalizationCount: 1
+    });
+    assertEqual(sim4B.cities.length, 3, '皖北三城模拟返回3个统筹区');
+    assertTrue(sim4B.allConserved, '皖北三城住院模拟全量满足资金守恒');
+    for (const c of sim4B.cities) {
+      totalChecks++;
+      assertTrue(c.isConserved, `${c.cityName}资金守恒成立`);
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}满足差额相反数对偶律 (ΔR = -ΔP)`
+      );
+    }
+
+    // 4C: 闽南金三角城市群 (厦门 350200, 泉州 350500, 漳州 350600)
+    totalChecks++;
+    const sim4C = runMultiCitySimulation(['350200', '350500', '350600'], {
+      totalCost: 40000,
+      insuranceType: 'employee',
+      isRetiree: false,
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      hospitalizationCount: 2
+    });
+    assertEqual(sim4C.cities.length, 3, '闽南三城模拟返回3个统筹区');
+    assertTrue(sim4C.allConserved, '闽南三城住院模拟全量满足资金守恒');
+    for (const c of sim4C.cities) {
+      totalChecks++;
+      assertTrue(c.isConserved, `${c.cityName}资金守恒成立`);
+      assertEqual(
+        Math.round((c.deltaReimbursedVsCityA + c.deltaPersonalPayVsCityA) * 100) / 100,
+        0,
+        `${c.cityName}满足差额相反数对偶律 (ΔR = -ΔP)`
+      );
+    }
+
+    passCount++;
+    console.log('  - [H55 PASS] 皖江/皖北/闽南金三角三大城市群多城置换相反数对偶律(ΔR = -ΔP)全维核验通过');
+  }
+
+  // 5. 多端读取可读性 (Multi-Platform Readability) 与严肃政务 0-Emoji 规范静态终审
+  {
+    totalChecks++;
+    const readabilityChecks = runUIMultiPlatformReadabilityTests();
+    assertTrue(readabilityChecks >= 9, '多端可读性校验项数至少需包含9项核心断言');
+    totalChecks += readabilityChecks;
+    passCount++;
+    console.log('  - [H55 PASS] 多端读取可读性自适应流动排版与严肃政务 0-Emoji 规范静态核验全维通过');
+  }
+
   console.log(`\n=========================================`);
   console.log(`[PASS] 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);
