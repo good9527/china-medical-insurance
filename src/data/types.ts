@@ -138,6 +138,117 @@ export interface CityInsuranceData {
   resident: InsuranceTypePackage;  // 城乡居民医保政策
 }
 
+// 险种与就医类别别名
+export type InsuranceType = 'employee' | 'resident';
+export type TreatmentType = 'outpatient' | 'inpatient';
+export type RemoteStatus = 'local' | 'long_term' | 'transfer' | 'unfiled_emergency' | 'unfiled_normal';
+
+// ============================================================================
+// 长期护理保险（长护险 / 医保第六险）数据模型 (Long-Term Care Insurance Contracts)
+// ============================================================================
+
+export type LtcDisabilityGrade =
+  | 'none'       // 正常 / 未达标
+  | 'mild'       // 轻度失能 (1级)
+  | 'moderate'   // 中度失能 (2级 / 上海二至三级)
+  | 'severe1'    // 重度失能I级 (3级 / 上海四级)
+  | 'severe2'    // 重度失能II级 (4级 / 上海五级)
+  | 'severe3'    // 重度失能III级 (5级 / 上海六级)
+  | 'severe_1'   // 别名
+  | 'severe_2'   // 别名
+  | 'severe_3'   // 别名
+  | 'dementia';   // 重度失智 / 认知障碍专项
+
+export type LtcCareMode =
+  | 'home'                // 通用居家照护
+  | 'home_service'        // 居家护理 - 定点机构派员上门专业照料
+  | 'home_cash_allowance' // 居家护理 - 亲情照护/基础照护定额现金补助
+  | 'institution'         // 通用机构照护
+  | 'institution_pension' // 机构护理 - 定点养老机构/长护专区住养照料
+  | 'institution_medical' // 机构护理 - 医疗机构/护理院医疗专护
+  | 'equipment_rental';   // 辅具租赁支持
+
+export interface LtcCityPolicy {
+  cityCode: string;
+  cityName: string;
+  sourceDocId?: string;
+  sourceDocNumber?: string;
+  supportedGrades: LtcDisabilityGrade[];
+  supportedModes: LtcCareMode[];
+  homeService?: {
+    hourlyRate?: number;
+    fundPayRatio: number;
+    monthlyMaxCap?: number;
+    monthlyMaxCapByGrade?: Partial<Record<string, number>>;
+  };
+  institutionalCare?: {
+    fundPayRatio?: number;
+    dailyBedSubsidy?: number;
+    monthlyFixedCapByGrade?: Partial<Record<string, number>>;
+    monthlyMaxCap?: number;
+  };
+  defaultHomeRatio?: number;
+  defaultInstitutionRatio?: number;
+  defaultMonthlyCap?: number;
+  notes?: string[];
+}
+
+export interface LtcBenefitResult {
+  isEligible: boolean;
+  cityCode: string;
+  cityName: string;
+  disabilityGrade: string;
+  careMode: string;
+  careCost: number;
+  ltcBenefit: number;
+  ltcPersonalPay: number;
+  fundPayRatio: number;
+  monthlyCap: number;
+  notes: string[];
+}
+
+// ============================================================================
+// 城市普惠型商业健康保险（惠民保）数据模型 (City Huiminbao Insurance Contracts)
+// ============================================================================
+
+export interface HuiminbaoTierRule {
+  deductibleStandard: number;        // 标准免赔额 (元)
+  deductibleConsecutive?: number;    // 连续参保优待免赔额 (元)
+  reimbursementRatioHealthy: number; // 健康人群赔付比例 (0~1)
+  reimbursementRatioPreExisting: number; // 既往症人群赔付比例 (0~1)
+  annualCap: number;                 // 年度支付限额 (元)
+}
+
+export interface HuiminbaoProductPolicy {
+  productCode: string;               // 产品唯一标识代码，如 'beijing_puhui'
+  productName: string;               // 产品名称，如 '北京普惠健康保'
+  cityCode: string;                  // 所属城市行政代码
+  cityName: string;                  // 所属城市名称
+  premiumAnnual: number;             // 年度保费 (元/人/年)
+  effectiveYear: number;             // 政策年份 (如 2025)
+  insurers?: string[];               // 承保共保体
+  inCatalogCoverage?: HuiminbaoTierRule;     // 责任一：医保内自付
+  outCatalogCoverage?: HuiminbaoTierRule;    // 责任二：医保外住院自费
+  specialDrugCoverage?: HuiminbaoTierRule;   // 责任三：特定高额特药/创新药
+  comprehensiveAnnualCap: number;    // 年度综合最高总保额 (元)
+  notes?: string[];
+}
+
+export interface HuiminbaoBenefitResult {
+  productCode: string;
+  productName: string;
+  inCatalogBenefit: number;
+  outCatalogBenefit: number;
+  specialDrugBenefit: number;
+  totalHuiminbaoBenefit: number;
+  appliedDeductibles: {
+    inCatalogDeductible: number;
+    outCatalogDeductible: number;
+    specialDrugDeductible: number;
+  };
+  notes: string[];
+}
+
 // 测算请求输入
 export interface CalculateRequest {
   cityCode: string;
@@ -156,6 +267,18 @@ export interface CalculateRequest {
   isChronicDisease?: boolean;              // 是否为门诊慢特病 (享受比照住院待遇与专属统筹报销)
   isAssistanceTarget?: boolean;            // 是否为特困人员/低保对象/医疗救助对象 (国办发〔2021〕42号大病起付线降50%，比例+5%，取消封顶线)
   pregnancyCare?: boolean;                 // 是否为生育医疗待遇/住院分娩 (享受零起付线与全额生育支持保障)
+
+  // 多层次医疗保障扩展可选参数 (Gen 32 Multi-Tier Security Extension)
+  hasHuiminbao?: boolean;                  // 是否叠加城市普惠型商业健康保险（惠民保）测算
+  huiminbaoProductId?: string;             // 指定惠民保产品代码 (可选，默认按参保地匹配)
+  huiminbaoIsContinuous?: boolean;         // 是否为连续参保人群 (享受优待免赔额及报销比例提升)
+  huiminbaoHasPreExistingCondition?: boolean; // 是否为特定既往症人群 (享受既往症差异化报销政策)
+  specialDrugCost?: number;                // 医疗花费中属于特定高额特药/创新药/CAR-T费用
+  hasLtc?: boolean;                        // 是否叠加长期护理保险（长护险 / 医保第六险）待遇测算
+  ltcCareMode?: string;                    // 照护模式 ('home' | 'institution' | 'home_service' | 'home_cash_allowance' | 'institution_pension' | 'institution_medical')
+  ltcDisabilityGrade?: string;             // 评定失能等级 ('mild' | 'moderate' | 'severe1' | 'severe2' | 'severe3' | 'severe_1' | 'severe_2' | 'severe_3' | 'dementia')
+  ltcCareCost?: number;                    // 当期申报的长期护理/生活照料总费用
+  medicalAssistanceAmount?: number;        // 专项医疗救助金直拨 (可选)
 }
 
 // 测算详细账单结果
@@ -178,6 +301,12 @@ export interface CalculateResult {
     costInReimbursementSpan: number;     // 进入报销段合规费用 (max(0, eligibleCost - deductibleDeducted))
     baseReimbursed: number;              // 基本医保统筹报销金额
     catastrophicReimbursed: number;      // 大病保险/大额互助报销金额
+    medicalAssistance?: number;          // 医疗救助兜底金 (国办发〔2021〕42号)
+    huiminbaoBenefit?: number;           // 城市普惠型商业险（惠民保）总报销金额
+    huiminbaoInCatalogBenefit?: number;  // 惠民保责任一：医保内合规自付报销金额
+    huiminbaoOutCatalogBenefit?: number; // 惠民保责任二：医保外住院自费报销金额
+    huiminbaoSpecialDrugBenefit?: number;// 惠民保责任三：特定高额特药/创新药报销金额
+    ltcBenefit?: number;                 // 长期护理保险（长护险）基金支付/定额补助金额
     totalReimbursed: number;             // 医保合计报销总额
     effectiveRatio: number;              // 实际综合报销比例 (合计报销 / 总费用)
     personalPayTotal: number;            // 个人最终自掏腰包总额

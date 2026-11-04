@@ -1542,13 +1542,14 @@ svg {
 /* -------------------- 2. 主工作台 Bento 栅格 -------------------- */
 .bento-grid {
   display: grid;
-  grid-template-columns: 1.05fr 0.95fr;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
   gap: 20px;
   align-items: start; /* 关键：顶部自然对齐，杜绝高度拉扯空白 */
 }
 
 /* Bento 卡片基础 */
 .bento-card {
+  min-width: 0;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 16px;
@@ -1678,11 +1679,18 @@ svg {
 
 .search-clear-btn {
   position: absolute;
-  right: 10px;
-  font-size: 13px;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
   color: #64748b;
   cursor: pointer;
-  padding: 4px;
+  box-sizing: border-box;
 }
 
 .search-results-list {
@@ -1698,7 +1706,9 @@ svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 10px;
+  min-height: 44px;
+  padding: 6px 12px;
+  box-sizing: border-box;
   border-radius: 6px;
   cursor: pointer;
   background: #ffffff;
@@ -2042,6 +2052,7 @@ svg {
   font-size: 13px;
   color: #64748b;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 /* 住院就诊频次阶梯选择器 (流线极简 3 段药丸) */
@@ -2523,7 +2534,9 @@ svg {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 44px;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .trigger-label {
@@ -2556,7 +2569,8 @@ svg {
 
 .collapse-input {
   width: 100%;
-  height: 34px;
+  min-height: 44px;
+  height: 44px;
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
@@ -2849,6 +2863,8 @@ svg {
   cursor: pointer;
   flex: 1;
   min-width: 0;
+  min-height: 44px;
+  box-sizing: border-box;
   transition: opacity 0.15s ease;
 }
 
@@ -2868,9 +2884,11 @@ svg {
   color: #334155;
   font-weight: 500;
   line-height: 1.4;
-  white-space: nowrap;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
+  white-space: normal;
 }
 
 .authority-hotline-btn {
@@ -3296,6 +3314,7 @@ svg {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+  flex-wrap: wrap;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
@@ -3720,8 +3739,12 @@ svg {
     font-size: 11.5px;
     font-weight: 700;
     margin-right: 6px;
-    display: flex;
+    min-height: 44px;
+    min-width: 44px;
+    box-sizing: border-box;
+    display: inline-flex;
     align-items: center;
+    justify-content: center;
     box-shadow: 0 4px 12px rgba(2, 132, 199, 0.45);
     white-space: nowrap;
     transition: transform 0.15s ease;
@@ -3737,7 +3760,13 @@ svg {
     color: #cbd5e1;
     background: rgba(255, 255, 255, 0.12);
     border: 1px solid rgba(255, 255, 255, 0.15);
-    padding: 5px 9px;
+    padding: 0 10px;
+    min-height: 44px;
+    min-width: 44px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 9999rpx;
     white-space: nowrap;
     transition: background 0.15s ease;
@@ -3774,8 +3803,8 @@ svg {
   }
 
   .region-dropdown-grid,
-  .identity-grid,
-  .treatment-type-grid {
+  .segmented-control,
+  .grid-2col {
     grid-template-columns: 1fr;
   }
 }

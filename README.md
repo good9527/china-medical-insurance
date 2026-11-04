@@ -1,8 +1,8 @@
-# 🏥 全国医疗保险待遇估算与政策知识库平台 (China Medical Insurance Platform)
+# 全国医疗保险待遇估算与政策知识库平台 (China Medical Insurance Platform)
 
 <p align="center">
   <a href="https://good9527.github.io/china-medical-insurance/">
-    <img src="https://img.shields.io/badge/🌐_在线免安装体验-点击直达-007AFF?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo">
+    <img src="https://img.shields.io/badge/在线免安装体验-点击直达-007AFF?style=for-the-badge&logo=googlechrome&logoColor=white" alt="Live Demo">
   </a>
   <img src="https://img.shields.io/badge/覆盖统筹区-348%20%2F%20348%20(100%25)-success?style=for-the-badge&logo=china" alt="Coverage">
   <img src="https://img.shields.io/badge/自动化断言-7%2C184%20Passed-blue?style=for-the-badge&logo=jest" alt="Tests">
@@ -13,24 +13,24 @@
 
 ---
 
-> 🚀 **免安装直达访问**：
+> **免安装直达访问**：
 > 本平台已通过 GitHub Actions 自动化流水线实时编译托管，任何手机、电脑浏览器均可免安装即点即用：
-> 👉 **[https://good9527.github.io/china-medical-insurance/](https://good9527.github.io/china-medical-insurance/)**
+> **[https://good9527.github.io/china-medical-insurance/](https://good9527.github.io/china-medical-insurance/)**
 
 ---
 
-## 📌 项目简介
+## 项目简介
 
 **全国医疗保险待遇估算与政策知识库平台**是一个面向全国参保人的民生级开源工具与公开政策数据库。本项目完整收录并结构化建模了中国内地 **31 个省、自治区、直辖市及新疆生产建设兵团下辖的全部 348 个医保统筹区**现行有效的基本医疗保险待遇政策。
 
 平台不仅支持在手机端、网页端即时进行精确到分、严丝合缝的医保报销金额预估，更建立了一整套**官方红头文件穿透式溯源体系**与**多维智能巡检引擎**，杜绝政策滞后、倒挂与非标误填。
 
-> ⚠️ **合规声明**：
+> **合规声明**：
 > 本平台所展示政策参数与估算结果均基于地方医疗保障局及政府公开发布的规范性红头文件计算，旨在提供便民参考与普惠知识普及。参保人实际报销金额请以就医定点医疗机构出具的《基本医疗保险门诊/住院收费收据及费用结算清单》和医保信息平台实时结算凭单为准。
 
 ---
 
-## 🌟 核心特色
+## 核心特色
 
 1. **全国 348 统筹区 100% 全量覆盖**：
    - 涵盖全部 4 个直辖市、293 个地级市、30 个自治州、3 个盟、省直管县级行政区及新疆生产建设兵团下辖各师部。
@@ -54,7 +54,7 @@
 
 ---
 
-## 🏗️ 架构设计
+## 架构设计
 
 ```
 china-medical-insurance/
@@ -88,7 +88,7 @@ china-medical-insurance/
 
 ---
 
-## 🚀 快速上手
+## 快速上手
 
 ### 1. 本地运行
 
@@ -110,7 +110,7 @@ npm run dev:h5
 
 ---
 
-## 🧪 自动化测试与质量保障门禁
+## 自动化测试与质量保障门禁
 
 本项目建立了极其苛刻的自动化校验门禁：
 
@@ -125,18 +125,18 @@ npm run dev:h5
 
 ---
 
-## 🚢 部署上线
+## 部署上线
 
 ### GitHub Pages 免费自动化部署
 
 本项目通过 `.github/workflows/deploy-pages.yml` 实现了提交即发布：
 - 只要主分支有代码更新，GitHub Actions 会自动触发静态构建与校验；
 - 校验通过后自动推送到 Pages 分支，全球 CDN 实时生效：
-  👉 **[https://good9527.github.io/china-medical-insurance/](https://good9527.github.io/china-medical-insurance/)**
+  **[https://good9527.github.io/china-medical-insurance/](https://good9527.github.io/china-medical-insurance/)**
 
 ---
 
-## 🤝 政策共建与纠偏反馈
+## 政策共建与纠偏反馈
 
 中国医疗保险政策由各统筹区因地制宜动态调整。如发现您所在城市的**起付线、报销比例、封顶限额**在最新公文中有所调整，非常欢迎您参与共建：
 
@@ -145,6 +145,6 @@ npm run dev:h5
 
 ---
 
-## 📄 开源许可证
+## 开源许可证
 
 本项目基于 [MIT License](LICENSE) 开放源代码。

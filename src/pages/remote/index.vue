@@ -466,7 +466,8 @@ onShow(() => {
 }
 
 .cyber-dropdown-trigger {
-  height: 72rpx;
+  min-height: 44px;
+  height: 44px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   padding: 0 20rpx;
@@ -475,6 +476,7 @@ onShow(() => {
   align-items: center;
   gap: 10rpx;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s;
 }
 
@@ -519,9 +521,11 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14rpx 18rpx;
+  min-height: 44px;
+  padding: 10rpx 18rpx;
   border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .dropdown-item:hover { background: #f8fafc; }
@@ -572,9 +576,14 @@ onShow(() => {
 }
 
 .switch-pill {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 6rpx 16rpx;
   border-radius: 8rpx;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s;
 }
 
@@ -970,7 +979,9 @@ onShow(() => {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 12rpx 0;
+    min-height: 44px;
+    padding: 6rpx 0;
+    box-sizing: border-box;
   }
 
   .ratio-grid {

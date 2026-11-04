@@ -849,7 +849,8 @@ onShow(() => {
 }
 
 .cyber-dropdown-trigger {
-  height: 38px;
+  min-height: 44px;
+  height: 44px;
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
@@ -858,6 +859,7 @@ onShow(() => {
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  box-sizing: border-box;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.02);
   transition: all 0.2s ease;
 }
@@ -982,9 +984,14 @@ onShow(() => {
 }
 
 .switch-pill {
-  padding: 4px 10px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
   border-radius: 6px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
@@ -1399,9 +1406,14 @@ onShow(() => {
 }
 
 .action-btn {
-  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 6px 14px;
   border-radius: 8px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
@@ -1422,13 +1434,15 @@ onShow(() => {
 }
 
 .hotline-search-input {
-  height: 30px;
+  min-height: 44px;
+  height: 44px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
   padding: 0 10px;
   font-size: 12px;
   color: #0f172a;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
@@ -1581,9 +1595,9 @@ onShow(() => {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 24px;
-  padding: 0 8px;
-  border-radius: 4px;
+  min-height: 44px;
+  padding: 0 12px;
+  border-radius: 6px;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
   cursor: pointer;
@@ -1614,8 +1628,9 @@ onShow(() => {
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 6px;
-  height: 32px;
-  padding: 0 10px;
+  min-height: 44px;
+  height: 44px;
+  padding: 0 12px;
   box-sizing: border-box;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -1770,8 +1785,8 @@ onShow(() => {
   .fab-back-top {
     right: 16px;
     bottom: calc(68px + env(safe-area-inset-bottom)) !important;
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
   }
 
   .cyber-dropdown-menu {

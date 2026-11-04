@@ -1754,6 +1754,7 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .method-head {
+  min-height: 44px;
   padding: 9px 14px;
   display: flex;
   justify-content: space-between;
@@ -1761,6 +1762,7 @@ const filteredBattleMetrics = computed(() => {
   background: #f8fafc;
   cursor: pointer;
   user-select: none;
+  box-sizing: border-box;
 }
 
 .method-left {
@@ -1944,8 +1946,11 @@ const filteredBattleMetrics = computed(() => {
 
 .menu-item {
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding: 10px 14px;
+  min-height: 44px;
+  padding: 8px 14px;
+  box-sizing: border-box;
   border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
 }
@@ -2217,8 +2222,13 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .podium-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   border-radius: 8px;
   padding: 8px 14px;
+  box-sizing: border-box;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
 }
@@ -3092,12 +3102,14 @@ const filteredBattleMetrics = computed(() => {
 .city-selector-trigger {
   display: flex;
   align-items: center;
+  min-height: 44px;
   gap: 6px;
   background: #ffffff;
   border: 1px solid #cbd5e1;
   padding: 8px 16px;
   border-radius: 8px;
   cursor: pointer;
+  box-sizing: border-box;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
 }
 
@@ -3659,6 +3671,8 @@ const filteredBattleMetrics = computed(() => {
     padding: 6px 4px;
     justify-content: center;
     gap: 4px;
+    min-height: 44px;
+    box-sizing: border-box;
   }
 
   .pill-label {
@@ -3684,6 +3698,8 @@ const filteredBattleMetrics = computed(() => {
     padding: 6px 4px;
     gap: 5px;
     border-radius: 7px;
+    min-height: 44px;
+    box-sizing: border-box;
   }
 
   .seg-icon-box {
@@ -3722,8 +3738,10 @@ const filteredBattleMetrics = computed(() => {
   }
 
   .method-head {
+    min-height: 44px;
     padding: 7px 10px;
     gap: 6px;
+    box-sizing: border-box;
   }
 
   .method-left {
@@ -3961,6 +3979,7 @@ const filteredBattleMetrics = computed(() => {
   }
 
   .podium-card.rank-1 .podium-btn {
+    min-height: 44px;
     padding: 8px 12px;
     border-radius: 8px;
     width: 100%;
@@ -4043,6 +4062,7 @@ const filteredBattleMetrics = computed(() => {
 
   .podium-card.rank-2 .podium-btn,
   .podium-card.rank-3 .podium-btn {
+    min-height: 44px;
     padding: 6px 8px;
     border-radius: 6px;
     width: 100%;
@@ -4176,6 +4196,37 @@ const filteredBattleMetrics = computed(() => {
   .right-val.val-win {
     border-color: #fed7aa;
     background: #fff7ed;
+  }
+}
+
+/* ==================== 针对超窄移动端 (<= 380px 如 iPhone SE/375px) 响应式堆叠防护 ==================== */
+@media (max-width: 380px) {
+  .filter-left {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 6px !important;
+  }
+
+  .province-anchor {
+    grid-column: 1 / 2 !important;
+  }
+
+  .sort-anchor {
+    grid-column: 2 / 3 !important;
+  }
+
+  .layout-toggle-dock {
+    grid-column: 1 / -1 !important;
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .layout-toggle-dock .layout-btn {
+    flex: 1 !important;
+  }
+
+  .dropdown-label {
+    font-size: 11px !important;
+    white-space: nowrap !important;
   }
 }
 

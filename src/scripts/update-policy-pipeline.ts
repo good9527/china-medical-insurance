@@ -31,8 +31,8 @@ export function runPolicyUpdatePipeline(): {
 } {
   const now = new Date().toISOString();
   console.log(`\n======================================================`);
-  console.log(`🌐 启动全国 ${allCities.length} 个统筹区医保官网长效更新与政策抓取管道`);
-  console.log(`⏰ 执行时间: ${now.slice(0, 19).replace('T', ' ')}`);
+  console.log(`[PIPELINE] 启动全国 ${allCities.length} 个统筹区医保官网长效更新与政策抓取管道`);
+  console.log(`[TIME] 执行时间: ${now.slice(0, 19).replace('T', ' ')}`);
   console.log(`======================================================\n`);
 
   const results: PortalCheckResult[] = [];
@@ -102,7 +102,7 @@ export function savePipelineReport(report: ReturnType<typeof runPolicyUpdatePipe
   let md = `# 全国 ${report.totalCities} 个统筹区医保官网长效监控与政策更新大盘\n\n`;
   md += `> **最近管道核验执行日**：${report.timestamp.slice(0, 10)}  \n`;
   md += `> **纳管统筹区全集**：全国 31 个省级行政区 · **${report.totalCities} 个地级市及统筹区** (100% 全域覆盖)  \n`;
-  md += `> **政策时效分布**：🟢 2024~2026年现行活跃新政 **${report.freshCities}** 个 (${((report.freshCities/report.totalCities)*100).toFixed(1)}%) | 🟡 2022~2023年深化规程 **${report.stableCities}** 个 | 🔴 需跟进更新 **${report.needUpdateCities}** 个\n\n`;
+  md += `> **政策时效分布**：[ACTIVE] 2024~2026年现行活跃新政 **${report.freshCities}** 个 (${((report.freshCities/report.totalCities)*100).toFixed(1)}%) | [STABLE] 2022~2023年深化规程 **${report.stableCities}** 个 | [PENDING] 需跟进更新 **${report.needUpdateCities}** 个\n\n`;
 
   md += `## 1. 核心重点统筹区官网数据源一览（前 30 城）\n\n`;
   md += `| 统筹区 | 省份 | 医保政务热线 | 官方医保门户网址 | 最新有效公文年份 | 门诊起付机制 |\n`;
@@ -119,12 +119,12 @@ export function savePipelineReport(report: ReturnType<typeof runPolicyUpdatePipe
   md += `3. **合规性验证保障**：执行 \`npm run check:all\`，自动校验起付阶梯、报销比例递减及 6800+ 自动化测算断言，确保 100% 严谨准确。\n`;
 
   fs.writeFileSync(outPath, md, 'utf-8');
-  console.log(`✅ 管道报告已持久化保存至: ${outPath}`);
+  console.log(`[PASS] 管道报告已持久化保存至: ${outPath}`);
 }
 
 if (typeof require !== 'undefined' && require.main === module) {
   const rep = runPolicyUpdatePipeline();
-  console.log(`📊 管道巡检汇总:`);
+  console.log(`[DATA] 管道巡检汇总:`);
   console.log(`- 统筹区总数: ${rep.totalCities}`);
   console.log(`- 2024~2026 现行新政城市: ${rep.freshCities} 个`);
   console.log(`- 2022~2023 深化改革规程: ${rep.stableCities} 个`);

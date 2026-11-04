@@ -1122,11 +1122,12 @@ onShow(() => {
 
 .search-input {
   width: 100%;
-  height: 36px;
+  min-height: 44px;
+  height: 44px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
-  padding: 0 40px 0 12px;
+  padding: 0 44px 0 12px;
   font-size: 13px;
   color: #0f172a;
   box-sizing: border-box;
@@ -1134,11 +1135,18 @@ onShow(() => {
 
 .search-clear-btn {
   position: absolute;
-  right: 12px;
-  font-size: 13px;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
   color: #94a3b8;
   cursor: pointer;
-  padding: 4px;
+  box-sizing: border-box;
 }
 
 .search-results-list {
@@ -1350,7 +1358,8 @@ onShow(() => {
 }
 
 .cyber-dropdown-trigger {
-  height: 38px;
+  min-height: 44px;
+  height: 44px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   padding: 0 12px;
@@ -1359,6 +1368,7 @@ onShow(() => {
   align-items: center;
   gap: 8px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s;
 }
 
@@ -1403,7 +1413,9 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 44px;
   padding: 8px 12px;
+  box-sizing: border-box;
   border-bottom: 1px solid #f1f5f9;
   cursor: pointer;
 }
@@ -1887,7 +1899,8 @@ onShow(() => {
 
 .doc-btn {
   flex: 1;
-  height: 32px;
+  min-height: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -2191,8 +2204,11 @@ onShow(() => {
   .doc-btn {
     flex: 1;
     min-width: calc(50% - 6px);
+    min-height: 44px;
+    height: 44px;
     justify-content: center;
-    padding: 10rpx 14rpx;
+    padding: 0 10px;
+    box-sizing: border-box;
   }
 
   .content-box {

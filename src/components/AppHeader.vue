@@ -459,7 +459,9 @@ function openRepo() {
 .brand-text-group {
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
+  min-width: 0;
+  overflow: hidden;
+  flex-shrink: 1;
 }
 
 .brand-name {
@@ -467,28 +469,30 @@ function openRepo() {
   font-weight: 800;
   color: #0f172a;
   letter-spacing: -0.2px;
-  white-space: nowrap !important;
-  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .brand-sub {
   font-size: 11px;
   color: #64748b;
   margin-top: 1px;
-  white-space: nowrap !important;
-  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .desktop-sub {
   display: inline;
-  white-space: nowrap !important;
-  word-break: keep-all;
+  white-space: nowrap;
 }
 
 .mobile-sub {
   display: none;
-  white-space: nowrap !important;
-  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header-nav {
@@ -557,6 +561,10 @@ function openRepo() {
 .contact-pill {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 44px;
+  box-sizing: border-box;
   gap: 5px;
   background: #eff6ff;
   border: 1px solid #bfdbfe;
@@ -689,8 +697,11 @@ function openRepo() {
 }
 
 .modal-close-round {
-  width: 30px;
-  height: 30px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  box-sizing: border-box;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.1);
   display: flex;
@@ -881,8 +892,11 @@ function openRepo() {
 .foot-repo-btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 5px;
-  padding: 4px 10px;
+  min-height: 44px;
+  padding: 6px 14px;
+  box-sizing: border-box;
   border-radius: 6px;
   background: #0f172a;
   color: #ffffff;
@@ -911,13 +925,23 @@ function openRepo() {
   }
 }
 
-
 @media (max-width: 767px) {
+  .header-brand {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+  .brand-name {
+    font-size: clamp(13px, 3.8vw, 15px);
+  }
   .desktop-sub {
     display: none !important;
   }
   .mobile-sub {
-    display: inline !important;
+    display: block !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .site-header-inner {
     height: 52px;
@@ -930,10 +954,29 @@ function openRepo() {
     display: none;
   }
   .contact-pill {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
     padding: 3px 8px;
+    flex-shrink: 0;
   }
   .contact-txt {
     font-size: 11px;
+  }
+}
+
+@media (max-width: 380px) {
+  .brand-sub {
+    display: none !important;
+  }
+  .brand-name {
+    font-size: 13.5px;
+  }
+  .header-brand {
+    gap: 6px;
   }
 }
 </style>

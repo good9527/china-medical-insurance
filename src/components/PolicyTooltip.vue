@@ -84,6 +84,7 @@ onUnmounted(() => {
 }
 
 .info-trigger-badge {
+  position: relative;
   width: 16px;
   height: 16px;
   border-radius: 50%;
@@ -94,6 +95,18 @@ onUnmounted(() => {
   justify-content: center;
   color: #64748b;
   transition: all 0.15s ease;
+}
+
+.info-trigger-badge::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 44px;
+  min-height: 44px;
+  width: 100%;
+  height: 100%;
 }
 
 .info-trigger-badge:hover,
@@ -181,14 +194,30 @@ onUnmounted(() => {
 }
 
 .popover-close {
+  position: relative;
   color: #94a3b8;
   cursor: pointer;
-  padding: 2px;
+  padding: 4px;
+  min-width: 44px;
+  min-height: 44px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 4px;
   transition: all 0.15s ease;
+}
+
+.popover-close::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 44px;
+  min-height: 44px;
+  width: 100%;
+  height: 100%;
 }
 
 .popover-close:hover {

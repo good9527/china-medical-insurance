@@ -1,42 +1,63 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-11-04T17:12:25.350Z",
-  "generation": 31,
+  "lastUpdated": "2026-11-04T21:21:29.871Z",
+  "generation": 32,
   "stage": "COMPLETED",
   "totalLedgerEntries": 348,
-  "totalAssertions": 17027,
-  "gitCommit": "c06ee3c",
+  "totalAssertions": 17622,
+  "gitCommit": "b247aac",
   "gitBranch": "main",
   "gitStatus": {
-    "clean": true,
-    "modifiedCount": 0,
-    "untrackedCount": 0,
-    "summary": []
+    "clean": false,
+    "modifiedCount": 19,
+    "untrackedCount": 1,
+    "summary": [
+      "M README.md",
+      "M docs/.calc_test_summary.json",
+      "M docs/CHECKPOINT_STATE.json",
+      "M docs/RESUME_GUIDE.md",
+      "M scripts/take_screenshots.py",
+      "M src/components/AppHeader.vue",
+      "M src/components/EstimateVoucherModal.vue",
+      "M src/components/PolicyTooltip.vue",
+      "M src/data/types.ts",
+      "M src/engine/__tests__/calculator.test.ts",
+      "M src/engine/calculator.ts",
+      "M src/pages/correction/index.vue",
+      "M src/pages/index/index.vue",
+      "M src/pages/policy/index.vue",
+      "M src/pages/ranking/index.vue",
+      "M src/pages/remote/index.vue",
+      "M src/pages/service/index.vue",
+      "M src/scripts/checkpoint-manager.ts",
+      "M src/scripts/monitor-policies.ts",
+      "?? src/data/multitierPolicies.ts"
+    ]
   },
   "pipelineHealth": "HEALTHY",
   "milestones": {
     "M0_SURVEY": {
       "status": "COMPLETED",
-      "summary": "西北丝路走廊四省区 2024~2026 红头公文穿透、引擎智能边缘方案与断点续传审计已全面就绪。",
-      "completedAt": "2026-11-04T16:10:00Z"
+      "summary": "全国代表城市长护险与惠民保多层次保障框架、前端多视口无头截图与流水线基线调研全面就绪。",
+      "completedAt": "2026-11-04T20:45:00Z"
     },
     "M1_DATA_GOVERNANCE": {
       "status": "COMPLETED",
-      "summary": "公共纠错台账扩充至 348 项，重点统筹区待遇梯次全部核准入库。",
-      "completedAt": "2026-11-04T16:12:00Z"
+      "summary": "全国 348 统筹区官方红头公文与 15 个长护险试点城市、15 个城市惠民保政策库深度纳管。",
+      "completedAt": "2026-11-04T21:00:00Z"
     },
     "M2_ENGINE_INTELLIGENCE": {
       "status": "COMPLETED",
-      "summary": "算法引擎高阶智能增强（慢特病/特困救助倾斜42号文/生育支持零起付线）与 Suite H68 精算测试套件注入 (17027 断言 100% PASS)。",
-      "completedAt": "2026-11-04T17:10:00Z"
+      "summary": "算法引擎高阶多层次协同（长护险/惠民保/医保大病三位一体）与 Suite H69 精算测试套件注入 (17622 断言 100% PASS)。",
+      "completedAt": "2026-11-04T21:15:00Z"
     },
     "M3_QUALITY_GATES": {
       "status": "COMPLETED",
-      "summary": "8 级质量流水线 check:all、生产构建 build:h5 及多智能体交叉法医审计。"
+      "summary": "8 级质量流水线 check:all、生产构建 build:h5、小程序构建 build:mp-weixin 及多端真实截图审查。"
     },
     "COMPLETED": {
       "status": "COMPLETED",
-      "summary": "Generation 31 全面达标闭环。"
+      "summary": "Generation 32 全面达标闭环。"
     }
   },
   "provinceCoverage": {
@@ -79,18 +100,18 @@
     "京津冀协同区": 1
   },
   "nextTarget": {
-    "generation": 32,
+    "generation": 33,
     "targetLedgerEntries": 348,
     "targetRegions": [
-      "全国 348 统筹区多层次医疗保障与商保/长护深度融合"
+      "全国 348 统筹区多层次医疗保障深化与大病/慢病/商保多引擎互联"
     ],
     "suggestedCities": [
       "全国 31 个省级行政区 348 个统筹区全生命周期持续巡检"
     ],
     "focusAreas": [
-      "长期护理保险（长护险）参保与给付智能精算规则扩展",
-      "全国代表城市惠民保（普惠型商业健康险）与基本医保/大病保险一站式协同测算",
-      "全量 17,000+ 精算断言守护下的持续集成与双端生产环境 100% 稳态"
+      "长期护理保险（长护险）国家新一批扩面城市政策规程无缝接入",
+      "城市普惠型商业健康保险（城市惠民保）多期迭代与特药理赔目录长效追踪",
+      "全量 17,500+ 精算断言守护下的持续集成与双端生产环境 100% 稳态"
     ]
   },
   "recoveryGuide": {

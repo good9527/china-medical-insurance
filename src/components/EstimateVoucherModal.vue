@@ -779,8 +779,11 @@ function handleExportImage() {
 }
 
 .modal-close-btn {
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1183,6 +1186,9 @@ function handleExportImage() {
 .action-btn {
   display: flex;
   align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  box-sizing: border-box;
   gap: 6px;
   padding: 8px 14px;
   border-radius: 8px;
@@ -1325,6 +1331,7 @@ function handleExportImage() {
   }
   .modal-actions-bar .action-btn {
     justify-content: center;
+    min-height: 44px;
     padding: 9px 8px;
     font-size: 12px;
     width: 100%;
@@ -1334,7 +1341,8 @@ function handleExportImage() {
   .modal-actions-bar .btn-close-sec {
     grid-column: span 2;
     text-align: center;
-    padding: 6px;
+    min-height: 44px;
+    padding: 10px 14px;
   }
 }
 
@@ -1391,10 +1399,15 @@ function handleExportImage() {
 }
 
 .poster-preview-close {
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   color: #94a3b8;
   font-size: 16px;
   cursor: pointer;
-  padding: 2px 6px;
+  box-sizing: border-box;
 }
 
 .poster-preview-close:hover {
@@ -1458,6 +1471,11 @@ function handleExportImage() {
 
 .poster-btn-download {
   flex: 1;
+  min-height: 44px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   background: #0284c7;
   color: #ffffff;
   border-radius: 8px;
@@ -1474,6 +1492,11 @@ function handleExportImage() {
 }
 
 .poster-btn-close {
+  min-height: 44px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 9px 16px;
   background: #f1f5f9;
   color: #475569;

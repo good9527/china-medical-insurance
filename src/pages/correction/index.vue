@@ -1092,7 +1092,8 @@ onShow(() => {
 }
 
 .cyber-dropdown-trigger {
-  height: 38px;
+  min-height: 44px;
+  height: 44px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
@@ -1101,6 +1102,7 @@ onShow(() => {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
@@ -1142,12 +1144,14 @@ onShow(() => {
 }
 
 .dropdown-item {
+  min-height: 44px;
   padding: 8px 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   border-radius: 6px;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .dropdown-item:hover { background: #f1f5f9; }
@@ -1164,9 +1168,14 @@ onShow(() => {
 }
 
 .type-capsule-btn {
-  padding: 6px 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
@@ -1194,11 +1203,16 @@ onShow(() => {
 }
 
 .cat-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
   padding: 6px 14px;
   border-radius: 8px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
@@ -1260,7 +1274,8 @@ onShow(() => {
 }
 
 .field-trigger {
-  height: 40px;
+  min-height: 44px;
+  height: 44px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
@@ -1269,6 +1284,7 @@ onShow(() => {
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  box-sizing: border-box;
 }
 
 .field-val {
@@ -1433,7 +1449,8 @@ onShow(() => {
 }
 
 .btn-clean-submit {
-  height: 42px;
+  min-height: 44px;
+  height: 44px;
   background: #2563eb;
   border-radius: 8px;
   display: flex;
@@ -1441,6 +1458,7 @@ onShow(() => {
   justify-content: center;
   gap: 8px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: opacity 0.2s ease;
 }
 
@@ -1532,10 +1550,12 @@ onShow(() => {
 .dispatch-btn {
   display: flex;
   align-items: center;
+  min-height: 44px;
   gap: 12px;
   padding: 10px 14px;
   border-radius: 8px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.18s ease;
   border: 1px solid transparent;
 }
@@ -1747,8 +1767,9 @@ onShow(() => {
 
 .expand-more-btn {
   width: 100%;
-  height: 34px;
-  line-height: 34px;
+  min-height: 44px;
+  height: 44px;
+  line-height: 44px;
   background: #f8fafc;
   border: 1px dashed #cbd5e1;
   border-radius: 6px;
@@ -1756,6 +1777,7 @@ onShow(() => {
   font-weight: 600;
   color: #2563eb;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.2s ease;
 }
 
@@ -1891,12 +1913,15 @@ onShow(() => {
 }
 
 .tab-pill {
-  display: flex;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
+  min-height: 44px;
   gap: 6px;
   padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.15s ease;
   user-select: none;
   white-space: nowrap;
@@ -2056,11 +2081,13 @@ onShow(() => {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 44px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   padding: 8px 12px;
   cursor: pointer;
+  box-sizing: border-box;
   transition: all 0.15s ease;
   min-width: 0;
 }

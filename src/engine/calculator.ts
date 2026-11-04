@@ -19,12 +19,17 @@ import type {
   OfficialPolicyDoc,
   HospitalTier,
   HospitalTierBenefit,
-  RepeatedDeductiblePolicy
+  RepeatedDeductiblePolicy,
+  LtcDisabilityGrade,
+  LtcCareMode,
+  LtcBenefitResult,
+  HuiminbaoBenefitResult
 } from '../data/types';
 import { getCityDataByCode } from '../data';
+import { getLtcPolicy, getHuiminbaoPolicy } from '../data/multitierPolicies';
 
 /**
- * 扩展测算请求参数 (支持转诊差额结算与急诊通道，支持自然语言输入与参数弹性自愈)
+ * 扩展测算请求参数 (支持转诊差额结算与急诊通道，支持自然语言输入与参数弹性自愈，支持多层次保障扩展)
  */
 export type EnhancedCalculateRequest = Omit<CalculateRequest, 'remoteStatus' | 'hospitalizationCount' | 'hospitalTier'> & {
   hospitalTier: HospitalTier | string;
@@ -36,6 +41,31 @@ export type EnhancedCalculateRequest = Omit<CalculateRequest, 'remoteStatus' | '
   isAssistanceTarget?: boolean;            // 是否为特困人员/低保对象/医疗救助对象 (国办发〔2021〕42号大病起付线降50%，比例+5%，取消封顶线)
   pregnancyCare?: boolean;                 // 是否为生育医疗待遇/住院分娩 (享受零起付线与全额生育支持保障)
 };
+
+/**
+ * 长期护理保险测算入参
+ */
+export interface LtcCalculateInput {
+  cityCode: string;
+  disabilityGrade?: LtcDisabilityGrade | string;
+  careMode?: LtcCareMode | string;
+  careCost: number;
+  caregiverTrained?: boolean;
+  isEmployee?: boolean;
+}
+
+/**
+ * 城市普惠型商业健康保险测算入参
+ */
+export interface HuiminbaoCalculateInput {
+  cityCode: string;
+  productId?: string;
+  inCatalogSelfPay: number;
+  outCatalogCost: number;
+  specialDrugCost?: number;
+  isContinuous?: boolean;
+  hasPreExistingCondition?: boolean;
+}
 
 /**
  * 年内多次住院起付线阶梯递减解析结果
@@ -870,11 +900,88 @@ export function calculateReimbursement(
     }
   }
 
+  // 5.1 医疗救助 (Medical Assistance)
+  let medicalAssistance = 0;
+  if (request.medicalAssistanceAmount && request.medicalAssistanceAmount > 0) {
+    const maxEligibleAssistance = Math.max(0, totalCost - baseReimbursed - catastrophicReimbursed);
+    medicalAssistance = Math.round(Math.min(maxEligibleAssistance, request.medicalAssistanceAmount) * 100) / 100;
+    policyNotes.push(`触发医疗救助专项金直拨给付 ¥${medicalAssistance.toFixed(2)}`);
+  }
+
+  // 5.2 城市普惠型商业健康保险 (惠民保) 二次协同赔付
+  let huiminbaoBenefit = 0;
+  let huiminbaoInCatalogBenefit = 0;
+  let huiminbaoOutCatalogBenefit = 0;
+  let huiminbaoSpecialDrugBenefit = 0;
+
+  if (request.hasHuiminbao) {
+    const inCatalogSelfPay = Math.max(0, Math.round((eligibleCost - baseReimbursed - catastrophicReimbursed) * 100) / 100);
+    const specialDrug = Math.min(nonInsuranceCost, Math.max(0, request.specialDrugCost ?? 0));
+    const outCatalogCost = Math.max(0, Math.round((nonInsuranceCost - specialDrug + classBPriorPay) * 100) / 100);
+
+    const hmRes = calculateHuiminbaoBenefit({
+      cityCode: city.cityCode,
+      productId: request.huiminbaoProductId,
+      inCatalogSelfPay,
+      outCatalogCost,
+      specialDrugCost: specialDrug,
+      isContinuous: request.huiminbaoIsContinuous,
+      hasPreExistingCondition: request.huiminbaoHasPreExistingCondition
+    });
+
+    huiminbaoInCatalogBenefit = hmRes.inCatalogBenefit;
+    huiminbaoOutCatalogBenefit = hmRes.outCatalogBenefit;
+    huiminbaoSpecialDrugBenefit = hmRes.specialDrugBenefit;
+
+    const remainingBeforeHm = Math.max(0, Math.round((totalCost - baseReimbursed - catastrophicReimbursed - medicalAssistance) * 100) / 100);
+    huiminbaoBenefit = Math.min(remainingBeforeHm, hmRes.totalHuiminbaoBenefit);
+
+    if (huiminbaoBenefit > 0) {
+      policyNotes.push(
+        `触发【${hmRes.productName}】协同给付 ¥${huiminbaoBenefit.toFixed(2)}（医保内自付补偿 ¥${huiminbaoInCatalogBenefit.toFixed(2)}，医保外住院自费补偿 ¥${huiminbaoOutCatalogBenefit.toFixed(2)}${huiminbaoSpecialDrugBenefit > 0 ? `，特药创新药补偿 ¥${huiminbaoSpecialDrugBenefit.toFixed(2)}` : ''}）`
+      );
+    }
+  }
+
+  // 5.3 长期护理保险 (长护险 / 医保第六险) 待遇给付
+  let ltcBenefit = 0;
+  if (request.hasLtc) {
+    const remainingBeforeLtc = Math.max(
+      0,
+      Math.round((totalCost - baseReimbursed - catastrophicReimbursed - medicalAssistance - huiminbaoBenefit) * 100) / 100
+    );
+    const careCost = request.ltcCareCost !== undefined
+      ? Math.max(0, Number(request.ltcCareCost))
+      : remainingBeforeLtc;
+
+    const ltcRes = calculateLtcBenefit({
+      cityCode: city.cityCode,
+      disabilityGrade: request.ltcDisabilityGrade,
+      careMode: request.ltcCareMode,
+      careCost,
+      isEmployee: request.insuranceType === 'employee'
+    });
+
+    ltcBenefit = Math.min(remainingBeforeLtc, ltcRes.ltcBenefit);
+    if (ltcBenefit > 0) {
+      policyNotes.push(
+        `触发长期护理保险（长护险）待遇给付 ¥${ltcBenefit.toFixed(2)}（评定等级: ${ltcRes.disabilityGrade}，照护模式: ${ltcRes.careMode}，基金分担: ${Math.round(ltcRes.fundPayRatio * 100)}%）`
+      );
+    }
+  }
+
   // 6. 汇总结果与严格资金物理守恒 (Indemnity Principle)
-  const rawTotalReimbursed = Math.round((baseReimbursed + catastrophicReimbursed) * 100) / 100;
+  const rawTotalReimbursed = Math.round(
+    (baseReimbursed + catastrophicReimbursed + medicalAssistance + huiminbaoBenefit + ltcBenefit) * 100
+  ) / 100;
   // 损失补偿公理：医保基金总给付额不得超过总花费及政策合规总额，杜绝超赔套利
   const totalReimbursed = Math.min(totalCost, Math.max(0, rawTotalReimbursed));
-  const personalPayTotal = Math.round(Math.max(0, totalCost - totalReimbursed) * 100) / 100;
+  let personalPayTotal = Math.round(Math.max(0, totalCost - totalReimbursed) * 100) / 100;
+
+  // 资金物理守恒闭包严密核验 (浮点绝对误差 <= 0.01 元)
+  if (Math.abs(totalReimbursed + personalPayTotal - totalCost) > 0.001) {
+    personalPayTotal = Math.round(Math.max(0, totalCost - totalReimbursed) * 100) / 100;
+  }
   const totalEffectiveRatio = totalCost > 0 ? Math.round((totalReimbursed / totalCost) * 1000) / 10 : 0;
 
   // 个人自付分项精算拆解
@@ -906,11 +1013,245 @@ export function calculateReimbursement(
       costInReimbursementSpan,
       baseReimbursed,
       catastrophicReimbursed,
+      medicalAssistance,
+      huiminbaoBenefit,
+      huiminbaoInCatalogBenefit,
+      huiminbaoOutCatalogBenefit,
+      huiminbaoSpecialDrugBenefit,
+      ltcBenefit,
       totalReimbursed,
       effectiveRatio: totalEffectiveRatio,
       personalPayTotal,
       personalDeductiblePaid,
       personalSpanCoPay
     }
+  };
+}
+
+/**
+ * 长期护理保险（长护险 / 医保第六险）待遇精算
+ * 依据国家医保发〔2020〕37号及各试点城市长护险红头政策规程
+ */
+export function calculateLtcBenefit(input: LtcCalculateInput): LtcBenefitResult {
+  const rawCost = Number.isFinite(Number(input.careCost)) ? Number(input.careCost) : 0;
+  const careCost = Math.round(Math.max(0, rawCost) * 100) / 100;
+  const policy = getLtcPolicy(input.cityCode);
+  const notes: string[] = [];
+
+  // 失能等级评定归一化
+  const rawGrade = String(input.disabilityGrade || 'severe1').trim().toLowerCase();
+  let grade: LtcDisabilityGrade = 'severe1';
+  let gradeName = '重度失能I级';
+
+  if (rawGrade === 'severe3' || rawGrade === 'severe_3' || rawGrade === '5' || rawGrade === '6' || rawGrade.includes('三级') || rawGrade.includes('3级')) {
+    grade = 'severe3';
+    gradeName = '重度失能III级';
+  } else if (rawGrade === 'severe2' || rawGrade === 'severe_2' || rawGrade === '4' || rawGrade.includes('二级') || rawGrade.includes('2级')) {
+    grade = 'severe2';
+    gradeName = '重度失能II级';
+  } else if (rawGrade === 'severe1' || rawGrade === 'severe_1' || rawGrade === '3' || rawGrade.includes('一级') || rawGrade.includes('1级')) {
+    grade = 'severe1';
+    gradeName = '重度失能I级';
+  } else if (rawGrade === 'moderate' || rawGrade.includes('中度') || rawGrade === '2') {
+    grade = 'moderate';
+    gradeName = '中度失能';
+  } else if (rawGrade === 'dementia' || rawGrade.includes('失智') || rawGrade.includes('认知')) {
+    grade = 'dementia';
+    gradeName = '重度失智';
+  } else if (rawGrade === 'mild' || rawGrade.includes('轻度') || rawGrade === '1') {
+    grade = 'mild';
+    gradeName = '轻度失能';
+  } else if (rawGrade === 'none' || rawGrade === '0' || rawGrade.includes('未达标') || rawGrade.includes('正常')) {
+    grade = 'none';
+    gradeName = '未达失能门槛';
+  }
+
+  // 照护模式归一化
+  const rawMode = String(input.careMode || 'home').trim().toLowerCase();
+  let isInstitution = false;
+  let careModeName = '居家上门照护';
+
+  if (
+    rawMode.includes('institution') ||
+    rawMode.includes('机构') ||
+    rawMode.includes('养老') ||
+    rawMode.includes('院护') ||
+    rawMode.includes('老护')
+  ) {
+    isInstitution = true;
+    careModeName = '养老/医疗定点机构住养照料';
+  } else if (rawMode.includes('cash') || rawMode.includes('亲情') || rawMode.includes('津贴')) {
+    careModeName = '居家基础照料亲情补助';
+  } else {
+    careModeName = '居家专业机构上门照料';
+  }
+
+  // 门槛核准 (0元费用或未达标不享受待遇)
+  const isEligible = grade !== 'none' && grade !== 'mild' && careCost > 0;
+  if (!isEligible) {
+    if (grade === 'none' || grade === 'mild') {
+      notes.push(`失能评定为【${gradeName}】，未达到长护险最低保障准入门槛`);
+    }
+    return {
+      isEligible: false,
+      cityCode: policy.cityCode,
+      cityName: policy.cityName,
+      disabilityGrade: gradeName,
+      careMode: careModeName,
+      careCost,
+      ltcBenefit: 0,
+      ltcPersonalPay: careCost,
+      fundPayRatio: 0,
+      monthlyCap: 0,
+      notes
+    };
+  }
+
+  // 待遇核定
+  const fundPayRatio = isInstitution
+    ? (policy.institutionalCare?.fundPayRatio ?? policy.defaultInstitutionRatio ?? 0.75)
+    : (policy.homeService?.fundPayRatio ?? policy.defaultHomeRatio ?? 0.85);
+
+  const monthlyCap = isInstitution
+    ? (policy.institutionalCare?.monthlyFixedCapByGrade?.[grade] ?? policy.institutionalCare?.monthlyMaxCap ?? policy.defaultMonthlyCap ?? 2200)
+    : (policy.homeService?.monthlyMaxCapByGrade?.[grade] ?? policy.homeService?.monthlyMaxCap ?? policy.defaultMonthlyCap ?? 2000);
+
+  let benefit = 0;
+
+  // 成都市定额包干模式与标准比例模式区分
+  if (policy.cityCode === '510100') {
+    const quota = isInstitution
+      ? (policy.institutionalCare?.monthlyFixedCapByGrade?.[grade] ?? 1837)
+      : (policy.homeService?.monthlyMaxCapByGrade?.[grade] ?? 1437);
+    benefit = Math.min(careCost, quota);
+    notes.push(`成都市长护险定额包干待遇：核定包干限额 ¥${quota}/月`);
+  } else {
+    benefit = Math.min(careCost * fundPayRatio, monthlyCap);
+    notes.push(`长护险【${careModeName}】：基金分担比例 ${Math.round(fundPayRatio * 100)}%，月度支付限额 ¥${monthlyCap}`);
+  }
+
+  // 损失补偿与守恒约束
+  const ltcBenefit = Math.round(Math.min(careCost, Math.max(0, benefit)) * 100) / 100;
+  const ltcPersonalPay = Math.round(Math.max(0, careCost - ltcBenefit) * 100) / 100;
+
+  return {
+    isEligible: true,
+    cityCode: policy.cityCode,
+    cityName: policy.cityName,
+    disabilityGrade: gradeName,
+    careMode: careModeName,
+    careCost,
+    ltcBenefit,
+    ltcPersonalPay,
+    fundPayRatio,
+    monthlyCap,
+    notes
+  };
+}
+
+/**
+ * 城市普惠型商业健康保险（城市惠民保）待遇精算
+ * 支持医保内自付、医保外自费、特定高额特药三层阶梯保障及连续参保优待
+ */
+export function calculateHuiminbaoBenefit(input: HuiminbaoCalculateInput): HuiminbaoBenefitResult {
+  const policy = getHuiminbaoPolicy(input.cityCode, input.productId);
+  const notes: string[] = [];
+
+  const rawInSelfPay = Number.isFinite(Number(input.inCatalogSelfPay)) ? Number(input.inCatalogSelfPay) : 0;
+  const inCatalogSelfPay = Math.round(Math.max(0, rawInSelfPay) * 100) / 100;
+
+  const rawOutCost = Number.isFinite(Number(input.outCatalogCost)) ? Number(input.outCatalogCost) : 0;
+  const outCatalogCost = Math.round(Math.max(0, rawOutCost) * 100) / 100;
+
+  const rawSpecialDrug = Number.isFinite(Number(input.specialDrugCost)) ? Number(input.specialDrugCost) : 0;
+  const specialDrugCost = Math.round(Math.max(0, rawSpecialDrug) * 100) / 100;
+
+  const isContinuous = !!input.isContinuous;
+  const isPreExisting = !!input.hasPreExistingCondition;
+
+  if (isContinuous) {
+    notes.push('已激活连续参保优待：享受更低免赔额与更优保障待遇');
+  }
+  if (isPreExisting) {
+    notes.push('已匹配既往症差异化报销规则');
+  }
+
+  // 1. 责任一：医保内合规自付
+  let inCatalogBenefit = 0;
+  let inDeductible = 0;
+  if (policy.inCatalogCoverage && inCatalogSelfPay > 0) {
+    inDeductible = isContinuous && policy.inCatalogCoverage.deductibleConsecutive !== undefined
+      ? policy.inCatalogCoverage.deductibleConsecutive
+      : policy.inCatalogCoverage.deductibleStandard;
+    const inRatio = isPreExisting
+      ? policy.inCatalogCoverage.reimbursementRatioPreExisting
+      : policy.inCatalogCoverage.reimbursementRatioHealthy;
+    const excessIn = Math.max(0, inCatalogSelfPay - inDeductible);
+    if (excessIn > 0) {
+      const calcBenefit = Math.min(excessIn * inRatio, policy.inCatalogCoverage.annualCap);
+      inCatalogBenefit = Math.round(Math.min(inCatalogSelfPay, calcBenefit) * 100) / 100;
+      notes.push(`责任一（医保内自付）：扣除免赔额 ¥${inDeductible}，按 ${Math.round(inRatio * 100)}% 报销 ¥${inCatalogBenefit.toFixed(2)}`);
+    } else {
+      notes.push(`责任一（医保内自付）：自付金额 ¥${inCatalogSelfPay} 未达到免赔额 ¥${inDeductible}`);
+    }
+  }
+
+  // 2. 责任二：医保外住院自费
+  let outCatalogBenefit = 0;
+  let outDeductible = 0;
+  if (policy.outCatalogCoverage && outCatalogCost > 0) {
+    outDeductible = isContinuous && policy.outCatalogCoverage.deductibleConsecutive !== undefined
+      ? policy.outCatalogCoverage.deductibleConsecutive
+      : policy.outCatalogCoverage.deductibleStandard;
+    const outRatio = isPreExisting
+      ? policy.outCatalogCoverage.reimbursementRatioPreExisting
+      : policy.outCatalogCoverage.reimbursementRatioHealthy;
+    const excessOut = Math.max(0, outCatalogCost - outDeductible);
+    if (excessOut > 0) {
+      const calcBenefit = Math.min(excessOut * outRatio, policy.outCatalogCoverage.annualCap);
+      outCatalogBenefit = Math.round(Math.min(outCatalogCost, calcBenefit) * 100) / 100;
+      notes.push(`责任二（医保外自费）：扣除免赔额 ¥${outDeductible}，按 ${Math.round(outRatio * 100)}% 报销 ¥${outCatalogBenefit.toFixed(2)}`);
+    } else {
+      notes.push(`责任二（医保外自费）：自费金额 ¥${outCatalogCost} 未达到免赔额 ¥${outDeductible}`);
+    }
+  }
+
+  // 3. 责任三：特定高额特药/创新药
+  let specialDrugBenefit = 0;
+  let specialDrugDeductible = 0;
+  if (policy.specialDrugCoverage && specialDrugCost > 0) {
+    specialDrugDeductible = isContinuous && policy.specialDrugCoverage.deductibleConsecutive !== undefined
+      ? policy.specialDrugCoverage.deductibleConsecutive
+      : policy.specialDrugCoverage.deductibleStandard;
+    const specRatio = isPreExisting
+      ? policy.specialDrugCoverage.reimbursementRatioPreExisting
+      : policy.specialDrugCoverage.reimbursementRatioHealthy;
+    const excessSpec = Math.max(0, specialDrugCost - specialDrugDeductible);
+    if (excessSpec > 0) {
+      const calcBenefit = Math.min(excessSpec * specRatio, policy.specialDrugCoverage.annualCap);
+      specialDrugBenefit = Math.round(Math.min(specialDrugCost, calcBenefit) * 100) / 100;
+      notes.push(`责任三（高额特药/创新药）：按 ${Math.round(specRatio * 100)}% 报销 ¥${specialDrugBenefit.toFixed(2)}`);
+    }
+  }
+
+  // 4. 汇总与年度综合保额封顶
+  const rawTotal = inCatalogBenefit + outCatalogBenefit + specialDrugBenefit;
+  const maxCap = policy.comprehensiveAnnualCap ?? 3000000;
+  const totalExpense = inCatalogSelfPay + outCatalogCost + specialDrugCost;
+  const totalHuiminbaoBenefit = Math.round(Math.min(totalExpense, Math.min(maxCap, rawTotal)) * 100) / 100;
+
+  return {
+    productCode: policy.productCode,
+    productName: policy.productName,
+    inCatalogBenefit,
+    outCatalogBenefit,
+    specialDrugBenefit,
+    totalHuiminbaoBenefit,
+    appliedDeductibles: {
+      inCatalogDeductible: inDeductible,
+      outCatalogDeductible: outDeductible,
+      specialDrugDeductible
+    },
+    notes
   };
 }
