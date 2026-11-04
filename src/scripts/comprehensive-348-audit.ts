@@ -273,24 +273,24 @@ export function runComprehensive348Audit(): AuditReport {
 // CLI 执行入口
 if (require.main === module || (typeof process !== 'undefined' && process.argv[1]?.includes('comprehensive-348-audit'))) {
   console.log('\n================================================================');
-  console.log('🏛️  全国 348 个医保统筹区全量政策数据穿透式深度核验审计');
+  console.log('[AUDIT] 全国 348 个医保统筹区全量政策数据穿透式深度核验审计');
   console.log('================================================================\n');
 
   const result = runComprehensive348Audit();
 
-  console.log(`📊 审计概况:`);
+  console.log(`[DATA] 审计概况:`);
   console.log(`- 统筹区总数: ${result.totalCities}`);
   console.log(`- 100% 达标统筹区: ${result.passedCities} (${((result.passedCities / result.totalCities) * 100).toFixed(2)}%)`);
   console.log(`- 存在异常统筹区: ${result.failedCities}`);
   console.log(`- 纳管规范性公文总数: ${result.totalDocs} 份\n`);
 
-  console.log('📅 公文年份分布:');
+  console.log('[DATE] 公文年份分布:');
   const sortedYears = Object.keys(result.yearDistribution).sort().reverse();
   for (const yr of sortedYears) {
     console.log(`  * ${yr}: ${result.yearDistribution[yr]} 份 (${((result.yearDistribution[yr] / result.totalDocs) * 100).toFixed(1)}%)`);
   }
 
-  console.log(`\n🔍 异常项统计: 共发现 ${result.issues.length} 个关注项`);
+  console.log(`\n[INSPECT] 异常项统计: 共发现 ${result.issues.length} 个关注项`);
   const errors = result.issues.filter(i => i.severity === 'error');
   const warnings = result.issues.filter(i => i.severity === 'warning');
 
@@ -298,7 +298,7 @@ if (require.main === module || (typeof process !== 'undefined' && process.argv[1
   console.log(`  * 提示建议级关注 (WARNING): ${warnings.length}\n`);
 
   if (errors.length > 0) {
-    console.error('❌ 阻断性错误详情:');
+    console.error('[ERROR] 阻断性错误详情:');
     for (const err of errors.slice(0, 10)) {
       console.error(`  - [${err.provinceName} · ${err.cityName}] (${err.category}): ${err.message}`);
     }
@@ -307,6 +307,6 @@ if (require.main === module || (typeof process !== 'undefined' && process.argv[1
     }
     process.exit(1);
   } else {
-    console.log('🎉 结论: 全国 348 个统筹区医保数据全部通过严密质量核验！0 阻断性错误！\n');
+    console.log('[PASS] 结论: 全国 348 个统筹区医保数据全部通过严密质量核验！0 阻断性错误！\n');
   }
 }
