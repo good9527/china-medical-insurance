@@ -27,6 +27,6 @@ for (const [prov, cities] of provMap.entries()) {
   const ratio = (uniqueSigs.size / cities.length) * 100;
   console.log(`[${prov}] 统筹区数量: ${cities.length} | 独特待遇参数套数: ${uniqueSigs.size} (多样率: ${ratio.toFixed(0)}%)`);
   if (uniqueSigs.size === 1) {
-    console.log(`  ⚠️ 警告: [${prov}] 所有 ${cities.length} 个地级统筹区待遇参数完全相同！疑似全省使用单一模板！`);
+    console.log(`  [WARN] 警告: [${prov}] 所有 ${cities.length} 个地级统筹区待遇参数完全相同！疑似全省使用单一模板！`);
   }
 }

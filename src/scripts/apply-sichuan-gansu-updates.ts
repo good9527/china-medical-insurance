@@ -423,7 +423,7 @@ function run() {
     count++;
     console.log(`Cleanly updated [${count}]: ${item.filePath}`);
   }
-  console.log(`\n🎉 Successfully restored outpatient and updated inpatient for ${count} cities!`);
+  console.log(`\n[PASS] Successfully restored outpatient and updated inpatient for ${count} cities!`);
 }
 
 run();

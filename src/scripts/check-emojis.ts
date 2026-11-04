@@ -43,7 +43,7 @@ scan('src/pages');
 scan('src/components');
 
 console.log(`\n======================================================`);
-console.log(`🔍 全局前端代码与页面组件 0-Emoji 规范扫描`);
+console.log(`[SCAN] 全局前端代码与页面组件 0-Emoji 规范扫描`);
 console.log(`======================================================`);
 console.log(`扫描完成！发现 Emoji 项: ${findings.length} 处`);
 
@@ -52,6 +52,6 @@ if (findings.length > 0) {
     console.log(`  [${f.file}:${f.line}] -> ${f.content}`);
   });
 } else {
-  console.log(`✅ 100% 达标！前端界面与页面代码中完全无任何 Emoji 表情字符，所有图标均采用规范 SVG！`);
+  console.log(`[PASS] 100% 达标！前端界面与页面代码中完全无任何 Emoji 表情字符，所有图标均采用规范 SVG！`);
 }
 console.log(`======================================================\n`);

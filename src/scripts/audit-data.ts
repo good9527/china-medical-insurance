@@ -12,7 +12,7 @@ interface AuditIssue {
 export function runFullAudit(): AuditIssue[] {
   const issues: AuditIssue[] = [];
   const cityEntries = Object.entries(allCities);
-  console.log(`\n🔍 开始对全国 ${cityEntries.length} 个统筹区医保政策数据进行地毯式深度核查...\n`);
+  console.log(`\n[AUDIT] 开始对全国 ${cityEntries.length} 个统筹区医保政策数据进行地毯式深度核查...\n`);
 
   for (const [code, city] of cityEntries) {
     if (!city) {
@@ -203,14 +203,14 @@ export function runFullAudit(): AuditIssue[] {
 
 const found = runFullAudit();
 console.log(`\n══════════════════════════════════════════════════════════`);
-console.log(`📊 核查结果统计：共发现 ${found.length} 项潜在异常或不规范之处`);
+console.log(`[STATS] 核查结果统计：共发现 ${found.length} 项潜在异常或不规范之处`);
 console.log(`══════════════════════════════════════════════════════════`);
 
 const errors = found.filter(f => f.severity === 'error');
 const warnings = found.filter(f => f.severity === 'warning');
 
-console.log(`❌ 致命逻辑/数据错误: ${errors.length} 项`);
-console.log(`⚠️ 需核验预警: ${warnings.length} 项\n`);
+console.log(`[FAIL] 致命逻辑/数据错误: ${errors.length} 项`);
+console.log(`[WARN] 需核验预警: ${warnings.length} 项\n`);
 
 errors.forEach((err, i) => {
   console.log(`${i + 1}. [${err.cityName} ${err.cityCode}] [${err.category}] ${err.message}`);

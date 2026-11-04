@@ -226,7 +226,7 @@ for (const c of allCities) {
 }
 
 console.log('================================================================================');
-console.log(`📋 全国 344 个统筹区全量规则化深度审查结果`);
+console.log(`[REPORT] 全国 344 个统筹区全量规则化深度审查结果`);
 console.log('================================================================================');
 console.log(`总计排查统筹区: ${allCities.length} 个`);
 console.log(`发现问题项总计: ${issues.length} 项`);
@@ -240,14 +240,14 @@ console.log(`- 重点需核实预警 (WARNING):  ${warning.length} 项`);
 console.log(`- 参保限额关注项 (NOTICE):   ${notice.length} 项\n`);
 
 if (critical.length > 0) {
-  console.log(`🚨 【严重阻断性问题 CRITICAL】 (共 ${critical.length} 项):`);
+  console.log(`[CRITICAL] 【严重阻断性问题 CRITICAL】 (共 ${critical.length} 项):`);
   for (const c of critical) {
     console.log(`  [${c.provinceName} ${c.cityName}] (${c.cityCode}) ${c.type}: ${c.message}`);
   }
 }
 
 if (warning.length > 0) {
-  console.log(`\n⚠️ 【重点需核实预警 WARNING】 (共 ${warning.length} 项):`);
+  console.log(`\n[WARN] 【重点需核实预警 WARNING】 (共 ${warning.length} 项):`);
   for (const w of warning) {
     console.log(`  [${w.provinceName} ${w.cityName}] (${w.cityCode}) ${w.type}: ${w.message}`);
   }
@@ -256,7 +256,7 @@ if (warning.length > 0) {
 
 
 if (notice.length > 0) {
-  console.log(`\nℹ️ 【参保限额关注项 NOTICE】 (共 ${notice.length} 项，展示前 15 项):`);
+  console.log(`\n[NOTICE] 【参保限额关注项 NOTICE】 (共 ${notice.length} 项，展示前 15 项):`);
   for (const n of notice.slice(0, 15)) {
     console.log(`  [${n.provinceName} ${n.cityName}] (${n.cityCode}) ${n.type}: ${n.message}`);
   }

@@ -3328,6 +3328,7 @@ svg {
   gap: 6px;
   min-width: 0;
   flex: 1;
+  overflow: hidden;
   cursor: pointer;
 }
 
@@ -3358,7 +3359,11 @@ svg {
 .sds-num {
   font-size: 11px;
   color: #2563eb;
-  flex-shrink: 0;
+  flex-shrink: 1;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .sds-actions {

@@ -1,17 +1,38 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-11-04T21:28:45.524Z",
+  "lastUpdated": "2026-11-04T21:43:02.138Z",
   "generation": 32,
-  "stage": "COMPLETED",
+  "stage": "M3_QUALITY_GATES",
   "totalLedgerEntries": 348,
   "totalAssertions": 17622,
-  "gitCommit": "23ca157",
+  "gitCommit": "1aabf7a",
   "gitBranch": "main",
   "gitStatus": {
-    "clean": true,
-    "modifiedCount": 0,
-    "untrackedCount": 0,
-    "summary": []
+    "clean": false,
+    "modifiedCount": 16,
+    "untrackedCount": 4,
+    "summary": [
+      "M docs/.calc_test_summary.json",
+      "M docs/CHECKPOINT_STATE.json",
+      "M docs/RESUME_GUIDE.md",
+      "M src/components/EstimateVoucherModal.vue",
+      "M src/data/multitierPolicies.ts",
+      "M src/pages/index/index.vue",
+      "M src/scripts/apply-sichuan-gansu-updates.ts",
+      "M src/scripts/audit-data.ts",
+      "M src/scripts/audit-deep.ts",
+      "M src/scripts/check-emojis.ts",
+      "M src/scripts/check-homogeneity.ts",
+      "M src/scripts/comprehensive-344-audit.ts",
+      "M src/scripts/comprehensive-audit-checker.ts",
+      "M src/scripts/fix-employee-inpatient.ts",
+      "M src/scripts/fix-outpatient-and-verify.ts",
+      "M src/scripts/scan-nationwide-anomalies.ts",
+      "?? scripts/challenger_gen32_ui_audit.py",
+      "?? scripts/challenger_oracle_report.json",
+      "?? scripts/challenger_r33_oracle.py",
+      "?? src/scripts/challenger-r32-multitier-invariants-oracle.ts"
+    ]
   },
   "pipelineHealth": "HEALTHY",
   "milestones": {
@@ -31,11 +52,11 @@
       "completedAt": "2026-11-04T21:15:00Z"
     },
     "M3_QUALITY_GATES": {
-      "status": "COMPLETED",
+      "status": "IN_PROGRESS",
       "summary": "8 级质量流水线 check:all、生产构建 build:h5、小程序构建 build:mp-weixin 及多端真实截图审查。"
     },
     "COMPLETED": {
-      "status": "COMPLETED",
+      "status": "PENDING",
       "summary": "Generation 32 全面达标闭环。"
     }
   },
@@ -94,16 +115,19 @@
     ]
   },
   "recoveryGuide": {
-    "stage": "COMPLETED",
-    "actionDescription": "当前代数全流程已全部高质量完成，系统处于高稳态。",
+    "stage": "M3_QUALITY_GATES",
+    "actionDescription": "进入综合质量门禁核验阶段，执行 8 级流水线及全端构建。",
     "suggestedCommands": [
-      "git status",
-      "npm run check:all"
+      "npm run check:all",
+      "npm run build:h5",
+      "npm run build:mp-weixin"
     ],
     "focusCheckpoints": [
-      "提交 Git Commit",
-      "准备推进下一代优化目标"
+      "确保 8 级流水线 0 Error 全绿",
+      "双端生产构建成功",
+      "审计员复核通过"
     ]
   },
-  "interruptionRecoveryCommand": "npm run resume"
+  "interruptionRecoveryCommand": "npm run resume",
+  "lastResumedAt": "2026-11-04T21:45:00.631Z"
 }

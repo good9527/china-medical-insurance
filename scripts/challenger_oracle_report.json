@@ -1,0 +1,279 @@
+{
+  "verdict": "REJECT",
+  "emoji_findings_count": 33,
+  "emoji_findings": [
+    {
+      "file": "scratch\\adversarial_challenger_r26_2.ts",
+      "line": 30,
+      "char": "❌",
+      "code": "U+274C",
+      "name": "CROSS MARK",
+      "snippet": "console.error(`  ❌ FAIL: ${description}`);"
+    },
+    {
+      "file": "scratch\\adversarial_challenger_r26_2.ts",
+      "line": 544,
+      "char": "❌",
+      "code": "U+274C",
+      "name": "CROSS MARK",
+      "snippet": "console.log('\\nVERDICT: REQUEST_CHANGES ❌');"
+    },
+    {
+      "file": "scratch\\adversarial_challenger_r26_2.ts",
+      "line": 547,
+      "char": "✅",
+      "code": "U+2705",
+      "name": "WHITE HEAVY CHECK MARK",
+      "snippet": "console.log('\\nVERDICT: ALL ADVERSARIAL CHALLENGES 100% PASSED! APPROVE ✅');"
+    },
+    {
+      "file": "scripts\\fetch_feedback.ts",
+      "line": 11,
+      "char": "🔍",
+      "code": "U+1F50D",
+      "name": "LEFT-POINTING MAGNIFYING GLASS",
+      "snippet": "console.log(`🔍 正在检查 GitHub 官方纠错反馈通道 ...`);"
+    },
+    {
+      "file": "scripts\\fetch_feedback.ts",
+      "line": 12,
+      "char": "📌",
+      "code": "U+1F4CC",
+      "name": "PUSHPIN",
+      "snippet": "console.log(`📌 仓库 Issues 地址: https://github.com/${repo}/issues`);"
+    },
+    {
+      "file": "scripts\\fetch_feedback.ts",
+      "line": 19,
+      "char": "📋",
+      "code": "U+1F4CB",
+      "name": "CLIPBOARD",
+      "snippet": "console.log(`📋 当前通过 GitHub CLI 检索到待处理 Issue：\\n`);"
+    },
+    {
+      "file": "scripts\\fetch_feedback.ts",
+      "line": 24,
+      "char": "🎉",
+      "code": "U+1F389",
+      "name": "PARTY POPPER",
+      "snippet": "console.log(`🎉 暂无待处理的政策纠错 Issue！当前数据处于最新状态。\\n`);"
+    },
+    {
+      "file": "scripts\\fetch_feedback.ts",
+      "line": 47,
+      "char": "🎉",
+      "code": "U+1F389",
+      "name": "PARTY POPPER",
+      "snippet": "console.log(`🎉 暂无未处理的政策纠错 Issue！当前所有统筹区数据均处于最新状态。\\n`);"
+    },
+    {
+      "file": "scripts\\fetch_feedback.ts",
+      "line": 60,
+      "char": "👉",
+      "code": "U+1F449",
+      "name": "WHITE RIGHT POINTING BACKHAND INDEX",
+      "snippet": "console.log(`👉 您可直接在浏览器中打开: https://github.com/${repo}/issues 查看最新反馈`);"
+    },
+    {
+      "file": "scripts\\fetch_feedback.ts",
+      "line": 63,
+      "char": "👉",
+      "code": "U+1F449",
+      "name": "WHITE RIGHT POINTING BACKHAND INDEX",
+      "snippet": "console.log(`👉 您可直接在浏览器中打开: https://github.com/${repo}/issues 查看最新反馈`);"
+    },
+    {
+      "file": "scripts\\fetch_feedback.ts",
+      "line": 70,
+      "char": "💡",
+      "code": "U+1F4A1",
+      "name": "ELECTRIC LIGHT BULB",
+      "snippet": "console.log(`\\n💡 本机 0 成本 AI 协同处理指南：`);"
+    },
+    {
+      "file": "src\\scripts\\apply-sichuan-gansu-updates.ts",
+      "line": 426,
+      "char": "🎉",
+      "code": "U+1F389",
+      "name": "PARTY POPPER",
+      "snippet": "console.log(`\\n🎉 Successfully restored outpatient and updated inpatient for ${co"
+    },
+    {
+      "file": "src\\scripts\\audit-data.ts",
+      "line": 15,
+      "char": "🔍",
+      "code": "U+1F50D",
+      "name": "LEFT-POINTING MAGNIFYING GLASS",
+      "snippet": "console.log(`\\n🔍 开始对全国 ${cityEntries.length} 个统筹区医保政策数据进行地毯式深度核查...\\n`);"
+    },
+    {
+      "file": "src\\scripts\\audit-data.ts",
+      "line": 206,
+      "char": "📊",
+      "code": "U+1F4CA",
+      "name": "BAR CHART",
+      "snippet": "console.log(`📊 核查结果统计：共发现 ${found.length} 项潜在异常或不规范之处`);"
+    },
+    {
+      "file": "src\\scripts\\audit-data.ts",
+      "line": 212,
+      "char": "❌",
+      "code": "U+274C",
+      "name": "CROSS MARK",
+      "snippet": "console.log(`❌ 致命逻辑/数据错误: ${errors.length} 项`);"
+    },
+    {
+      "file": "src\\scripts\\audit-data.ts",
+      "line": 213,
+      "char": "⚠",
+      "code": "U+26A0",
+      "name": "WARNING SIGN",
+      "snippet": "console.log(`⚠️ 需核验预警: ${warnings.length} 项\\n`);"
+    },
+    {
+      "file": "src\\scripts\\audit-data.ts",
+      "line": 213,
+      "char": "️",
+      "code": "U+FE0F",
+      "name": "VARIATION SELECTOR-16",
+      "snippet": "console.log(`⚠️ 需核验预警: ${warnings.length} 项\\n`);"
+    },
+    {
+      "file": "src\\scripts\\audit-deep.ts",
+      "line": 4,
+      "char": "🚀",
+      "code": "U+1F680",
+      "name": "ROCKET",
+      "snippet": "console.log('🚀 启动 344 个统筹区医保待遇参数与官方公文地毯式深度核验');"
+    },
+    {
+      "file": "src\\scripts\\check-emojis.ts",
+      "line": 46,
+      "char": "🔍",
+      "code": "U+1F50D",
+      "name": "LEFT-POINTING MAGNIFYING GLASS",
+      "snippet": "console.log(`🔍 全局前端代码与页面组件 0-Emoji 规范扫描`);"
+    },
+    {
+      "file": "src\\scripts\\check-emojis.ts",
+      "line": 55,
+      "char": "✅",
+      "code": "U+2705",
+      "name": "WHITE HEAVY CHECK MARK",
+      "snippet": "console.log(`✅ 100% 达标！前端界面与页面代码中完全无任何 Emoji 表情字符，所有图标均采用规范 SVG！`);"
+    },
+    {
+      "file": "src\\scripts\\check-homogeneity.ts",
+      "line": 30,
+      "char": "⚠",
+      "code": "U+26A0",
+      "name": "WARNING SIGN",
+      "snippet": "console.log(`  ⚠️ 警告: [${prov}] 所有 ${cities.length} 个地级统筹区待遇参数完全相同！疑似全省使用单一模板！`)"
+    },
+    {
+      "file": "src\\scripts\\check-homogeneity.ts",
+      "line": 30,
+      "char": "️",
+      "code": "U+FE0F",
+      "name": "VARIATION SELECTOR-16",
+      "snippet": "console.log(`  ⚠️ 警告: [${prov}] 所有 ${cities.length} 个地级统筹区待遇参数完全相同！疑似全省使用单一模板！`)"
+    },
+    {
+      "file": "src\\scripts\\comprehensive-344-audit.ts",
+      "line": 229,
+      "char": "📋",
+      "code": "U+1F4CB",
+      "name": "CLIPBOARD",
+      "snippet": "console.log(`📋 全国 344 个统筹区全量规则化深度审查结果`);"
+    },
+    {
+      "file": "src\\scripts\\comprehensive-344-audit.ts",
+      "line": 243,
+      "char": "🚨",
+      "code": "U+1F6A8",
+      "name": "POLICE CARS REVOLVING LIGHT",
+      "snippet": "console.log(`🚨 【严重阻断性问题 CRITICAL】 (共 ${critical.length} 项):`);"
+    },
+    {
+      "file": "src\\scripts\\comprehensive-344-audit.ts",
+      "line": 250,
+      "char": "⚠",
+      "code": "U+26A0",
+      "name": "WARNING SIGN",
+      "snippet": "console.log(`\\n⚠️ 【重点需核实预警 WARNING】 (共 ${warning.length} 项):`);"
+    },
+    {
+      "file": "src\\scripts\\comprehensive-344-audit.ts",
+      "line": 250,
+      "char": "️",
+      "code": "U+FE0F",
+      "name": "VARIATION SELECTOR-16",
+      "snippet": "console.log(`\\n⚠️ 【重点需核实预警 WARNING】 (共 ${warning.length} 项):`);"
+    },
+    {
+      "file": "src\\scripts\\comprehensive-344-audit.ts",
+      "line": 259,
+      "char": "️",
+      "code": "U+FE0F",
+      "name": "VARIATION SELECTOR-16",
+      "snippet": "console.log(`\\nℹ️ 【参保限额关注项 NOTICE】 (共 ${notice.length} 项，展示前 15 项):`);"
+    },
+    {
+      "file": "src\\scripts\\comprehensive-audit-checker.ts",
+      "line": 161,
+      "char": "🎯",
+      "code": "U+1F3AF",
+      "name": "DIRECT HIT",
+      "snippet": "console.log(`🎯 全面公文条款、备注与代码配置核验报告`);"
+    },
+    {
+      "file": "src\\scripts\\fix-employee-inpatient.ts",
+      "line": 88,
+      "char": "❌",
+      "code": "U+274C",
+      "name": "CROSS MARK",
+      "snippet": "console.error(`❌ Syntax error in ${rel}: ${e.message}`);"
+    },
+    {
+      "file": "src\\scripts\\fix-employee-inpatient.ts",
+      "line": 93,
+      "char": "🎉",
+      "code": "U+1F389",
+      "name": "PARTY POPPER",
+      "snippet": "console.log('\\n🎉 ALL 22 target files are 100% syntactically valid and verified!'"
+    },
+    {
+      "file": "src\\scripts\\fix-outpatient-and-verify.ts",
+      "line": 114,
+      "char": "❌",
+      "code": "U+274C",
+      "name": "CROSS MARK",
+      "snippet": "console.error(`❌ Syntax error in ${rel}: ${e.message}`);"
+    },
+    {
+      "file": "src\\scripts\\fix-outpatient-and-verify.ts",
+      "line": 119,
+      "char": "🎉",
+      "code": "U+1F389",
+      "name": "PARTY POPPER",
+      "snippet": "console.log('\\n🎉 ALL 27 target files are 100% syntactically valid and verified!'"
+    },
+    {
+      "file": "src\\scripts\\scan-nationwide-anomalies.ts",
+      "line": 112,
+      "char": "🔍",
+      "code": "U+1F50D",
+      "name": "LEFT-POINTING MAGNIFYING GLASS",
+      "snippet": "console.log(`🔍 全国 344 个统筹区“咸阳式数据病灶”地毯式深度排查报告`);"
+    }
+  ],
+  "scanned_files_count": 505,
+  "screenshots_total": 171,
+  "screenshots_valid_png": 171,
+  "screenshots_dimension_matched": 126,
+  "screenshots_non_blank": 171,
+  "screenshot_errors": [],
+  "h5_build_success": true,
+  "mp_weixin_build_success": true,
+  "bundle_errors": []
+}

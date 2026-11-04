@@ -1428,6 +1428,8 @@ function handleExportImage() {
 .poster-preview-img {
   width: 100%;
   max-width: 380px;
+  max-height: 52vh;
+  object-fit: contain;
   height: auto;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);

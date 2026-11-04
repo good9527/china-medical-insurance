@@ -158,7 +158,7 @@ for (const city of allCities) {
 }
 
 console.log(`\n======================================================`);
-console.log(`🎯 全面公文条款、备注与代码配置核验报告`);
+console.log(`[AUDIT] 全面公文条款、备注与代码配置核验报告`);
 console.log(`总计比对统筹区: ${allCities.length} 个`);
 console.log(`检出不一致项: ${items.length} 项`);
 console.log(`======================================================\n`);

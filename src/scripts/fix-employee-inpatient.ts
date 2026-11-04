@@ -85,10 +85,10 @@ for (const rel of targets) {
     transformSync(fs.readFileSync(full, 'utf-8'), { loader: 'ts' });
   } catch (e: any) {
     errCount++;
-    console.error(`❌ Syntax error in ${rel}: ${e.message}`);
+    console.error(`[ERROR] Syntax error in ${rel}: ${e.message}`);
   }
 }
 
 if (errCount === 0) {
-  console.log('\n🎉 ALL 22 target files are 100% syntactically valid and verified!');
+  console.log('\n[PASS] ALL 22 target files are 100% syntactically valid and verified!');
 }

@@ -332,6 +332,15 @@ export const LTC_POLICIES: Record<string, LtcCityPolicy> = {
     defaultInstitutionRatio: 0.70,
     defaultMonthlyCap: 1800
   },
+  '660000': {
+    cityCode: '660000',
+    cityName: '新疆生产建设兵团 (石河子)',
+    supportedGrades: ['moderate', 'severe1', 'severe2', 'severe3'],
+    supportedModes: ['home', 'institution'],
+    defaultHomeRatio: 0.75,
+    defaultInstitutionRatio: 0.70,
+    defaultMonthlyCap: 1800
+  },
 
   // 北京市 (110100 / 110000)
   '110100': {
