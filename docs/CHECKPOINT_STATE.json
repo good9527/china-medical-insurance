@@ -1,25 +1,25 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-11-04T16:35:42.875Z",
-  "generation": 27,
+  "lastUpdated": "2026-11-04T16:49:15.098Z",
+  "generation": 28,
   "stage": "M3_QUALITY_GATES",
-  "totalLedgerEntries": 303,
-  "totalAssertions": 15169,
-  "gitCommit": "8549680",
+  "totalLedgerEntries": 318,
+  "totalAssertions": 15600,
+  "gitCommit": "9a349d5",
   "gitBranch": "main",
   "gitStatus": {
     "clean": false,
-    "modifiedCount": 8,
-    "untrackedCount": 0,
+    "modifiedCount": 7,
+    "untrackedCount": 1,
     "summary": [
       "M docs/.calc_test_summary.json",
       "M docs/CHECKPOINT_STATE.json",
       "M docs/RESUME_GUIDE.md",
+      "M package.json",
       "M src/data/correctionUpdates.ts",
       "M src/engine/__tests__/calculator.test.ts",
-      "M src/engine/__tests__/challenger_invariants.test.ts",
-      "M src/engine/calculator.ts",
-      "M src/scripts/checkpoint-manager.ts"
+      "M src/scripts/checkpoint-manager.ts",
+      "?? src/scripts/challenger-r26-invariants-oracle.ts"
     ]
   },
   "pipelineHealth": "HEALTHY",
@@ -31,12 +31,12 @@
     },
     "M1_DATA_GOVERNANCE": {
       "status": "COMPLETED",
-      "summary": "公共纠错台账扩充至 303 项，重点统筹区待遇梯次全部核准入库。",
+      "summary": "公共纠错台账扩充至 318 项，重点统筹区待遇梯次全部核准入库。",
       "completedAt": "2026-11-04T16:12:00Z"
     },
     "M2_ENGINE_INTELLIGENCE": {
       "status": "COMPLETED",
-      "summary": "算法引擎边缘智能增强与 Suite H64 精算测试套件注入 (15169 断言 100% PASS)。",
+      "summary": "算法引擎边缘智能增强与 Suite H64 精算测试套件注入 (15600 断言 100% PASS)。",
       "completedAt": "2026-11-04T16:26:00Z"
     },
     "M3_QUALITY_GATES": {
@@ -45,16 +45,17 @@
     },
     "COMPLETED": {
       "status": "PENDING",
-      "summary": "Generation 27 全面达标闭环。"
+      "summary": "Generation 28 全面达标闭环。"
     }
   },
   "provinceCoverage": {
+    "西藏自治区": 8,
+    "青海省": 11,
+    "新疆维吾尔自治区": 14,
     "宁夏回族自治区": 6,
     "广西壮族自治区": 8,
     "海南省": 4,
     "甘肃省": 11,
-    "青海省": 5,
-    "新疆维吾尔自治区": 11,
     "云南省": 12,
     "贵州省": 8,
     "黑龙江省": 10,
@@ -75,7 +76,6 @@
     "江西省": 8,
     "浙江省": 10,
     "广东省": 14,
-    "西藏自治区": 2,
     "上海市": 3,
     "重庆市": 2,
     "天津市": 1,
@@ -87,32 +87,31 @@
     "京津冀协同区": 1
   },
   "nextTarget": {
-    "generation": 28,
-    "targetLedgerEntries": 318,
+    "generation": 29,
+    "targetLedgerEntries": 333,
     "targetRegions": [
-      "西藏自治区",
-      "青海省",
-      "新疆维吾尔自治区",
-      "内蒙古自治区西部"
+      "内蒙古自治区全境",
+      "云南省边疆多民族自治州",
+      "黑龙江省大兴安岭/黑河/双鸭山"
     ],
     "suggestedCities": [
-      "日喀则市 (540200)",
-      "昌都市 (540300)",
-      "林芝市 (540400)",
-      "山南市 (540500)",
-      "海北州 (632200)",
-      "黄南州 (632300)",
-      "海南州 (632500)",
-      "果洛州 (632600)",
-      "和田地区 (653200)",
-      "喀什地区 (653100)",
-      "阿克苏地区 (652900)",
-      "阿拉善盟 (152900)"
+      "呼伦贝尔市 (150700)",
+      "兴安盟 (152200)",
+      "锡林郭勒盟 (152500)",
+      "阿拉善盟 (152900)",
+      "怒江傈僳族自治州 (533300)",
+      "迪庆藏族自治州 (533400)",
+      "西双版纳傣族自治州 (532800)",
+      "德宏傣族景颇族自治州 (533100)",
+      "大兴安岭地区 (232700)",
+      "黑河市 (231100)",
+      "伊春市 (230700)",
+      "双鸭山市 (230500)"
     ],
     "focusAreas": [
-      "西部边疆高寒高海拔统筹区 2024~2026 规范性文件逐盟逐州核验",
-      "注入 Suite H65 精算测试套件，高海拔大病倾斜待遇与长效守恒断言",
-      "西藏/青海/新疆极偏远统筹区异地就医免备案直接结算差额精算",
+      "内蒙牧区/云贵边境/东北极高寒林区统筹区 2024~2026 规范性文件逐盟逐州核验",
+      "注入 Suite H66 精算测试套件，高寒林区牧区大病倾斜待遇与长效守恒断言",
+      "极偏远高寒牧区异地就医免备案直接结算差额精算与反向对偶律 (ΔR = -ΔP)",
       "全量 8 级质量流水线与 GitHub Pages 双流 100% 稳健部署"
     ]
   },

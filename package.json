@@ -45,6 +45,7 @@
     "monitor:policies": "tsx src/scripts/monitor-policies.ts",
     "update:pipeline": "tsx src/scripts/update-policy-pipeline.ts",
     "test:calc": "tsx src/scripts/run-calculator-suite.ts",
+    "test:challenger": "tsx src/scripts/challenger-r26-invariants-oracle.ts",
     "feedback:list": "tsx scripts/fetch_feedback.ts",
     "check:all": "npm run type-check && npm run audit:data && npm run audit:smart && npm run audit:deep && npm run monitor:policies && npm run update:pipeline && npm run test:calc && npm run checkpoint && npm run build:h5",
     "checkpoint": "tsx src/scripts/checkpoint-manager.ts",
