@@ -424,12 +424,12 @@ if (typeof require !== 'undefined' && require.main === module) {
   const path = require('path');
 
   console.log('\n======================================================');
-  console.log('🚀 执行全国 348 个医保统筹区全面深度核验审计');
+  console.log('[AUDIT] 执行全国 348 个医保统筹区全面深度核验审计');
   console.log('======================================================');
 
   const { totalCities, issues, freshnessStats } = runDeepAudit();
 
-  console.log(`\n📊 审计概况:`);
+  console.log(`\n[DATA] 审计概况:`);
   console.log(`- 统筹区总数: ${totalCities}`);
   console.log(`- 发现问题总数: ${issues.length}`);
   console.log(`- 政策时效性分布:`);
@@ -441,14 +441,14 @@ if (typeof require !== 'undefined' && require.main === module) {
   const warning = issues.filter(i => i.severity === 'WARNING');
   const notice = issues.filter(i => i.severity === 'NOTICE');
 
-  console.log(`\n🔴 严重问题 (CRITICAL): ${critical.length}`);
-  console.log(`🟡 警告提示 (WARNING):  ${warning.length}`);
-  console.log(`🔵 关注建议 (NOTICE):   ${notice.length}`);
+  console.log(`\n[CRITICAL] 严重问题: ${critical.length}`);
+  console.log(`[WARNING] 警告提示:  ${warning.length}`);
+  console.log(`[NOTICE] 关注建议:   ${notice.length}`);
 
   // Write detailed findings to file
   const outJson = path.resolve(process.cwd(), 'docs/deep-audit-findings.json');
   fs.writeFileSync(outJson, JSON.stringify({ totalCities, freshnessStats, issues }, null, 2), 'utf-8');
-  console.log(`\n💾 详细审计结果已写入: ${outJson}`);
+  console.log(`\n[SAVED] 详细审计结果已写入: ${outJson}`);
 
   // Summary by province
   const provMap = new Map<string, typeof issues>();
@@ -461,7 +461,7 @@ if (typeof require !== 'undefined' && require.main === module) {
   for (const [p, list] of provMap.entries()) {
     const cCount = list.filter(i => i.severity === 'CRITICAL').length;
     const wCount = list.filter(i => i.severity === 'WARNING').length;
-    console.log(`  - ${p}: 🔴 CRITICAL ${cCount}, 🟡 WARNING ${wCount}`);
+    console.log(`  - ${p}: [CRITICAL] ${cCount}, [WARNING] ${wCount}`);
   }
 
   if (critical.length > 0) {
