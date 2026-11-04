@@ -1,22 +1,20 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-11-04T21:23:53.452Z",
+  "lastUpdated": "2026-11-04T21:27:19.132Z",
   "generation": 32,
   "stage": "M3_QUALITY_GATES",
   "totalLedgerEntries": 348,
   "totalAssertions": 17622,
-  "gitCommit": "acb4418",
+  "gitCommit": "dd476af",
   "gitBranch": "main",
   "gitStatus": {
     "clean": false,
-    "modifiedCount": 5,
+    "modifiedCount": 3,
     "untrackedCount": 0,
     "summary": [
+      "M docs/.calc_test_summary.json",
       "M docs/CHECKPOINT_STATE.json",
-      "M docs/POLICY_PIPELINE_STATUS.md",
-      "M docs/RESUME_GUIDE.md",
-      "M docs/comprehensive-policy-audit-2026.md",
-      "M docs/policy-health-report.md"
+      "M docs/RESUME_GUIDE.md"
     ]
   },
   "pipelineHealth": "HEALTHY",
