@@ -18,9 +18,9 @@ export const nanjingCityData: CityInsuranceData = {
   sourceDocs: [
     {
       docId: 'nj-employee-outpatient-reform',
-      title: '南京市人民政府办公厅关于印发南京市职工基本医疗保险门诊共济保障机制实施细则的通知',
-      docNumber: '宁政办发〔2022〕60号',
-      issuingDept: ['南京市人民政府办公厅', '南京市医疗保障局'],
+      title: '南京市人民政府印发南京市职工基本医疗保险门诊共济保障机制实施办法的通知',
+      docNumber: '宁政规字〔2022〕5号',
+      issuingDept: ['南京市人民政府', '南京市医疗保障局'],
       publishDate: '2022-12-20',
       effectiveDate: '2023-01-01',
       status: 'active',

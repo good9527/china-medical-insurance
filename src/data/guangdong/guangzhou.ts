@@ -47,7 +47,7 @@ export const guangzhouCityData: CityInsuranceData = {
       effectiveDate: '2022-12-01',
       status: 'active',
       officialUrl: 'http://ybj.gz.gov.cn/zwgk/zcfg/content/post_8673891.html',
-      summaryQuote: '在职职工在选定基层医疗机构普通门诊就医报销比例为80%（退休人员85%），在其他定点医疗机构在职职工报销65%（退休人员70%）。年度门诊统筹最高支付限额在职职工约为社平工资的5%（约8000元），退休人员约为社平工资的6%（约10000元），免设门诊起付线。'
+      summaryQuote: '在职职工在选定基层医疗机构普通门诊就医报销比例为80%（退休人员85%），在其他定点医疗机构在职职工报销65%（退休人员70%）。年度门诊统筹最高支付限额在职职工联动本市在岗职工年平均工资的5%（2026年标准为8222元），退休人员为7%（2026年标准为11511元），免设门诊起付线。'
     },
     {
       docId: 'gz-medical-insurance-inpatient-2023',
@@ -89,8 +89,8 @@ export const guangzhouCityData: CityInsuranceData = {
     outpatient: {
       sourceDocId: 'gz-employee-outpatient-2022',
       annualDeductible: 0,   // 广州职工普通门诊免设起付线（0元起付）
-      annualCap: 8000,       // 在职职工年限额约 8000 元
-      annualCapRetiree: 10000, // 退休人员年限额约 10000 元
+      annualCap: 8222,       // 2026年度在岗职工年平均工资的5%，即8,222元
+      annualCapRetiree: 11511, // 2026年度在岗职工年平均工资的7%，即11,511元
       tierBenefits: {
         community: { tierName: '基层选定医疗机构/社区卫生服务中心', deductible: 0, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
         tier1: { tierName: '一级定点医疗机构', deductible: 0, reimbursementRatio: 0.80, retireeRatioBonus: 0.05 },
@@ -98,7 +98,7 @@ export const guangzhouCityData: CityInsuranceData = {
         tier3: { tierName: '三级定点医疗机构', deductible: 0, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 },
         tier3_top: { tierName: '三甲重点综合医院', deductible: 0, reimbursementRatio: 0.65, retireeRatioBonus: 0.05 }
       },
-      note: '普通门诊免设起付线，选定基层医疗机构报销80%（退休85%），二级及以上选定医院报销65%（退休70%）。在职限额8000元，退休10000元。'
+      note: '普通门诊免设起付线，选定基层医疗机构报销80%（退休85%），二级及以上选定医院报销65%（退休70%）。2026年最新年度统筹限额在职8,222元（5%），退休11,511元（7%）。'
     },
     inpatient: {
       sourceDocId: 'gz-medical-insurance-inpatient-2023',

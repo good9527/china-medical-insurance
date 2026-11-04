@@ -12,10 +12,21 @@ export const hangzhouCityData: CityInsuranceData = {
   provinceName: '浙江省',
   hotline: '0571-12393',
   officialPortalUrl: 'https://ybj.hangzhou.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 官方依据文件库
   sourceDocs: [
+    {
+      docId: 'hz-medical-insurance-regulations-2026',
+      title: '杭州市人民政府关于印发杭州市基本医疗保障办法的通知',
+      docNumber: '杭政函〔2025〕88号',
+      issuingDept: ['杭州市人民政府', '杭州市医疗保障局'],
+      publishDate: '2025-09-30',
+      effectiveDate: '2026-01-01',
+      status: 'active',
+      officialUrl: 'https://ybj.hangzhou.gov.cn/art/2025/10/08/art_1229063385_19284102.html',
+      summaryQuote: '自2026年1月1日起施行，全面替代原杭政〔2020〕56号办法。放宽非户籍灵活就业及学龄前儿童参保限制；建立大病保险连续参保与零报销每年递增5000元最高12万元激励机制；职工门诊统筹维持上不封顶与社区就医倾斜。'
+    },
     {
       docId: 'hz-medical-insurance-regulations-2025',
       title: '杭州市基本医疗保障办法及门诊报销待遇优化调整方案',

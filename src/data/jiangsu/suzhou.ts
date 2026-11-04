@@ -80,6 +80,7 @@ export const suzhouCityData: CityInsuranceData = {
       }
     },
     catastrophic: {
+      sourceDocId: 'sz-medical-insurance-inpatient-2023',
       name: '苏州市职工大额医疗费用社会共济',
       deductible: 0,
       annualCap: 400000,
