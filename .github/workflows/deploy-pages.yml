@@ -17,12 +17,9 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
+    name: 编译构建 H5 静态站点与打包产物
     runs-on: ubuntu-latest
-
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
@@ -47,6 +44,14 @@ jobs:
         with:
           path: 'dist/build/h5'
 
+  deploy:
+    name: 部署站点至 GitHub Pages
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: 部署至 GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
