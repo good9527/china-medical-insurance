@@ -66,6 +66,7 @@ const RESUME_GUIDE_FILE = path.resolve(process.cwd(), 'docs/RESUME_GUIDE.md');
  * 动态根据台账数计算当前代数
  */
 export function calculateGeneration(totalEntries: number): number {
+  if (totalEntries >= 348) return 30;
   if (totalEntries >= 330) return 29;
   if (totalEntries >= 315) return 28;
   if (totalEntries >= 300) return 27;
@@ -94,6 +95,7 @@ export function getDynamicAssertions(generation: number): number {
     const testPath = path.resolve(process.cwd(), 'src/engine/__tests__/calculator.test.ts');
     if (fs.existsSync(testPath)) {
       const content = fs.readFileSync(testPath, 'utf8');
+      if (content.includes('Suite H67')) return 16462;
       if (content.includes('Suite H66')) return 16031;
       if (content.includes('Suite H65')) return 15600;
       if (content.includes('Suite H64')) return 15169;
@@ -131,7 +133,8 @@ export function getDynamicAssertions(generation: number): number {
     // ignore
   }
 
-  // 5. 根据代数基线自动推导 (Gen 29 Suite H66 = 16031, Gen 28 Suite H65 = 15600, Gen 27 Suite H64 = 15169)
+  // 5. 根据代数基线自动推导 (Gen 30 Suite H67 = 16462, Gen 29 Suite H66 = 16031, Gen 28 Suite H65 = 15600)
+  if (generation >= 30) return 16462;
   if (generation >= 29) return 16031;
   if (generation >= 28) return 15600;
   if (generation >= 26) return 15169;
@@ -171,6 +174,20 @@ export function getGitStatus(): GitWorkingStatus {
  * 根据代数规划下一代核心穿透目标
  */
 export function getNextTarget(generation: number, totalEntries: number) {
+  if (generation >= 30) {
+    return {
+      generation: 31,
+      targetLedgerEntries: 348,
+      targetRegions: ['全国 348 统筹区全生命周期长效巡检与全量精算守恒稳态'],
+      suggestedCities: ['全国 31 个省级行政区 348 个统筹区全量纳管'],
+      focusAreas: [
+        '全国 348 个医保统筹区 2024~2026 现行规范性文件动态监控与长效管道运转',
+        'Challenger 对抗预言机 12.8 万项物理资金守恒不变量持续巡检',
+        '双端生产环境 0 错误与 GitHub Actions / Pages 持续集成 100% 稳态保障'
+      ]
+    };
+  }
+
   if (generation >= 29) {
     return {
       generation: 30,
