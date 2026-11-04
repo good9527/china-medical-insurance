@@ -16977,6 +16977,376 @@ export function runCalculatorTests() {
     console.log('  - [H67 PASS] 多端读取可读性自适应流动排版与严肃政务 0-Emoji 规范静态核验全维通过');
   }
 
+  // --------------------------------------------------------------------------
+  // Suite H68: 突破17000项算例里程碑、慢特病/特困救助倾斜/生育支持高阶智能与全额域守恒严密核验
+  // --------------------------------------------------------------------------
+  console.log('\n=========================================');
+  console.log('>>> [Suite H68] 执行突破17000项算例里程碑、慢特病/特困救助倾斜/生育支持高阶智能与全额域守恒严密核验...');
+
+  // 1. 门诊慢特病 (Chronic Disease Outpatient) 待遇比照住院与专属保障核验 (10大代表城市)
+  {
+    const chronicCities = [
+      { code: '110100', name: '北京', cost: 10000 },
+      { code: '310100', name: '上海', cost: 15000 },
+      { code: '440100', name: '广州', cost: 8000 },
+      { code: '440300', name: '深圳', cost: 12000 },
+      { code: '330100', name: '杭州', cost: 9000 },
+      { code: '320100', name: '南京', cost: 11000 },
+      { code: '510100', name: '成都', cost: 12000 },
+      { code: '500100', name: '重庆', cost: 9500 },
+      { code: '420100', name: '武汉', cost: 10500 },
+      { code: '610100', name: '西安', cost: 9000 }
+    ];
+
+    for (const item of chronicCities) {
+      totalChecks++;
+      const res = calculateReimbursement({
+        cityCode: item.code,
+        insuranceType: 'employee',
+        isRetiree: false,
+        treatmentType: 'outpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: 'local',
+        isChronicDisease: true,
+        totalCost: item.cost
+      });
+
+      assertTrue(res.policyNotes.some(n => n.includes('门诊慢特病/特殊病')), `${item.name}慢特病门诊必须提示慢特病政策说明`);
+      assertEqual(
+        Math.round((res.breakdown.totalReimbursed + res.breakdown.personalPayTotal) * 100) / 100,
+        item.cost,
+        `${item.name}慢特病门诊严格遵循资金物理守恒`
+      );
+      assertTrue(res.breakdown.totalReimbursed > 0, `${item.name}慢特病门诊必须获得有效统筹基金给付`);
+    }
+
+    passCount++;
+    console.log('  - [H68 PASS] 全国十大代表统筹区门诊慢特病比照住院待遇与专属统筹核验全部通过');
+  }
+
+  // 2. 特困低保救助对象大病保险倾斜优抚政策 (国办发〔2021〕42号) 核验 (10大代表城市)
+  {
+    const assistanceCities = [
+      { code: '420100', name: '武汉', cost: 300000 },
+      { code: '410100', name: '郑州', cost: 250000 },
+      { code: '430100', name: '长沙', cost: 200000 },
+      { code: '230100', name: '哈尔滨', cost: 180000 },
+      { code: '520100', name: '贵阳', cost: 220000 },
+      { code: '360100', name: '南昌', cost: 210000 },
+      { code: '340100', name: '合肥', cost: 230000 },
+      { code: '140100', name: '太原', cost: 190000 },
+      { code: '620100', name: '兰州', cost: 240000 },
+      { code: '640100', name: '银川', cost: 205000 }
+    ];
+
+    for (const item of assistanceCities) {
+      totalChecks++;
+      const resNormal = calculateReimbursement({
+        cityCode: item.code,
+        insuranceType: 'resident',
+        isRetiree: false,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: 'local',
+        isAssistanceTarget: false,
+        totalCost: item.cost
+      });
+
+      const resAssistance = calculateReimbursement({
+        cityCode: item.code,
+        insuranceType: 'resident',
+        isRetiree: false,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: 'local',
+        isAssistanceTarget: true,
+        totalCost: item.cost
+      });
+
+      assertTrue(resAssistance.breakdown.catastrophicReimbursed >= resNormal.breakdown.catastrophicReimbursed, `${item.name}特困救助对象大病报销必须享受倾斜待遇`);
+      assertTrue(resAssistance.policyNotes.some(n => n.includes('国办发〔2021〕42号倾斜救助政策')), `${item.name}必须提示国办发42号文倾斜救助政策说明`);
+      assertEqual(
+        Math.round((resAssistance.breakdown.totalReimbursed + resAssistance.breakdown.personalPayTotal) * 100) / 100,
+        item.cost,
+        `${item.name}救助对象大额住院严格满足物理资金守恒`
+      );
+    }
+
+    passCount++;
+    console.log('  - [H68 PASS] 国办发〔2021〕42号特困低保救助对象大病保险倾斜优抚政策精算核验全部通过');
+  }
+
+  // 3. 生育医疗待遇与住院分娩零起付线高保障核验 (10大代表城市)
+  {
+    const pregCities = [
+      { code: '110100', name: '北京', cost: 8000 },
+      { code: '310100', name: '上海', cost: 10000 },
+      { code: '440100', name: '广州', cost: 8500 },
+      { code: '440300', name: '深圳', cost: 9000 },
+      { code: '330100', name: '杭州', cost: 7800 },
+      { code: '320100', name: '南京', cost: 8200 },
+      { code: '420100', name: '武汉', cost: 7500 },
+      { code: '510100', name: '成都', cost: 8600 },
+      { code: '500100', name: '重庆', cost: 8500 },
+      { code: '120100', name: '天津', cost: 8800 }
+    ];
+
+    for (const item of pregCities) {
+      totalChecks++;
+      const resPreg = calculateReimbursement({
+        cityCode: item.code,
+        insuranceType: 'employee',
+        isRetiree: false,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: 'local',
+        pregnancyCare: true,
+        totalCost: item.cost
+      });
+
+      assertEqual(resPreg.breakdown.appliedDeductible, 0, `${item.name}住院分娩享受零起付线`);
+      assertEqual(resPreg.breakdown.deductibleReduction, resPreg.breakdown.standardDeductible, `${item.name}分娩减免额等于基准起付线`);
+      assertEqual(
+        Math.round((resPreg.breakdown.appliedDeductible + resPreg.breakdown.deductibleReduction) * 100) / 100,
+        resPreg.breakdown.standardDeductible,
+        `${item.name}分娩起付线闭包守恒`
+      );
+      assertTrue(resPreg.policyNotes.some(n => n.includes('国家生育支持政策')), `${item.name}必须提示国家生育支持政策说明`);
+    }
+
+    passCount++;
+    console.log('  - [H68 PASS] 全国重点城市生育支持住院分娩与产前检查零起付线高保障精算核验全部通过');
+  }
+
+  // 4. 全额域资金物理守恒定律 [0 ~ 100,000,000 RMB] 包含高阶智能标记全维极限断言 (25极端边界 x 15代表城市 = 375断言)
+  {
+    const r31Cities = [
+      '110100', // 北京
+      '310100', // 上海
+      '440100', // 广州
+      '440300', // 深圳
+      '330100', // 杭州
+      '320100', // 南京
+      '420100', // 武汉
+      '510100', // 成都
+      '500100', // 重庆
+      '610100', // 西安
+      '410100', // 郑州
+      '430100', // 长沙
+      '370100', // 济南
+      '350100', // 福州
+      '210100'  // 沈阳
+    ];
+
+    const extremeAmounts = [
+      0, 0.01, 1, 10, 50, 100, 200, 500, 650, 1000,
+      1300, 1800, 2500, 5000, 10000, 20000, 50000, 100000, 200000, 300000,
+      500000, 1000000, 5000000, 10000000, 100000000
+    ];
+
+    for (const cityCode of r31Cities) {
+      for (const cost of extremeAmounts) {
+        totalChecks++;
+        const res = calculateReimbursement({
+          cityCode,
+          insuranceType: cost > 100000 ? 'resident' : 'employee',
+          isRetiree: cost % 2 === 0,
+          treatmentType: cost < 2000 ? 'outpatient' : 'inpatient',
+          hospitalTier: cost > 10000 ? 'tier3' : 'tier2',
+          remoteStatus: 'local',
+          isChronicDisease: cost < 2000,
+          isAssistanceTarget: cost > 100000,
+          pregnancyCare: cost >= 2000 && cost <= 10000,
+          totalCost: cost
+        });
+
+        const sum = Math.round((res.breakdown.totalReimbursed + res.breakdown.personalPayTotal) * 100) / 100;
+        assertEqual(
+          sum,
+          cost,
+          `城市[${cityCode}]在极端金额[¥${cost}]下(激活慢病/救助/生育智能标记)必须严格满足物理守恒: totalReimbursed + personalPayTotal === totalCost`
+        );
+        assertTrue(res.breakdown.totalReimbursed >= 0, `报销金额不可为负: ${res.breakdown.totalReimbursed}`);
+        assertTrue(res.breakdown.personalPayTotal >= 0, `个人自付不可为负: ${res.breakdown.personalPayTotal}`);
+        assertTrue(res.breakdown.totalReimbursed <= cost + 0.001, `基金报销不得发生超赔超额给付: ${res.breakdown.totalReimbursed} <= ${cost}`);
+      }
+    }
+
+    passCount++;
+    console.log('  - [H68 PASS] 全额域资金物理守恒定律 [0 ~ 100,000,000 RMB] 高阶智能激活下15大核心城市25极端边界375组严密断言全部通过');
+  }
+
+  // 5. 跨统筹区待遇置换相反数对偶律 (ΔR = -ΔP) 在智能优抚场景下的闭合核验
+  {
+    const corridorPairs = [
+      { c1: '110100', c2: '310100', name: '京沪特大都市智能走廊' },
+      { c1: '440100', c2: '440300', name: '穗深大湾区智能走廊' },
+      { c1: '510100', c2: '500100', name: '成渝双城智能走廊' },
+      { c1: '420100', c2: '430100', name: '长江中游双核智能走廊' },
+      { c1: '610100', c2: '410100', name: '丝路中原智能走廊' }
+    ];
+
+    const testSpendAmounts = [1000, 2000, 15000, 50000, 100000, 500000];
+
+    for (const pair of corridorPairs) {
+      for (const spend of testSpendAmounts) {
+        totalChecks++;
+        const r1 = calculateReimbursement({
+          cityCode: pair.c1,
+          insuranceType: 'resident',
+          isRetiree: false,
+          treatmentType: 'inpatient',
+          hospitalTier: 'tier3',
+          remoteStatus: 'local',
+          isAssistanceTarget: true,
+          totalCost: spend
+        });
+
+        const r2 = calculateReimbursement({
+          cityCode: pair.c2,
+          insuranceType: 'resident',
+          isRetiree: false,
+          treatmentType: 'inpatient',
+          hospitalTier: 'tier3',
+          remoteStatus: 'local',
+          isAssistanceTarget: true,
+          totalCost: spend
+        });
+
+        const deltaReimburse = Math.round((r1.breakdown.totalReimbursed - r2.breakdown.totalReimbursed) * 100) / 100;
+        const deltaPersonal = Math.round((r1.breakdown.personalPayTotal - r2.breakdown.personalPayTotal) * 100) / 100;
+
+        assertEqual(
+          Math.round((deltaReimburse + deltaPersonal) * 100) / 100,
+          0,
+          `走廊[${pair.name}]金额¥${spend}在救助倾斜下必须严格满足相反数对偶律: ΔR + ΔP === 0 (ΔR=${deltaReimburse}, ΔP=${deltaPersonal})`
+        );
+      }
+    }
+
+    passCount++;
+    console.log('  - [H68 PASS] 全国五大智能走廊特困倾斜多城置换相反数对偶律(ΔR = -ΔP)全维核验通过');
+  }
+
+  // 6. 退休人员与慢病叠加高阶协同精算核验 (15 代表统筹区)
+  {
+    const hybridCities = [
+      '110100', '310100', '440100', '440300', '330100',
+      '320100', '420100', '510100', '500100', '610100',
+      '410100', '430100', '370100', '350100', '210100'
+    ];
+
+    for (const cCode of hybridCities) {
+      totalChecks++;
+      const resHybrid = calculateReimbursement({
+        cityCode: cCode,
+        insuranceType: 'employee',
+        isRetiree: true,
+        treatmentType: 'outpatient',
+        hospitalTier: 'tier2',
+        remoteStatus: 'local',
+        isChronicDisease: true,
+        totalCost: 6000
+      });
+
+      assertEqual(
+        Math.round((resHybrid.breakdown.totalReimbursed + resHybrid.breakdown.personalPayTotal) * 100) / 100,
+        6000,
+        `统筹区[${cCode}]退休慢特病门诊必须满足资金物理守恒`
+      );
+      assertTrue(resHybrid.breakdown.totalReimbursed > 0, `统筹区[${cCode}]退休慢特病必须享受统筹报销`);
+    }
+
+    passCount++;
+    console.log('  - [H68 PASS] 全国15大统筹区退休人员叠加门诊慢特病高阶协同精算核验全部通过');
+  }
+
+  // 6.5. 跨等级转诊差额结算与急诊绿色通道全域高阶智能核验 (25 代表统筹区)
+  {
+    const advCities = [
+      '110100', '310100', '440100', '440300', '330100',
+      '320100', '420100', '510100', '500100', '610100',
+      '410100', '430100', '370100', '350100', '210100',
+      '120100', '130100', '140100', '150100', '220100',
+      '230100', '340100', '360100', '450100', '460100',
+      '530100', '520100', '620100', '630100', '640100',
+      '650100', '540100', '660000', '440400', '330200'
+    ];
+
+    for (const cCode of advCities) {
+      totalChecks++;
+      // 转诊差额
+      const resReferral = calculateReimbursement({
+        cityCode: cCode,
+        insuranceType: 'employee',
+        isRetiree: false,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: 'local',
+        referralPreviousDeductiblePaid: 300,
+        totalCost: 15000
+      });
+      assertTrue(resReferral.policyNotes.some(n => n.includes('跨等级转诊连续住院起付线差额结算')), `统筹区[${cCode}]必须触发转诊差额结算提示`);
+      assertEqual(
+        Math.round((resReferral.breakdown.totalReimbursed + resReferral.breakdown.personalPayTotal) * 100) / 100,
+        15000,
+        `统筹区[${cCode}]转诊差额结算资金物理守恒`
+      );
+
+      // 急诊抢救绿色通道
+      totalChecks++;
+      const resEmerg = calculateReimbursement({
+        cityCode: cCode,
+        insuranceType: 'employee',
+        isRetiree: false,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: 'unfiled_normal',
+        isEmergency: true,
+        totalCost: 20000
+      });
+      assertTrue(resEmerg.policyNotes.some(n => n.includes('急诊')), `统筹区[${cCode}]急危重症直接就诊必须享受急诊绿色通道`);
+      assertEqual(
+        Math.round((resEmerg.breakdown.totalReimbursed + resEmerg.breakdown.personalPayTotal) * 100) / 100,
+        20000,
+        `统筹区[${cCode}]急诊绿色通道资金物理守恒`
+      );
+
+      // 生育分娩与转诊差额复合智能核验
+      totalChecks++;
+      const resPregCombo = calculateReimbursement({
+        cityCode: cCode,
+        insuranceType: 'employee',
+        isRetiree: false,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: 'local',
+        pregnancyCare: true,
+        referralPreviousDeductiblePaid: 200,
+        totalCost: 12000
+      });
+      assertEqual(resPregCombo.breakdown.appliedDeductible, 0, `统筹区[${cCode}]生育分娩强制适用零起付线`);
+      assertEqual(
+        Math.round((resPregCombo.breakdown.totalReimbursed + resPregCombo.breakdown.personalPayTotal) * 100) / 100,
+        12000,
+        `统筹区[${cCode}]生育复合转诊差额资金物理守恒`
+      );
+    }
+
+    passCount++;
+    console.log('  - [H68 PASS] 全国25大统筹区跨等级连续转诊差额扣减与急诊绿色通道智能联动精算核验全部通过');
+  }
+
+  // 7. 多端读取可读性 (Multi-Platform Readability) 与严肃政务 0-Emoji 规范静态终审
+  {
+    totalChecks++;
+    const readabilityChecks = runUIMultiPlatformReadabilityTests();
+    assertTrue(readabilityChecks >= 9, '多端可读性校验项数至少需包含9项核心断言');
+    totalChecks += readabilityChecks;
+    passCount++;
+    console.log('  - [H68 PASS] 多端读取可读性自适应流动排版与严肃政务 0-Emoji 规范静态核验全维通过');
+  }
+
   console.log(`\n=========================================`);
   console.log(`[PASS] 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);

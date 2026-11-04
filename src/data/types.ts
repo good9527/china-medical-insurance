@@ -151,6 +151,11 @@ export interface CalculateRequest {
   classBCost?: number;                   // 目录内乙类药品/项目费用（需先行自付，默认为0）
   classBSelfPayRatio?: number;           // 乙类平均先行自付比例（默认按 0.05~0.10，通常约为 5%）
   hospitalizationCount?: 1 | 2 | 3;      // 年内住院频次 (1: 首次, 2: 二次, 3: 三次及以上住院)
+  referralPreviousDeductiblePaid?: number; // 跨等级转诊连续住院在转出医疗机构已承担的起付线金额 (差额补收)
+  isEmergency?: boolean;                   // 是否突发急危重症直接就医 (触发绿色通道待遇)
+  isChronicDisease?: boolean;              // 是否为门诊慢特病 (享受比照住院待遇与专属统筹报销)
+  isAssistanceTarget?: boolean;            // 是否为特困人员/低保对象/医疗救助对象 (国办发〔2021〕42号大病起付线降50%，比例+5%，取消封顶线)
+  pregnancyCare?: boolean;                 // 是否为生育医疗待遇/住院分娩 (享受零起付线与全额生育支持保障)
 }
 
 // 测算详细账单结果

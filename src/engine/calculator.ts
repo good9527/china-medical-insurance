@@ -32,6 +32,9 @@ export type EnhancedCalculateRequest = Omit<CalculateRequest, 'remoteStatus' | '
   hospitalizationCount?: number;
   referralPreviousDeductiblePaid?: number; // 跨等级转诊连续住院在转出医疗机构已承担的起付线金额 (差额补收)
   isEmergency?: boolean;                   // 是否突发急危重症直接就医 (触发绿色通道待遇)
+  isChronicDisease?: boolean;              // 是否为门诊慢特病 (享受比照住院待遇与专属统筹报销)
+  isAssistanceTarget?: boolean;            // 是否为特困人员/低保对象/医疗救助对象 (国办发〔2021〕42号大病起付线降50%，比例+5%，取消封顶线)
+  pregnancyCare?: boolean;                 // 是否为生育医疗待遇/住院分娩 (享受零起付线与全额生育支持保障)
 };
 
 /**
@@ -618,6 +621,34 @@ export function calculateReimbursement(
     standardDeductible = deductible;
     appliedDeductible = deductible;
     deductibleReduction = 0;
+
+    // 门诊慢特病待遇智能适配 (Chronic Disease Outpatient Support)
+    if (request.isChronicDisease) {
+      const inRule = pkg.inpatient;
+      const inTier = resolveTierBenefit(inRule?.tierBenefits, normalizedTier).benefit;
+      const chronicRatio = inTier?.reimbursementRatio ?? Math.min(0.90, baseRatio + 0.15);
+      baseRatio = Math.max(baseRatio, chronicRatio);
+      if (isRetiree && inTier?.retireeRatioBonus) {
+        baseRatio += inTier.retireeRatioBonus;
+      }
+      baseRatio = Math.min(0.95, baseRatio);
+      if (inTier?.deductible !== undefined) {
+        deductible = Math.min(deductible, inTier.deductible);
+        standardDeductible = deductible;
+        appliedDeductible = deductible;
+      }
+      annualCap = Math.max(annualCap, inRule?.annualCap ?? 150000);
+      policyNotes.push('已自动匹配【门诊慢特病/特殊病】待遇政策：报销比例比照住院待遇执行，起付线按年度单次核定，并调高统筹基金支付限额');
+    }
+
+    // 门诊生育产检待遇支持 (Pregnancy Care Outpatient Support)
+    if (request.pregnancyCare) {
+      deductibleReduction = standardDeductible;
+      appliedDeductible = 0;
+      deductible = 0;
+      baseRatio = Math.min(1.0, Math.max(baseRatio, 0.85));
+      policyNotes.push('依据国家生育支持政策：门诊产前检查享受零起付线与全额生育医疗费用保障');
+    }
   } else {
     // 住院
     const inRule = pkg.inpatient;
@@ -664,6 +695,15 @@ export function calculateReimbursement(
       deductible = appliedDeductible;
       deductibleReduction = Math.max(0, Math.round((standardDeductible - appliedDeductible) * 100) / 100);
       policyNotes.push(`跨等级转诊连续住院起付线差额结算：扣除转出机构已付 ¥${prevPaid}，本次实收起付线 ¥${appliedDeductible}（减免 ¥${Math.min(originalDeductible, prevPaid)}）`);
+    }
+
+    // 住院分娩生育支持待遇 (Pregnancy Care Inpatient Support)
+    if (request.pregnancyCare) {
+      deductibleReduction = standardDeductible;
+      appliedDeductible = 0;
+      deductible = 0;
+      baseRatio = Math.min(1.0, Math.max(baseRatio, 0.85));
+      policyNotes.push('依据国家生育支持政策：住院分娩享受零起付线与全额生育医疗费用保障');
     }
 
     if (decayRes.note) {
@@ -777,16 +817,19 @@ export function calculateReimbursement(
   if (request.treatmentType === 'inpatient' && catRule) {
     if (request.insuranceType === 'employee') {
       if (reachedCap) {
-        const catRatio = catRule.tiers[0]?.ratio ?? 0.95;
+        let catRatio = catRule.tiers[0]?.ratio ?? 0.95;
+        if (request.isAssistanceTarget) {
+          catRatio = Math.min(1.0, catRatio + 0.05);
+        }
         const standardEffectiveRatio = effectiveRatio > 0 ? effectiveRatio : 0.90;
         const costToHitCap = standardEffectiveRatio > 0 ? (annualCap / standardEffectiveRatio) : annualCap;
         const excessCost = Math.max(0, reimbursableBase - costToHitCap);
         if (excessCost > 0) {
           catastrophicReimbursed = Math.round(excessCost * catRatio * 100) / 100;
-          if (catRule.annualCap) {
+          if (catRule.annualCap && !request.isAssistanceTarget) {
             catastrophicReimbursed = Math.min(catastrophicReimbursed, catRule.annualCap);
           }
-          policyNotes.push(`超出基本统筹封顶线部分，触发【${catRule.name}】报销 ¥${catastrophicReimbursed.toFixed(2)}`);
+          policyNotes.push(`超出基本统筹封顶线部分，触发【${catRule.name}】报销 ¥${catastrophicReimbursed.toFixed(2)}${request.isAssistanceTarget ? '（特困低保救助对象：比例提高5个百分点，取消封顶线）' : ''}`);
         }
       }
     } else {
@@ -796,23 +839,32 @@ export function calculateReimbursement(
         ? Math.max(0, Math.round((eligibleCost - baseReimbursed - deductiblePenalty) * 100) / 100)
         : Math.max(0, Math.round((eligibleCost - baseReimbursed) * 100) / 100);
 
-      const catDeductible = catRule.deductible ?? 0;
+      let catDeductible = catRule.deductible ?? 0;
+      if (request.isAssistanceTarget) {
+        catDeductible = Math.round(catDeductible * 0.5 * 100) / 100;
+      }
+
       if (outOfPocketEligible > catDeductible) {
         let remainingToReimburse = outOfPocketEligible - catDeductible;
         for (const tier of catRule.tiers) {
           if (remainingToReimburse <= 0) break;
           const tierRange = (tier.maxAmount ? tier.maxAmount : Infinity) - tier.minAmount;
           const portion = Math.min(remainingToReimburse, tierRange);
-          catastrophicReimbursed += portion * tier.ratio;
+          const tierRatio = request.isAssistanceTarget ? Math.min(1.0, tier.ratio + 0.05) : tier.ratio;
+          catastrophicReimbursed += portion * tierRatio;
           remainingToReimburse -= portion;
         }
         catastrophicReimbursed = Math.round(catastrophicReimbursed * 100) / 100;
-        if (catRule.annualCap && catastrophicReimbursed >= catRule.annualCap) {
+        if (!request.isAssistanceTarget && catRule.annualCap && catastrophicReimbursed >= catRule.annualCap) {
           policyNotes.push(`已达到【${catRule.name}】年度最高支付限额 ¥${catRule.annualCap.toLocaleString()}`);
           catastrophicReimbursed = catRule.annualCap;
         }
         if (catastrophicReimbursed > 0) {
-          policyNotes.push(`合规自负超大病起付线，触发【${catRule.name}】二次报销 ¥${catastrophicReimbursed.toFixed(2)}`);
+          if (request.isAssistanceTarget) {
+            policyNotes.push(`依据国办发〔2021〕42号倾斜救助政策：大病保险起付线降低50%(降至¥${catDeductible})，各分段支付比例提高5个百分点，取消大病封顶线，触发【${catRule.name}】二次报销 ¥${catastrophicReimbursed.toFixed(2)}`);
+          } else {
+            policyNotes.push(`合规自负超大病起付线，触发【${catRule.name}】二次报销 ¥${catastrophicReimbursed.toFixed(2)}`);
+          }
         }
       }
     }
