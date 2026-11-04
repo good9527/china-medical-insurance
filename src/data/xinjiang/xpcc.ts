@@ -7,7 +7,7 @@ export const xpccCityData: CityInsuranceData = {
   provinceName: '新疆生产建设兵团',
   hotline: '0991-12393',
   officialPortalUrl: 'http://ybj.xjbt.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
@@ -102,6 +102,7 @@ export const xpccCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'xpcc-medical-insurance-inpatient-2024',
       annualCap: 150000, // 居民基本统筹限额 15 万元
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，起付标准按定点医疗机构级别分别计算。',
       tierBenefits: {
         community: { tierName: '团场连队基层医疗机构', deductible: 200, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },

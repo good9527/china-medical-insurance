@@ -7,7 +7,7 @@ export const shanweiCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '0660-12393',
   officialPortalUrl: 'http://www.shanwei.gov.cn/swybj/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   sourceDocs: [
     {
@@ -110,6 +110,7 @@ export const shanweiCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'sw-medical-insurance-inpatient-2024',
       annualCap: 654000,
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，起付标准按定点医疗机构级别分别计算。',
       tierBenefits: {
         community: { tierName: '一级医疗机构/卫生院', deductible: 200, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },

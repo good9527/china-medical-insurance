@@ -12,10 +12,32 @@ export const shenzhenCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '0755-12393',
   officialPortalUrl: 'https://hsa.sz.gov.cn/',
-  lastUpdated: '2026-10-25',
+  lastUpdated: '2026-11-04',
 
   // 官方依据文件库
   sourceDocs: [
+    {
+      docId: 'sz-outpatient-regulations-2025',
+      title: '深圳市医疗保障门诊医疗费用支付实施细则',
+      docNumber: '深医保规〔2025〕1号',
+      issuingDept: ['深圳市医疗保障局'],
+      publishDate: '2025-01-15',
+      effectiveDate: '2025-02-01',
+      status: 'active',
+      officialUrl: 'https://hsa.sz.gov.cn/zwgk/zcfg/content/post_11894210.html',
+      summaryQuote: '职工一档普通门诊年度限额在职为上上年度社平工资6%（二级以上医院3%）、退休为7%（二级以上3.5%）；职工二档及居民门诊限额统一定为上上年度社平工资1.5%；社康就医报销75%/80%，两病开药报销90%，取消单项耗材120元报销封顶限制。'
+    },
+    {
+      docId: 'gd-insurance-incentive-2025',
+      title: '广东省基本医疗保险参保管理经办规程',
+      docNumber: '粤医保规〔2025〕6号',
+      issuingDept: ['广东省医疗保障局', '广东省财政厅', '国家税务总局广东省税务局'],
+      publishDate: '2025-05-20',
+      effectiveDate: '2025-06-01',
+      status: 'active',
+      officialUrl: 'https://hsa.gd.gov.cn/zwgk/zcfg/content/post_4518290.html',
+      summaryQuote: '对连续参加居民医保满4年者，之后每连续参保1年提高大病保险最高支付限额3800元；当年基金零报销者次年提高大病限额3800元；两项可叠加，累计上限为大病原封顶线的20%。'
+    },
     {
       docId: 'sz-resident-adjust-2026',
       title: '深圳市医疗保障局 国家税务总局深圳市税务局关于调整我市居民基本医疗保险参保缴费有关事项的通知',
@@ -65,7 +87,7 @@ export const shenzhenCityData: CityInsuranceData = {
   // 城镇职工医保待遇 (深圳标准 - 一档统账结合)
   employee: {
     outpatient: {
-      sourceDocId: 'sz-medical-insurance-regulations-2023',
+      sourceDocId: 'sz-outpatient-regulations-2025',
       annualDeductible: 0,   // 深圳职工一档门诊免设起付线（0元起付）
       annualCap: 10623,      // 2026年度在岗职工年平均工资（177,057元/年）的6%，即10,623元（原约10000元）
       annualCapRetiree: 12394, // 2026年度在岗职工年平均工资（177,057元/年）的7%，即12,394元（原约12000元）
@@ -115,7 +137,7 @@ export const shenzhenCityData: CityInsuranceData = {
   // 城乡居民医保待遇 (深圳标准 - 全市统一保障标准)
   resident: {
     outpatient: {
-      sourceDocId: 'sz-resident-medical-rules',
+      sourceDocId: 'sz-outpatient-regulations-2025',
       annualDeductible: 0,
       annualCap: 2656, // 依据在岗职工年平均工资（177,057元/年）的1.5%更新为2,656元（约2656元）
       tierBenefits: {
@@ -140,7 +162,7 @@ export const shenzhenCityData: CityInsuranceData = {
       repeatedDeductibleRule: '依据《深圳市医疗保障办法》第三十六条、第三十七条，参保人起付线一级200元、二级400元、三级600元，二次及以上住院减半；报销比例一级92%、二级91%、三级90%，年满60周岁及以上老人支付比例统一提升至95%。'
     },
     catastrophic: {
-      sourceDocId: 'sz-medical-insurance-regulations-2023',
+      sourceDocId: 'gd-insurance-incentive-2025',
       name: '城乡居民大病保险（二次报销）',
       deductible: 10000,
       annualCap: 1062342, // 连续参保72个月以上大病保险限额达1,062,342元

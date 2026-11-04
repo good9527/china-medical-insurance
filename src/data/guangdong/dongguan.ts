@@ -7,7 +7,7 @@ export const dongguanCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '0769-12393',
   officialPortalUrl: 'http://dgyb.dg.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   sourceDocs: [
     {
@@ -90,6 +90,7 @@ export const dongguanCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['粤港澳大湾区'],
       specialNotes: ['跨省异地就医规范转诊下调10%，未备案自行外出就医按70%结算。']
     }
   },
@@ -136,6 +137,7 @@ export const dongguanCityData: CityInsuranceData = {
       transferFiledRatio: 0.85,
       unfiledEmergencyRatio: 0.85,
       unfiledNormalRatio: 0.60,
+      regionalAlliances: ['粤港澳大湾区'],
       specialNotes: ['跨省异地就医规范转诊下调15%，未备案临时外出下调20%。']
     }
   }

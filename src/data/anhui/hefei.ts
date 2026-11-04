@@ -7,7 +7,7 @@ export const hefeiData: CityInsuranceData = {
   provinceName: '安徽省',
   hotline: '0551-12393',
   officialPortalUrl: 'http://ybj.hefei.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
@@ -103,6 +103,7 @@ export const hefeiData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'hf-medical-insurance-inpatient-2024',
       annualCap: 300000, // 居民基本医保统筹限额 30 万元
+      repeatedDeductibleRule: '同自然年度内自第二次住院起，起付标准减半。',
       tierBenefits: {
         community: { tierName: '一级及以下医疗机构', deductible: 200, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.90 },

@@ -9983,6 +9983,553 @@ export function runCalculatorTests() {
     console.log('  - [H46 PASS] 多端读取可读性自适应流动排版与严肃政务 0-Emoji 规范静态核验通过');
   }
 
+  // --------------------------------------------------------------------------
+  // Suite H47: 公理化资金物理守恒定律、亚分级超微步长与跃变点不变量公理系统超级应力测试 [0 ~ 100,000,000 RMB]
+  // --------------------------------------------------------------------------
+  console.log('\n=========================================');
+  console.log('>>> [Suite H47] 执行公理化资金物理守恒定律 [0 ~ 100,000,000 RMB]、亚分级超微步长与跃变点不变量超级应力测试...');
+
+  // 1. 公共纠错台账 CORRECTION_UPDATES_LOG 扩充到 70+ 项公文凭证核验
+  {
+    totalChecks++;
+    assertTrue(CORRECTION_UPDATES_LOG.length >= 70, `公共纠错台账总数已扩充至 ${CORRECTION_UPDATES_LOG.length} 条 (>= 70项)`);
+    const gdLog = CORRECTION_UPDATES_LOG.find(l => l.id === 'u-2026-1104-gd-incentive-3800');
+    assertTrue(!!gdLog, '广东连续参保激励粤医保规〔2025〕6号勘误台账必须存在');
+    const shLog = CORRECTION_UPDATES_LOG.find(l => l.id === 'u-2026-1104-sh-cap-67');
+    assertTrue(!!shLog, '上海67万元封顶线沪医保规〔2026〕4号勘误台账必须存在');
+    const hzLog = CORRECTION_UPDATES_LOG.find(l => l.id === 'u-2026-1104-hz-reg-88-detail');
+    assertTrue(!!hzLog, '杭州88号文大病外键依据勘误台账必须存在');
+    const szLog = CORRECTION_UPDATES_LOG.find(l => l.id === 'u-2026-1104-sz-outpatient-reg1');
+    assertTrue(!!szLog, '深圳门诊新规深医保规〔2025〕1号勘误台账必须存在');
+    const cqLog = CORRECTION_UPDATES_LOG.find(l => l.id === 'u-2026-1104-cq-incentive-35');
+    assertTrue(!!cqLog, '重庆大病激励渝府办发〔2025〕35号勘误台账必须存在');
+
+    totalChecks += 5;
+    passCount++;
+    console.log(`  - [H47 PASS] 公共纠错台账 CORRECTION_UPDATES_LOG ${CORRECTION_UPDATES_LOG.length} 条 (>= 70项) 官方公文凭证核验通过`);
+  }
+
+  // 2. 全额域资金物理守恒定律超级应力测试 [0 ~ 100,000,000 RMB] (10代表城市 x 32极端边界 x 2模式 = 640组断言)
+  {
+    const boundaryAmounts32 = [
+      0, 0.01, 0.49, 0.50, 0.99, 1.00, 99.99, 100.00, 100.01, 199.99, 200.00, 300.00, 500.00,
+      799.99, 800.00, 800.01, 1000.00, 1500.00, 3000.00, 5000.00, 8222.00, 10000.00, 11000.00,
+      13000.00, 15000.00, 20000.00, 30404.00, 50000.00, 100000.00, 670000.00, 1000000.00, 100000000.00
+    ];
+    // 覆盖华北、华东、华南、华中、西南等各大战略经济区10大标杆统筹区
+    const benchmarkCities10 = [
+      '110100', // 北京
+      '120100', // 天津
+      '310100', // 上海
+      '330100', // 杭州
+      '370100', // 济南
+      '440100', // 广州
+      '440300', // 深圳
+      '420100', // 武汉
+      '410100', // 郑州
+      '510100'  // 成都
+    ];
+
+    for (const cityCode of benchmarkCities10) {
+      for (const cost of boundaryAmounts32) {
+        // Mode 1: 住院精算高压测试 (含 5% 目录外与 5% 乙类先付自理)
+        totalChecks++;
+        const resInpatient = calculateReimbursement({
+          cityCode,
+          insuranceType: 'employee',
+          isRetiree: cost % 2 === 0,
+          treatmentType: 'inpatient',
+          hospitalTier: 'tier3',
+          remoteStatus: 'local',
+          totalCost: cost,
+          nonInsuranceCost: Math.round(cost * 0.05 * 100) / 100,
+          classBCost: Math.round(cost * 0.05 * 100) / 100
+        });
+        const sumInpatient = Math.round((resInpatient.breakdown.totalReimbursed + resInpatient.breakdown.personalPayTotal) * 100) / 100;
+        assertEqual(sumInpatient, cost, `[住院] 标杆统筹区[${cityCode}]在极端金额 ¥${cost} 下满足公理化资金守恒`);
+        assertTrue(resInpatient.breakdown.totalReimbursed >= 0, `[住院] 统筹区[${cityCode}]报销额必须非负`);
+        assertTrue(resInpatient.breakdown.personalPayTotal >= 0, `[住院] 统筹区[${cityCode}]个人自理必须非负`);
+
+        // Mode 2: 门诊精算高压测试 (含 3% 目录外与 2% 乙类先付自理)
+        totalChecks++;
+        const resOutpatient = calculateReimbursement({
+          cityCode,
+          insuranceType: 'employee',
+          isRetiree: cost % 2 === 1,
+          treatmentType: 'outpatient',
+          hospitalTier: 'community',
+          remoteStatus: 'local',
+          totalCost: cost,
+          nonInsuranceCost: Math.round(cost * 0.03 * 100) / 100,
+          classBCost: Math.round(cost * 0.02 * 100) / 100
+        });
+        const sumOutpatient = Math.round((resOutpatient.breakdown.totalReimbursed + resOutpatient.breakdown.personalPayTotal) * 100) / 100;
+        assertEqual(sumOutpatient, cost, `[门诊] 标杆统筹区[${cityCode}]在极端金额 ¥${cost} 下满足公理化资金守恒`);
+        assertTrue(resOutpatient.breakdown.totalReimbursed >= 0, `[门诊] 统筹区[${cityCode}]报销额必须非负`);
+        assertTrue(resOutpatient.breakdown.personalPayTotal >= 0, `[门诊] 统筹区[${cityCode}]个人自理必须非负`);
+      }
+    }
+
+    passCount++;
+    console.log('  - [H47 PASS] 全额域资金物理守恒定律 [0 ~ 100,000,000 RMB] 10代表城市32极端边界640组严密断言全部通过');
+  }
+
+  // 3. 亚分精度输入无损规整与超微步长 Epsilon 应力测试
+  {
+    const subCentInputs = [99.999, 100.001, 100.005, 1234.5678, 50000.9999, 0.004, 0.005, 0.009];
+    const subCentCities = ['110100', '310100', '440100', '420100', '510100'];
+
+    for (const cityCode of subCentCities) {
+      for (const rawCost of subCentInputs) {
+        totalChecks++;
+        const roundedCost = Math.round(rawCost * 100) / 100;
+        const res = calculateReimbursement({
+          cityCode,
+          insuranceType: 'employee',
+          isRetiree: false,
+          treatmentType: 'inpatient',
+          hospitalTier: 'tier3',
+          remoteStatus: 'local',
+          totalCost: rawCost
+        });
+        assertEqual(res.breakdown.totalCost, roundedCost, `亚分精度输入 ¥${rawCost} 必须被安全规整为 ¥${roundedCost}`);
+        const sum = Math.round((res.breakdown.totalReimbursed + res.breakdown.personalPayTotal) * 100) / 100;
+        assertEqual(sum, roundedCost, `统筹区[${cityCode}]在亚分输入 ¥${rawCost} 规整后 ¥${roundedCost} 下资金守恒成立`);
+        assertTrue(!isNaN(res.breakdown.totalReimbursed), `统筹区[${cityCode}]报销值不能为 NaN`);
+        assertTrue(res.breakdown.totalReimbursed >= 0, `统筹区[${cityCode}]报销值必须非负`);
+      }
+    }
+
+    passCount++;
+    console.log('  - [H47 PASS] 亚分级超微步长 Epsilon 输入规整与无损资金守恒应力测试通过');
+  }
+
+  // 4. 起付线跃变点不变量连续性与非负阶梯断言 (Threshold Jump Discontinuities)
+  {
+    // 4A: 北京职工门诊起付线 1800 元跃变扰动 (1799.99, 1800.00, 1800.01)
+    const bjBelow = calculateReimbursement({ cityCode: '110100', insuranceType: 'employee', isRetiree: false, treatmentType: 'outpatient', hospitalTier: 'tier3', remoteStatus: 'local', totalCost: 1799.99 });
+    const bjAt = calculateReimbursement({ cityCode: '110100', insuranceType: 'employee', isRetiree: false, treatmentType: 'outpatient', hospitalTier: 'tier3', remoteStatus: 'local', totalCost: 1800.00 });
+    const bjAbove = calculateReimbursement({ cityCode: '110100', insuranceType: 'employee', isRetiree: false, treatmentType: 'outpatient', hospitalTier: 'tier3', remoteStatus: 'local', totalCost: 1800.01 });
+
+    totalChecks += 6;
+    assertEqual(bjBelow.breakdown.totalReimbursed, 0, '北京在职门诊 1799.99 元未达起付线报销为0');
+    assertEqual(bjBelow.breakdown.personalPayTotal, 1799.99, '北京在职门诊 1799.99 元全额个人自付');
+    assertEqual(bjAt.breakdown.totalReimbursed, 0, '北京在职门诊 1800.00 元刚达起付线报销为0');
+    assertEqual(bjAt.breakdown.personalPayTotal, 1800.00, '北京在职门诊 1800.00 元全额个人自付');
+    assertTrue(bjAbove.breakdown.totalReimbursed >= 0, '北京在职门诊 1800.01 元报销非负');
+    assertEqual(Math.round((bjAbove.breakdown.totalReimbursed + bjAbove.breakdown.personalPayTotal) * 100) / 100, 1800.01, '北京在职门诊 1800.01 元资金守恒');
+
+    // 4B: 上海职工住院在职起付线 1500 元跃变扰动
+    const shBelow = calculateReimbursement({ cityCode: '310100', insuranceType: 'employee', isRetiree: false, treatmentType: 'inpatient', hospitalTier: 'tier3', remoteStatus: 'local', totalCost: 1499.99 });
+    const shAt = calculateReimbursement({ cityCode: '310100', insuranceType: 'employee', isRetiree: false, treatmentType: 'inpatient', hospitalTier: 'tier3', remoteStatus: 'local', totalCost: 1500.00 });
+    const shAbove = calculateReimbursement({ cityCode: '310100', insuranceType: 'employee', isRetiree: false, treatmentType: 'inpatient', hospitalTier: 'tier3', remoteStatus: 'local', totalCost: 1500.01 });
+
+    totalChecks += 6;
+    assertEqual(shBelow.breakdown.totalReimbursed, 0, '上海在职住院 1499.99 元未达起付线报销为0');
+    assertEqual(shBelow.breakdown.personalPayTotal, 1499.99, '上海在职住院 1499.99 元全额个人自付');
+    assertEqual(shAt.breakdown.totalReimbursed, 0, '上海在职住院 1500.00 元刚达起付线报销为0');
+    assertEqual(shAt.breakdown.personalPayTotal, 1500.00, '上海在职住院 1500.00 元全额个人自付');
+    assertTrue(shAbove.breakdown.totalReimbursed >= 0, '上海在职住院 1500.01 元报销非负');
+    assertEqual(Math.round((shAbove.breakdown.totalReimbursed + shAbove.breakdown.personalPayTotal) * 100) / 100, 1500.01, '上海在职住院 1500.01 元资金守恒');
+
+    // 4C: 广州职工三级住院起付线 1000 元跃变扰动
+    const gzBelow = calculateReimbursement({ cityCode: '440100', insuranceType: 'employee', isRetiree: false, treatmentType: 'inpatient', hospitalTier: 'tier3', remoteStatus: 'local', totalCost: 999.99 });
+    const gzAt = calculateReimbursement({ cityCode: '440100', insuranceType: 'employee', isRetiree: false, treatmentType: 'inpatient', hospitalTier: 'tier3', remoteStatus: 'local', totalCost: 1000.00 });
+    const gzAbove = calculateReimbursement({ cityCode: '440100', insuranceType: 'employee', isRetiree: false, treatmentType: 'inpatient', hospitalTier: 'tier3', remoteStatus: 'local', totalCost: 1000.01 });
+
+    totalChecks += 6;
+    assertEqual(gzBelow.breakdown.totalReimbursed, 0, '广州在职三级住院 999.99 元未达起付线报销为0');
+    assertEqual(gzBelow.breakdown.personalPayTotal, 999.99, '广州在职三级住院 999.99 元全额个人自付');
+    assertEqual(gzAt.breakdown.totalReimbursed, 0, '广州在职三级住院 1000.00 元刚达起付线报销为0');
+    assertEqual(gzAt.breakdown.personalPayTotal, 1000.00, '广州在职三级住院 1000.00 元全额个人自付');
+    assertTrue(gzAbove.breakdown.totalReimbursed >= 0, '广州在职三级住院 1000.01 元报销非负');
+    assertEqual(Math.round((gzAbove.breakdown.totalReimbursed + gzAbove.breakdown.personalPayTotal) * 100) / 100, 1000.01, '广州在职三级住院 1000.01 元资金守恒');
+
+    // 4D: 成都职工三级住院起付线 800 元跃变扰动
+    const cdBelow = calculateReimbursement({ cityCode: '510100', insuranceType: 'employee', isRetiree: false, treatmentType: 'inpatient', hospitalTier: 'tier3', remoteStatus: 'local', totalCost: 799.99 });
+    const cdAt = calculateReimbursement({ cityCode: '510100', insuranceType: 'employee', isRetiree: false, treatmentType: 'inpatient', hospitalTier: 'tier3', remoteStatus: 'local', totalCost: 800.00 });
+    const cdAbove = calculateReimbursement({ cityCode: '510100', insuranceType: 'employee', isRetiree: false, treatmentType: 'inpatient', hospitalTier: 'tier3', remoteStatus: 'local', totalCost: 800.01 });
+
+    totalChecks += 6;
+    assertEqual(cdBelow.breakdown.totalReimbursed, 0, '成都在职三级住院 799.99 元未达起付线报销为0');
+    assertEqual(cdBelow.breakdown.personalPayTotal, 799.99, '成都在职三级住院 799.99 元全额个人自付');
+    assertEqual(cdAt.breakdown.totalReimbursed, 0, '成都在职三级住院 800.00 元刚达起付线报销为0');
+    assertEqual(cdAt.breakdown.personalPayTotal, 800.00, '成都在职三级住院 800.00 元全额个人自付');
+    assertTrue(cdAbove.breakdown.totalReimbursed >= 0, '成都在职三级住院 800.01 元报销非负');
+    assertEqual(Math.round((cdAbove.breakdown.totalReimbursed + cdAbove.breakdown.personalPayTotal) * 100) / 100, 800.01, '成都在职三级住院 800.01 元资金守恒');
+
+    passCount++;
+    console.log('  - [H47 PASS] 京沪穗蓉四大统筹区起付门槛跃变点连续性与非负阶梯断言通过');
+  }
+
+  // --------------------------------------------------------------------------
+  // Suite H48: 费用单调性、边际报销率有界性与医疗政策数理不变量公理系统证明
+  // --------------------------------------------------------------------------
+  console.log('\n=========================================');
+  console.log('>>> [Suite H48] 执行费用单调性、边际报销率有界性 [0 <= ΔR/ΔC <= 1] 与数理不变量公理系统严密证明...');
+
+  // 1. 费用报销单调性 (Cost Monotonicity) 与边际报销率有界性 (ΔR / ΔC ∈ [0, 1])
+  {
+    const monotonicityCities = ['110100', '310100', '440100', '440300', '510100'];
+    const costSteps = [
+      0, 50, 100, 200, 500, 800, 1000, 1500, 2000, 3000, 5000, 8000, 10000, 20000, 50000, 100000, 500000, 1000000
+    ];
+
+    for (const cityCode of monotonicityCities) {
+      let prevReimbursed = -1;
+      let prevPersonalPay = -1;
+      let prevCost = -1;
+
+      for (let k = 0; k < costSteps.length; k++) {
+        const cost = costSteps[k];
+        const res = calculateReimbursement({
+          cityCode,
+          insuranceType: 'employee',
+          isRetiree: false,
+          treatmentType: 'inpatient',
+          hospitalTier: 'tier3',
+          remoteStatus: 'local',
+          totalCost: cost,
+          nonInsuranceCost: Math.round(cost * 0.05 * 100) / 100,
+          classBCost: Math.round(cost * 0.05 * 100) / 100
+        });
+
+        const r = res.breakdown.totalReimbursed;
+        const p = res.breakdown.personalPayTotal;
+
+        if (k > 0) {
+          totalChecks += 4;
+          const deltaC = Math.round((cost - prevCost) * 100) / 100;
+          const deltaR = Math.round((r - prevReimbursed) * 100) / 100;
+          const deltaP = Math.round((p - prevPersonalPay) * 100) / 100;
+
+          // 单调不减公理: C1 < C2 => R(C1) <= R(C2)
+          assertTrue(r >= prevReimbursed - 0.01, `统筹区[${cityCode}]报销必须满足费用单调递增性: R(${cost}) >= R(${prevCost})`);
+          // 自付单调不减公理: C1 < C2 => P(C1) <= P(C2)
+          assertTrue(p >= prevPersonalPay - 0.01, `统筹区[${cityCode}]自付必须满足费用单调递增性: P(${cost}) >= P(${prevCost})`);
+          // 边际增量有界公理: ΔR <= ΔC
+          assertTrue(deltaR <= deltaC + 0.01, `统筹区[${cityCode}]边际报销额 ΔR (${deltaR}) 不能超过费用增量 ΔC (${deltaC})`);
+          // 边际报销率有界公理: ΔR / ΔC ∈ [0, 1.0]
+          const marginalRate = deltaR / deltaC;
+          assertTrue(
+            marginalRate >= -0.0001 && marginalRate <= 1.0001,
+            `统筹区[${cityCode}]边际报销率 ΔR/ΔC (${marginalRate.toFixed(4)}) 必须严格落在 [0, 1.0] 区间`
+          );
+        }
+
+        prevReimbursed = r;
+        prevPersonalPay = p;
+        prevCost = cost;
+      }
+    }
+
+    passCount++;
+    console.log('  - [H48 PASS] 费用单调性与边际报销率有界性 (0 <= ΔR/ΔC <= 1) 5代表统筹区公理化证明通过');
+  }
+
+  // 2. 退休人员待遇优势不变量公理系统证明 (R_retiree >= R_active, P_retiree <= P_active)
+  {
+    const benchmarkCities10 = ['110100', '120100', '310100', '330100', '370100', '440100', '440300', '420100', '410100', '510100'];
+    const testCases = [
+      { treatmentType: 'outpatient' as const, hospitalTier: 'community' as const, totalCost: 2000, label: '社区门诊2000元' },
+      { treatmentType: 'inpatient' as const, hospitalTier: 'tier3' as const, totalCost: 30000, label: '三级住院30000元' },
+      { treatmentType: 'inpatient' as const, hospitalTier: 'tier3' as const, totalCost: 150000, label: '三级大额住院150000元' }
+    ];
+
+    for (const cityCode of benchmarkCities10) {
+      for (const tc of testCases) {
+        totalChecks += 4;
+        const resActive = calculateReimbursement({
+          cityCode,
+          insuranceType: 'employee',
+          isRetiree: false,
+          treatmentType: tc.treatmentType,
+          hospitalTier: tc.hospitalTier,
+          remoteStatus: 'local',
+          totalCost: tc.totalCost
+        });
+        const resRetiree = calculateReimbursement({
+          cityCode,
+          insuranceType: 'employee',
+          isRetiree: true,
+          treatmentType: tc.treatmentType,
+          hospitalTier: tc.hospitalTier,
+          remoteStatus: 'local',
+          totalCost: tc.totalCost
+        });
+
+        // 退休报销优势不变量
+        assertTrue(
+          resRetiree.breakdown.totalReimbursed >= resActive.breakdown.totalReimbursed - 0.01,
+          `统筹区[${cityCode}]在[${tc.label}]场景下退休人员报销额 (¥${resRetiree.breakdown.totalReimbursed}) 必须不低于在职人员 (¥${resActive.breakdown.totalReimbursed})`
+        );
+        // 退休自付更低不变量
+        assertTrue(
+          resRetiree.breakdown.personalPayTotal <= resActive.breakdown.personalPayTotal + 0.01,
+          `统筹区[${cityCode}]在[${tc.label}]场景下退休人员自付额 (¥${resRetiree.breakdown.personalPayTotal}) 必须不高于在职人员 (¥${resActive.breakdown.personalPayTotal})`
+        );
+        // 双方资金物理守恒成立
+        assertEqual(
+          Math.round((resActive.breakdown.totalReimbursed + resActive.breakdown.personalPayTotal) * 100) / 100,
+          tc.totalCost,
+          `统筹区[${cityCode}]在职资金守恒`
+        );
+        assertEqual(
+          Math.round((resRetiree.breakdown.totalReimbursed + resRetiree.breakdown.personalPayTotal) * 100) / 100,
+          tc.totalCost,
+          `统筹区[${cityCode}]退休资金守恒`
+        );
+      }
+    }
+
+    passCount++;
+    console.log('  - [H48 PASS] 退休人员待遇倾斜优势不变量 (R_retiree >= R_active) 10标杆统筹区3大场景全维核验通过');
+  }
+
+  // 3. 定点医疗机构级别梯次报销不变量 (R_tier1 >= R_tier2 >= R_tier3)
+  {
+    const benchmarkCities10 = ['110100', '120100', '310100', '330100', '370100', '440100', '440300', '420100', '410100', '510100'];
+
+    for (const cityCode of benchmarkCities10) {
+      totalChecks += 2;
+      const rTier1 = calculateReimbursement({
+        cityCode,
+        insuranceType: 'employee',
+        isRetiree: false,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier1',
+        remoteStatus: 'local',
+        totalCost: 20000
+      });
+      const rTier2 = calculateReimbursement({
+        cityCode,
+        insuranceType: 'employee',
+        isRetiree: false,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier2',
+        remoteStatus: 'local',
+        totalCost: 20000
+      });
+      const rTier3 = calculateReimbursement({
+        cityCode,
+        insuranceType: 'employee',
+        isRetiree: false,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: 'local',
+        totalCost: 20000
+      });
+
+      assertTrue(
+        rTier1.breakdown.totalReimbursed >= rTier2.breakdown.totalReimbursed - 0.01,
+        `统筹区[${cityCode}]一级定点报销额 (¥${rTier1.breakdown.totalReimbursed}) 必须不低于二级定点 (¥${rTier2.breakdown.totalReimbursed})`
+      );
+      assertTrue(
+        rTier2.breakdown.totalReimbursed >= rTier3.breakdown.totalReimbursed - 0.01,
+        `统筹区[${cityCode}]二级定点报销额 (¥${rTier2.breakdown.totalReimbursed}) 必须不低于三级定点 (¥${rTier3.breakdown.totalReimbursed})`
+      );
+    }
+
+    passCount++;
+    console.log('  - [H48 PASS] 定点医疗机构级别梯次报销不变量 (R_tier1 >= R_tier2 >= R_tier3) 10标杆统筹区核验通过');
+  }
+
+  // 4. 多次住院起付线阶梯单调递减不变量 (Repeated Admission Deductible Decay Invariant)
+  {
+    const stepDownResidentConfigs = [
+      { cityCode: '130100', name: '石家庄', insuranceType: 'resident' as const },
+      { cityCode: '340100', name: '合肥', insuranceType: 'resident' as const },
+      { cityCode: '350100', name: '福州', insuranceType: 'resident' as const },
+      { cityCode: '140100', name: '太原', insuranceType: 'resident' as const },
+      { cityCode: '510100', name: '成都', insuranceType: 'employee' as const }
+    ];
+
+    for (const conf of stepDownResidentConfigs) {
+      let prevDed = Infinity;
+      const kList: Array<1 | 2 | 3> = [1, 2, 3];
+      for (const k of kList) {
+        totalChecks += 2;
+        const res = calculateReimbursement({
+          cityCode: conf.cityCode,
+          insuranceType: conf.insuranceType,
+          treatmentType: 'inpatient',
+          hospitalTier: 'tier3',
+          remoteStatus: 'local',
+          totalCost: 10000,
+          hospitalizationCount: k
+        });
+
+        const currentDed = res.breakdown.deductibleDeducted;
+        assertTrue(
+          currentDed <= prevDed + 0.01,
+          `${conf.name}第${k}次住院起付线 (¥${currentDed}) 必须单调不高于第${k-1}次起付线 (¥${prevDed})`
+        );
+        assertTrue(currentDed >= 0, `${conf.name}住院起付线必须非负`);
+        prevDed = currentDed;
+      }
+    }
+
+    passCount++;
+    console.log('  - [H48 PASS] 多次住院起付线单调递减衰减不变量核验通过');
+  }
+
+  // --------------------------------------------------------------------------
+  // Suite H49: 跨城对比模拟器置换不变性、两两反对称性与严肃政务 0-Emoji 规范静态核验
+  // --------------------------------------------------------------------------
+  console.log('\n=========================================');
+  console.log('>>> [Suite H49] 执行跨城模拟器两两反对称性 (ΔR = -ΔP)、置换不变性与全量文本 0-Emoji 审计...');
+
+  // 1. 两两置换反对称性 (Pairwise Anti-Symmetry: ΔR_B_vs_A ≡ -ΔR_A_vs_B, ΔR ≡ -ΔP)
+  {
+    const cityPairs = [
+      { a: '110100', b: '120100', name: '京津组' },
+      { a: '310100', b: '330100', name: '沪杭组' },
+      { a: '440100', b: '440300', name: '穗深组' },
+      { a: '510100', b: '500100', name: '成渝组' },
+      { a: '420100', b: '410100', name: '汉郑组' }
+    ];
+
+    const scenarioConfigs = [
+      { treatmentType: 'inpatient' as const, hospitalTier: 'tier3' as const, totalCost: 30000, label: '住院30000元' },
+      { treatmentType: 'outpatient' as const, hospitalTier: 'community' as const, totalCost: 5000, label: '门诊5000元' }
+    ];
+
+    for (const pair of cityPairs) {
+      for (const sc of scenarioConfigs) {
+        totalChecks += 6;
+        const simAB = runMultiCitySimulation([pair.a, pair.b], {
+          totalCost: sc.totalCost,
+          insuranceType: 'employee',
+          isRetiree: false,
+          treatmentType: sc.treatmentType,
+          hospitalTier: sc.hospitalTier,
+          remoteStatus: 'local',
+          hospitalizationCount: 1
+        });
+        const simBA = runMultiCitySimulation([pair.b, pair.a], {
+          totalCost: sc.totalCost,
+          insuranceType: 'employee',
+          isRetiree: false,
+          treatmentType: sc.treatmentType,
+          hospitalTier: sc.hospitalTier,
+          remoteStatus: 'local',
+          hospitalizationCount: 1
+        });
+
+        const deltaR_B_vs_A = simAB.cities[1].deltaReimbursedVsCityA;
+        const deltaR_A_vs_B = simBA.cities[1].deltaReimbursedVsCityA;
+        const deltaP_B_vs_A = simAB.cities[1].deltaPersonalPayVsCityA;
+        const deltaP_A_vs_B = simBA.cities[1].deltaPersonalPayVsCityA;
+
+        // 反对称性公理 1: ΔR_{B vs A} === -ΔR_{A vs B}
+        assertEqual(
+          Math.round((deltaR_B_vs_A + deltaR_A_vs_B) * 100) / 100,
+          0,
+          `${pair.name}[${sc.label}]满足两两报销差额反对称性 ΔR_B_vs_A === -ΔR_A_vs_B`
+        );
+        // 反对称性公理 2: ΔP_{B vs A} === -ΔP_{A vs B}
+        assertEqual(
+          Math.round((deltaP_B_vs_A + deltaP_A_vs_B) * 100) / 100,
+          0,
+          `${pair.name}[${sc.label}]满足两两自付差额反对称性 ΔP_B_vs_A === -ΔP_A_vs_B`
+        );
+        // 相反数对偶律公理: ΔR ≡ -ΔP
+        assertEqual(
+          Math.round((deltaR_B_vs_A + deltaP_B_vs_A) * 100) / 100,
+          0,
+          `${pair.name}[${sc.label}] AB 满足差额相反数对偶律 ΔR = -ΔP`
+        );
+        assertEqual(
+          Math.round((deltaR_A_vs_B + deltaP_A_vs_B) * 100) / 100,
+          0,
+          `${pair.name}[${sc.label}] BA 满足差额相反数对偶律 ΔR = -ΔP`
+        );
+        // 极差跨度置换不变量
+        assertEqual(
+          simAB.maxReimbursementDelta,
+          simBA.maxReimbursementDelta,
+          `${pair.name}[${sc.label}]最大报销极差跨度置换对称`
+        );
+        assertEqual(
+          simAB.maxReimbursementDelta,
+          simAB.maxPersonalPayDelta,
+          `${pair.name}[${sc.label}]最大报销极差与自付极差严格相等`
+        );
+      }
+    }
+
+    passCount++;
+    console.log('  - [H49 PASS] 跨城对比模拟器两两置换反对称性 (ΔR = -ΔP) 与极差守恒律核验通过');
+  }
+
+  // 2. 三城置换不变量 (Triplet Permutation Invariance)
+  {
+    const tripletA = ['110100', '310100', '440100']; // 京沪穗
+    const tripletB = ['440100', '310100', '110100']; // 穗沪京 (上海依然在中间)
+    const tripletC = ['310100', '110100', '440100']; // 沪北京 (上海在第一位)
+
+    const scenario = {
+      totalCost: 50000,
+      insuranceType: 'employee' as const,
+      isRetiree: false,
+      treatmentType: 'inpatient' as const,
+      hospitalTier: 'tier3' as const,
+      remoteStatus: 'local' as const,
+      hospitalizationCount: 1 as 1 | 2 | 3
+    };
+
+    totalChecks += 5;
+    const sim1 = runMultiCitySimulation(tripletA, scenario);
+    const sim2 = runMultiCitySimulation(tripletB, scenario);
+    const sim3 = runMultiCitySimulation(tripletC, scenario);
+
+    assertTrue(sim1.allConserved && sim2.allConserved && sim3.allConserved, '三城置换全量满足资金物理守恒');
+    const sh1 = sim1.cities.find(c => c.cityCode === '310100');
+    const sh2 = sim2.cities.find(c => c.cityCode === '310100');
+    const sh3 = sim3.cities.find(c => c.cityCode === '310100');
+
+    assertEqual(sh1?.totalReimbursed, sh2?.totalReimbursed, '上海在置换1与置换2中的报销总额位级一致');
+    assertEqual(sh1?.totalReimbursed, sh3?.totalReimbursed, '上海在置换1与置换3中的报销总额位级一致');
+    assertEqual(sim1.maxReimbursementDelta, sim2.maxReimbursementDelta, '全城最大极差在置换下完全不变');
+    assertEqual(sim1.maxReimbursementDelta, sim3.maxReimbursementDelta, '全城最大极差在置换下完全不变');
+
+    passCount++;
+    console.log('  - [H49 PASS] 三城模拟置换不变量 (Permutation Invariance) 核验通过');
+  }
+
+  // 3. 模拟器精算洞察文本 0-Emoji 严苛静态审计
+  {
+    const scenarioMatrix = [
+      { totalCost: 1500, insuranceType: 'employee' as const, isRetiree: false, treatmentType: 'outpatient' as const, hospitalTier: 'community' as const, remoteStatus: 'local' as const },
+      { totalCost: 8000, insuranceType: 'resident' as const, isRetiree: false, treatmentType: 'outpatient' as const, hospitalTier: 'tier2' as const, remoteStatus: 'local' as const },
+      { totalCost: 25000, insuranceType: 'employee' as const, isRetiree: true, treatmentType: 'inpatient' as const, hospitalTier: 'tier3' as const, remoteStatus: 'local' as const },
+      { totalCost: 120000, insuranceType: 'employee' as const, isRetiree: false, treatmentType: 'inpatient' as const, hospitalTier: 'tier3' as const, remoteStatus: 'local' as const }
+    ];
+    const emojiRegex = /[\u{1F300}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{1F1E0}-\u{1F1FF}\u{1FA00}-\u{1FAFF}]/u;
+
+    for (const sc of scenarioMatrix) {
+      totalChecks += 2;
+      const sim = runMultiCitySimulation(['110100', '310100', '440100'], sc);
+      assertTrue(sim.keyInsights.length > 0, '模拟器精算洞察必须生成有效分析文本');
+      for (const insight of sim.keyInsights) {
+        assertTrue(!emojiRegex.test(insight), `精算洞察文本不能含有 Emoji: "${insight}"`);
+      }
+    }
+
+    passCount++;
+    console.log('  - [H49 PASS] 跨城模拟器全场景自动化精算洞察严肃政务 0-Emoji 审计通过');
+  }
+
+  // 4. 多端读取可读性 (Multi-Platform Readability) 与 UI 人机舒适度全面回归核验
+  {
+    totalChecks++;
+    const readabilityChecks = runUIMultiPlatformReadabilityTests();
+    assertTrue(readabilityChecks >= 8, '多端可读性校验项数至少需包含8项核心断言 (当前已扩展至9项)');
+    totalChecks += readabilityChecks;
+    passCount++;
+    console.log('  - [H49 PASS] 多端读取可读性自适应流动排版与严肃政务 0-Emoji 规范静态核验全维通过');
+  }
+
   console.log(`\n=========================================`);
   console.log(`[PASS] 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
   console.log(`=========================================\n`);

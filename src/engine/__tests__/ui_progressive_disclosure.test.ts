@@ -181,6 +181,82 @@ export function runUIMultiPlatformReadabilityTests(): number {
   }
   console.log('  ✓ [UI PASS] 触控区域严格保证 >= 44px 人机工程舒适度');
 
+  // 5. 检查小屏超窄视口断点 @media (max-width: 380px) 存在性
+  checks++;
+  if (!indexVueContent.includes('@media (max-width: 380px)')) {
+    throw new Error('[UI测试失败] index.vue 必须针对 <= 380px 超窄屏设备提供专用媒体查询');
+  }
+  console.log('  ✓ [UI PASS] 380px 超窄视口媒体查询适配');
+
+  // 6. 检查小屏多列网格降级为单列纵向排版 (grid-template-columns: 1fr)
+  checks++;
+  if (!indexVueContent.includes('grid-template-columns: 1fr;')) {
+    throw new Error('[UI测试失败] index.vue 在小屏下必须将多列网格平滑降级为单列流动排版');
+  }
+  console.log('  ✓ [UI PASS] 小屏网格平滑降级为单列流动排版 (grid-template-columns: 1fr)');
+
+  // 7. 检查移动端浮动操作胶囊与 520px 视口适配
+  checks++;
+  if (!indexVueContent.includes('@media (max-width: 520px)') || !indexVueContent.includes('.mobile-calc-float-bar')) {
+    throw new Error('[UI测试失败] index.vue 必须包含 <= 520px 移动浮动操作胶囊与专用断点');
+  }
+  console.log('  ✓ [UI PASS] 520px 移动浮动胶囊与触控断点适配');
+
+  // 8. 检查 ranking/index.vue 触控舒适度 (min-height: 44px)
+  checks++;
+  const rankingPath = path.resolve(__dirname, '../../pages/ranking/index.vue');
+  if (fs.existsSync(rankingPath)) {
+    const rankingContent: string = fs.readFileSync(rankingPath, 'utf-8');
+    if (!rankingContent.includes('min-height: 44px')) {
+      throw new Error('[UI测试失败] ranking/index.vue 必须维持关键控件至少44px人机触控目标高度');
+    }
+    console.log('  ✓ [UI PASS] ranking/index.vue 触控区域严格保证 >= 44px 人机舒适度');
+  } else {
+    console.log('  ✓ [UI PASS] ranking/index.vue 跳过 (文件不存在)');
+  }
+
+  // 9. 全局 0-Emoji 严苛规范静态扫描 (src/pages 与 src/components)
+  checks++;
+  const emojiRegex = /[\u{1F300}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F900}-\u{1F9FF}\u{1F1E0}-\u{1F1FF}\u{1FA00}-\u{1FAFF}]/u;
+  const findings: Array<{ file: string; line: number; content: string }> = [];
+
+  function scanVueFiles(dirPath: string) {
+    if (!fs.existsSync(dirPath)) return;
+    const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+    for (const entry of entries) {
+      const full = path.join(dirPath, entry.name);
+      if (entry.isDirectory()) {
+        if (!['node_modules', 'dist', '.git', 'scripts'].includes(entry.name)) {
+          scanVueFiles(full);
+        }
+      } else if (entry.isFile() && entry.name.endsWith('.vue')) {
+        const text = fs.readFileSync(full, 'utf-8');
+        const lines = text.split('\n');
+        lines.forEach((l: string, idx: number) => {
+          const trimmed = l.trim();
+          if (trimmed.startsWith('//') || trimmed.startsWith('/*') || trimmed.startsWith('*')) return;
+          if (emojiRegex.test(l)) {
+            findings.push({
+              file: full,
+              line: idx + 1,
+              content: trimmed
+            });
+          }
+        });
+      }
+    }
+  }
+
+  const pagesDir = path.resolve(__dirname, '../../pages');
+  const componentsDir = path.resolve(__dirname, '../../components');
+  scanVueFiles(pagesDir);
+  scanVueFiles(componentsDir);
+
+  if (findings.length > 0) {
+    throw new Error(`[UI测试失败] 前端组件中发现 ${findings.length} 处非法 Emoji: ${JSON.stringify(findings[0])}`);
+  }
+  console.log('  ✓ [UI PASS] 全局前端页面与组件 100% 遵循严肃政务 0-Emoji 纯矢量规范');
+
   console.log(`====== UI 多端读取可读性校验通过！共执行 ${checks} 项校验 ======\n`);
   return checks;
 }

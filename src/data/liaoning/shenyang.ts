@@ -7,7 +7,7 @@ export const shenyangCityData: CityInsuranceData = {
   provinceName: '辽宁省',
   hotline: '024-12393',
   officialPortalUrl: 'http://ybj.shenyang.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [

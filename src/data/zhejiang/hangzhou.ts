@@ -93,7 +93,7 @@ export const hangzhouCityData: CityInsuranceData = {
       }
     },
     catastrophic: {
-      sourceDocId: 'hz-medical-insurance-regulations-2025',
+      sourceDocId: 'hz-medical-insurance-regulations-2026',
       name: '杭州市大病医疗保险',
       deductible: 25000,
       annualCap: 600000,
@@ -145,7 +145,7 @@ export const hangzhouCityData: CityInsuranceData = {
       }
     },
     catastrophic: {
-      sourceDocId: 'hz-resident-medical-2024',
+      sourceDocId: 'hz-medical-insurance-regulations-2026',
       name: '杭州市城乡居民大病保险',
       deductible: 25000,
       annualCap: 600000, // 明确基准最高支付限额 60 万元

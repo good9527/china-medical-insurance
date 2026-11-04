@@ -7,7 +7,7 @@ export const shijiazhuangData: CityInsuranceData = {
   provinceName: '河北省',
   hotline: '0311-12393 / 0311-89876006',
   officialPortalUrl: 'https://ybj.sjz.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
@@ -80,6 +80,7 @@ export const shijiazhuangData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['京津冀免备案'],
       specialNotes: [
         '京津冀区域内免备案直接结算，享受与本市同等报销待遇。'
       ]
@@ -103,6 +104,7 @@ export const shijiazhuangData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'sjz-resident-inpatient-outpatient-2025',
       annualCap: 200000, // 居民基本医疗保险年度限额 20 万元
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院的，从第二次住院起，起付标准递减100元，最低降至100元。',
       tierBenefits: {
         community: { tierName: '一级及以下医疗机构', deductible: 200, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.90 },
@@ -129,6 +131,7 @@ export const shijiazhuangData: CityInsuranceData = {
       transferFiledRatio: 0.77, // 省外转诊经备案支付比例统一为50%（折合参保地三级65%的约77%）
       unfiledEmergencyRatio: 0.77, // 异地急诊抢救视同转诊备案待遇（医保发〔2022〕22号）
       unfiledNormalRatio: 0.46, // 省外未备案自行就医直接按30%结算（折合约46%），且自付不进大病保险
+      regionalAlliances: ['京津冀免备案'],
       specialNotes: [
         '京津冀区域内就医视同本地就医，免证明免备案直接联网结算。',
         '河北省内市外就医按本市同等级别医疗机构标准执行；转往省外经备案支付比例为50%（起付线2000元），省外未备案自行就医支付比例仅为30%（起付线4000元且自付部分不计入大病保险）。'

@@ -7,7 +7,7 @@ export const zhuhaiCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '0756-12393',
   officialPortalUrl: 'http://zhylbz.zhuhai.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   sourceDocs: [
     {
@@ -79,6 +79,7 @@ export const zhuhaiCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['粤港澳大湾区'],
       specialNotes: ['跨省异地长期居住备案不降比例，规范转诊市外报销比例下调10%，非备案自行就医报销比例按70%执行。']
     }
   },
@@ -99,6 +100,7 @@ export const zhuhaiCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'zh-medical-insurance-inpatient-2024',
       annualCap: 400000,
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，起付标准按定点医疗机构级别分别计算。',
       tierBenefits: {
         community: { tierName: '一级医疗机构/卫生院', deductible: 300, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.90 },
@@ -125,6 +127,7 @@ export const zhuhaiCityData: CityInsuranceData = {
       transferFiledRatio: 0.85,
       unfiledEmergencyRatio: 0.85,
       unfiledNormalRatio: 0.60,
+      regionalAlliances: ['粤港澳大湾区'],
       specialNotes: ['跨省异地就医规范转诊下调15%，未备案临时外出下调20%。']
     }
   }

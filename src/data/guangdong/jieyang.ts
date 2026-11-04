@@ -7,7 +7,7 @@ export const jieyangCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '0663-12393',
   officialPortalUrl: 'http://www.jieyang.gov.cn/jyylbz/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   sourceDocs: [
     {
@@ -110,6 +110,7 @@ export const jieyangCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'jy-medical-insurance-inpatient-2024',
       annualCap: 300000,
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，起付标准按定点医疗机构级别分别计算。',
       tierBenefits: {
         community: { tierName: '一级及基层医疗机构', deductible: 300, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.85 },

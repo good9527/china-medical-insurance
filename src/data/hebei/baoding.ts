@@ -7,7 +7,7 @@ export const baodingData: CityInsuranceData = {
   provinceName: '河北省',
   hotline: '0312-12393',
   officialPortalUrl: 'https://ybj.baoding.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
@@ -90,6 +90,7 @@ export const baodingData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['京津冀免备案'],
       specialNotes: [
         '京津冀区域内医疗机构就医免备案直接结算，享受与保定同等报销待遇。'
       ]
@@ -114,6 +115,7 @@ export const baodingData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'bd-employee-resident-inpatient-2021',
       annualCap: 150000, // 居民基本医保年度封顶 15 万元
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院的，从第二次住院起，起付标准递减100元，最低降至100元。',
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区服务中心', deductible: 100, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
@@ -139,6 +141,7 @@ export const baodingData: CityInsuranceData = {
       transferFiledRatio: 0.85,
       unfiledEmergencyRatio: 0.85,
       unfiledNormalRatio: 0.65,
+      regionalAlliances: ['京津冀免备案'],
       specialNotes: [
         '京津冀区域内就医免备案直接联网结算。'
       ]

@@ -7,7 +7,7 @@ export const huizhouCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '0752-12393',
   officialPortalUrl: 'http://hzyb.huizhou.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   sourceDocs: [
     {
@@ -90,6 +90,7 @@ export const huizhouCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['粤港澳大湾区'],
       specialNotes: ['跨省异地就医规范转诊下调10%，未备案自行外出就医按70%结算。']
     }
   },
@@ -110,6 +111,7 @@ export const huizhouCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'hz-medical-insurance-inpatient-2023',
       annualCap: 350000,
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，起付标准按定点医疗机构级别分别计算。',
       tierBenefits: {
         community: { tierName: '一级医疗机构/卫生院', deductible: 200, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.90 },
@@ -136,6 +138,7 @@ export const huizhouCityData: CityInsuranceData = {
       transferFiledRatio: 0.85,
       unfiledEmergencyRatio: 0.85,
       unfiledNormalRatio: 0.60,
+      regionalAlliances: ['粤港澳大湾区'],
       specialNotes: ['跨省异地就医规范转诊下调15%，未备案临时外出下调20%。']
     }
   }

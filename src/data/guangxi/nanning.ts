@@ -7,7 +7,7 @@ export const nanningCityData: CityInsuranceData = {
   provinceName: '广西壮族自治区',
   hotline: '0771-12393',
   officialPortalUrl: 'http://ybj.nanning.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
@@ -102,6 +102,7 @@ export const nanningCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'nn-medical-insurance-inpatient-2024',
       annualCap: 150000, // 居民基本统筹限额 15 万元
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，从第二次起起付标准按规定递减。',
       tierBenefits: {
         community: { tierName: '一级定点医疗机构及基层中心', deductible: 100, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.90 },

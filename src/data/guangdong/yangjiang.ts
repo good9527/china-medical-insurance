@@ -7,7 +7,7 @@ export const yangjiangCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '0662-12393',
   officialPortalUrl: 'http://www.yangjiang.gov.cn/yjybj/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   sourceDocs: [
     {
@@ -99,6 +99,7 @@ export const yangjiangCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'yj-medical-insurance-inpatient-2024',
       annualCap: 150000,
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，起付标准按定点医疗机构级别分别计算。',
       tierBenefits: {
         community: { tierName: '一级医疗机构/卫生院', deductible: 200, reimbursementRatio: 0.88 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.88 },

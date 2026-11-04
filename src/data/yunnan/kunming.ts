@@ -7,7 +7,7 @@ export const kunmingCityData: CityInsuranceData = {
   provinceName: '云南省',
   hotline: '0871-12393',
   officialPortalUrl: 'http://ybj.km.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
@@ -102,6 +102,7 @@ export const kunmingCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'km-medical-insurance-inpatient-2024',
       annualCap: 60000, // 居民基本统筹限额 6 万元
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，从第二次起起付标准按规定递减。',
       tierBenefits: {
         community: { tierName: '一级医疗机构及社区中心', deductible: 200, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },

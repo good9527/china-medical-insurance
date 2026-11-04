@@ -7,7 +7,7 @@ export const fuzhouCityData: CityInsuranceData = {
   provinceName: '福建省',
   hotline: '0591-12345/12393',
   officialPortalUrl: 'http://ybj.fuzhou.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [

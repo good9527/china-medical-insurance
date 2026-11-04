@@ -12,7 +12,7 @@ export const nantongCityData: CityInsuranceData = {
   provinceName: '江苏省',
   hotline: '0513-12393',
   officialPortalUrl: 'https://ybj.nantong.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 官方规范性红头文件与政府公开溯源凭证
   sourceDocs: [
@@ -83,6 +83,7 @@ export const nantongCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.85,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['长三角一体化'],
       specialNotes: ['长三角一体化直接结算，跨市就医按规定办理异地备案。']
     }
   },
@@ -130,6 +131,7 @@ export const nantongCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.85,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['长三角一体化'],
       specialNotes: ['长三角一体化直接结算，跨市就医按规定办理异地备案。']
     }
   }

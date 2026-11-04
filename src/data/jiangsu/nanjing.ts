@@ -12,7 +12,7 @@ export const nanjingCityData: CityInsuranceData = {
   provinceName: '江苏省',
   hotline: '025-12393',
   officialPortalUrl: 'https://ybj.nanjing.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 官方依据文件库
   sourceDocs: [
@@ -95,6 +95,7 @@ export const nanjingCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['长三角一体化'],
       specialNotes: [
         '长三角异地就医直接联网结算，符合规范备案人员享受参保地同等待遇。'
       ]
@@ -145,6 +146,7 @@ export const nanjingCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['长三角一体化'],
       specialNotes: [
         '长三角区域一体化直接结算，省内就医免备案直接结算。'
       ]

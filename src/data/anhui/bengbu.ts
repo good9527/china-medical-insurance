@@ -7,7 +7,7 @@ export const bengbuData: CityInsuranceData = {
   provinceName: '安徽省',
   hotline: '0552-12393',
   officialPortalUrl: 'http://ybj.bengbu.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
@@ -113,6 +113,7 @@ export const bengbuData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'bb-resident-employee-inpatient-2023',
       annualCap: 300000, // 居民基本医保年度封顶 30 万元
+      repeatedDeductibleRule: '同自然年度内多次住院，起付线每次递减100元，最低降至200元。',
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区服务中心', deductible: 100, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },

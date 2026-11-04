@@ -7,7 +7,7 @@ export const jianData: CityInsuranceData = {
   provinceName: '江西省',
   hotline: '0796-12393',
   officialPortalUrl: 'http://ybj.jian.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
@@ -113,6 +113,7 @@ export const jianData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'ja-medical-treatment-policy-2023',
       annualCap: 150000,
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，从第二次起起付标准按规定递减。',
       tierBenefits: {
         community: { tierName: '一级及基层医疗机构', deductible: 100, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.90 },

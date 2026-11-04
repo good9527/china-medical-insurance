@@ -7,7 +7,7 @@ export const pingxiangData: CityInsuranceData = {
   provinceName: '江西省',
   hotline: '0799-12393',
   officialPortalUrl: 'http://ybj.pingxiang.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
@@ -113,6 +113,7 @@ export const pingxiangData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'px-resident-employee-inpatient-2023',
       annualCap: 150000, // 居民基本医保年度封顶 15 万元
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，从第二次起起付标准按规定递减。',
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区服务中心', deductible: 100, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.90 },

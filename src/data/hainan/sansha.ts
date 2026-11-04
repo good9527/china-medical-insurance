@@ -7,7 +7,7 @@ export const sanshaCityData: CityInsuranceData = {
   provinceName: '海南省',
   hotline: '0898-12393',
   officialPortalUrl: 'http://ybj.hainan.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证（海南全省统筹）
   sourceDocs: [
@@ -102,6 +102,7 @@ export const sanshaCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'hn-medical-insurance-inpatient-2024',
       annualCap: 150000,
+      repeatedDeductibleRule: '全省范围内医保就医直接联网结算，多次住院起付线按规定执行。',
       tierBenefits: {
         community: { tierName: '基层社区服务中心', deductible: 100, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.90 },

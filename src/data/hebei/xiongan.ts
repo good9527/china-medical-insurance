@@ -7,7 +7,7 @@ export const xionganData: CityInsuranceData = {
   provinceName: '河北省',
   hotline: '0312-12393',
   officialPortalUrl: 'http://www.xiongan.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
@@ -90,6 +90,7 @@ export const xionganData: CityInsuranceData = {
       transferFiledRatio: 1.0, // 京津冀免备案，待遇同城化
       unfiledEmergencyRatio: 0.95,
       unfiledNormalRatio: 0.80,
+      regionalAlliances: ['京津冀免备案'],
       specialNotes: [
         '雄安新区与北京市实现医保目录同城化覆盖，京津冀直接免备案结算并享受本地同等报销待遇。'
       ]
@@ -113,6 +114,7 @@ export const xionganData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'xa-resident-inpatient-2023',
       annualCap: 250000, // 居民年度限额 25 万元
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院的，从第二次住院起，起付标准递减100元，最低降至100元。',
       tierBenefits: {
         community: { tierName: '乡镇卫生院/社区服务中心', deductible: 100, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.90 },
@@ -138,6 +140,7 @@ export const xionganData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.75,
+      regionalAlliances: ['京津冀免备案'],
       specialNotes: [
         '京津冀区域就医视同备案直接联网结算。'
       ]

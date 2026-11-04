@@ -7,7 +7,7 @@ export const yunchengCityData: CityInsuranceData = {
   provinceName: '山西省',
   hotline: '0359-12393',
   officialPortalUrl: 'http://ybj.yuncheng.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   sourceDocs: [
     {

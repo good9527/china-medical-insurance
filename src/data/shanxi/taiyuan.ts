@@ -103,6 +103,7 @@ export const taiyuanCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'ty-medical-insurance-inpatient-2024',
       annualCap: 150000, // 居民基本统筹限额 15 万元
+      repeatedDeductibleRule: '参保人员自然年度内第二次及以后住院，起付标准降低50%。',
       tierBenefits: {
         community: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },

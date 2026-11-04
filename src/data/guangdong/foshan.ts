@@ -7,7 +7,7 @@ export const foshanCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '0757-12393',
   officialPortalUrl: 'http://fssi.foshan.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   sourceDocs: [
     {
@@ -90,6 +90,7 @@ export const foshanCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['粤港澳大湾区'],
       specialNotes: ['异地长期居留备案享受同等比例，市内/市外规范转诊按规定结算，未备案非急诊就医下调比例。']
     }
   },
@@ -137,6 +138,7 @@ export const foshanCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.90,
       unfiledNormalRatio: 0.75, // 临时自行到市外就医支付比例提高为一级75%、二级70%、三级65%
+      regionalAlliances: ['粤港澳大湾区'],
       specialNotes: [
         '长期居住异地备案享受市内同等待遇。未备案临时市外就医支付比例为一级75%、二级70%、三级65%，大病保险降低25个百分点。'
       ]

@@ -12,7 +12,7 @@ export const huzhouCityData: CityInsuranceData = {
   provinceName: '浙江省',
   hotline: '0572-12393',
   officialPortalUrl: 'http://ybj.huzhou.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 官方规范性红头文件与政府公开溯源凭证
   sourceDocs: [
@@ -98,6 +98,7 @@ export const huzhouCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.85,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['长三角一体化'],
       specialNotes: ['长三角异地就医直接结算，省内就医免备案直接结算。']
     }
   },
@@ -146,6 +147,7 @@ export const huzhouCityData: CityInsuranceData = {
       transferFiledRatio: 0.90,
       unfiledEmergencyRatio: 0.85,
       unfiledNormalRatio: 0.70,
+      regionalAlliances: ['长三角一体化'],
       specialNotes: ['长三角异地就医直接结算，省内就医免备案直接结算。']
     }
   }

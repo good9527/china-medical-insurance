@@ -12,7 +12,7 @@ export const guangzhouCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '020-12393',
   officialPortalUrl: 'http://ybj.gz.gov.cn/',
-  lastUpdated: '2026-10-25',
+  lastUpdated: '2026-11-04',
 
   // 官方依据文件库
   sourceDocs: [

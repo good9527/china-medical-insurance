@@ -7,7 +7,7 @@ export const zhanjiangCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '0759-12393',
   officialPortalUrl: 'http://www.zhanjiang.gov.cn/gdzjylbzj/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   sourceDocs: [
     {
@@ -99,6 +99,7 @@ export const zhanjiangCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'zj-medical-insurance-inpatient-2024',
       annualCap: 200000,
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，起付标准按定点医疗机构级别分别计算。',
       tierBenefits: {
         community: { tierName: '一级及社区基层机构', deductible: 100, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 100, reimbursementRatio: 0.85 },

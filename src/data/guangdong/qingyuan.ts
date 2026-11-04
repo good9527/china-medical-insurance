@@ -7,7 +7,7 @@ export const qingyuanCityData: CityInsuranceData = {
   provinceName: '广东省',
   hotline: '0763-12393',
   officialPortalUrl: 'http://www.gdqy.gov.cn/channel/qysylbzj/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   sourceDocs: [
     {
@@ -110,6 +110,7 @@ export const qingyuanCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'qy-medical-insurance-inpatient-2024',
       annualCap: 300000,
+      repeatedDeductibleRule: '参保居民在一个自然年度内多次住院，起付标准按定点医疗机构级别分别计算。',
       tierBenefits: {
         community: { tierName: '基层卫生服务机构', deductible: 300, reimbursementRatio: 0.88 },
         tier1: { tierName: '一级定点医疗机构', deductible: 500, reimbursementRatio: 0.85 },

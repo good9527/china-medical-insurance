@@ -7,7 +7,7 @@ export const ningdeCityData: CityInsuranceData = {
   provinceName: '福建省',
   hotline: '0593-12393',
   officialPortalUrl: 'http://ybj.ningde.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
@@ -113,6 +113,7 @@ export const ningdeCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'nd-medical-treatment-policy-2023',
       annualCap: 100000,
+      repeatedDeductibleRule: '同自然年度内多次住院，起付标准依次递减100元，直至降为0。',
       tierBenefits: {
         community: { tierName: '基层医疗卫生机构', deductible: 100, reimbursementRatio: 0.90 },
         tier1: { tierName: '一级定点医疗机构', deductible: 300, reimbursementRatio: 0.85 },

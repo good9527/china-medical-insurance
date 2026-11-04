@@ -7,7 +7,7 @@ export const dalianCityData: CityInsuranceData = {
   provinceName: '辽宁省',
   hotline: '0411-83709222/12393',
   officialPortalUrl: 'http://ybj.dl.gov.cn/',
-  lastUpdated: '2026-03-01',
+  lastUpdated: '2026-11-04',
 
   // 权威规范性红头文件与政府溯源凭证
   sourceDocs: [
@@ -102,6 +102,7 @@ export const dalianCityData: CityInsuranceData = {
     inpatient: {
       sourceDocId: 'dl-medical-insurance-inpatient-2025',
       annualCap: 150000, // 居民统筹年度限额 15 万元
+      repeatedDeductibleRule: '参保人员自然年度内多次住院的，从第二次住院起，起付标准降低100元。',
       tierBenefits: {
         community: { tierName: '基层社区服务中心', deductible: 200, reimbursementRatio: 0.85 },
         tier1: { tierName: '一级定点医疗机构', deductible: 200, reimbursementRatio: 0.85 },

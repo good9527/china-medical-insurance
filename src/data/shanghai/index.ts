@@ -12,7 +12,7 @@ export const shanghaiCityData: CityInsuranceData = {
   provinceName: '上海市',
   hotline: '021-12393',
   officialPortalUrl: 'https://ybj.sh.gov.cn/',
-  lastUpdated: '2026-10-25',
+  lastUpdated: '2026-11-04',
 
   // 官方依据文件库
   sourceDocs: [
