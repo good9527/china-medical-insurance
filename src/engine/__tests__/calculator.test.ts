@@ -1,4 +1,9 @@
-import { calculateReimbursement } from '../calculator';
+import {
+  calculateReimbursement,
+  resolveInpatientDeductible,
+  normalizeHospitalTier,
+  resolveTierBenefit
+} from '../calculator';
 import { runMultiCitySimulation } from '../simulator';
 import { allCities, getCityDataByCode } from '../../data';
 import type { HospitalTier, CalculateRequest, ComparisonScenarioInput, MultiCitySimulationResult } from '../../data/types';
@@ -15342,6 +15347,280 @@ export function runCalculatorTests() {
     passCount++;
     console.log('  - [H63 PASS] 多端读取可读性自适应流动排版与严肃政务 0-Emoji 规范静态核验全维通过');
   }
+
+  // --------------------------------------------------------------------------
+  // Suite H64: 算法引擎高阶智能增强、安徽起付线保底倒挂防御、跨级转诊差额补收与极端混沌参数自愈全维精算核验
+  // --------------------------------------------------------------------------
+  console.log('\n=========================================');
+  console.log('>>> [Suite H64] 执行算法引擎高阶智能增强、安徽起付线保底倒挂防御、跨级转诊差额补收与极端混沌参数自愈全维精算核验...');
+
+  // 1. 皖境统筹区多次住院保底倒挂缺陷防御核验 (Anhui Step-Down Floor Anti-Inversion)
+  {
+    const anhuiCities = ['340800', '340300', '341700', '341100', '341200'];
+
+    for (const cityCode of anhuiCities) {
+      totalChecks++;
+      // 居民基层住院：基准起付线 100 元，公文规则 "每次递减100元，最低降至200元"
+      const resAdm1 = calculateReimbursement({
+        cityCode,
+        insuranceType: 'resident',
+        treatmentType: 'inpatient',
+        hospitalTier: 'community',
+        remoteStatus: 'local',
+        totalCost: 1500,
+        hospitalizationCount: 1
+      });
+      assertEqual(resAdm1.breakdown.standardDeductible, 100, `${cityCode} 基层基准起付线必须为 100 元`);
+      assertEqual(resAdm1.breakdown.appliedDeductible, 100, `${cityCode} 首次住院适用起付线必须为 100 元`);
+      assertEqual(resAdm1.breakdown.deductibleReduction, 0, `${cityCode} 首次住院起付线减免为 0`);
+
+      totalChecks++;
+      const resAdm2 = calculateReimbursement({
+        cityCode,
+        insuranceType: 'resident',
+        treatmentType: 'inpatient',
+        hospitalTier: 'community',
+        remoteStatus: 'local',
+        totalCost: 1500,
+        hospitalizationCount: 2
+      });
+      // 核心防御断言：第二次住院起付线绝对禁止从 100 倒挂反增为 200！
+      assertEqual(resAdm2.breakdown.appliedDeductible, 100, `${cityCode} 第二次住院起付线必须防御倒挂，严格维持 100 元（严禁反增至200元）`);
+      assertTrue(
+        resAdm2.breakdown.appliedDeductible <= resAdm2.breakdown.standardDeductible,
+        `${cityCode} appliedDeductible (${resAdm2.breakdown.appliedDeductible}) 必须 <= standardDeductible (${resAdm2.breakdown.standardDeductible})`
+      );
+      assertEqual(
+        Math.round((resAdm2.breakdown.appliedDeductible + resAdm2.breakdown.deductibleReduction) * 100) / 100,
+        resAdm2.breakdown.standardDeductible,
+        `${cityCode} appliedDeductible + deductibleReduction === standardDeductible 闭包守恒`
+      );
+
+      totalChecks++;
+      const resAdm5 = calculateReimbursement({
+        cityCode,
+        insuranceType: 'resident',
+        treatmentType: 'inpatient',
+        hospitalTier: 'community',
+        remoteStatus: 'local',
+        totalCost: 1500,
+        hospitalizationCount: 3
+      });
+      assertEqual(resAdm5.breakdown.appliedDeductible, 100, `${cityCode} 第三次及以上住院起付线稳定保持 100 元，绝不倒挂`);
+    }
+
+    // 针对结构化 step_down 策略直接测试 (如 standardDeductible = 80, minFloor = 150, step = 50)
+    totalChecks++;
+    const syntheticRes = resolveInpatientDeductible({
+      cityCode: '340800',
+      insuranceType: 'resident',
+      hospitalTier: 'community',
+      standardDeductible: 80,
+      hospitalizationCount: 3,
+      policy: {
+        type: 'step_down',
+        stepAmount: 50,
+        minFloor: 150
+      }
+    });
+    assertTrue(syntheticRes.appliedDeductible <= 80, '结构化策略 step_down 必须防御倒挂，不得超过基准起付线 80');
+    assertEqual(syntheticRes.appliedDeductible, 80, '基准起付线低于保底时维持基准起付线');
+    assertEqual(syntheticRes.deductibleReduction, 0, '减免金额必须为 0');
+
+    passCount++;
+    console.log('  - [H64 PASS] 皖境统筹区与合成 step_down 保底倒挂缺陷防御核验全部通过');
+  }
+
+  // 2. 医疗机构等级智能消解与多阶梯就近自适应推导 (Multi-Tier Normalization & Fallback)
+  {
+    // 2.1 归一化消解测试
+    totalChecks++;
+    assertEqual(normalizeHospitalTier('三级特等'), 'tier3_top', '三级特等归一化为 tier3_top');
+    assertEqual(normalizeHospitalTier('三级甲等'), 'tier3_top', '三级甲等归一化为 tier3_top');
+    assertEqual(normalizeHospitalTier('三甲'), 'tier3_top', '三甲归一化为 tier3_top');
+    assertEqual(normalizeHospitalTier('省属三级重点医院'), 'tier3_top', '省属三级重点医院归一化为 tier3_top');
+    assertEqual(normalizeHospitalTier('市属三级定点医院'), 'tier3', '市属三级定点医院归一化为 tier3');
+    assertEqual(normalizeHospitalTier('三级乙等'), 'tier3', '三级乙等归一化为 tier3');
+    assertEqual(normalizeHospitalTier('县级综合医院'), 'tier2', '县级综合医院归一化为 tier2');
+    assertEqual(normalizeHospitalTier('二级甲等'), 'tier2', '二级甲等归一化为 tier2');
+    assertEqual(normalizeHospitalTier('乡镇卫生院'), 'tier1', '乡镇卫生院归一化为 tier1');
+    assertEqual(normalizeHospitalTier('一级定点医疗机构'), 'tier1', '一级定点医疗机构归一化为 tier1');
+    assertEqual(normalizeHospitalTier('社区卫生服务中心'), 'community', '社区卫生服务中心归一化为 community');
+    assertEqual(normalizeHospitalTier('村卫生室'), 'community', '村卫生室归一化为 community');
+    assertEqual(normalizeHospitalTier('未知异常等级XYZ'), 'tier2', '未知字符串安全兜底至 tier2 中位');
+    assertEqual(normalizeHospitalTier(null), 'tier2', 'null 安全兜底至 tier2');
+    assertEqual(normalizeHospitalTier(undefined), 'tier2', 'undefined 安全兜底至 tier2');
+
+    // 2.2 实际计算引擎中文等级穿透测试 (西安市职工)
+    totalChecks++;
+    const resXiAnTop = calculateReimbursement({
+      cityCode: '610100',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: '三级甲等' as HospitalTier,
+      remoteStatus: 'local',
+      totalCost: 10000
+    });
+    assertEqual(resXiAnTop.breakdown.standardDeductible, 850, '三级甲等中文输入正确穿透匹配西安三级特等起付线 850 元');
+    assertTrue(resXiAnTop.tierName.includes('三级特等'), '返回名称包含三级特等');
+
+    // 2.3 缺失等级自适应推导 (Custom City Data With Partial Tiers)
+    totalChecks++;
+    const customCity = JSON.parse(JSON.stringify(getCityDataByCode('610100')!));
+    // 模拟某市未配置 tier3_top
+    delete customCity.employee.inpatient.tierBenefits.tier3_top;
+    const resFallbackTop = calculateReimbursement({
+      cityCode: '610100',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3_top',
+      remoteStatus: 'local',
+      totalCost: 10000
+    }, customCity);
+    assertEqual(resFallbackTop.breakdown.standardDeductible, 650, '未配置 tier3_top 时自适应回退至最高可用 tier3 起付线 650 元');
+
+    passCount++;
+    console.log('  - [H64 PASS] 医疗机构等级智能消解与多阶梯就近自适应推导核验通过');
+  }
+
+  // 3. 跨等级转诊连续住院起付线差额结算与急诊绿色通道 (Referral Differential & Emergency)
+  {
+    totalChecks++;
+    // 向上转诊补差额：从基层(已付200)转入三级(基准起付线650)
+    const resReferralUp = calculateReimbursement({
+      cityCode: '610100',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'local',
+      totalCost: 12000,
+      referralPreviousDeductiblePaid: 200
+    });
+    assertEqual(resReferralUp.breakdown.standardDeductible, 650, '基准起付线保持 650');
+    assertEqual(resReferralUp.breakdown.appliedDeductible, 450, '实扣起付线为差额 650 - 200 = 450');
+    assertEqual(resReferralUp.breakdown.deductibleReduction, 200, '起付线减免金额为已付 200');
+    assertTrue(
+      resReferralUp.policyNotes.some(n => n.includes('跨等级转诊连续住院起付线差额结算')),
+      '政策提示包含转诊差额结算说明'
+    );
+    assertEqual(
+      Math.round((resReferralUp.breakdown.totalReimbursed + resReferralUp.breakdown.personalPayTotal) * 100) / 100,
+      12000,
+      '转诊差额结算场景严格满足资金物理守恒'
+    );
+
+    totalChecks++;
+    // 向下转诊康复免二次起付线：从三甲(已付850)转入二级康复(起付线400)
+    const resReferralDown = calculateReimbursement({
+      cityCode: '610100',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 8000,
+      referralPreviousDeductiblePaid: 850
+    });
+    assertEqual(resReferralDown.breakdown.appliedDeductible, 0, '向下转诊已付起付线大于转入机构起付线，实收起付线为 0 元');
+    assertEqual(resReferralDown.breakdown.deductibleReduction, 400, '起付线全额减免 400 元');
+
+    totalChecks++;
+    // 突发急危重症直接送医绿色通道 (isEmergency: true)
+    const resEmergency = calculateReimbursement({
+      cityCode: '610100',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier3',
+      remoteStatus: 'unfiled_normal',
+      isEmergency: true,
+      totalCost: 20000
+    });
+    assertTrue(
+      resEmergency.policyNotes.some(n => n.includes('突发急危重症直接送医绿色通道')),
+      '政策提示包含急危重症绿色通道说明'
+    );
+
+    passCount++;
+    console.log('  - [H64 PASS] 跨等级连续转诊差额结算与急诊绿色通道核验通过');
+  }
+
+  // 4. 极端混沌参数与缺省参数自愈机制应力测试 (Chaos & Self-Healing Stress Test)
+  {
+    // 4.1 负总额自愈
+    totalChecks++;
+    const resNeg = calculateReimbursement({
+      cityCode: '610100',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: -9999
+    });
+    assertEqual(resNeg.breakdown.totalCost, 0, '负数总花费自愈归零');
+    assertEqual(resNeg.breakdown.totalReimbursed, 0, '负数报销自愈归零');
+    assertEqual(resNeg.breakdown.personalPayTotal, 0, '负数自付自愈归零');
+
+    // 4.2 自费超出总额自愈
+    totalChecks++;
+    const resOverNon = calculateReimbursement({
+      cityCode: '610100',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 2000,
+      nonInsuranceCost: 3500
+    });
+    assertEqual(resOverNon.breakdown.nonInsuranceCost, 2000, '自费超额自动截断至总额 2000');
+    assertEqual(resOverNon.breakdown.eligibleCost, 0, '合规基数自愈为 0');
+    assertEqual(resOverNon.breakdown.totalReimbursed, 0, '无合规费用报销为 0');
+    assertEqual(resOverNon.breakdown.personalPayTotal, 2000, '自付严格等于总花费 2000');
+
+    // 4.3 乙类费用溢出与超比例自愈
+    totalChecks++;
+    const resClassB = calculateReimbursement({
+      cityCode: '610100',
+      insuranceType: 'employee',
+      treatmentType: 'inpatient',
+      hospitalTier: 'tier2',
+      remoteStatus: 'local',
+      totalCost: 5000,
+      nonInsuranceCost: 2000,
+      classBCost: 5000,
+      classBSelfPayRatio: 2.5
+    });
+    assertEqual(resClassB.breakdown.classBCost, 3000, '乙类费用上限被自愈约束为 5000 - 2000 = 3000');
+    assertEqual(resClassB.breakdown.classBPriorPay, 3000, '乙类比例被自愈截断为 1.0 (先行自付3000)');
+    assertEqual(resClassB.breakdown.eligibleCost, 0, '合规费用为 0');
+    assertEqual(resClassB.breakdown.personalPayTotal, 5000, '个人自负等于 5000');
+
+    // 4.4 损失补偿原则全额域超级高压验证 [0 ~ 100,000,000 RMB]
+    totalChecks++;
+    const stressAmounts = [0, 0.01, 100, 1000, 50000, 400000, 1000000, 50000000, 100000000];
+    for (const cost of stressAmounts) {
+      totalChecks++;
+      const res = calculateReimbursement({
+        cityCode: '610100',
+        insuranceType: 'employee',
+        isRetiree: true,
+        treatmentType: 'inpatient',
+        hospitalTier: 'tier3',
+        remoteStatus: 'local',
+        totalCost: cost,
+        nonInsuranceCost: Math.round(cost * 0.1 * 100) / 100,
+        classBCost: Math.round(cost * 0.1 * 100) / 100
+      });
+      const b = res.breakdown;
+      // 损失补偿公理：总报销 <= 总花费
+      assertTrue(b.totalReimbursed <= cost + 0.001, `报销总额 (${b.totalReimbursed}) 绝对禁止超过花费 (${cost})`);
+      assertTrue(b.personalPayTotal >= 0, `个人自理金额必须非负 (当前: ${b.personalPayTotal})`);
+      assertCloseTo(b.totalReimbursed + b.personalPayTotal, cost, 0.01, `极端金额 ¥${cost} 下严格资金守恒`);
+    }
+
+    passCount++;
+    console.log('  - [H64 PASS] 极端混沌参数与缺省参数自愈机制应力测试全部通过');
+  }
+
+  console.log('  - [H64 PASS] 算法引擎高阶智能增强 4 大维度共 35 项严密断言 100% 全部通过！');
 
   console.log(`\n=========================================`);
   console.log(`[PASS] 全国已录入统筹区全部通过校验！共执行 ${totalChecks} 项严谨核验，成功率 100%`);
