@@ -203,12 +203,12 @@
 
 | 校验套件 / 命令 | 校验范围 | 结果指标 | 状态 |
 |:---|:---|:---|:---:|
-| `npm run audit:data` | 全国 348 统筹区规范性、文号、URL、字段齐全性 | 纳管 348 / 合规 348 (100.00%) | ✅ PASS |
-| `npm run audit:smart` | 348 统筹区单调性、起付梯度、报销比例倒挂、非标档位排查 | 检出 CRITICAL 0, WARNING 0 | ✅ PASS |
-| `npm run audit:patrol` | 35 个随机统筹区深度抽检巡查 | 抽检通过率 100.0% | ✅ PASS |
-| `npx tsx src/scripts/deep-nationwide-audit.ts` | 348 统筹区公文摘录条款严格对齐与时效性穿透 | **检出 CRITICAL 0, WARNING 0, NOTICE 0** | ✅ PASS |
-| `npm run test:calc` | 涵盖门诊、住院、异地、大病及双城PK全量用例 | **共 7,184 项断言，成功率 100%** | ✅ PASS |
-| `npm run build:h5` | 全平台 H5 生产包打包编译 | 0 errors, DONE Build complete | ✅ PASS |
+| `npm run audit:data` | 全国 348 统筹区规范性、文号、URL、字段齐全性 | 纳管 348 / 合规 348 (100.00%) | [PASS] |
+| `npm run audit:smart` | 348 统筹区单调性、起付梯度、报销比例倒挂、非标档位排查 | 检出 CRITICAL 0, WARNING 0 | [PASS] |
+| `npm run audit:patrol` | 35 个随机统筹区深度抽检巡查 | 抽检通过率 100.0% | [PASS] |
+| `npx tsx src/scripts/deep-nationwide-audit.ts` | 348 统筹区公文摘录条款严格对齐与时效性穿透 | **检出 CRITICAL 0, WARNING 0, NOTICE 0** | [PASS] |
+| `npm run test:calc` | 涵盖门诊、住院、异地、大病及双城PK全量用例 | **共 7,184 项断言，成功率 100%** | [PASS] |
+| `npm run build:h5` | 全平台 H5 生产包打包编译 | 0 errors, DONE Build complete | [PASS] |
 
 ---
 
