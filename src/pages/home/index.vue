@@ -1272,7 +1272,10 @@ function switchTab(url: string) {
   background: #ffffff;
   border: 1px solid #cbd5e1;
   border-radius: 10px;
-  padding: 10px 14px;
+  padding: 0 14px;
+  min-height: 44px;
+  height: 44px;
+  box-sizing: border-box;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   transition: all 0.2s ease;
 }
@@ -1294,13 +1297,31 @@ function switchTab(url: string) {
   flex: 1;
   font-size: 13.5px;
   color: #0f172a;
+  min-height: 44px;
+  height: 44px;
+  box-sizing: border-box;
+}
+
+.map-search-input input,
+.map-search-input .uni-input-input,
+.map-search-input .uni-input-wrapper {
+  min-height: 44px;
+  height: 44px;
+  box-sizing: border-box;
 }
 
 .clear-search {
   cursor: pointer;
   color: #94a3b8;
   font-size: 13px;
-  padding: 2px 6px;
+  padding: 0 8px;
+  min-width: 44px;
+  min-height: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .search-suggest-panel {

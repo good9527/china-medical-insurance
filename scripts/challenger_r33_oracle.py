@@ -475,7 +475,7 @@ def execute_challenger_oracle():
                             dismiss_btn.click()
                             page.wait_for_timeout(300)
                         
-                        modal_close = page.locator(".modal-close-btn, text=关闭").first
+                        modal_close = page.locator(".modal-close-btn").or_(page.locator("text=关闭")).first
                         if modal_close.count() > 0:
                             modal_close.click()
                             page.wait_for_timeout(300)

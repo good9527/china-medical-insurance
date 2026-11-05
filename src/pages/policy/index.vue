@@ -1091,10 +1091,13 @@ onShow(() => {
   background: #eff6ff;
   border: 1px solid #bfdbfe;
   border-radius: 8px;
-  padding: 0 12px;
-  height: 38px;
-  display: flex;
+  padding: 0 14px;
+  min-height: 44px;
+  height: 44px;
+  box-sizing: border-box;
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
 }
 
@@ -2275,8 +2278,10 @@ onShow(() => {
   .fab-back-top {
     right: 16px;
     bottom: calc(68px + env(safe-area-inset-bottom));
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 

@@ -1303,7 +1303,8 @@ onShow(() => {
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   padding: 0 12px;
-  height: 40px;
+  min-height: 44px;
+  height: 44px;
   box-sizing: border-box;
 }
 
@@ -1314,9 +1315,11 @@ onShow(() => {
 
 .cyber-clean-input {
   flex: 1;
-  height: 38px;
+  min-height: 44px;
+  height: 44px;
   font-size: 13px;
   color: #0f172a;
+  box-sizing: border-box;
 }
 
 .unit-text {
@@ -1354,6 +1357,8 @@ onShow(() => {
 
 .full-width {
   width: 100%;
+  min-height: 44px;
+  height: 44px;
   background: #f8fafc;
   border: 1px solid #cbd5e1;
   border-radius: 8px;
@@ -1439,7 +1444,8 @@ onShow(() => {
   border: 1px solid #cbd5e1;
   border-radius: 8px;
   padding: 0 12px;
-  height: 42px;
+  min-height: 44px;
+  height: 44px;
   box-sizing: border-box;
 }
 

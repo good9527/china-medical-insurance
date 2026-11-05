@@ -3311,10 +3311,9 @@ svg {
 /* 极简法定政策公文依据与溯源条 */
 .sleek-doc-strip {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
@@ -3326,8 +3325,8 @@ svg {
   display: flex;
   align-items: center;
   gap: 6px;
+  width: 100%;
   min-width: 0;
-  flex: 1;
   overflow: hidden;
   cursor: pointer;
 }
@@ -3354,23 +3353,22 @@ svg {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  flex: 1;
 }
 
 .sds-num {
   font-size: 11px;
   color: #2563eb;
-  flex-shrink: 1;
-  max-width: 140px;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  flex-shrink: 0;
   white-space: nowrap;
 }
 
 .sds-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 6px;
-  flex-shrink: 0;
+  flex-wrap: wrap;
 }
 
 .sds-btn {
