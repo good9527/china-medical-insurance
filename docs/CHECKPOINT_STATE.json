@@ -1,31 +1,20 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-11-05T02:11:08.138Z",
+  "lastUpdated": "2026-11-05T02:31:38.176Z",
   "generation": 32,
   "stage": "COMPLETED",
   "totalLedgerEntries": 348,
   "totalAssertions": 17622,
-  "gitCommit": "c356bd5",
+  "gitCommit": "300693c",
   "gitBranch": "main",
   "gitStatus": {
     "clean": false,
-    "modifiedCount": 13,
-    "untrackedCount": 1,
+    "modifiedCount": 3,
+    "untrackedCount": 0,
     "summary": [
       "M docs/.calc_test_summary.json",
       "M docs/CHECKPOINT_STATE.json",
-      "M docs/POLICY_PIPELINE_STATUS.md",
-      "M docs/RESUME_GUIDE.md",
-      "M docs/policy-health-report.md",
-      "M scripts/challenger_oracle_report.json",
-      "M scripts/challenger_r33_oracle.py",
-      "M scripts/fetch_feedback.ts",
-      "M src/pages/correction/index.vue",
-      "M src/pages/home/index.vue",
-      "M src/pages/index/index.vue",
-      "M src/pages/policy/index.vue",
-      "M src/scripts/check-emojis.ts",
-      "?? scripts/verify_governance_and_builds.py"
+      "M docs/RESUME_GUIDE.md"
     ]
   },
   "pipelineHealth": "HEALTHY",
