@@ -1017,6 +1017,7 @@ function triggerHaptic() {
   border-radius: 6px;
   cursor: pointer;
   box-sizing: border-box;
+  white-space: nowrap;
   transition: all 0.2s ease;
 }
 
@@ -2189,6 +2190,21 @@ function triggerHaptic() {
 
 /* 移动端响应式 */
 @media (max-width: 768px) {
+  .city-selector-card {
+    padding: 14px 16px;
+  }
+
+  .csc-head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .add-city-btn {
+    width: 100%;
+    white-space: nowrap;
+  }
+
   .city-slots-grid.slots-2,
   .city-slots-grid.slots-3 {
     grid-template-columns: 1fr;

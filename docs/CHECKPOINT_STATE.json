@@ -1,21 +1,19 @@
 {
   "version": "2.0.0",
-  "lastUpdated": "2026-11-06T15:17:58.268Z",
+  "lastUpdated": "2026-11-06T15:34:46.204Z",
   "generation": 32,
   "stage": "COMPLETED",
   "totalLedgerEntries": 348,
   "totalAssertions": 17622,
-  "gitCommit": "29b73e1",
+  "gitCommit": "8d6b21f",
   "gitBranch": "main",
   "gitStatus": {
     "clean": false,
-    "modifiedCount": 4,
+    "modifiedCount": 2,
     "untrackedCount": 0,
     "summary": [
       "M docs/.calc_test_summary.json",
-      "M src/components/EstimateVoucherModal.vue",
-      "M src/components/MultiCitySimulator.vue",
-      "M src/pages/ranking/index.vue"
+      "M src/components/MultiCitySimulator.vue"
     ]
   },
   "pipelineHealth": "HEALTHY",
