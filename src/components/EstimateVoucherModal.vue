@@ -1286,7 +1286,9 @@ function handleExportImage() {
     align-items: flex-start;
   }
   .voucher-main-title {
-    font-size: 14px;
+    font-size: clamp(11.5px, 3.6vw, 13.5px);
+    letter-spacing: 0;
+    white-space: nowrap;
   }
   .voucher-code-bar {
     flex-direction: column;

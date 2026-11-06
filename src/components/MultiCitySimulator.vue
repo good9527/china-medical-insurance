@@ -948,6 +948,7 @@ function triggerHaptic() {
 }
 
 .sim-preset-chip {
+  flex-shrink: 0;
   padding: 6px 14px;
   min-height: 44px;
   background: #f1f5f9;

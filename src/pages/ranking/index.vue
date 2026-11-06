@@ -3407,14 +3407,20 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .battle-cat-pill {
-  padding: 6px 14px;
-  border-radius: 20px;
+  flex-shrink: 0;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border-radius: 22px;
   background: #f1f5f9;
   border: 1px solid #e2e8f0;
   cursor: pointer;
   white-space: nowrap;
   transition: all 0.15s ease;
   user-select: none;
+  box-sizing: border-box;
 }
 
 .battle-cat-pill:hover {
@@ -3427,9 +3433,10 @@ const filteredBattleMetrics = computed(() => {
 }
 
 .cat-pill-label {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: #475569;
+  white-space: nowrap;
 }
 
 .battle-cat-pill.active .cat-pill-label {
