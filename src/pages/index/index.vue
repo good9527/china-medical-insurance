@@ -692,10 +692,12 @@
             <!-- 极简法定政策公文依据与溯源条 (Sleek Statutory Citation Strip) -->
             <view class="sleek-doc-strip">
               <view class="sds-main" @click.stop="openDocUrl">
-                <view class="sds-dot"></view>
-                <text class="sds-label">公文依据：</text>
-                <text class="sds-title">{{ result.officialDocUsed?.title || currentCityOption.cityName + '基本医疗保险政策' }}</text>
-                <text class="sds-num font-mono" v-if="result.officialDocUsed?.docNumber">({{ result.officialDocUsed.docNumber }})</text>
+                <view class="sds-meta-line">
+                  <view class="sds-dot"></view>
+                  <text class="sds-label">公文依据</text>
+                  <text class="sds-num font-mono" v-if="result.officialDocUsed?.docNumber">{{ result.officialDocUsed.docNumber }}</text>
+                </view>
+                <text class="sds-title">《{{ result.officialDocUsed?.title || currentCityOption.cityName + '基本医疗保险政策' }}》</text>
               </view>
               <view class="sds-actions">
                 <view class="sds-btn" @click.stop="openDocUrl" v-if="result.officialDocUsed?.officialUrl" title="查阅公文原文">
@@ -3313,22 +3315,27 @@ svg {
   display: flex;
   flex-direction: column;
   align-items: stretch;
-  gap: 8px;
+  gap: 10px;
   background: #f8fafc;
   border: 1px solid #e2e8f0;
   border-radius: 10px;
-  padding: 10px 14px;
+  padding: 12px 14px;
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
 }
 
 .sds-main {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 6px;
   width: 100%;
-  min-width: 0;
-  overflow: hidden;
   cursor: pointer;
+}
+
+.sds-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
 }
 
 .sds-dot {
@@ -3346,21 +3353,22 @@ svg {
   flex-shrink: 0;
 }
 
-.sds-title {
-  font-size: 12px;
-  font-weight: 600;
-  color: #1e293b;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  flex: 1;
-}
-
 .sds-num {
   font-size: 11px;
   color: #2563eb;
-  flex-shrink: 0;
-  white-space: nowrap;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 1px 6px;
+  border-radius: 4px;
+  line-height: 1.3;
+}
+
+.sds-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.5;
+  word-break: break-all;
 }
 
 .sds-actions {
@@ -3507,11 +3515,6 @@ svg {
     padding: 10px 12px !important;
   }
 
-  .sds-main {
-    flex-wrap: wrap !important;
-    gap: 4px 8px !important;
-  }
-
   .sds-title {
     white-space: normal !important;
     line-height: 1.45 !important;
@@ -3521,7 +3524,7 @@ svg {
   .sds-actions {
     display: flex !important;
     flex-wrap: wrap !important;
-    justify-content: flex-end !important;
+    justify-content: flex-start !important;
     gap: 6px !important;
   }
 

@@ -922,8 +922,9 @@ function triggerHaptic() {
 .preset-label-wrap {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .preset-flame-svg {
@@ -937,6 +938,8 @@ function triggerHaptic() {
   font-size: 13px;
   font-weight: 600;
   color: #334155;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .preset-chips-scroll {
@@ -945,6 +948,9 @@ function triggerHaptic() {
   gap: 8px;
   overflow-x: auto;
   padding-bottom: 2px;
+  flex: 1;
+  min-width: 0;
+  -webkit-overflow-scrolling: touch;
 }
 
 .sim-preset-chip {
@@ -2203,6 +2209,23 @@ function triggerHaptic() {
   .add-city-btn {
     width: 100%;
     white-space: nowrap;
+  }
+
+  .preset-preset-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .preset-chips-scroll {
+    width: 100%;
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    padding-bottom: 4px;
   }
 
   .city-slots-grid.slots-2,
