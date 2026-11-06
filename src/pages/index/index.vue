@@ -494,9 +494,10 @@
                     <line x1="16" y1="13" x2="8" y2="13"></line>
                     <line x1="16" y1="17" x2="8" y2="17"></line>
                   </svg>
-                  <text class="authority-doc-title">{{ currentDocSummary }}</text>
+                  <text class="authority-doc-badge font-mono" v-if="result.officialDocUsed?.docNumber">{{ result.officialDocUsed.docNumber }}</text>
+                  <text class="authority-doc-title">《{{ result.officialDocUsed?.title || (currentCityOption.cityName + '基本医疗保险政策') }}》</text>
                 </view>
-                <view class="authority-hotline-btn" @click.stop="handleCallHotline">
+                <view class="authority-hotline-btn" @click.stop="handleCallHotline" title="拨打12393医保专线">
                   <svg class="authority-hotline-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
                   </svg>
@@ -2879,6 +2880,18 @@ svg {
   height: 14px;
   stroke: #2563eb;
   flex-shrink: 0;
+}
+
+.authority-doc-badge {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #1e40af;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  padding: 1px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .authority-doc-title {
